@@ -1,12 +1,14 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.round.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.study.domain.Study;
 
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Round {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

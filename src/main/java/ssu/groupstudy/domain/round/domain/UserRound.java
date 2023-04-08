@@ -1,13 +1,13 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.round.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.user.domain.User;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRound {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class UserRound {
     @JoinColumn(name="roundId", nullable = false)
     private Round round;
 
-    //TODO ENUM 처리
+    //TODO ENUM 처리 (StatusTag.class)
     private String statusTag;
 
 }

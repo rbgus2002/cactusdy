@@ -1,13 +1,14 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.task.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.round.domain.UserRound;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +17,7 @@ public class Task {
     @Column(nullable = false, length = 30)
     private String detail;
 
-    //TODO ENUM 처리
+    //TODO 사용여부 검토 후 ENUM 처리?
     @Column(nullable = false)
     private String taskType;
 
