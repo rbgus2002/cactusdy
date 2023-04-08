@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -29,5 +30,12 @@ public class User {
 
     @Column(nullable = false)
     private char deleteYn;
+
+    @Builder
+    public User(String name, String nickName) {
+        this.createDate = LocalDate.now();
+        this.activateDate = LocalDateTime.now();
+        this.deleteYn = 'N';
+    }
 }
 
