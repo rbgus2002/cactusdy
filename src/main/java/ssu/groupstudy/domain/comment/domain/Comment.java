@@ -32,6 +32,9 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime modifiedTime;
 
+    @Column(nullable = false)
+    private char deleteYn;
+
     @ManyToOne
     @JoinColumn(name="noticeId")
     private Notice notice;

@@ -28,6 +28,9 @@ public class Notice {
     @Column(nullable = false)
     private LocalDateTime modifiedTime;
 
+    @Column(nullable = false)
+    private char deleteYn;
+
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
     private User writer;
