@@ -7,7 +7,6 @@ import ssu.groupstudy.domain.user.domain.User;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(CheckNoticeKey.class)
 public class CheckNotice {
     @Id
     @ManyToOne

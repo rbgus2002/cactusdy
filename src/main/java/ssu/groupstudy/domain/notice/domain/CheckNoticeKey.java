@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.notice.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
