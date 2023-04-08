@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.UserRound;
+import ssu.groupstudy.global.domain.BaseEntity;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Task {
+public class Task extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
@@ -26,9 +27,6 @@ public class Task {
 
     @Column(nullable = false)
     private char deleteYn;
-
-    @Column(nullable = false)
-    private LocalDateTime createTime;
 
     @ManyToOne
     @JoinColumn(name="userRoundId", nullable = false)
