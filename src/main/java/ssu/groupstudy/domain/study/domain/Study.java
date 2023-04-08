@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Study {
+public class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
@@ -32,6 +33,4 @@ public class Study {
 
     @Column(nullable = false)
     private char deleteYn;
-
-    //TODO JPAudit 연동
 }

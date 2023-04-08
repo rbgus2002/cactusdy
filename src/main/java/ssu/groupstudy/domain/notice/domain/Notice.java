@@ -6,12 +6,13 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.domain.BaseEntity;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notice {
+public class Notice extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
@@ -21,12 +22,6 @@ public class Notice {
 
     @Column(nullable = false, length = 100)
     private String contents;
-
-    @Column(nullable = false)
-    private LocalDateTime createTime;
-
-    @Column(nullable = false)
-    private LocalDateTime modifiedTime;
 
     @Column(nullable = false)
     private char deleteYn;

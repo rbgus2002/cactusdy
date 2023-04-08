@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.global.domain.BaseEntity;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Round {
+public class Round extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
