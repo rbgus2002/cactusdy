@@ -30,6 +30,9 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
+    @Column(nullable = false)
+    private char deleteYn;
+
     @ManyToOne
     @JoinColumn(name="noticeId")
     private Notice notice;

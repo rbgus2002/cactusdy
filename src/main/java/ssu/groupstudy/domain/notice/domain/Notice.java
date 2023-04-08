@@ -26,6 +26,9 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
+    @Column(nullable = false)
+    private char deleteYn;
+
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
     private User writer;
