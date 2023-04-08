@@ -1,10 +1,12 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.study.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.user.domain.User;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

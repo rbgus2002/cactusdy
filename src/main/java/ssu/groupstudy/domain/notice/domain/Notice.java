@@ -1,14 +1,16 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.notice.domain;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.user.domain.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

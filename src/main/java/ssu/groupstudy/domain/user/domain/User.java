@@ -1,28 +1,23 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.user.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false, length = 10)
-    private String nickName;
-
-    private String picture;
-
-    private String statusMessage;
+    @Embedded
+    private Profile profile;
 
     @Column(nullable = false)
     private LocalDate createDate;
@@ -35,3 +30,4 @@ public class User {
     @Column(nullable = false)
     private char deleteYn;
 }
+

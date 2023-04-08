@@ -1,17 +1,13 @@
-package ssu.groupstudy.Entity.Key;
+package ssu.groupstudy.domain.study.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.Entity.Round;
-import ssu.groupstudy.Entity.User;
 
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyColorKey implements Serializable {
     // userId, studyId 복합키를 PK로 설정
     private Long user;

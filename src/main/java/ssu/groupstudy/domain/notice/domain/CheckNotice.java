@@ -1,11 +1,12 @@
-package ssu.groupstudy.Entity;
+package ssu.groupstudy.domain.notice.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.Entity.Key.CheckNoticeKey;
+import ssu.groupstudy.domain.user.domain.User;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(CheckNoticeKey.class)
 public class CheckNotice {
     @Id
