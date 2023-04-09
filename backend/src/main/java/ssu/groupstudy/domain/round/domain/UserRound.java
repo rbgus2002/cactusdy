@@ -21,8 +21,8 @@ public class UserRound {
     @JoinColumn(name="roundId", nullable = false)
     private Round round;
 
-    //TODO ENUM 처리 (StatusTag.class)
-    private String statusTag;
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusTag statusTag;
 }
 
