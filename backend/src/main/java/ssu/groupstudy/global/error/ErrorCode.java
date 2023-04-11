@@ -3,13 +3,17 @@ package ssu.groupstudy.global.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-// TODO : ErrorCode 생성, SuccessCode도 만드는 편이 좋겠다.
+// TODO : Success Code 필요 여부 생각
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
 
-    EMAIL_EXISTS_ALREADY("이미 존재하는 이메일입니다."),
+    DUPLICATE_EMAIL_ERROR(400, "이미 존재하는 이메일입니다."),
+    INVALID_METHOD_ARGUMENT_ERROR(400, "잘못된 인자입니다."),
+    NULL_VALUE_ERROR(400, "Null 값이 올 수 없습니다.")
+
             ;
 
+    int statusCode;
     private final String message;
 }

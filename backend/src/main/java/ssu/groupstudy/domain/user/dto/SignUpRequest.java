@@ -7,13 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.error.ErrorCode;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
-    // TODO : message도 ErrorCode에 추가해서 enum 활용하기
-    @NotBlank(message = "이름은 Null일 수 없습니다.")
+    @NotBlank
     String name;
     @NotBlank
     String nickName;

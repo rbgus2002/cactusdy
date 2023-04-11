@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
+import ssu.groupstudy.global.BusinessException;
 
 @RestControllerAdvice
 @Slf4j
@@ -19,24 +20,19 @@ public class GlobalExceptionHandler {
 //        return new ResponseEntity(new ErrorDto(ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage()), HttpStatus.valueOf(ex.getErrorCode().getStatus()));
 //    }
 
-    // TODO : return 형식 수정 및 ResponseEntity 컨트롤러에서 어떻게 처리할 지 고민
+    // TODO : return 형식 수정 및 메소드 내 처리 방식 레퍼런스 참고
+    // TODO : Controller return 타입과 연관해서 어떻게 처리해줄 지 생각
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String errorMessage = e.getBindingResult()
-                .getAllErrors()
-                .get(0)
-                .getDefaultMessage();
-
-//        printExceptionMessage(errorMessage);
-        log.error("handleMethodArgumentNotValidException : {}", errorMessage);
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("handleMethodArgumentNotValidException : {}", ErrorCode.INVALID_METHOD_ARGUMENT_ERROR.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_METHOD_ARGUMENT_ERROR.getStatusCode(), ErrorCode.INVALID_METHOD_ARGUMENT_ERROR.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
-    @ExceptionHandler(EmailExistsException.class)
-    public ResponseEntity<String> handleEmailExistsException(EmailExistsException e) {
-        String errorMessage = e.getMessage();
-        ;
-        log.error("handleEmailExistsException : {}", errorMessage);
-        return new ResponseEntity<>(errorMessage,null ,HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        log.warn("BusinessException : {}", e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(e.getErrorCode().getStatusCode(), e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 }

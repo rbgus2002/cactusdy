@@ -20,7 +20,7 @@ public class UserSignUpService {
 
     public Long signUp(SignUpRequest dto){
         if(userRepository.existsByProfileEmail(dto.getEmail())){
-            throw new EmailExistsException(ErrorCode.EMAIL_EXISTS_ALREADY.getMessage());
+            throw new EmailExistsException(ErrorCode.DUPLICATE_EMAIL_ERROR);
         }
 
         Long userId = userRepository.save(dto.toEntity()).getUserId();

@@ -1,5 +1,16 @@
 package ssu.groupstudy.global.error;
 
-//TODO Error Response는 항상 동일한 객체를 가져야 함!
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse {
+    private final int statusCode;
+    private final String message;
+
+    public static ErrorResponse of(int statusCode, String message){
+        return new ErrorResponse(statusCode, message);
+    }
 }
