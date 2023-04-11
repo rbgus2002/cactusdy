@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class Profile {
     @Column(nullable = false)
     private String name;
@@ -15,6 +14,15 @@ public class Profile {
     private String nickName;
 
     private String picture;
-
     private String statusMessage;
+    private String email;
+
+    @Builder
+    public Profile(String name, String nickName, String picture, String statusMessage, String email) {
+        this.name = name;
+        this.nickName = nickName;
+        this.picture = picture;
+        this.statusMessage = statusMessage;
+        this.email = email;
+    }
 }

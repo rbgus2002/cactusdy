@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.user.api;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,9 @@ import ssu.groupstudy.domain.user.service.UserSignUpService;
 @AllArgsConstructor
 public class UserApi {
     private final UserSignUpService userSignUpService;
-    @PostMapping("/signup")
-    public User singUpTest(@RequestBody SignUpRequest dto){
-        User user = userSignUpService.signUp(dto);
-        return user;
+    @PostMapping("/register")
+    public Long register(@Valid @RequestBody SignUpRequest dto){
+        Long longId = userSignUpService.signUp(dto);
+        return longId;
     }
 }
