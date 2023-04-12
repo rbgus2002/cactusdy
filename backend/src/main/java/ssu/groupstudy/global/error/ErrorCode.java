@@ -7,6 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
+    // 200 (정상)
+    OK(200, "Success"),
+
 
     // 400
     DUPLICATE_EMAIL_ERROR(400, "이미 존재하는 이메일입니다."),

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.SignUpRequest;
 import ssu.groupstudy.domain.user.service.UserSignUpService;
+import ssu.groupstudy.global.dto.DataResponseDto;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -15,8 +18,8 @@ import ssu.groupstudy.domain.user.service.UserSignUpService;
 public class UserApi {
     private final UserSignUpService userSignUpService;
     @PostMapping("/register")
-    public Long register(@Valid @RequestBody SignUpRequest dto){
-        Long longId = userSignUpService.signUp(dto);
-        return longId;
+    public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
+        User user = userSignUpService.signUp(dto);
+        return DataResponseDto.of("user", user);
     }
 }

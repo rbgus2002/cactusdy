@@ -18,12 +18,12 @@ import ssu.groupstudy.global.error.ErrorCode;
 public class UserSignUpService {
     private final UserRepository userRepository;
 
-    public Long signUp(SignUpRequest dto){
+    public User signUp(SignUpRequest dto){
         if(userRepository.existsByProfileEmail(dto.getEmail())){
             throw new EmailExistsException(ErrorCode.DUPLICATE_EMAIL_ERROR);
         }
 
-        Long userId = userRepository.save(dto.toEntity()).getUserId();
-        return userId;
+        User user = userRepository.save(dto.toEntity());
+        return user;
     }
 }

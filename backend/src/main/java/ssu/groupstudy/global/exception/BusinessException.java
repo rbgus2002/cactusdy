@@ -1,4 +1,4 @@
-package ssu.groupstudy.global;
+package ssu.groupstudy.global.exception;
 
 import lombok.Builder;
 import lombok.Getter;
