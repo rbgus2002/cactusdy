@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.user.api;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
