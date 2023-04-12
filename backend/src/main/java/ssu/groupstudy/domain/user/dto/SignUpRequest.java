@@ -7,20 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.global.error.ErrorCode;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
-    @NotBlank
+    @NotBlank(message = "이름을 입력하세요")
     String name;
-    @NotBlank
+    @NotBlank(message = "닉네임을 입력하세요")
     String nickName;
     String phoneModel;
     String picture;
-    @Email
-    @NotBlank
+    @Email(message = "이메일 형식이 아닙니다")
+    @NotBlank(message = "이메일을 입력하세요")
     String email;
 
     public User toEntity(){

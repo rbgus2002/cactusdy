@@ -1,7 +1,7 @@
 package ssu.groupstudy.global.dto;
 
 import lombok.Getter;
-import ssu.groupstudy.global.error.ErrorCode;
+import ssu.groupstudy.global.error.ResultCode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ public class DataResponseDto<T> extends ResponseDto{
     private final Map data;
 
     private DataResponseDto(String key, T data){
-        super(true, ErrorCode.OK.getStatusCode(), ErrorCode.OK.getMessage());
+        super(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
         this.data = stringToMap(key, data);
     }
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 // TODO : Success Code 필요 여부 생각
 @AllArgsConstructor
 @Getter
-public enum ErrorCode {
+public enum ResultCode {
     // 200 (정상)
     OK(200, "Success"),
 

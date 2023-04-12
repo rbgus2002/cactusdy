@@ -1,18 +1,15 @@
 package ssu.groupstudy.global.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import ssu.groupstudy.global.error.ErrorCode;
+import ssu.groupstudy.global.error.ResultCode;
 
 @Getter
 public class ErrorResponseDto extends ResponseDto{
-    private ErrorResponseDto(ErrorCode errorCode){
-        super(false, errorCode.getStatusCode(), errorCode.getMessage());
+    private ErrorResponseDto(ResultCode resultCode){
+        super(false, resultCode.getStatusCode(), resultCode.getMessage());
     }
 
-    public static ErrorResponseDto of(ErrorCode errorCode){
-        return new ErrorResponseDto(errorCode);
+    public static ErrorResponseDto of(ResultCode resultCode){
+        return new ErrorResponseDto(resultCode);
     }
 }
