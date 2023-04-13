@@ -3,6 +3,7 @@ package ssu.groupstudy.global.error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,7 @@ import ssu.groupstudy.global.exception.BusinessException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("handleMethodArgumentNotValidException : {}", ResultCode.INVALID_METHOD_ARGUMENT_ERROR.getMessage());
+        log.error("handleMethodArgumentNotValidException : {}", e);
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_METHOD_ARGUMENT_ERROR);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponseDto> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error("handleHttpRequestMethodNotSupportedException", e);
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.METHOD_NOT_ALLOWED);
-        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
     @ExceptionHandler(BusinessException.class)
