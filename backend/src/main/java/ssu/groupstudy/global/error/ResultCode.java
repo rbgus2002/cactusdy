@@ -15,6 +15,8 @@ public enum ResultCode {
     DUPLICATE_EMAIL_ERROR(400, "이미 존재하는 이메일입니다."),
     INVALID_METHOD_ARGUMENT_ERROR(400, "잘못된 인자입니다."),
     NULL_VALUE_ERROR(400, "Null 값이 올 수 없습니다."),
+    DUPLICATE_INVITE_LINK_ERROR(400, "이미 초대 링크가 존재합니다."),
+
 
     // 405
     METHOD_NOT_ALLOWED(405, "대상 리소스가 이 메서드를 지원하지 않습니다."),
