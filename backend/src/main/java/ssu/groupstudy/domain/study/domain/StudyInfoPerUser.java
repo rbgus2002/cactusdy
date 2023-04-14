@@ -9,18 +9,22 @@ import ssu.groupstudy.domain.user.domain.User;
 @Entity
 @Table(name = "REL_User_Study")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(StudyColorKey.class)
-public class StudyColor {
+public class StudyInfoPerUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
     private User user;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 
     @Column(nullable = false)
     private String color;
+
+    @Column(nullable = false)
+    private char isBanished;
 }

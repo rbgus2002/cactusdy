@@ -5,12 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.ColumnDefault;
 import ssu.groupstudy.global.domain.BaseEntity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Entity
@@ -30,9 +28,8 @@ public class User extends BaseEntity {
     private String phoneModel;
 
     @Column(nullable = false)
+    @ColumnDefault("N")
     private char deleteYn;
-
-    // TODO : 방장 여부 추가
 
     @Builder
     public User(String name, String nickName, String picture, String phoneModel, String email) {
@@ -44,7 +41,7 @@ public class User extends BaseEntity {
                 .build();
         this.activateDate = LocalDateTime.now();
         this.phoneModel = phoneModel;
-        this.deleteYn = 'N';
+//        this.deleteYn = 'N';
     }
 }
 

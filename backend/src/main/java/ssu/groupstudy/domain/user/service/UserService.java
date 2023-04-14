@@ -8,18 +8,18 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.error.ResultCode;
+import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
 @Transactional
 @Slf4j
-public class UserSignUpService {
+public class UserService {
     private final UserRepository userRepository;
 
     public User signUp(SignUpRequest dto){
         if(userRepository.existsByProfileEmail(dto.getEmail())){
-            throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL_ERROR);
+            throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
 
         User user = userRepository.save(dto.toEntity());

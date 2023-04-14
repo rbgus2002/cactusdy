@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.study.dto.reuqest;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,14 +23,16 @@ public class RegisterStudyRequest {
 
     private String picture;
 
-    @NotEmpty(message = "방장의 userId를 입력하세요")
+    @NotNull
     private Long hostUserId;
 
-    // TODO : 마저 개발하기
-//    public Study toEntity(){
-//        return Study.builder()
-//                .
-//                .build()
-//    }
+    public Study toEntityWithUser(User hostUser){ // TODO : User 부분 어떻게 넣어줄 건지 레퍼런스 참고
+        return Study.builder()
+                .studyName(this.studyName)
+                .detail(this.detail)
+                .picture(this.picture)
+                .hostUser(hostUser)
+                .build();
+    }
 
 }

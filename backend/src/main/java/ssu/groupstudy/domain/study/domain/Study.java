@@ -2,15 +2,16 @@ package ssu.groupstudy.domain.study.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.study.exception.InviteLinkAlreadyExistsException;
+import ssu.groupstudy.domain.study.exception.InviteInfoAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
-import ssu.groupstudy.global.error.ResultCode;
+import ssu.groupstudy.global.ResultCode;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     @Id
@@ -38,25 +39,21 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @Builder // TODO : User를 어떤식으로 넣어줄건지, 그리고 마저 인자 정해서 생성자 만들어주기
-    public Study(Long studyId, String studyName, String detail, String picture, User hostUser) {
-        this.studyId = studyId;
+    @Builder 
+    public Study(String studyName, String detail, String picture, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
         this.picture = picture;
-        this.inviteLink = inviteLink;
-        this.inviteQrCode = inviteQrCode;
         this.hostUser = hostUser;
-        this.deleteYn = deleteYn;
+        // TODO : 직접 안넣어줘도 default로 들어가게 추후 수정
+        this.deleteYn = 'N';
     }
 
     public void setInviteLink(String inviteLink){
-        if(existInviteLink())
-            throw new InviteLinkAlreadyExistsException(ResultCode.DUPLICATE_INVITE_LINK_ERROR);
         this.inviteLink = inviteLink;
     }
 
-    private boolean existInviteLink(){
-        return inviteLink != null;
+    public void setInviteQrCode(String inviteQrCode){
+        this.inviteQrCode = inviteQrCode;
     }
 }
