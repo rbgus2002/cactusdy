@@ -9,4 +9,6 @@ public interface UserRepository extends Repository<User, Long> {
     boolean existsByProfileEmail(String email);
 
     User save(User user);
+
+    Optional<User> getUserByUserId(Long userId);
 }

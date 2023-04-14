@@ -32,8 +32,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    // TODO : 방장 여부 추가
-
     @Builder
     public User(String name, String nickName, String picture, String phoneModel, String email) {
         this.profile = Profile.builder()

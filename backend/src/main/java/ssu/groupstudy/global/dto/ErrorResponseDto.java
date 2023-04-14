@@ -1,8 +1,7 @@
 package ssu.groupstudy.global.dto;
 
 import lombok.Getter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import ssu.groupstudy.global.error.ResultCode;
+import ssu.groupstudy.global.ResultCode;
 
 @Getter
 public class ErrorResponseDto extends ResponseDto{
