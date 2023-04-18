@@ -22,9 +22,34 @@ public class StudyApi {
 
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping("/register")
+<<<<<<< HEAD
     public DataResponseDto registerStudy(@Valid @RequestBody RegisterStudyRequest dto) {
+=======
+    public DataResponseDto registerStudy(@Valid @RequestBody RegisterStudyRequest dto){
+>>>>>>> origin/main
         Study newStudy = studyCreateService.createNewStudy(dto);
 
         return DataResponseDto.of("study", newStudy);
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+
+
+
+
+
+//public class UserApi {
+//    private final UserSignUpService userSignUpService;
+//
+//    @Operation(summary = "회원가입")
+//    @Parameter(name = "test", description = "??????")
+//    @PostMapping("/register")
+//    public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
+//        User user = userSignUpService.signUp(dto);
+//        return DataResponseDto.of("user", user);
+//    }
+//}
+>>>>>>> origin/main
