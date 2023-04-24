@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface StudyRepository extends Repository<Study, Long> {
     Study save(Study study);
 
+    Optional<Study> getStudyByStudyId(Long studyId);
 }

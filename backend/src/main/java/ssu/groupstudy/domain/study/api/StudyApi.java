@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
 import ssu.groupstudy.domain.study.service.StudyCreateService;
+import ssu.groupstudy.domain.study.service.StudyInviteService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 
 @RestController
@@ -19,37 +21,22 @@ import ssu.groupstudy.global.dto.DataResponseDto;
 @Tag(name = "Study", description = "스터디 API")
 public class StudyApi {
     private final StudyCreateService studyCreateService;
+    private final StudyInviteService studyInviteService;
 
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping("/register")
-<<<<<<< HEAD
-    public DataResponseDto registerStudy(@Valid @RequestBody RegisterStudyRequest dto) {
-=======
-    public DataResponseDto registerStudy(@Valid @RequestBody RegisterStudyRequest dto){
->>>>>>> origin/main
+    public DataResponseDto register(@Valid @RequestBody RegisterStudyRequest dto){
         Study newStudy = studyCreateService.createNewStudy(dto);
+
 
         return DataResponseDto.of("study", newStudy);
     }
-<<<<<<< HEAD
+
+    @Operation(summary = "스터디에 회원 초대")
+    @PostMapping("/invite")
+    public DataResponseDto inviteUser(@Valid @RequestBody InviteUserRequest dto){
+        Long userIdInvited = studyInviteService.inviteUserInStudy(dto);
+
+        return DataResponseDto.of("longId", userIdInvited);
+    }
 }
-=======
-}
-
-
-
-
-
-
-//public class UserApi {
-//    private final UserSignUpService userSignUpService;
-//
-//    @Operation(summary = "회원가입")
-//    @Parameter(name = "test", description = "??????")
-//    @PostMapping("/register")
-//    public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
-//        User user = userSignUpService.signUp(dto);
-//        return DataResponseDto.of("user", user);
-//    }
-//}
->>>>>>> origin/main
