@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
@@ -27,20 +28,17 @@ public class StudyCreateService {
     private final StudyPerUserRepository studyPerUserRepository;
 
     public Study createNewStudy(RegisterStudyRequest dto) {
-        // TODO : throwOr 뭐 이런걸로 한 줄로 바꾸기
-        Optional<User> hostUser = userRepository.getUserByUserId(dto.getHostUserId());
-        if (hostUser.isEmpty()) {
-            throw new UserNotFoundException(ResultCode.USER_NOT_FOUND);
-        }
+        User hostUser = userRepository.findByUserId(dto.getHostUserId())
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         // 새로운 스터디 생성
-        Study newStudy = dto.toEntityWithUser(hostUser.get());
+        Study newStudy = dto.toEntityWithUser(hostUser);
         newStudy.setInviteLink(generateInviteLink());
         newStudy.setInviteQrCode(generateQrCode(newStudy.getInviteLink()));
         newStudy = studyRepository.save(newStudy);
 
         // 유저 - 스터디 연결
-        studyPerUserRepository.save(new StudyPerUser(hostUser.get(), newStudy));
+        studyPerUserRepository.save(new StudyPerUser(hostUser, newStudy));
 
         return newStudy;
     }
