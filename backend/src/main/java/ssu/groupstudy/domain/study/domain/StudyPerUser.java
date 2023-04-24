@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.user.domain.User;
 @Table(name = "REL_User_Study")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class StudyInfoPerUser {
+public class StudyPerUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class StudyInfoPerUser {
     private char isBanished;
 
     @Builder
-    public StudyInfoPerUser(User user, Study study) {
+    public StudyPerUser(User user, Study study) {
         this.user = user;
         this.study = study;
         this.color = ""; // TODO : 색상 입력 구현 (color picker?)

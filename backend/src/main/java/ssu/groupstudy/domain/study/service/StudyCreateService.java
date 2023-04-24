@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.StudyInfoPerUser;
+import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
-import ssu.groupstudy.domain.study.repository.StudyInfoPerUserRepository;
+import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class StudyCreateService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
-    private final StudyInfoPerUserRepository studyInfoPerUserRepository;
+    private final StudyPerUserRepository studyPerUserRepository;
 
     public Study createNewStudy(RegisterStudyRequest dto) {
         // TODO : throwOr 뭐 이런걸로 한 줄로 바꾸기
@@ -40,7 +40,7 @@ public class StudyCreateService {
         newStudy = studyRepository.save(newStudy);
 
         // 유저 - 스터디 연결
-        studyInfoPerUserRepository.save(new StudyInfoPerUser(hostUser.get(), newStudy));
+        studyPerUserRepository.save(new StudyPerUser(hostUser.get(), newStudy));
 
         return newStudy;
     }

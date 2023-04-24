@@ -11,16 +11,21 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
 @Tag(name = "User", description = "사용자 API")
+@CrossOrigin(maxAge = 3600) // Flutter cors 에러 해결
 public class UserApi {
     private final UserService userService;
 
     @Operation(summary = "회원가입")
-    @Parameter(name = "test", description = "??????")
     @PostMapping("/register")
     public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
         User user = userService.signUp(dto);

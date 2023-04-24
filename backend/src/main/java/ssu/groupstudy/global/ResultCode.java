@@ -21,6 +21,7 @@ public enum ResultCode {
 
     // 404
     USER_NOT_FOUND(404, "존재하지 않는 사용자입니다."),
+    STUDY_NOT_FOUND(404, "존재하지 않는 스터디입니다."),
 
 
     // 405

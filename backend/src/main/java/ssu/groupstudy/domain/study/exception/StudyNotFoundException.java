@@ -3,8 +3,8 @@ package ssu.groupstudy.domain.study.exception;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.exception.BusinessException;
 
-public class InviteInfoAlreadyExistsException extends BusinessException {
-    public InviteInfoAlreadyExistsException(ResultCode resultCode) {
+public class StudyNotFoundException  extends BusinessException {
+    public StudyNotFoundException(ResultCode resultCode){
         super(resultCode);
     }
 }

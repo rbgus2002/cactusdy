@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
 import ssu.groupstudy.domain.study.service.StudyCreateService;
@@ -35,8 +36,8 @@ public class StudyApi {
     @Operation(summary = "스터디에 회원 초대")
     @PostMapping("/invite")
     public DataResponseDto inviteUser(@Valid @RequestBody InviteUserRequest dto){
-        Long userIdInvited = studyInviteService.inviteUserInStudy(dto);
+        Long userIdInvited = studyInviteService.inviteUserToStudy(dto);
 
-        return DataResponseDto.of("longId", userIdInvited);
+        return DataResponseDto.of("userIdInvited", userIdInvited);
     }
 }

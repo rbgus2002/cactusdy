@@ -26,7 +26,7 @@ public class RegisterStudyRequest {
     @NotNull
     private Long hostUserId;
 
-    public Study toEntityWithUser(User hostUser){ // TODO : User 부분 어떻게 넣어줄 건지 레퍼런스 참고
+    public Study toEntityWithUser(User hostUser){
         return Study.builder()
                 .studyName(this.studyName)
                 .detail(this.detail)
