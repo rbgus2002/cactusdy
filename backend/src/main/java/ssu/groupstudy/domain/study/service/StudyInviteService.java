@@ -28,21 +28,19 @@ public class StudyInviteService {
     private final StudyRepository studyRepository;
 
     public Long inviteUserToStudy(InviteUserRequest dto) {
-        Optional<User> user = userRepository.getUserByUserId(dto.getUserId());
-        if (user.isEmpty()) {
-            throw new UserNotFoundException(ResultCode.USER_NOT_FOUND);
-        }
+        User user = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        Optional<Study> study = studyRepository.getStudyByStudyId(dto.getStudyId());
-        if (study.isEmpty()) {
-            throw new StudyNotFoundException(ResultCode.USER_NOT_FOUND);
-        }
+        Study study = studyRepository.findByStudyId(dto.getStudyId())
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        if(studyPerUserRepository.existsByUserAndStudy(user.get(), study.get())){
+        // 이미 초대 되어있는지 검사
+        if (studyPerUserRepository.existsByUserAndStudy(user, study)) { // TODO : 더 스프링스럽게 유효성 검사할 방법 찾아보기
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_INFO);
         }
 
-        StudyPerUser studyPerUser = studyPerUserRepository.save(dto.toEntity(user.get(), study.get()));
+        StudyPerUser studyPerUser = studyPerUserRepository.save(dto.toEntity(user, study));
+
         return studyPerUserRepository.save(studyPerUser).getUser().getUserId();
     }
 }
