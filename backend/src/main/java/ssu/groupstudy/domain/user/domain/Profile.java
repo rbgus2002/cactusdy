@@ -1,12 +1,10 @@
 package ssu.groupstudy.domain.user.domain;
 
 import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Profile {
