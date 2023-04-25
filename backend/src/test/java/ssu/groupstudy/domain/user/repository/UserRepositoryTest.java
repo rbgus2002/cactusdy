@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest // TODO : 해당 Annotation 알아보기
+@SpringBootTest
 class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
@@ -29,5 +29,6 @@ class UserRepositoryTest {
         Assertions.assertThat(userSaved.getProfile().getName()).isEqualTo(user.getProfile().getName());
         Assertions.assertThat(userSaved.getProfile().getNickName()).isEqualTo(user.getProfile().getNickName());
         Assertions.assertThat(userSaved.getPhoneModel()).isEqualTo(user.getPhoneModel());
+        Assertions.assertThat(userSaved.getUserId()).isNotNull();
     }
 }
