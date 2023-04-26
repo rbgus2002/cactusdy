@@ -63,5 +63,38 @@ class StudyPerUserRepositoryTest {
         assertThat(savedStudyPerUser.getStudy()).isEqualTo(study);
     }
 
-    // TODO : existsByUserAndStudy
+    @DisplayName("사용자가 이미 스터디에 소속되어 있는지 검사")
+    @Test
+    void 사용자별스터디중복검사() {
+        //given
+        final User user = SignUpRequest.builder()
+                .name("최규현")
+                .email("rbgus200@@naver.com")
+                .nickName("규규")
+                .phoneModel("")
+                .picture("")
+                .build().toEntity();
+        final User hostUser = userRepository.save(user);
+
+        final Study study = RegisterStudyRequest.builder()
+                .studyName("AlgorithmSSU")
+                .hostUserId(hostUser.getUserId())
+                .detail("PS")
+                .picture("")
+                .build().toEntity(hostUser, "", "");
+        final Study savedStudy = studyRepository.save(study);
+
+        final StudyPerUser studyPerUser = StudyPerUser.builder()
+                .study(savedStudy)
+                .user(hostUser)
+                .build();
+
+        //when
+        final StudyPerUser savedStudyPerUser = studyPerUserRepository.save(studyPerUser);
+        final Boolean existStudyPerUser = studyPerUserRepository.existsByUserAndStudy(user, study);
+
+        //then
+        assertThat(existStudyPerUser).isNotNull();
+        assertThat(existStudyPerUser).isEqualTo(true);
+    }
 }
