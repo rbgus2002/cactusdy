@@ -32,9 +32,10 @@ public class StudyCreateService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         // 새로운 스터디 생성
-        Study newStudy = dto.toEntityWithUser(hostUser);
-        newStudy.setInviteLink(generateInviteLink());
-        newStudy.setInviteQrCode(generateQrCode(newStudy.getInviteLink()));
+        // TODO : 링크 생성의 책임을 어느 객체에게 어느 위치에 줘야할지 고민
+        String inviteLink = generateInviteLink();
+        String inviteQRCode = generateQrCode(inviteLink);
+        Study newStudy = dto.toEntity(hostUser, inviteLink, inviteQRCode);
         newStudy = studyRepository.save(newStudy);
 
         // 유저 - 스터디 연결

@@ -4,15 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RegisterStudyRequest {
     @NotBlank(message = "이름을 입력하세요")
@@ -26,12 +24,14 @@ public class RegisterStudyRequest {
     @NotNull
     private Long hostUserId;
 
-    public Study toEntityWithUser(User hostUser){
+    public Study toEntity(User hostUser, String inviteLink, String inviteQRCode){
         return Study.builder()
                 .studyName(this.studyName)
                 .detail(this.detail)
                 .picture(this.picture)
                 .hostUser(hostUser)
+                .inviteLink(inviteLink)
+                .inviteQRCode(inviteQRCode)
                 .build();
     }
 

@@ -39,20 +39,14 @@ public class Study extends BaseEntity {
     private char deleteYn;
 
     @Builder 
-    public Study(String studyName, String detail, String picture, User hostUser) {
+    public Study(String studyName, String detail, String picture, User hostUser, String inviteLink, String inviteQRCode) {
         this.studyName = studyName;
         this.detail = detail;
         this.picture = picture;
         this.hostUser = hostUser;
+        this.inviteLink = inviteLink;
+        this.inviteQrCode = inviteQRCode;
         // TODO : 직접 안넣어줘도 default로 들어가게 추후 수정
         this.deleteYn = 'N';
-    }
-
-    public void setInviteLink(String inviteLink){
-        this.inviteLink = inviteLink;
-    }
-
-    public void setInviteQrCode(String inviteQrCode){
-        this.inviteQrCode = inviteQrCode;
     }
 }
