@@ -35,9 +35,16 @@ public class StudyInviteService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         // 이미 초대 되어있는지 검사
-        if (studyPerUserRepository.existsByUserAndStudy(user, study)) { // TODO : 더 스프링스럽게 유효성 검사할 방법 찾아보기
+        if (studyPerUserRepository.existsByUserAndStudy(user, study)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_INFO);
         }
+        /*
+        TODO : exist와 get 속도 차이 비교 후 유의미한 차이가 있으면 아래 코드와 같이 스프링 스럽게 유효성 검사 코드 변경
+                this.memberRepository.findById(member.getId())
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                });;
+         */
 
         StudyPerUser studyPerUser = studyPerUserRepository.save(dto.toEntity(user, study));
 
