@@ -27,25 +27,33 @@ class StudyPerUserRepositoryTest {
     @Autowired
     private StudyRepository studyRepository;
 
-    @DisplayName("사용자별 스터디 정보 등록하기")
-    @Test
-    void 사용자별스터디정보등록() {
-        //given
-        final User user = SignUpRequest.builder()
+    private User getUser() {
+        return SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@@naver.com")
                 .nickName("규규")
                 .phoneModel("")
                 .picture("")
                 .build().toEntity();
-        final User hostUser = userRepository.save(user);
+    }
 
-        final Study study = RegisterStudyRequest.builder()
+    private Study getStudy(User hostUser) {
+        return RegisterStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .hostUserId(hostUser.getUserId())
                 .detail("PS")
                 .picture("")
                 .build().toEntity(hostUser, "", "");
+    }
+
+    @DisplayName("사용자별 스터디 정보 등록하기")
+    @Test
+    void 사용자별스터디정보등록() {
+        //given
+        final User user = getUser();
+        final User hostUser = userRepository.save(user);
+
+        final Study study = getStudy(hostUser);
         final Study savedStudy = studyRepository.save(study);
 
         final StudyPerUser studyPerUser = StudyPerUser.builder()
@@ -67,21 +75,10 @@ class StudyPerUserRepositoryTest {
     @Test
     void 사용자별스터디중복검사() {
         //given
-        final User user = SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build().toEntity();
+        final User user = getUser();
         final User hostUser = userRepository.save(user);
 
-        final Study study = RegisterStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .hostUserId(hostUser.getUserId())
-                .detail("PS")
-                .picture("")
-                .build().toEntity(hostUser, "", "");
+        final Study study = getStudy(hostUser);
         final Study savedStudy = studyRepository.save(study);
 
         final StudyPerUser studyPerUser = StudyPerUser.builder()

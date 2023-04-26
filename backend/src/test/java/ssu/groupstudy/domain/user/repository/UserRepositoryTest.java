@@ -18,17 +18,21 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @DisplayName("사용자 등록")
-    @Test
-    void 사용자등록(){
-        // given
-        final User user = SignUpRequest.builder()
+    private User getUser() {
+        return SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@@naver.com")
                 .nickName("규규")
                 .phoneModel("")
                 .picture("")
                 .build().toEntity();
+    }
+
+    @DisplayName("사용자 등록")
+    @Test
+    void 사용자등록(){
+        // given
+        final User user = getUser();
 
         // when
         final User userSaved = userRepository.save(user);
@@ -43,13 +47,7 @@ class UserRepositoryTest {
     @Test
     void 이메일중복검사(){
         // given
-        final User user = SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build().toEntity();
+        final User user = getUser();
 
         //when
         userRepository.save(user);
@@ -64,13 +62,7 @@ class UserRepositoryTest {
     @Test
     void 사용자가져오기(){
         //given
-        final User user = SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build().toEntity();
+        final User user = getUser();
 
         //when
         final User savedUser = userRepository.save(user);

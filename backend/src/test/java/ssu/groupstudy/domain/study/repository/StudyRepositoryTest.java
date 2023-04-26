@@ -26,25 +26,31 @@ class StudyRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @DisplayName("스터디 등록")
-    @Test
-    void 스터디등록() {
-        // given
-        // TODO : user 직접 이렇게 하나하나 만들어줘야 하는가?
-        final User user = SignUpRequest.builder()
+    private Study getStudy(User hostUser) {
+        return RegisterStudyRequest.builder()
+                .studyName("AlgorithmSSU")
+                .hostUserId(hostUser.getUserId())
+                .detail("PS")
+                .picture("")
+                .build().toEntity(hostUser, "", "");
+    }
+
+    private User getUser() {
+        return SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@@naver.com")
                 .nickName("규규")
                 .phoneModel("")
                 .picture("")
                 .build().toEntity();
-        final User hostUser = userRepository.save(user);
-        final Study study = RegisterStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .hostUserId(hostUser.getUserId())
-                .detail("PS")
-                .picture("")
-                .build().toEntity(hostUser, "", "");
+    }
+
+    @DisplayName("스터디 등록")
+    @Test
+    void 스터디등록() {
+        // given
+        final User hostUser = userRepository.save(getUser());
+        final Study study = getStudy(hostUser);
 
         // when
         final Study savedStudy = studyRepository.save(study);
@@ -62,20 +68,8 @@ class StudyRepositoryTest {
     @Test
     void 스터디가져오기() {
         //given
-        final User user = SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build().toEntity();
-        final User hostUser = userRepository.save(user);
-        final Study study = RegisterStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .hostUserId(hostUser.getUserId())
-                .detail("PS")
-                .picture("")
-                .build().toEntity(hostUser, "", "");
+        final User hostUser = userRepository.save(getUser());
+        final Study study = getStudy(hostUser);
 
         //when
         final Study saveStudy = studyRepository.save(study);
