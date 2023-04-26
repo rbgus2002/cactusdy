@@ -2,14 +2,12 @@ package ssu.groupstudy.domain.user.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
     @NotBlank(message = "이름을 입력하세요")

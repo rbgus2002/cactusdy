@@ -33,6 +33,6 @@ public enum ResultCode {
 
             ;
 
-    int statusCode;
+    int statusCode; // TODO : HttpStatus 타입으로 리팩토링
     private final String message;
 }
