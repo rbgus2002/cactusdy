@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class NoticeDetailScreen extends StatefulWidget {
+class RoundDetailRoute extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _NoticeDetailScreen();
+    return _RoundDetailRoute();
   }
 }
 
-class _NoticeDetailScreen extends State<StatefulWidget> {
+class _RoundDetailRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
         body: Center(
             child: Text(
-              'Notice Detail Screen',
+              'Round Detail Screen',
             )
         )
     );

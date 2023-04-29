@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class GenerateStudyScreen extends StatefulWidget {
+class GenerateStudyRoute extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _GenerateStudyScreen();
+    return _GenerateStudyRoute();
   }
 }
 
-class _GenerateStudyScreen extends State<StatefulWidget> {
+class _GenerateStudyRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

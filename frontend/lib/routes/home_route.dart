@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeRoute extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomeScreen();
+    return _HomeRoute();
   }
 }
 
-class _HomeScreen extends State<StatefulWidget> {
+class _HomeRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

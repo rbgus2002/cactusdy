@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/screens/generate_study_screen.dart';
-import 'package:group_study_app/screens/home_screen.dart';
-import 'package:group_study_app/screens/notice_detail_screen.dart';
-import 'package:group_study_app/screens/notice_list_screen.dart';
-import 'package:group_study_app/screens/round_detail_screen.dart';
-import 'package:group_study_app/screens/study_detail_screen.dart';
+import 'package:group_study_app/routes/generate_study_route.dart';
+import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/notice_detail_route.dart';
+import 'package:group_study_app/routes/notice_list_route.dart';
+import 'package:group_study_app/routes/round_detail_route.dart';
+import 'package:group_study_app/routes/study_detail_route.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -36,7 +36,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => HomeScreen()),
+                        builder: (context) => HomeRoute()),
                   );
                 }, child: const Text('HomeScreen')
                   , style: ElevatedButton.styleFrom(
@@ -50,7 +50,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StudyDetailScreen()),
+                        builder: (context) => StudyDetailRoute()),
                   );
                 }, child: const Text('Study Detail Screen')
                 , style: ElevatedButton.styleFrom(
@@ -64,7 +64,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NoticeListScreen()),
+                        builder: (context) => NoticeListRoute()),
                   );
                 }, child: const Text('Notice List Screen')
                   , style: ElevatedButton.styleFrom(
@@ -78,7 +78,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NoticeDetailScreen()),
+                        builder: (context) => NoticeDetailRoute()),
                   );
                 }, child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(
@@ -92,7 +92,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => GenerateStudyScreen()),
+                        builder: (context) => GenerateStudyRoute()),
                   );
                 }, child: const Text('Generate Study Screen')
                   , style: ElevatedButton.styleFrom(
@@ -105,7 +105,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RoundDetailScreen()),
+                        builder: (context) => RoundDetailRoute()),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class NoticeListScreen extends StatefulWidget {
+class NoticeListRoute extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _NoticeListScreen();
+    return _NoticeListRoute();
   }
 }
 
-class _NoticeListScreen extends State<StatefulWidget> {
+class _NoticeListRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
