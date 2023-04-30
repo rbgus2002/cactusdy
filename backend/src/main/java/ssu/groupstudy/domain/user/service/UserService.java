@@ -22,7 +22,7 @@ public class UserService {
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
 
-        User user = userRepository.save(dto.toEntity());
-        return user;
+        User newUser = userRepository.save(dto.toEntity());
+        return newUser;
     }
 }

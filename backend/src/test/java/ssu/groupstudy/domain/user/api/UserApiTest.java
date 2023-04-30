@@ -28,7 +28,7 @@ class UserApiTest {
     void 회원가입() throws Exception{
         // given
         SignUpRequest signUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002@gmail.com");
-        given(userService.signUp(signUpRequest)).willReturn(signUpRequest.toEntity());
+//        given(userService.signUp(signUpRequest)).willReturn(signUpRequest.toEntity());
 
         // when
 
