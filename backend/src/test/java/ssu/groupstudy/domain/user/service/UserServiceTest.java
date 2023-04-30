@@ -31,7 +31,7 @@ class UserServiceTest {
     private SignUpRequest getSignUpRequest() {
         return SignUpRequest.builder()
                 .name("최규현")
-                .email("rbgus200@@naver.com")
+                .email("rbgus200@naver.com")
                 .nickName("규규")
                 .phoneModel("")
                 .picture("")
@@ -69,7 +69,4 @@ class UserServiceTest {
         assertThat(newUser).isNotNull();
         assertThat(newUser.getProfile().getName()).isEqualTo("최규현");
     }
-
-
-
 }
