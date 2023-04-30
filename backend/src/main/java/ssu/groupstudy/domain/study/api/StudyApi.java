@@ -14,6 +14,7 @@ import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
 import ssu.groupstudy.domain.study.service.StudyCreateService;
 import ssu.groupstudy.domain.study.service.StudyInviteService;
+import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.dto.DataResponseDto;
 
 @RestController
@@ -36,8 +37,8 @@ public class StudyApi {
     @Operation(summary = "스터디에 회원 초대")
     @PostMapping("/invite")
     public DataResponseDto inviteUser(@Valid @RequestBody InviteUserRequest dto){
-        Long userIdInvited = studyInviteService.inviteUserToStudy(dto);
+        User invitedUser = studyInviteService.inviteUserToStudy(dto);
 
-        return DataResponseDto.of("userIdInvited", userIdInvited);
+        return DataResponseDto.of("invitedUser", invitedUser);
     }
 }

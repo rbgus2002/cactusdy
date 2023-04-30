@@ -27,7 +27,7 @@ public class StudyInviteService {
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
 
-    public Long inviteUserToStudy(InviteUserRequest dto) {
+    public User inviteUserToStudy(InviteUserRequest dto) {
         User user = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
@@ -36,18 +36,11 @@ public class StudyInviteService {
 
         // 이미 초대 되어있는지 검사
         if (studyPerUserRepository.existsByUserAndStudy(user, study)) {
-            throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_INFO);
+            throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
-        /*
-        TODO : exist와 get 속도 차이 비교 후 유의미한 차이가 있으면 아래 코드와 같이 스프링 스럽게 유효성 검사 코드 변경
-                this.memberRepository.findById(member.getId())
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
-                });;
-         */
 
         StudyPerUser studyPerUser = studyPerUserRepository.save(dto.toEntity(user, study));
 
-        return studyPerUserRepository.save(studyPerUser).getUser().getUserId();
+        return studyPerUserRepository.save(studyPerUser).getUser();
     }
 }

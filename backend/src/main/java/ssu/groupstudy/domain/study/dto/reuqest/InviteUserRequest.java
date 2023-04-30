@@ -1,16 +1,14 @@
 package ssu.groupstudy.domain.study.dto.reuqest;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InviteUserRequest {
     @NotNull
