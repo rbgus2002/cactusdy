@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
-import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
@@ -63,7 +63,7 @@ class StudyInviteServiceTest {
     }
 
     private Study getStudy() {
-        return RegisterStudyRequest.builder()
+        return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
                 .picture("")

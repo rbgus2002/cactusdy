@@ -7,13 +7,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.StudyPerUser;
-import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -38,7 +37,7 @@ class StudyPerUserRepositoryTest {
     }
 
     private Study getStudy(User hostUser) {
-        return RegisterStudyRequest.builder()
+        return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .hostUserId(hostUser.getUserId())
                 .detail("PS")

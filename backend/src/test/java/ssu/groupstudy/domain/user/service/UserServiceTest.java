@@ -44,7 +44,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입_실패_이메일중복")
-    void UserServiceTest(){
+    void 회원가입_실패_이메일중복(){
         // given
         doReturn(true).when(userRepository).existsByProfileEmail(any(String.class));
 

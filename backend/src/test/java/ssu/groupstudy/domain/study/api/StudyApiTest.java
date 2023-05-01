@@ -14,14 +14,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
-import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.service.StudyCreateService;
 import ssu.groupstudy.domain.study.service.StudyInviteService;
-import ssu.groupstudy.domain.user.api.UserApi;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
@@ -29,7 +27,6 @@ import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -58,8 +55,8 @@ class StudyApiTest {
         gson = new Gson();
     }
 
-    private RegisterStudyRequest getRegisterStudyRequest() {
-        return RegisterStudyRequest.builder()
+    private CreateStudyRequest getRegisterStudyRequest() {
+        return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .hostUserId(-1L)
                 .picture("")
@@ -85,7 +82,7 @@ class StudyApiTest {
 
         // when
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(RegisterStudyRequest.builder()
+                .content(gson.toJson(CreateStudyRequest.builder()
                         .studyName("")
                         .hostUserId(-1L)
                         .picture("")
@@ -103,10 +100,10 @@ class StudyApiTest {
     void 스터디생성_실패_사용자존재X() throws Exception {
         // given
         final String url = "/study/register";
-        doThrow(new UserNotFoundException(ResultCode.USER_NOT_FOUND)).when(studyCreateService).createNewStudy(any(RegisterStudyRequest.class));
+        doThrow(new UserNotFoundException(ResultCode.USER_NOT_FOUND)).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
         // when
-        RegisterStudyRequest request = getRegisterStudyRequest();
+        CreateStudyRequest request = getRegisterStudyRequest();
 
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
                 .content(gson.toJson(getRegisterStudyRequest()))
@@ -122,7 +119,7 @@ class StudyApiTest {
     void 스터디생성_성공() throws Exception {
         // given
         final String url = "/study/register";
-        doReturn(getRegisterStudyRequest().toEntity(getSignUpRequest().toEntity(), "", "")).when(studyCreateService).createNewStudy(any(RegisterStudyRequest.class));
+        doReturn(getRegisterStudyRequest().toEntity(getSignUpRequest().toEntity(), "", "")).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
         // when
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)

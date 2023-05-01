@@ -1,13 +1,12 @@
 package ssu.groupstudy.domain.study.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -15,7 +14,6 @@ import ssu.groupstudy.domain.user.repository.UserRepository;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -27,7 +25,7 @@ class StudyRepositoryTest {
     private UserRepository userRepository;
 
     private Study getStudy(User hostUser) {
-        return RegisterStudyRequest.builder()
+        return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .hostUserId(hostUser.getUserId())
                 .detail("PS")

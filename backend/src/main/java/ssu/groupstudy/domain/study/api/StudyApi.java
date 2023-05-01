@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.StudyPerUser;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
-import ssu.groupstudy.domain.study.dto.reuqest.RegisterStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.service.StudyCreateService;
 import ssu.groupstudy.domain.study.service.StudyInviteService;
 import ssu.groupstudy.domain.user.domain.User;
@@ -27,8 +26,8 @@ public class StudyApi {
 
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping("/register")
-    public DataResponseDto register(@Valid @RequestBody RegisterStudyRequest dto){
-        Study newStudy = studyCreateService.createNewStudy(dto);
+    public DataResponseDto register(@Valid @RequestBody CreateStudyRequest dto){
+        Study newStudy = studyCreateService.createStudy(dto);
 
         return DataResponseDto.of("study", newStudy);
     }
