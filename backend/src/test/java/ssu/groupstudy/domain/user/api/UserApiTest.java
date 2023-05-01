@@ -121,8 +121,6 @@ class UserApiTest {
         // then
         resultActions.andExpect(status().isOk());
 
-        final DataResponseDto response = gson.fromJson(resultActions.andReturn()
-                .getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+
     }
 }

@@ -30,7 +30,6 @@ public class StudyApi {
     public DataResponseDto register(@Valid @RequestBody RegisterStudyRequest dto){
         Study newStudy = studyCreateService.createNewStudy(dto);
 
-
         return DataResponseDto.of("study", newStudy);
     }
 
