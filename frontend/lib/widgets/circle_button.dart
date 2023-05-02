@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:group_study_app/themes/color_styles.dart';
+
 class CircleButton extends StatelessWidget {
-  final String defaultImageFile = 'assets/images/default_profile.png';
+  static const String defaultImageFile = 'assets/images/default_profile.png';
 
   final double scale;
   final Image? image;
@@ -18,49 +20,86 @@ class CircleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipOval(
-      child: Container(
+      child: SizedBox(
         width: scale,
         height: scale,
 
         child: Material(
           child: InkWell(
-            child: image??Image.asset(defaultImageFile),
+            child: image ?? Image.asset(defaultImageFile),
             onTap: () {
               if (onTap != null) {
                 onTap();
               }
             },
-          )
-        ),
+        )),
+      ));
+  }
+}
+
+class OutlineCircleButton extends CircleButton {
+  double percent = 0;
+  Color color = ColorStyles.green;
+
+  OutlineCircleButton(
+      {Key? key, scale, required this.percent, image, super.onTap})
+      : super(key: key, scale: scale, image: image);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: SizedBox(
+          width: scale,
+          height: scale,
+
+
+          child: Material(
+          child: InkWell(
+          child:
+          Stack(children: [
+        Image.asset('assets/images/default_profile.png',
+            width: scale, height: scale),
+        PercentOutline(percent: percent, progressColor: color, scale: scale)
+      ]),
+    onTap: () {
+    if (onTap != null) {
+    onTap();
+    }
+    }),
+    ),
       )
     );
   }
 }
 
-class OutlineCircleButton extends CircleButton {
-  OutlineCircleButton({ Key? key, double scale = 20, Image? image, var onTap})
-      : super(key : key, scale: scale, image: image, onTap: onTap);
+class PercentOutline extends StatelessWidget {
+  double percent;
+  double scale;
+  Color progressColor = Colors.green;
+
+  PercentOutline({
+    Key? key,
+    required this.percent,
+    required this.progressColor,
+    required this.scale,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-        child: Container(
-          width: scale,
-          height: scale,
-
-          child: CustomPaint(painter: PercentOutlinePaint(
-              percent: 0.5,
-              progressColor: Colors.green,
-            ),
-          )
-        ),
-    );
+    return Container(
+        width: scale,
+        height: scale,
+        child: CustomPaint(
+          painter: PercentOutlinePaint(
+            percent: percent,
+            progressColor: progressColor,
+          ),
+        ));
   }
 }
 
 class PercentOutlinePaint extends CustomPainter {
   double percent = 0.0;
-  double textScaleFactor = 1.0; // 파이 차트에 들어갈 텍스트 크기를 정합니다.
   Color backgroundColor = Colors.grey;
   Color progressColor = Colors.green;
 
@@ -83,8 +122,8 @@ class PercentOutlinePaint extends CustomPainter {
 
     // draw progress circle
     paint.color = progressColor;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
-        -pi / 2, arcAngle, false, paint);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2,
+        arcAngle, false, paint);
   }
 
   @override

@@ -13,7 +13,7 @@ class _GenerateStudyRoute extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-            child: CircleButton(scale: 100, image: null, onTap: onTabTest),
+            child: OutlineCircleButton(scale: 100, image: null, percent: 0.30, onTap: onTabTest),
         )
     );
   }
