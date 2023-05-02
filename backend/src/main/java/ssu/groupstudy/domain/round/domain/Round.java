@@ -18,15 +18,17 @@ public class Round extends BaseEntity {
     @Column(length = 50)
     private String detail;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String studyPlace;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime studyTime;
 
     @ManyToOne
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
+
+    // TODO : OneToMany 학습 후 적용
 
     @Column(nullable = false)
     private char deleteYn;

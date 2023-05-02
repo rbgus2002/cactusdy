@@ -70,7 +70,7 @@ class UserApiTest {
     @DisplayName("회원가입_실패_이메일형식X")
     void 회원가입_실패_이메일형식X() throws Exception {
         // given
-        final String url = "/user/register";
+        final String url = "/user";
 
         // when
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -92,7 +92,7 @@ class UserApiTest {
     @DisplayName("")
     void 회원가입_실패_이메일중복존재() throws Exception {
         // given
-        final String url = "/user/register";
+        final String url = "/user";
         doThrow(new EmailExistsException(ResultCode.DUPLICATE_EMAIL)).when(userService).signUp(any(SignUpRequest.class));
 
         // when
@@ -109,7 +109,7 @@ class UserApiTest {
     @Test
     void 회원가입_성공() throws Exception {
         // given
-        final String url = "/user/register";
+        final String url = "/user";
         doReturn(getSignUpRequest().toEntity()).when(userService).signUp(any(SignUpRequest.class));
 
         // when

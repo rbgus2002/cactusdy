@@ -34,7 +34,6 @@ public class StudyInviteService {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        // 이미 초대 되어있는지 검사
         if (studyPerUserRepository.existsByUserAndStudy(user, study)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }

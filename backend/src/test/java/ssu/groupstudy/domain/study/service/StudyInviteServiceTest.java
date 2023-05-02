@@ -98,7 +98,6 @@ class StudyInviteServiceTest {
         assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
     }
 
-    // TODO : 모든 유효성검사 위 2개처럼 하나하나 검사해주어야 하는가? 하나의 service 내에 메소드에서 테스트 메소드는 몇 개를 만들어줘도 상관없는 것인가?
     @Test
     @DisplayName("스터디초대_실패_이미사용자존재함")
     void 스터디초대_실패_이미사용자존재함(){

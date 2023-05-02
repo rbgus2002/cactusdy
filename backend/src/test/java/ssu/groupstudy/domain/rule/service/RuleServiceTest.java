@@ -35,9 +35,6 @@ class RuleServiceTest {
     private RuleRepository ruleRepository;
 
     @Mock
-    private UserRepository userRepository;
-
-    @Mock
     private StudyRepository studyRepository;
 
     private CreateRuleRequest getCreateRuleRequest() {

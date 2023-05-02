@@ -25,7 +25,7 @@ public class StudyApi {
     private final StudyInviteService studyInviteService;
 
     @Operation(summary = "새로운 스터디 생성")
-    @PostMapping("/register")
+    @PostMapping("")
     public DataResponseDto register(@Valid @RequestBody CreateStudyRequest dto){
         Study newStudy = studyCreateService.createStudy(dto);
 

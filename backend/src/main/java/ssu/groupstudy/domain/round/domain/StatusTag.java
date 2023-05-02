@@ -12,7 +12,6 @@ public enum StatusTag {
     ATTENDANCE_EXPECTED("출석예정"),
     LATE("지각"),
     ABSENT("결석"),
-    NONE_ATTENDANCE("결석"),
     ;
 
     private final String detail;

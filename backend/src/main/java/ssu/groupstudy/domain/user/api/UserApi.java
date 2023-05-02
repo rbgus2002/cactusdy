@@ -26,7 +26,7 @@ public class UserApi {
     private final UserService userService;
 
     @Operation(summary = "회원가입")
-    @PostMapping("/register")
+    @PostMapping("")
     public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
         User user = userService.signUp(dto);
         return DataResponseDto.of("user", user);

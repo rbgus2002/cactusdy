@@ -78,7 +78,7 @@ class StudyApiTest {
     @DisplayName("스터디생성_실패_이름존재X")
     void 스터디생성_실패_이름존재X() throws Exception {
         // given
-        final String url = "/study/register";
+        final String url = "/study";
 
         // when
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -99,12 +99,10 @@ class StudyApiTest {
     @DisplayName("스터디생성_실패_사용자존재X")
     void 스터디생성_실패_사용자존재X() throws Exception {
         // given
-        final String url = "/study/register";
+        final String url = "/study";
         doThrow(new UserNotFoundException(ResultCode.USER_NOT_FOUND)).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
         // when
-        CreateStudyRequest request = getRegisterStudyRequest();
-
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
                 .content(gson.toJson(getRegisterStudyRequest()))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +116,7 @@ class StudyApiTest {
     @DisplayName("스터디생성_성공")
     void 스터디생성_성공() throws Exception {
         // given
-        final String url = "/study/register";
+        final String url = "/study";
         doReturn(getRegisterStudyRequest().toEntity(getSignUpRequest().toEntity(), "", "")).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
         // when
