@@ -22,7 +22,10 @@ public class UserRound {
     private Round round;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private StatusTag statusTag;
+
+    @Column(nullable = false)
+    private char deleteYn;
 }
 
