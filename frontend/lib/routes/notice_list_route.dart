@@ -11,11 +11,11 @@ class _NoticeListRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Center(
-            child: Text(
-              'Notice List Screen',
-            )
+      body: Center(
+        child: Text(
+          'Notice List Screen',
         )
+      )
     );
   }
 }

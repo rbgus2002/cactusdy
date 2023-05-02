@@ -5,6 +5,7 @@ import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/work_space_route.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -108,6 +109,20 @@ class _MyApp extends State<MyApp> {
                         builder: (context) => RoundDetailRoute()),
                   );
                 }, child: const Text('Round Detail Screen')
+                  , style: ElevatedButton.styleFrom(
+                    fixedSize: Size(300, 50),
+                    backgroundColor: Colors.grey,
+                  ),
+                ),
+
+                Container(height: 15,),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WorkSpaceRoute()),
+                  );
+                }, child: const Text('Work Space Screen')
                   , style: ElevatedButton.styleFrom(
                     fixedSize: Size(300, 50),
                     backgroundColor: Colors.grey,
