@@ -21,7 +21,7 @@ class _WorkSpaceRoute extends State<StatefulWidget> {
             child: Column(
               children: [
                 OutlineCircleButton(scale: 100.0, image: null, percent: 0.30, onTap: Test.onTabTest),
-                UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "nickName", comment: "comment!",),
+                UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
               ],
             )
           )
