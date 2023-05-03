@@ -10,4 +10,12 @@ class TextStyles {
 
   // ex)
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
+
+  static const titleLarge = TextStyle(fontSize: 32, fontWeight: _bold );
+  static const titleMedium = TextStyle(fontSize: 28, fontWeight: _bold);
+  static const titleSmall = TextStyle(fontSize: 24, fontWeight: _bold);
+
+  static const bodyLarge = TextStyle(fontSize: 20);
+  static const bodyMedium = TextStyle(fontSize: 16);
+  static const bodySmall = TextStyle(fontSize: 12);
 }
