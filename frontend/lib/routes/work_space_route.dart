@@ -20,8 +20,43 @@ class _WorkSpaceRoute extends State<StatefulWidget> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                OutlineCircleButton(scale: 100.0, image: null, percent: 0.30, onTap: Test.onTabTest),
+                OutlineCircleButton(scale: 100.0, image: null, percent: 0.70, onTap: Test.onTabTest),
                 UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
+
+                // 좌우 스크롤
+                // TODO : 별도 class로 분리
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                        CircleButton(scale: 65.0, image: null, onTap: Test.onTabTest),
+                      ],
+                    ),
+                  ),
+                ),
+
+
               ],
             )
           )
