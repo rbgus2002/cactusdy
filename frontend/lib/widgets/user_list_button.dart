@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 import '../models/user.dart';
-import '../utilities/test.dart';
 import 'circle_button.dart';
 
 class UserList extends StatelessWidget {
-  // TODO : models(?)에 MEMBER 객체 생성
   final List<User> userList;
   final onTap;
 
@@ -20,13 +18,14 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 20.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
+        // padding: const EdgeInsets.all(30),
         child: Row(
           children: [
             for(User user in userList)
-              CircleButton(scale: 65.0, image: null, onTap: onTap) // TODO : image null 처리 방법 고안
+              CircleButton(scale: 45.0, image: null, onTap: onTap) // TODO : image null 처리 방법 고안
           ],
         ),
       ),

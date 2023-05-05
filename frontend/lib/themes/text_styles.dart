@@ -11,6 +11,7 @@ class TextStyles {
   // ex)
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
 
+  static const titleBig = TextStyle(fontSize: 48, fontWeight: _bold );
   static const titleLarge = TextStyle(fontSize: 32, fontWeight: _bold );
   static const titleMedium = TextStyle(fontSize: 28, fontWeight: _bold);
   static const titleSmall = TextStyle(fontSize: 24, fontWeight: _bold);
