@@ -8,9 +8,6 @@ class TextStyles {
   static const _semiBold  = FontWeight.w600;
   static const _bold      = FontWeight.w700;
 
-  // ex)
-  static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
-
   static const titleBig = TextStyle(fontSize: 48, fontWeight: _bold );
   static const titleLarge = TextStyle(fontSize: 32, fontWeight: _bold );
   static const titleMedium = TextStyle(fontSize: 28, fontWeight: _bold);
@@ -19,4 +16,9 @@ class TextStyles {
   static const bodyLarge = TextStyle(fontSize: 20);
   static const bodyMedium = TextStyle(fontSize: 16);
   static const bodySmall = TextStyle(fontSize: 12);
+
+
+  static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
+  static const tagTextStyle = TextStyle(fontSize: 14, leadingDistribution: TextLeadingDistribution.even, fontWeight: _bold);
+
 }
