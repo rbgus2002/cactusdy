@@ -3,6 +3,8 @@ package ssu.groupstudy.domain.notice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
@@ -11,6 +13,7 @@ import ssu.groupstudy.global.domain.BaseEntity;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notice extends BaseEntity {
     @Id
@@ -33,4 +36,13 @@ public class Notice extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
+
+    @Builder
+    public Notice(String title, String contents, User writer, Study study) {
+        this.title = title;
+        this.contents = contents;
+        this.writer = writer;
+        this.study = study;
+        this.deleteYn = 'N';
+    }
 }

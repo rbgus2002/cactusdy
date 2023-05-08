@@ -18,7 +18,7 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         // padding: const EdgeInsets.all(30),
