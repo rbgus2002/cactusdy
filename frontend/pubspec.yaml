@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.6
 
-  intl: ^0.16.0
+  intl: ^0.17.0-1987
 
 
 dev_dependencies:

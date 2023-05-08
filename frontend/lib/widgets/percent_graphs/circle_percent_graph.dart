@@ -62,7 +62,7 @@ class _CirclePercentGraphPaint extends CustomPainter {
     // draw background circle
     canvas.drawCircle(center, radius, paint);
 
-    // draw progress circles
+    // draw progress arcs
     for (int i = percentInfos.length - 1; i >= 0; --i) {
       double arcAngle = 2 * pi * percentInfos[i].percent;
       paint.color = percentInfos[i].color;
