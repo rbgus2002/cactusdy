@@ -40,8 +40,10 @@ class RoundInfoPanel extends StatelessWidget {
                   roundIdx: roundIdx,
                   place: place,
                   date: date,
+                  tag: 'TAG',
                 ),
                 Transform(
+                  // FIXME : TAG 이름 길어지면 버튼 빠져 나옴.. Flexible 활용 방안 생각
                   alignment: Alignment.centerRight,
                   transform: Matrix4.rotationY(math.pi),
                   child: IconButton(
@@ -53,10 +55,12 @@ class RoundInfoPanel extends StatelessWidget {
                 )
               ],
             ),
-            UserList(
-                userList:
-                    List<User>.generate(30, (index) => User(index, "d", "d")),
-                onTap: Test.onTabTest),
+            UserListButton(
+              userList:
+                  List<User>.generate(30, (index) => User(index, "d", "d")),
+              onTap: Test.onTabTest,
+              scale: 45.0,
+            ),
           ],
         ));
   }

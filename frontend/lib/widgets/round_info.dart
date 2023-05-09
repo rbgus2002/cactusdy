@@ -7,11 +7,13 @@ import '../themes/text_styles.dart';
 class RoundInfo extends StatelessWidget {
   final int roundIdx;
   final String? place;
+  final String tag;
   final DateTime? date;
 
   const RoundInfo({
     Key? key,
     required this.roundIdx,
+    required this.tag,
     this.place,
     this.date,
   }) : super(key: key);
@@ -47,7 +49,7 @@ class RoundInfo extends StatelessWidget {
         ),
         Design.padding15,
         Design.padding15,
-        const Text("TAG"),
+        Text(tag)
       ],
     );
   }
