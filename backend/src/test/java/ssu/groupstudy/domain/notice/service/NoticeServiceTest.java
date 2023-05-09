@@ -119,6 +119,6 @@ class NoticeServiceTest {
         // then
         assertThat(notice).isNotNull();
         assertThat(notice.getTitle()).isEqualTo("notice");
-        assertThat(notice.getWriter().getProfile().getName()).isEqualTo("최규현");
+        assertThat(notice.getWriter().getName()).isEqualTo("최규현");
     }
 }

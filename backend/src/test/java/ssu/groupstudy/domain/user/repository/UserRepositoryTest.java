@@ -39,8 +39,8 @@ class UserRepositoryTest {
 
         // then
         assertThat(userSaved.getUserId()).isNotNull();
-        assertThat(userSaved.getProfile().getName()).isEqualTo("최규현");
-        assertThat(userSaved.getProfile().getEmail()).isEqualTo("rbgus200@@naver.com");
+        assertThat(userSaved.getName()).isEqualTo("최규현");
+        assertThat(userSaved.getEmail()).isEqualTo("rbgus200@@naver.com");
     }
 
     @DisplayName("동일한 이메일을 사용하는 사용자가 존재하는지 검사")
@@ -51,7 +51,7 @@ class UserRepositoryTest {
 
         //when
         userRepository.save(user);
-        final Boolean existsUser = userRepository.existsByProfileEmail("rbgus200@@naver.com");
+        final Boolean existsUser = userRepository.existsByEmail("rbgus200@@naver.com");
 
         //then
         assertThat(existsUser).isNotNull();
@@ -70,7 +70,7 @@ class UserRepositoryTest {
 
         //then
         assertThat(userGotten.get().getUserId()).isNotNull();
-        assertThat(userGotten.get().getProfile().getName()).isEqualTo("최규현");
-        assertThat(userGotten.get().getProfile().getEmail()).isEqualTo("rbgus200@@naver.com");
+        assertThat(userGotten.get().getName()).isEqualTo("최규현");
+        assertThat(userGotten.get().getEmail()).isEqualTo("rbgus200@@naver.com");
     }
 }

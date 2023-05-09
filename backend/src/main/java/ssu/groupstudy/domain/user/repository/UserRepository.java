@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByProfileEmail(String email);
+    boolean existsByEmail(String email);
 
     User save(User user);
 

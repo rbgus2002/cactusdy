@@ -19,8 +19,17 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Embedded
-    private Profile profile;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String nickName;
+
+    private String picture;
+    private String statusMessage;
+    
+    @Column(nullable = false)
+    private String email;
 
     @Column(nullable = false)
     private LocalDateTime activateDate;
@@ -33,15 +42,13 @@ public class User extends BaseEntity {
 
     @Builder
     public User(String name, String nickName, String picture, String phoneModel, String email) {
-        this.profile = Profile.builder()
-                .name(name)
-                .nickName(nickName)
-                .picture(picture)
-                .email(email)
-                .build();
+        this.name = name;
+        this.nickName = nickName;
+        this.picture = picture;
+        this.email = email;
         this.activateDate = LocalDateTime.now();
         this.phoneModel = phoneModel;
-//        this.deleteYn = 'N';
+        this.deleteYn = 'N';
     }
 }
 
