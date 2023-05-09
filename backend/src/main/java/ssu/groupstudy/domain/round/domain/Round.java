@@ -32,4 +32,6 @@ public class Round extends BaseEntity {
 
     @Column(nullable = false)
     private char deleteYn;
+
+    // TODO : 스터디 예정 시간 계산 하는 로직은 해당 객체에게 책임 부여하기
 }

@@ -29,7 +29,7 @@ public class StudyCreateService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         // 새로운 스터디 생성
-        // TODO : 링크 생성의 책임을 어느 객체에게 어느 위치에 줘야할지 고민
+        // TODO : 링크 생성의 책임을 어느 객체에게 어느 위치에 줘야할지 고민 (도메인 내에서 해결하면 좋을 거 같음)
         String inviteLink = generateInviteLink();
         String inviteQRCode = generateQrCode(inviteLink);
         Study newStudy = dto.toEntity(hostUser, inviteLink, inviteQRCode);
