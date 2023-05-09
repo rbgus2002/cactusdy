@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserResponse;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.dto.DataResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +29,18 @@ public class UserApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("")
-    public DataResponseDto registerUser(@Valid @RequestBody SignUpRequest dto){
+    public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto){
         User user = userService.signUp(dto);
         return DataResponseDto.of("user", user);
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
-    public DataResponseDto findUser(@RequestParam Long userId){
+    public ResponseDto findUser(@RequestParam Long userId){
         UserResponse user = userService.getUser(userId);
         return DataResponseDto.of("user", user);
     }
 
     // TODO : swagger에 api별로 response 형식 명시
+    // TODO : return type 모두 ResponseDto로 변경
 }

@@ -22,3 +22,6 @@ public class UserResponse {
         return new UserResponse(user);
     }
 }
+
+
+// TODO : response dto는 inner class 활용하기?

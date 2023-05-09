@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 public class DataResponseDto<T> extends ResponseDto{
-    private final Map data;
+    private final Map data; // TODO : map이 아닌 String도 받을 수 있도록 변경
 
     private DataResponseDto(String key, T data){
         super(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
