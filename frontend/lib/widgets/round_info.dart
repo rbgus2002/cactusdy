@@ -19,12 +19,17 @@ class RoundInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("$roundIdx", style: TextStyles.titleLarge),
-        const Text(
-          " 회차",
-          style: TextStyles.bodyMedium, // TODO : 회차 bottomLeft에 align
-          textAlign: TextAlign.right,
+        Row(
+          children: [
+            Text("$roundIdx", style: TextStyles.titleLarge),
+            const Text(
+              " 회차",
+              style: TextStyles.bodyMedium,
+              textAlign: TextAlign.right,
+            ),
+          ],
         ),
         const SizedBox(
           width: Design.padding,
@@ -40,13 +45,9 @@ class RoundInfo extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(
-          width: Design.padding,
-        ),
-        const Text(
-          "TAG",
-          textAlign: TextAlign.right
-        ),
+        Design.padding15,
+        Design.padding15,
+        const Text("TAG"),
       ],
     );
   }

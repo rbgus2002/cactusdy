@@ -17,17 +17,14 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        // padding: const EdgeInsets.all(30),
-        child: Row(
-          children: [
-            for(User user in userList)
-              CircleButton(scale: 45.0, child: null, onTap: onTap) // TODO : image null 처리 방법 고안
-          ],
-        ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.all(5),
+      child: Row(
+        children: [
+          for(User user in userList)
+            CircleButton(scale: 45.0, child: null, onTap: onTap), // TODO : image null 처리 방법 고안
+        ],
       ),
     );
   }
