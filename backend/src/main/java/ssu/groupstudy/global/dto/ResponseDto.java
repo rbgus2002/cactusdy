@@ -15,4 +15,8 @@ public class ResponseDto {
     public static ResponseDto of(Boolean success, ResultCode resultCode){
         return new ResponseDto(success, resultCode.getStatusCode(), resultCode.getMessage());
     }
+
+    public static ResponseDto success(){
+        return new ResponseDto(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
+    }
 }

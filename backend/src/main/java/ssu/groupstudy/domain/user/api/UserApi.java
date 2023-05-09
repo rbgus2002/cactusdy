@@ -31,7 +31,7 @@ public class UserApi {
     @PostMapping("")
     public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto){
         User user = userService.signUp(dto);
-        return DataResponseDto.of("user", user);
+        return ResponseDto.success();
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
