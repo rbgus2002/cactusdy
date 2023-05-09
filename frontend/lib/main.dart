@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/login_route.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
@@ -128,9 +129,25 @@ class _MyApp extends State<MyApp> {
                     backgroundColor: Colors.grey,
                   ),
                 ),
+
+                Container(height: 15,),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginTest()),
+                  );
+                }, style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(300, 50),
+                    backgroundColor: Colors.grey,
+                  ), child: const Text('Login Test Screen')
+                  ,
+                ),
               ],
+
             )
         )
     );
   }
 }
+
