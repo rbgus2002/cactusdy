@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.user.dto.response.UserResponse;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 
@@ -27,8 +28,17 @@ public class UserApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("")
-    public DataResponseDto register(@Valid @RequestBody SignUpRequest dto){
+    public DataResponseDto registerUser(@Valid @RequestBody SignUpRequest dto){
         User user = userService.signUp(dto);
         return DataResponseDto.of("user", user);
     }
+
+    @Operation(summary = "id를 통한 사용자 조회")
+    @GetMapping("")
+    public DataResponseDto findUser(@RequestParam Long userId){
+        UserResponse user = userService.getUser(userId);
+        return DataResponseDto.of("user", user);
+    }
+
+    // TODO : swagger에 api별로 response 형식 명시
 }

@@ -11,14 +11,14 @@ import ssu.groupstudy.domain.user.domain.User;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SignUpRequest {
     @NotBlank(message = "이름을 입력하세요")
-    String name;
+    private String name;
     @NotBlank(message = "닉네임을 입력하세요")
-    String nickName;
-    String phoneModel;
-    String picture;
+    private String nickName;
+    private String phoneModel;
+    private String picture;
     @Email(message = "이메일 형식이 아닙니다")
     @NotBlank(message = "이메일을 입력하세요")
-    String email;
+    private String email;
 
     public User toEntity(){
         return User.builder()

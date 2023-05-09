@@ -94,6 +94,6 @@ class StudyCreateServiceTest {
 
         // then
         assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
-        assertThat(newStudy.getHostUser().getProfile().getName()).isEqualTo("최규현");
+        assertThat(newStudy.getHostUser().getName()).isEqualTo("최규현");
     }
 }

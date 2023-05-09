@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.user.dto.response.UserResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.ResultCode;
@@ -28,6 +29,8 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,8 +100,8 @@ class UserApiTest {
 
         // when
         final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                        .content(gson.toJson(getSignUpRequest()))
-                        .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(getSignUpRequest()))
+                .contentType(MediaType.APPLICATION_JSON)
         );
 
         // then
@@ -120,7 +123,28 @@ class UserApiTest {
 
         // then
         resultActions.andExpect(status().isOk());
+    }
 
+    @DisplayName("사용자조회_성공")
+    @Test
+    void 사용자조회_성공() throws Exception {
+        // given
+        final String url = "/user";
+        doReturn(UserResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
 
+        // when
+        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
+                .param("userId", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk());
+
+        DataResponseDto response = gson.fromJson(resultActions.andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+
+        assertThat(response.getData().get("user")).isNotNull();
     }
 }

@@ -126,6 +126,6 @@ class StudyInviteServiceTest {
         User invitedUser = studyInviteService.inviteUserToStudy(getInviteUserRequest());
 
         // then
-        assertThat(invitedUser.getProfile().getName()).isEqualTo("최규현");
+        assertThat(invitedUser.getName()).isEqualTo("최규현");
     }
 }

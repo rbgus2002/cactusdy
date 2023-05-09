@@ -29,18 +29,22 @@ public class StudyPerUser {
     private String color;
 
     @Column(nullable = false)
-    private char isBanished;
+    private char banishYn;
 
     @Builder
     public StudyPerUser(User user, Study study) {
         this.user = user;
         this.study = study;
         this.color = generateColor(); // TODO : 색상 입력 구현 (color picker?)
-        this.isBanished = 'N';
+        this.banishYn = 'N';
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
     private String generateColor(){
         return "";
+    }
+
+    public boolean isBanished(){
+        return (banishYn == 'Y');
     }
 }
