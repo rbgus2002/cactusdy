@@ -15,6 +15,7 @@ import ssu.groupstudy.domain.rule.service.RuleService;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.global.dto.DataResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
 @RequestMapping("/rule")
@@ -25,7 +26,7 @@ public class RuleApi {
 
     @Operation(summary = "새로운 규칙 생성")
     @PostMapping("")
-    public DataResponseDto register(@Valid @RequestBody CreateRuleRequest dto){
+    public ResponseDto register(@Valid @RequestBody CreateRuleRequest dto){
         Rule rule = ruleService.createRule(dto);
 
         return DataResponseDto.of("rule", rule);

@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
 @RequestMapping("/notice")
@@ -22,7 +23,7 @@ public class NoticeApi {
 
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping("")
-    public DataResponseDto add(@Valid @RequestBody CreateNoticeRequest dto){
+    public ResponseDto add(@Valid @RequestBody CreateNoticeRequest dto){
         Notice newNotice = noticeService.createNotice(dto);
 
         return DataResponseDto.of("notice", newNotice);
