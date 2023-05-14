@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.round.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "delete_yn = 'N'")
 public class Round extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

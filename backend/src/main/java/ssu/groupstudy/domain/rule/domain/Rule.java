@@ -5,12 +5,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Where(clause = "delete_yn = 'N'")
 public class Rule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

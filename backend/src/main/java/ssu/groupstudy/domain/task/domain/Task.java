@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.task.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.round.domain.UserRound;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "delete_yn = 'N'")
 public class Task extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

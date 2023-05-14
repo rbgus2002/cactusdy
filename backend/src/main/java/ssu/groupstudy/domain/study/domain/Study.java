@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
 import ssu.groupstudy.global.ResultCode;
@@ -12,6 +13,7 @@ import ssu.groupstudy.global.ResultCode;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "delete_yn = 'N'")
 public class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
