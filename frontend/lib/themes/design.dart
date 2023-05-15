@@ -5,9 +5,9 @@ class Design{
   static const double padding = 15;
   static const double borderRadius = 10;
 
-  static const SizedBox padding5 = SizedBox(width: 5);
-  static const SizedBox padding10 = SizedBox(width: 10);
-  static const SizedBox padding15 = SizedBox(width: 15);
+  static const SizedBox padding5 = SizedBox(width: 5, height: 5,);
+  static const SizedBox padding10 = SizedBox(width: 10, height: 10,);
+  static const SizedBox padding15 = SizedBox(width: 15, height: 15,);
 
   static const List<BoxShadow> basicShadows = [ BoxShadow(
       color: ColorStyles.shadow,

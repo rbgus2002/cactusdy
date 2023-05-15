@@ -8,17 +8,17 @@ class TextStyles {
   static const _semiBold  = FontWeight.w600;
   static const _bold      = FontWeight.w700;
 
-  static const titleBig = TextStyle(fontSize: 48, fontWeight: _bold );
-  static const titleLarge = TextStyle(fontSize: 32, fontWeight: _bold );
-  static const titleMedium = TextStyle(fontSize: 28, fontWeight: _bold);
-  static const titleSmall = TextStyle(fontSize: 24, fontWeight: _bold);
+  static const titleBig = TextStyle(fontSize: 28, fontWeight: _bold );
+  static const titleLarge = TextStyle(fontSize: 24, fontWeight: _bold );
+  static const titleMedium = TextStyle(fontSize: 20, fontWeight: _bold);
+  static const titleSmall = TextStyle(fontSize: 16, fontWeight: _bold);
 
-  static const bodyLarge = TextStyle(fontSize: 20);
-  static const bodyMedium = TextStyle(fontSize: 16);
-  static const bodySmall = TextStyle(fontSize: 12);
+  static const bodyLarge = TextStyle(fontSize: 16);
+  static const bodyMedium = TextStyle(fontSize: 12);
+  static const bodySmall = TextStyle(fontSize: 10);
 
 
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
   static const tagTextStyle = TextStyle(fontSize: 14, leadingDistribution: TextLeadingDistribution.even, fontWeight: _bold);
-
+  static const taskTextStyle = TextStyle(fontSize: 12, leadingDistribution: TextLeadingDistribution.even, fontWeight: _bold, );
 }
