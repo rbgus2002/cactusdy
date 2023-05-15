@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/widgets/panels/study_group_panel.dart';
+import 'package:group_study_app/widgets/user_line_profile.dart';
 
 class HomeRoute extends StatefulWidget {
   @override
@@ -10,12 +13,20 @@ class HomeRoute extends StatefulWidget {
 class _HomeRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Home Screen',
-        )
-      )
+    return Scaffold(
+      body: Container(
+        padding: const EdgeInsets.all(Design.padding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            UserLineProfile(nickName: "nickName", comment: "comment"),
+            Design.padding10,
+            StudyGroupPanel(),
+            Design.padding10,
+            StudyGroupPanel(),
+          ],
+        ),
+      ),
     );
   }
 }

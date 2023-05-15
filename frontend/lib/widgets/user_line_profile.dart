@@ -25,31 +25,26 @@ class UserLineProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Panel(
-      backgroundColor: Colors.white,
-      boxShadows: Design.basicShadows,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
 
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleButton(scale: 60.0, onTap: onTap, child: image,), //< FIXME : size should be calculated
+        const SizedBox(width: Design.padding,),
+        Flexible(
+          fit: FlexFit.tight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
 
-        children: [
-          CircleButton(scale: 65.0, onTap: onTap, child: image,), //< FIXME : size should be calculated
-          const SizedBox(width: Design.padding,),
-          Flexible(
-            fit: FlexFit.tight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-
-              children: [
-                Text(nickName, maxLines: 1, style: TextStyles.titleSmall,),
-                Text(comment, maxLines: 1, style: TextStyles.bodyMedium,),
-                ],
-              ),
+            children: [
+              Text(nickName, maxLines: 1, style: TextStyles.titleLarge,),
+              Text(comment, maxLines: 1, style: TextStyles.bodyLarge,),
+              ],
             ),
-          IconButton(onPressed: (){}, icon: AppIcons.edit),
-          ],
-        ),
+          ),
+        IconButton(onPressed: (){}, icon: AppIcons.edit), //< FIXME
+        ],
     );
   }
 }
