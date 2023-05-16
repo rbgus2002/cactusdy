@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.StudyPerUser;
+import ssu.groupstudy.domain.study.domain.UserStudy;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -15,8 +15,6 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,8 +36,8 @@ public class StudyInviteService {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
 
-        StudyPerUser studyPerUser = studyPerUserRepository.save(dto.toEntity(user, study));
+        UserStudy userStudy = studyPerUserRepository.save(dto.toEntity(user, study));
 
-        return studyPerUserRepository.save(studyPerUser).getUser();
+        return studyPerUserRepository.save(userStudy).getUser();
     }
 }

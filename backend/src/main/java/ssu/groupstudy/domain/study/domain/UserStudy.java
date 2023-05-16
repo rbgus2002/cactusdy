@@ -9,10 +9,10 @@ import ssu.groupstudy.domain.user.domain.User;
 
 
 @Entity
-@Table(name = "REL_User_Study")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "rel_user_study")
 @Getter
-public class StudyPerUser {
+public class UserStudy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class StudyPerUser {
     private char banishYn;
 
     @Builder
-    public StudyPerUser(User user, Study study) {
+    public UserStudy(User user, Study study) {
         this.user = user;
         this.study = study;
         this.color = generateColor(); // TODO : 색상 입력 구현 (color picker?)

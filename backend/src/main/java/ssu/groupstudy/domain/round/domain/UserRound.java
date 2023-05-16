@@ -8,10 +8,11 @@ import ssu.groupstudy.domain.user.domain.User;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "rel_user_round")
 public class UserRound {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userRoundId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
