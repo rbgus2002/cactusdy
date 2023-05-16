@@ -32,8 +32,6 @@ public class NoticeService {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        Notice notice = noticeRepository.save(dto.toEntity(writer, study));
-
-        return notice;
+        return noticeRepository.save(dto.toEntity(writer, study));
     }
 }

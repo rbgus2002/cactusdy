@@ -23,7 +23,7 @@ public class NoticeApi {
 
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping("")
-    public ResponseDto add(@Valid @RequestBody CreateNoticeRequest dto){
+    public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto){
         Notice newNotice = noticeService.createNotice(dto);
 
         return DataResponseDto.of("notice", newNotice);

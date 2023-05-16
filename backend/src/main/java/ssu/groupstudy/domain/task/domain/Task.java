@@ -31,6 +31,6 @@ public class Task extends BaseEntity {
     private char deleteYn;
 
     @ManyToOne
-    @JoinColumn(name="id", nullable = false)
+    @JoinColumn(name="user_round_id", nullable = false)
     private UserRound userRound;
 }
