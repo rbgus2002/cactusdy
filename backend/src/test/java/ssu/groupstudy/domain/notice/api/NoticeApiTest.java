@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notice.api;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.global.dto.DataResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 import java.nio.charset.StandardCharsets;
@@ -87,47 +89,50 @@ class NoticeApiTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("공지생성_실패_비어있는제목")
-    void 공지생성_실패_비어있는제목() throws Exception {
-        // given
-        final String url = "/notice";
+    @Nested
+    class 공지생성{
+        @Test
+        @DisplayName("빈 제목의 공지사항을 생성하는 경우 예외를 던진다")
+        void 실패_비어있는제목() throws Exception {
+            // given
+            final String url = "/notice";
 
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(CreateNoticeRequest.builder()
-                        .userId(1L)
-                        .studyId(1L)
-                        .title("")
-                        .contents("contents")
-                        .build()))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+                    .content(gson.toJson(CreateNoticeRequest.builder()
+                            .userId(1L)
+                            .studyId(1L)
+                            .title("")
+                            .contents("contents")
+                            .build()))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
 
-        // then
-        resultActions.andExpect(status().isBadRequest());
-    }
+            // then
+            resultActions.andExpect(status().isBadRequest());
+        }
 
-    @Test
-    @DisplayName("공지생성_성공")
-    void 공지생성_성공() throws Exception {
-        // given
-        final String url = "/notice";
-        doReturn(getCreateNoticeRequest().toEntity(getUser(), getStudy())).when(noticeService).createNotice(any(CreateNoticeRequest.class));
+        @Test
+        @DisplayName("성공")
+        void 성공() throws Exception {
+            // given
+            final String url = "/notice";
+            doReturn(getCreateNoticeRequest().toEntity(getUser(), getStudy())).when(noticeService).createNotice(any(CreateNoticeRequest.class));
 
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(getCreateNoticeRequest()))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+                    .content(gson.toJson(getCreateNoticeRequest()))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
 
-        // then
-        resultActions.andExpect(status().isOk());
+            // then
+            resultActions.andExpect(status().isOk());
 
-        DataResponseDto response = gson.fromJson(resultActions.andReturn()
-                .getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+                    .getResponse()
+                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
 
-        assertThat(response.getData().get("notice")).isNotNull();
+            assertThat(response.getData().get("notice")).isNotNull();
+        }
     }
 }

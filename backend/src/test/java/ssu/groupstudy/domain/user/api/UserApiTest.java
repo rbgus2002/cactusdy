@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.user.api;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.junit.jupiter.api.DisplayName;
@@ -69,82 +70,89 @@ class UserApiTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("회원가입_실패_이메일형식X")
-    void 회원가입_실패_이메일형식X() throws Exception {
-        // given
-        final String url = "/user";
+    @Nested
+    class 회원가입{
+        @Test
+        @DisplayName("회원가입 시에 email parameter가 이메일 형식이 아닌 경우 예외를 던진다.")
+        void 회원가입_실패_이메일형식X() throws Exception {
+            // given
+            final String url = "/user";
 
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(SignUpRequest.builder()
-                        .name("최규현")
-                        .email("rbgus2002")
-                        .nickName("규규")
-                        .phoneModel("")
-                        .picture("")
-                        .build()))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+                    .content(gson.toJson(SignUpRequest.builder()
+                            .name("최규현")
+                            .email("rbgus2002")
+                            .nickName("규규")
+                            .phoneModel("")
+                            .picture("")
+                            .build()))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
 
-        // then
-        resultActions.andExpect(status().isBadRequest());
+            // then
+            resultActions.andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @DisplayName("중복되는 이메일이 존재하면 회원가입에 실패한다.")
+        void 회원가입_실패_이메일중복존재() throws Exception {
+            // given
+            final String url = "/user";
+            doThrow(new EmailExistsException(ResultCode.DUPLICATE_EMAIL)).when(userService).signUp(any(SignUpRequest.class));
+
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+                    .content(gson.toJson(getSignUpRequest()))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            // then
+            resultActions.andExpect(status().isBadRequest());
+        }
+
+        @DisplayName("성공")
+        @Test
+        void 회원가입_성공() throws Exception {
+            // given
+            final String url = "/user";
+            doReturn(getSignUpRequest().toEntity()).when(userService).signUp(any(SignUpRequest.class));
+
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+                    .content(gson.toJson(getSignUpRequest()))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            // then
+            resultActions.andExpect(status().isOk());
+        }
     }
 
-    @Test
-    @DisplayName("")
-    void 회원가입_실패_이메일중복존재() throws Exception {
-        // given
-        final String url = "/user";
-        doThrow(new EmailExistsException(ResultCode.DUPLICATE_EMAIL)).when(userService).signUp(any(SignUpRequest.class));
 
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(getSignUpRequest()))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+    @Nested
+    class 사용자조회{
+        @DisplayName("성공")
+        @Test
+        void 사용자조회_성공() throws Exception {
+            // given
+            final String url = "/user";
+            doReturn(UserResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
 
-        // then
-        resultActions.andExpect(status().isBadRequest());
-    }
+            // when
+            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
+                    .param("userId", "1")
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
 
-    @DisplayName("회원가입_성공")
-    @Test
-    void 회원가입_성공() throws Exception {
-        // given
-        final String url = "/user";
-        doReturn(getSignUpRequest().toEntity()).when(userService).signUp(any(SignUpRequest.class));
+            // then
+            resultActions.andExpect(status().isOk());
 
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                .content(gson.toJson(getSignUpRequest()))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+                    .getResponse()
+                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
 
-        // then
-        resultActions.andExpect(status().isOk());
-    }
-
-    @DisplayName("사용자조회_성공")
-    @Test
-    void 사용자조회_성공() throws Exception {
-        // given
-        final String url = "/user";
-        doReturn(UserResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
-
-        // when
-        final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
-                .param("userId", "1")
-                .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        // then
-        resultActions.andExpect(status().isOk());
-
-        DataResponseDto response = gson.fromJson(resultActions.andReturn()
-                .getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
-
-        assertThat(response.getData().get("user")).isNotNull();
+            assertThat(response.getData().get("user")).isNotNull();
+        }
     }
 }

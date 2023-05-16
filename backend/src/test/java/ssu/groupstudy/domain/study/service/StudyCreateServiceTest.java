@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.study.service;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -66,34 +67,37 @@ class StudyCreateServiceTest {
         return getSignUpRequest().toEntity();
     }
 
-    @Test
-    @DisplayName("스터디생성_실패_유저존재하지않음")
-    void 스터디생성_실패_유저존재하지않음() {
-        // given
-        CreateStudyRequest request = getRegisterStudyRequest();
-        doReturn(Optional.empty()).when(userRepository).findByUserId(request.getHostUserId());
+    @Nested
+    class 스터디생성{
+        @Test
+        @DisplayName("존재하지 않는 사용자가 스터디를 생성하면 예외를 던진다")
+        void 실패_유저존재하지않음() {
+            // given
+            CreateStudyRequest request = getRegisterStudyRequest();
+            doReturn(Optional.empty()).when(userRepository).findByUserId(request.getHostUserId());
 
-        // when
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyCreateService.createStudy(request));
+            // when
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyCreateService.createStudy(request));
 
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
-    }
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+        }
 
-    // TODO : getUser, getStudy 메소드를 통해 가져오면 id 값이 존재하지 않는데 (실제 save 될 때 자동 생성되기 때문) 이는 제외하고 테스트해주면 되는가?
-    @Test
-    @DisplayName("스터디생성_성공")
-    void 스터디생성_성공() {
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(getStudy()).when(studyRepository).save(any(Study.class));
-        doReturn(new UserStudy(getUser(), getStudy())).when(studyPerUserRepository).save(any(UserStudy.class));
+        // TODO : getUser, getStudy 메소드를 통해 가져오면 id 값이 존재하지 않는데 (실제 save 될 때 자동 생성되기 때문) 이는 제외하고 테스트해주면 되는가?
+        @Test
+        @DisplayName("성공")
+        void 성공() {
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(getStudy()).when(studyRepository).save(any(Study.class));
+            doReturn(new UserStudy(getUser(), getStudy())).when(studyPerUserRepository).save(any(UserStudy.class));
 
-        // when
-        Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
+            // when
+            Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
 
-        // then
-        assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
-        assertThat(newStudy.getHostUser().getName()).isEqualTo("최규현");
+            // then
+            assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
+            assertThat(newStudy.getHostUser().getName()).isEqualTo("최규현");
+        }
     }
 }

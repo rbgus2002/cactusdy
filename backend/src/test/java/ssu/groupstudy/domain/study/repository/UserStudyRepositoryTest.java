@@ -70,7 +70,7 @@ class UserStudyRepositoryTest {
         assertThat(savedUserStudy.getStudy()).isEqualTo(study);
     }
 
-    @DisplayName("사용자가 이미 스터디에 소속되어 있는지 검사")
+    @DisplayName("사용자가 스터디에 속해있는 지 여부 검사")
     @Test
     void 사용자별스터디중복검사() {
         //given

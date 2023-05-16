@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.rule.service;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -75,31 +76,35 @@ class RuleServiceTest {
         return getRegisterStudyRequest().toEntity(getUser(), "", "");
     }
 
-    @Test
-    @DisplayName("규칙생성_실패_스터디존재X")
-    void 규칙생성_실패_스터디존재X() {
-        // given
-        doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+    @Nested
+    class 규칙생성{
+        @Test
+        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
+        void 실패_스터디존재X() {
+            // given
+            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
 
-        // when
-        StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> ruleService.createRule(getCreateRuleRequest()));
+            // when
+            StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> ruleService.createRule(getCreateRuleRequest()));
 
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("성공")
+        void 성공() {
+            // given
+            doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(getRule()).when(ruleRepository).save(any(Rule.class));
+
+            // when
+            Rule rule = ruleService.createRule(getCreateRuleRequest());
+
+            // then
+            assertThat(rule).isNotNull();
+            assertThat(rule.getStudy().getStudyName()).isEqualTo("AlgorithmSSU");
+        }
     }
 
-    @Test
-    @DisplayName("규칙생성_성공")
-    void 규칙생성_성공() {
-        // given
-        doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
-        doReturn(getRule()).when(ruleRepository).save(any(Rule.class));
-
-        // when
-        Rule rule = ruleService.createRule(getCreateRuleRequest());
-
-        // then
-        assertThat(rule).isNotNull();
-        assertThat(rule.getStudy().getStudyName()).isEqualTo("AlgorithmSSU");
-    }
 }

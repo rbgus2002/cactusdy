@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.notice.service;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -78,47 +79,51 @@ class NoticeServiceTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("공지생성_실패_유저존재하지않음")
-    void 공지생성_실패_유저존재하지않음(){
-        // given
-        doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+    @Nested
+    class 공지생성{
+        @Test
+        @DisplayName("존재하지 않는 사용자가 공지사항을 생성하는 경우 예외를 던진다")
+        void 실패_유저존재하지않음(){
+            // given
+            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-        // when
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> noticeService.createNotice(getCreateNoticeRequest()));
+            // when
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> noticeService.createNotice(getCreateNoticeRequest()));
 
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 스터디에 공지사항을 생성하는 경우 예외를 던진다")
+        void 실패_스터디존재하지않음(){
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+
+            // when
+            StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> noticeService.createNotice(getCreateNoticeRequest()));
+
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("성공")
+        void 성공(){
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(getCreateNoticeRequest().toEntity(getUser(), getStudy())).when(noticeRepository).save(any(Notice.class));
+
+            // when
+            Notice notice = noticeService.createNotice(getCreateNoticeRequest());
+
+            // then
+            assertThat(notice).isNotNull();
+            assertThat(notice.getTitle()).isEqualTo("notice");
+            assertThat(notice.getWriter().getName()).isEqualTo("최규현");
+        }
     }
 
-    @Test
-    @DisplayName("공지생성_실패_스터디존재하지않음")
-    void 공지생성_실패_스터디존재하지않음(){
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
-
-        // when
-        StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> noticeService.createNotice(getCreateNoticeRequest()));
-
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
-    }
-
-    @Test
-    @DisplayName("공지생성_성공")
-    void 공지생성_성공(){
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
-        doReturn(getCreateNoticeRequest().toEntity(getUser(), getStudy())).when(noticeRepository).save(any(Notice.class));
-
-        // when
-        Notice notice = noticeService.createNotice(getCreateNoticeRequest());
-
-        // then
-        assertThat(notice).isNotNull();
-        assertThat(notice.getTitle()).isEqualTo("notice");
-        assertThat(notice.getWriter().getName()).isEqualTo("최규현");
-    }
 }

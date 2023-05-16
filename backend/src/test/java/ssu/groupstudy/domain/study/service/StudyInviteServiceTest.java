@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.study.service;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -71,61 +72,65 @@ class StudyInviteServiceTest {
                 .build().toEntity(getUser(), "", "");
     }
 
-    @Test
-    @DisplayName("스터디초대_실패_사용자존재X")
-    void 스터디초대_실패_사용자존재X(){
-        // given
-        doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+    @Nested
+    class 스터디초대{
+        @Test
+        @DisplayName("존재하지 않는 사용자를 스터디에 초대하면 예외를 던진다")
+        void 실패_사용자존재X(){
+            // given
+            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-        // when
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
+            // when
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
 
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 스터디에 사용자를 초대하면 예외를 던진다")
+        void 실패_스터디존재X(){
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+
+            // when
+            StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
+
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
+        }
+
+        @Test
+        @DisplayName("이미 해당 스터디에 존재하는 사용자를 다시 초대하면 예외를 던진다")
+        void 실패_이미사용자존재함(){
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(true).when(studyPerUserRepository).existsByUserAndStudy(any(User.class), any(Study.class));
+
+            // when
+            InviteAlreadyExistsException exception = assertThrows(InviteAlreadyExistsException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
+
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.DUPLICATE_INVITE_USER);
+        }
+
+        @Test
+        @DisplayName("성공")
+        void 성공(){
+            // given
+            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(false).when(studyPerUserRepository).existsByUserAndStudy(any(User.class), any(Study.class));
+            doReturn(getStudyPerUser()).when(studyPerUserRepository).save(any(UserStudy.class));
+
+            // when
+            User invitedUser = studyInviteService.inviteUserToStudy(getInviteUserRequest());
+
+            // then
+            assertThat(invitedUser.getName()).isEqualTo("최규현");
+        }
     }
 
-    @Test
-    @DisplayName("스터디초대_실패_스터디존재X")
-    void 스터디초대_실패_스터디존재X(){
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
-
-        // when
-        StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
-
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
-    }
-
-    @Test
-    @DisplayName("스터디초대_실패_이미사용자존재함")
-    void 스터디초대_실패_이미사용자존재함(){
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
-        doReturn(true).when(studyPerUserRepository).existsByUserAndStudy(any(User.class), any(Study.class));
-        
-        // when
-        InviteAlreadyExistsException exception = assertThrows(InviteAlreadyExistsException.class, () -> studyInviteService.inviteUserToStudy(getInviteUserRequest()));
-        
-        // then
-        assertThat(exception.getResultCode()).isEqualTo(ResultCode.DUPLICATE_INVITE_USER);
-    }
-
-    @Test
-    @DisplayName("스터디초대_성공")
-    void 스터디초대_성공(){
-        // given
-        doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-        doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
-        doReturn(false).when(studyPerUserRepository).existsByUserAndStudy(any(User.class), any(Study.class));
-        doReturn(getStudyPerUser()).when(studyPerUserRepository).save(any(UserStudy.class));
-
-        // when
-        User invitedUser = studyInviteService.inviteUserToStudy(getInviteUserRequest());
-
-        // then
-        assertThat(invitedUser.getName()).isEqualTo("최규현");
-    }
 }

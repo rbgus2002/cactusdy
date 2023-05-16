@@ -43,7 +43,7 @@ class UserRepositoryTest {
         assertThat(userSaved.getEmail()).isEqualTo("rbgus200@@naver.com");
     }
 
-    @DisplayName("동일한 이메일을 사용하는 사용자가 존재하는지 검사")
+    @DisplayName("이메일 존재 여부 검사")
     @Test
     void 이메일중복검사(){
         // given

@@ -43,9 +43,10 @@ class StudyRepositoryTest {
                 .build().toEntity();
     }
 
-    @DisplayName("스터디 등록")
+
+    @DisplayName("스터디 생성")
     @Test
-    void 스터디등록() {
+    void 스터디생성() {
         // given
         final User hostUser = userRepository.save(getUser());
         final Study study = getStudy(hostUser);
