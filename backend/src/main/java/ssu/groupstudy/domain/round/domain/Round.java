@@ -29,7 +29,7 @@ public class Round extends BaseEntity {
     @Column
     private LocalDateTime studyTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 

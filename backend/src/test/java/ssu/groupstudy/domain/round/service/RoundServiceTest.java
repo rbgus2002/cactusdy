@@ -19,6 +19,7 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +46,7 @@ class RoundServiceTest {
         return CreateRoundRequest.builder()
                 .studyId(-1L)
                 .studyPlace("규현집")
-                .studyTime("2023-05-18 16:30")
+                .studyTime(LocalDateTime.of(2023, 5, 17, 16, 00))
                 .build();
     }
 

@@ -33,7 +33,7 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private String inviteQrCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId", nullable = false)
     private User hostUser;
 
