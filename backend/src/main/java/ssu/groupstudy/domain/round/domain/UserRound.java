@@ -1,10 +1,10 @@
 package ssu.groupstudy.domain.round.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.user.domain.User;
+
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

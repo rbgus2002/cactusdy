@@ -1,6 +1,5 @@
 package ssu.groupstudy.domain.user.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.global.domain.BaseEntity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 

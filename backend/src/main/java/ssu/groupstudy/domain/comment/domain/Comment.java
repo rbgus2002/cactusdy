@@ -1,6 +1,5 @@
 package ssu.groupstudy.domain.comment.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
@@ -8,6 +7,7 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

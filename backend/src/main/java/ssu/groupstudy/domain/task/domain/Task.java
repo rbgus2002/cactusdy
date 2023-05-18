@@ -1,13 +1,12 @@
 package ssu.groupstudy.domain.task.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.round.domain.UserRound;
 import ssu.groupstudy.global.domain.BaseEntity;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

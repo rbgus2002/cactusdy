@@ -1,9 +1,10 @@
 package ssu.groupstudy.domain.user.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import ssu.groupstudy.domain.user.domain.User;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @AllArgsConstructor

@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.round.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +12,8 @@ import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/round")

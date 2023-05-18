@@ -1,11 +1,12 @@
 package ssu.groupstudy.domain.study.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
+
+import javax.persistence.*;
 
 
 @Entity
