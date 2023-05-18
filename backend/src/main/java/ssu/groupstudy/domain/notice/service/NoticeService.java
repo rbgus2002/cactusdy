@@ -18,7 +18,7 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
 
@@ -26,6 +26,7 @@ public class NoticeService {
     private final StudyRepository studyRepository;
     private NoticeRepository noticeRepository;
 
+    @Transactional
     public Notice createNotice(CreateNoticeRequest dto) {
         User writer = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));

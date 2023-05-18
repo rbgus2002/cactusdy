@@ -17,13 +17,14 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class StudyCreateService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
     private final StudyPerUserRepository studyPerUserRepository;
 
+    @Transactional
     public Study createStudy(CreateStudyRequest dto) {
         User hostUser = userRepository.findByUserId(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
@@ -41,7 +42,7 @@ public class StudyCreateService {
         return newStudy;
     }
 
-    // TODO : 초대링크 생성 구현
+    // TODO : 초대링크 생성 구현 여기다가 ㄴㄴㄴㄴ
     private String generateInviteLink() {
         return "";
     }

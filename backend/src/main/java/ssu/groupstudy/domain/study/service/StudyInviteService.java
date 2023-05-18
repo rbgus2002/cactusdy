@@ -18,13 +18,14 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class StudyInviteService {
     private final StudyPerUserRepository studyPerUserRepository;
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
 
+    @Transactional
     public User inviteUserToStudy(InviteUserRequest dto) {
         User user = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));

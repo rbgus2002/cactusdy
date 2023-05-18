@@ -14,12 +14,13 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class RuleService {
     private final StudyRepository studyRepository;
     private final RuleRepository ruleRepository;
 
+    @Transactional
     public Rule createRule(CreateRuleRequest dto) {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));

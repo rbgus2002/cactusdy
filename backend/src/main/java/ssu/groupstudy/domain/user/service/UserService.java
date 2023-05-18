@@ -14,11 +14,12 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     public User signUp(SignUpRequest dto){
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
