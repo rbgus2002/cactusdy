@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
+import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -34,5 +37,15 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         return noticeRepository.save(dto.toEntity(writer, study));
+    }
+
+    @Transactional
+    public String switchCheckNotice(SwitchCheckNoticeRequest dto){
+        Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
+                .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
+        User user = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+
+        return notice.switchCheckNotice(new CheckNotice(notice, user));
     }
 }

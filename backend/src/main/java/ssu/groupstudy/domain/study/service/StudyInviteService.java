@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.UserStudy;
+import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -37,8 +37,8 @@ public class StudyInviteService {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
 
-        UserStudy userStudy = studyPerUserRepository.save(dto.toEntity(user, study));
+        Participants participants = studyPerUserRepository.save(dto.toEntity(user, study));
 
-        return studyPerUserRepository.save(userStudy).getUser();
+        return studyPerUserRepository.save(participants).getUser();
     }
 }

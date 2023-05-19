@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
+import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -29,15 +31,14 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
-    @Setter
     @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CheckNotice> checkNotices = new HashSet<>();
 
@@ -48,6 +49,37 @@ public class Notice extends BaseEntity {
         this.writer = writer;
         this.study = study;
         this.deleteYn = 'N';
+    }
+
+    public String switchCheckNotice(CheckNotice checkNotice){
+        validateUser(checkNotice);
+
+        if(isAlreadyChecked(checkNotice)){
+            uncheckNotice(checkNotice);
+            return "Unchecked";
+        }else{
+            checkNotice(checkNotice);
+            return "Checked";
+        }
+    }
+
+    private void validateUser(CheckNotice checkNotice) {
+        Study study = checkNotice.getNotice().getStudy();
+        if(!study.isParticipated(checkNotice.getUser())){
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
+    }
+
+    private boolean isAlreadyChecked(CheckNotice checkNotice){
+        return checkNotices.contains(checkNotice);
+    }
+
+    private void uncheckNotice(CheckNotice checkNotice){
+        checkNotices.remove(checkNotice);
+    }
+
+    private void checkNotice(CheckNotice checkNotice){
+        checkNotices.add(checkNotice);
     }
 
     @Override

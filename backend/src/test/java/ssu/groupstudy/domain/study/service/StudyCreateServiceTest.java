@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.UserStudy;
+import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -90,7 +90,7 @@ class StudyCreateServiceTest {
             // given
             doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
             doReturn(getStudy()).when(studyRepository).save(any(Study.class));
-            doReturn(new UserStudy(getUser(), getStudy())).when(studyPerUserRepository).save(any(UserStudy.class));
+            doReturn(new Participants(getUser(), getStudy())).when(studyPerUserRepository).save(any(Participants.class));
 
             // when
             Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
