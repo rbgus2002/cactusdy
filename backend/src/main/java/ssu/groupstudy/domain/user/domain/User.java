@@ -52,5 +52,20 @@ public class User extends BaseEntity {
         this.phoneModel = phoneModel;
         this.deleteYn = 'N';
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", picture='" + picture + '\'' +
+                ", statusMessage='" + statusMessage + '\'' +
+                ", email='" + email + '\'' +
+                ", activateDate=" + activateDate +
+                ", phoneModel='" + phoneModel + '\'' +
+                ", deleteYn=" + deleteYn +
+                '}';
+    }
 }
 

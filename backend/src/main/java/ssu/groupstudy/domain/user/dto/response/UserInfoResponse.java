@@ -7,21 +7,18 @@ import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserResponse {
+public class UserInfoResponse {
     private Long userId;
     private String nickName;
     private String statusMessage;
 
-    public UserResponse(User user){
+    public UserInfoResponse(User user){
         this.userId = user.getUserId();
         this.nickName = user.getNickName();
         this.statusMessage = user.getStatusMessage();
     }
 
-    public static UserResponse from(User user){
-        return new UserResponse(user);
+    public static UserInfoResponse from(User user){
+        return new UserInfoResponse(user);
     }
 }
-
-
-// TODO : response dto는 inner class 활용하기?

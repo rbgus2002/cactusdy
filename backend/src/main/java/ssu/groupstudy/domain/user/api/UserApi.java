@@ -6,13 +6,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.UserResponse;
+import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
-
 
 @RestController
 @RequestMapping("/user")
@@ -24,15 +23,15 @@ public class UserApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("")
-    public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto){
-        User user = userService.signUp(dto);
+    public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto) {
+        userService.signUp(dto);
         return ResponseDto.success();
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
-    public ResponseDto findUser(@RequestParam Long userId){
-        UserResponse user = userService.getUser(userId);
+    public ResponseDto findUser(@RequestParam Long userId) {
+        UserInfoResponse user = userService.getUser(userId);
         return DataResponseDto.of("user", user);
     }
 

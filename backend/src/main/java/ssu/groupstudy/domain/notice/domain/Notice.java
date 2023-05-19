@@ -1,16 +1,15 @@
 package ssu.groupstudy.domain.notice.domain;
 
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,12 +30,16 @@ public class Notice extends BaseEntity {
     private char deleteYn;
 
     @ManyToOne
-    @JoinColumn(name="userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
     @ManyToOne
-    @JoinColumn(name="studyId", nullable = false)
+    @JoinColumn(name = "studyId", nullable = false)
     private Study study;
+
+    @Setter
+    @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder
     public Notice(String title, String contents, User writer, Study study) {
@@ -45,5 +48,18 @@ public class Notice extends BaseEntity {
         this.writer = writer;
         this.study = study;
         this.deleteYn = 'N';
+    }
+
+    @Override
+    public String toString() {
+        return "Notice{" +
+                "noticeId=" + noticeId +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", deleteYn=" + deleteYn +
+                ", writer=" + writer +
+                ", study=" + study +
+                ", checkNotices=" + checkNotices +
+                '}';
     }
 }

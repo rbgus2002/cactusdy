@@ -52,4 +52,18 @@ public class Study extends BaseEntity {
         // TODO : 직접 안넣어줘도 default로 들어가게 추후 수정
         this.deleteYn = 'N';
     }
+
+    @Override
+    public String toString() {
+        return "Study{" +
+                "studyId=" + studyId +
+                ", studyName='" + studyName + '\'' +
+                ", detail='" + detail + '\'' +
+                ", picture='" + picture + '\'' +
+                ", inviteLink='" + inviteLink + '\'' +
+                ", inviteQrCode='" + inviteQrCode + '\'' +
+                ", hostUser=" + hostUser +
+                ", deleteYn=" + deleteYn +
+                '}';
+    }
 }

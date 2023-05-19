@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.UserResponse;
+import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -99,11 +99,11 @@ class UserServiceTest {
             doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            final UserResponse userResponse = userService.getUser(1L);
+            final UserInfoResponse UserInfoResponse = userService.getUser(1L);
 
             // then
-            assertThat(userResponse).isNotNull();
-            assertThat(userResponse.getNickName()).isEqualTo("규규");
+            assertThat(UserInfoResponse).isNotNull();
+            assertThat(UserInfoResponse.getNickName()).isEqualTo("규규");
         }
     }
 }

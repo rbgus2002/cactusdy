@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.UserResponse;
+import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.ResultCode;
@@ -137,7 +137,7 @@ class UserApiTest {
         void 사용자조회_성공() throws Exception {
             // given
             final String url = "/user";
-            doReturn(UserResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
+            doReturn(UserInfoResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)

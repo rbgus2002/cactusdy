@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.UserResponse;
+import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -29,10 +29,10 @@ public class UserService {
         return newUser;
     }
 
-    public UserResponse getUser(long userId) {
+    public UserInfoResponse getUser(long userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        return UserResponse.from(user);
+        return UserInfoResponse.from(user);
     }
 }
