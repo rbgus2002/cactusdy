@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.Participants;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ParticipantsRepositoryTest {
+class ParticipantRepositoryTest {
     @Autowired
     StudyPerUserRepository studyPerUserRepository;
 
@@ -42,7 +42,7 @@ class ParticipantsRepositoryTest {
                 .hostUserId(hostUser.getUserId())
                 .detail("PS")
                 .picture("")
-                .build().toEntity(hostUser, "", "");
+                .build().toEntity(hostUser);
     }
 
     @DisplayName("사용자별 스터디 정보 등록하기")
@@ -55,19 +55,19 @@ class ParticipantsRepositoryTest {
         final Study study = getStudy(hostUser);
         final Study savedStudy = studyRepository.save(study);
 
-        final Participants participants = Participants.builder()
+        final Participant participant = Participant.builder()
                 .study(savedStudy)
                 .user(hostUser)
                 .build();
 
         //when
-        final Participants savedParticipants = studyPerUserRepository.save(participants);
+        final Participant savedParticipant = studyPerUserRepository.save(participant);
 
         //then
-        assertThat(savedParticipants.getId()).isNotNull();
-        assertThat(savedParticipants.getColor()).isNotNull();
-        assertThat(savedParticipants.getUser()).isEqualTo(user);
-        assertThat(savedParticipants.getStudy()).isEqualTo(study);
+        assertThat(savedParticipant.getId()).isNotNull();
+        assertThat(savedParticipant.getColor()).isNotNull();
+        assertThat(savedParticipant.getUser()).isEqualTo(user);
+        assertThat(savedParticipant.getStudy()).isEqualTo(study);
     }
 
     @DisplayName("사용자가 스터디에 속해있는 지 여부 검사")
@@ -80,13 +80,13 @@ class ParticipantsRepositoryTest {
         final Study study = getStudy(hostUser);
         final Study savedStudy = studyRepository.save(study);
 
-        final Participants participants = Participants.builder()
+        final Participant participant = Participant.builder()
                 .study(savedStudy)
                 .user(hostUser)
                 .build();
 
         //when
-        final Participants savedParticipants = studyPerUserRepository.save(participants);
+        final Participant savedParticipant = studyPerUserRepository.save(participant);
         final Boolean existStudyPerUser = studyPerUserRepository.existsByUserAndStudy(user, study);
 
         //then

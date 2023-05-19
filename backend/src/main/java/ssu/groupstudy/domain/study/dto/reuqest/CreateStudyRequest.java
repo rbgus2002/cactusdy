@@ -23,14 +23,12 @@ public class CreateStudyRequest {
     @NotNull
     private Long hostUserId;
 
-    public Study toEntity(User hostUser, String inviteLink, String inviteQRCode){
+    public Study toEntity(User hostUser){
         return Study.builder()
                 .studyName(this.studyName)
                 .detail(this.detail)
                 .picture(this.picture)
                 .hostUser(hostUser)
-                .inviteLink(inviteLink)
-                .inviteQRCode(inviteQRCode)
                 .build();
     }
 

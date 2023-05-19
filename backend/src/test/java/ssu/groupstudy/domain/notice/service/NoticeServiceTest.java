@@ -54,7 +54,7 @@ class NoticeServiceTest {
     }
 
     private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser(), "", "");
+        return getRegisterStudyRequest().toEntity(getUser());
     }
 
 

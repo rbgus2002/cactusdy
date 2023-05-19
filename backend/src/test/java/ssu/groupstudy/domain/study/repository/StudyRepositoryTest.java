@@ -30,7 +30,7 @@ class StudyRepositoryTest {
                 .hostUserId(hostUser.getUserId())
                 .detail("PS")
                 .picture("")
-                .build().toEntity(hostUser, "", "");
+                .build().toEntity(hostUser);
     }
 
     private User getUser() {
@@ -58,9 +58,7 @@ class StudyRepositoryTest {
         assertThat(savedStudy.getStudyId()).isNotNull();
         assertThat(savedStudy.getStudyName()).isEqualTo("AlgorithmSSU");
         assertThat(savedStudy.getDetail()).isEqualTo("PS");
-        assertThat(savedStudy.getHostUser()).isEqualTo(hostUser);
-        assertThat(savedStudy.getInviteLink()).isEqualTo("");
-        assertThat(savedStudy.getInviteQrCode()).isEqualTo("");
+        assertThat(savedStudy.getParticipants().getHostUser()).isEqualTo(hostUser);
     }
 
     @DisplayName("studyId로 스터디 가져오기")

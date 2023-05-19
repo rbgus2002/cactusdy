@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.study.dto.reuqest;
 
 import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.Participants;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.validation.constraints.NotNull;
@@ -18,8 +18,8 @@ public class InviteUserRequest {
     @NotNull
     private Long studyId;
 
-    public Participants toEntity(User user, Study study){
-        return Participants.builder()
+    public Participant toEntity(User user, Study study){
+        return Participant.builder()
                 .user(user)
                 .study(study)
                 .build();

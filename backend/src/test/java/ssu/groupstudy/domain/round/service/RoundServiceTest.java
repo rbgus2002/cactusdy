@@ -60,7 +60,7 @@ class RoundServiceTest {
     }
 
     private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser(), "", "");
+        return getRegisterStudyRequest().toEntity(getUser());
     }
 
     private SignUpRequest getSignUpRequest() {

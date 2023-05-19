@@ -16,7 +16,7 @@ public class UserRound {
 
     @ManyToOne
     @JoinColumn(name="userId", nullable = false)
-    private User creator;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name="roundId", nullable = false)
@@ -25,8 +25,5 @@ public class UserRound {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatusTag statusTag;
-
-    @Column(nullable = false)
-    private char deleteYn;
 }
 

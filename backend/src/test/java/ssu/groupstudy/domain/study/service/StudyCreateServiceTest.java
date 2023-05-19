@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.Participants;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -49,7 +49,7 @@ class StudyCreateServiceTest {
     }
 
     private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser(), "", "");
+        return getRegisterStudyRequest().toEntity(getUser());
     }
 
 
@@ -90,14 +90,14 @@ class StudyCreateServiceTest {
             // given
             doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
             doReturn(getStudy()).when(studyRepository).save(any(Study.class));
-            doReturn(new Participants(getUser(), getStudy())).when(studyPerUserRepository).save(any(Participants.class));
+            doReturn(new Participant(getUser(), getStudy())).when(studyPerUserRepository).save(any(Participant.class));
 
             // when
             Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
 
             // then
             assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
-            assertThat(newStudy.getHostUser().getName()).isEqualTo("최규현");
+            assertThat(newStudy.getParticipants().getHostUser().getName()).isEqualTo("최규현");
         }
     }
 }

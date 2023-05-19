@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.Participants;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
@@ -59,7 +59,7 @@ class StudyInviteServiceTest {
                 .build().toEntity();
     }
 
-    private Participants getStudyPerUser(){
+    private Participant getStudyPerUser(){
         return getInviteUserRequest().toEntity(getUser(), getStudy());
     }
 
@@ -69,7 +69,7 @@ class StudyInviteServiceTest {
                 .detail("알고문풀")
                 .picture("")
                 .hostUserId(0L)
-                .build().toEntity(getUser(), "", "");
+                .build().toEntity(getUser());
     }
 
     @Nested
@@ -123,7 +123,7 @@ class StudyInviteServiceTest {
             doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
             doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
             doReturn(false).when(studyPerUserRepository).existsByUserAndStudy(any(User.class), any(Study.class));
-            doReturn(getStudyPerUser()).when(studyPerUserRepository).save(any(Participants.class));
+            doReturn(getStudyPerUser()).when(studyPerUserRepository).save(any(Participant.class));
 
             // when
             User invitedUser = studyInviteService.inviteUserToStudy(getInviteUserRequest());

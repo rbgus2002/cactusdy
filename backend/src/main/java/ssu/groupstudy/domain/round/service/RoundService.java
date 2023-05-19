@@ -26,6 +26,8 @@ public class RoundService {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
+        // TODO : 스터디에 참여자 모두 UserRound 생성
+
         return roundRepository.save(dto.toEntity(study));
     }
 }

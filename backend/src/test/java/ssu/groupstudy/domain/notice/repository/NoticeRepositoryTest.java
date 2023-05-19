@@ -52,7 +52,7 @@ class NoticeRepositoryTest {
                 .studyName("AlgorithmSSU")
                 .hostUserId(user1.getUserId())
                 .detail("PS")
-                .build().toEntity(user1, "", ""));
+                .build().toEntity(user1));
         Notice notice = new Notice("공지", "내용", user1, study);
 
         Set<CheckNotice> set = notice.getCheckNotices();
@@ -86,7 +86,7 @@ class NoticeRepositoryTest {
                 .studyName("AlgorithmSSU")
                 .hostUserId(user1.getUserId())
                 .detail("PS")
-                .build().toEntity(user1, "", ""));
+                .build().toEntity(user1));
         Notice notice = new Notice("공지", "내용", user1, study);
 
         Set<CheckNotice> set = notice.getCheckNotices();

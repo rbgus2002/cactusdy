@@ -92,7 +92,7 @@ class RoundApiTest {
     }
 
     private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser(), "", "");
+        return getRegisterStudyRequest().toEntity(getUser());
     }
 
 

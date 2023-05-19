@@ -9,8 +9,6 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -29,51 +27,27 @@ public class Study extends BaseEntity {
 
     private String picture;
 
-    @Column(nullable = false)
-    private String inviteLink;
+    @Embedded
+    private final Invite invite = Invite.generate();
 
-    @Column(nullable = false)
-    private String inviteQrCode;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId", nullable = false)
-    private User hostUser;
+    @Embedded
+    private Participants participants;
 
     @Column(nullable = false)
     private char deleteYn;
 
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Set<Participants> participants = new HashSet<>();
-
-    @Builder 
-    public Study(String studyName, String detail, String picture, User hostUser, String inviteLink, String inviteQRCode) {
+    @Builder
+    public Study(String studyName, String detail, String picture, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
         this.picture = picture;
-        this.hostUser = hostUser;
-        this.inviteLink = inviteLink;
-        this.inviteQrCode = inviteQRCode;
-        // TODO : 직접 안넣어줘도 default로 들어가게 추후 수정
+        this.participants = Participants.empty(hostUser);
         this.deleteYn = 'N';
     }
 
-    @Override
-    public String toString() {
-        return "Study{" +
-                "studyId=" + studyId +
-                ", studyName='" + studyName + '\'' +
-                ", detail='" + detail + '\'' +
-                ", picture='" + picture + '\'' +
-                ", inviteLink='" + inviteLink + '\'' +
-                ", inviteQrCode='" + inviteQrCode + '\'' +
-                ", hostUser=" + hostUser +
-                ", deleteYn=" + deleteYn +
-                '}';
+    public boolean isParticipated(User user) {
+        return participants.existParticipant(new Participant(user, this));
     }
 
-    public boolean isParticipated(User user){
 
-
-        return participants.contains(new Participants(user, this));
-    }
 }

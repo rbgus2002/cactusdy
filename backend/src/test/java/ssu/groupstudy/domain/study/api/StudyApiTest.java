@@ -120,7 +120,7 @@ class StudyApiTest {
         void 성공() throws Exception {
             // given
             final String url = "/study";
-            doReturn(getRegisterStudyRequest().toEntity(getSignUpRequest().toEntity(), "", "")).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
+            doReturn(getRegisterStudyRequest().toEntity(getSignUpRequest().toEntity())).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
