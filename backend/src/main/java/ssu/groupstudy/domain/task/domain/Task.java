@@ -10,8 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "delete_yn = 'N'")
-public class Task extends BaseEntity {
+public class Task{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
@@ -19,15 +18,12 @@ public class Task extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String detail;
 
-    //TODO 사용여부 검토 후 ENUM 처리?
-    @Column(nullable = false)
-    private String taskType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private TaskType taskType;
 
     @Column(nullable = false)
     private char doneYn;
-
-    @Column(nullable = false)
-    private char deleteYn;
 
     @ManyToOne
     @JoinColumn(name="user_round_id", nullable = false)
