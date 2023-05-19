@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -28,5 +29,13 @@ public class NoticeApi {
         Notice newNotice = noticeService.createNotice(dto);
 
         return DataResponseDto.of("notice", newNotice);
+    }
+
+    @Operation(summary = "공지사항 체크 이모지 클릭")
+    @PostMapping("/check")
+    public ResponseDto switchCheckNotice(@Valid @RequestBody SwitchCheckNoticeRequest dto){
+        String isChecked = noticeService.switchCheckNotice(dto);
+
+        return DataResponseDto.of("isChecked", isChecked);
     }
 }

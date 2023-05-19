@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
-import ssu.groupstudy.global.ResultCode;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,6 +42,9 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<Participants> participants = new HashSet<>();
+
     @Builder 
     public Study(String studyName, String detail, String picture, User hostUser, String inviteLink, String inviteQRCode) {
         this.studyName = studyName;
@@ -65,5 +69,11 @@ public class Study extends BaseEntity {
                 ", hostUser=" + hostUser +
                 ", deleteYn=" + deleteYn +
                 '}';
+    }
+
+    public boolean isParticipated(User user){
+
+
+        return participants.contains(new Participants(user, this));
     }
 }

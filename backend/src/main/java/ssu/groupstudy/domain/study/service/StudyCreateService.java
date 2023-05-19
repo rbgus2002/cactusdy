@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.domain.UserStudy;
+import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -37,7 +37,7 @@ public class StudyCreateService {
         newStudy = studyRepository.save(newStudy);
 
         // 유저 - 스터디 연결
-        studyPerUserRepository.save(new UserStudy(hostUser, newStudy));
+        studyPerUserRepository.save(new Participants(hostUser, newStudy));
 
         return newStudy;
     }

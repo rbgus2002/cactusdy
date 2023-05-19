@@ -7,23 +7,24 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "rel_user_study")
 @Getter
-public class UserStudy {
+public class Participants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="studyId", nullable = false)
+    @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
     @Column(nullable = false)
@@ -33,19 +34,37 @@ public class UserStudy {
     private char banishYn;
 
     @Builder
-    public UserStudy(User user, Study study) {
+    public Participants(User user, Study study) {
         this.user = user;
         this.study = study;
         this.color = generateColor(); // TODO : 색상 입력 구현 (color picker?)
         this.banishYn = 'N';
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        final Participants participants = (Participants) o;
+        return Objects.equals(user.getUserId(), participants.user.getUserId()) && Objects.equals(study.getStudyId(), participants.study.getStudyId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user.getUserId(), study.getStudyId());
+    }
+
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
-    private String generateColor(){
+    private String generateColor() {
         return "";
     }
 
-    public boolean isBanished(){
+    public boolean isBanished() {
         return (banishYn == 'Y');
     }
+
+
 }
