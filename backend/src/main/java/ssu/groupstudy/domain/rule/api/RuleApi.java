@@ -26,8 +26,8 @@ public class RuleApi {
     @Operation(summary = "새로운 규칙 생성")
     @PostMapping("")
     public ResponseDto register(@Valid @RequestBody CreateRuleRequest dto){
-        Rule rule = ruleService.createRule(dto);
+        ruleService.createRule(dto);
 
-        return DataResponseDto.of("rule", rule);
+        return ResponseDto.success();
     }
 }

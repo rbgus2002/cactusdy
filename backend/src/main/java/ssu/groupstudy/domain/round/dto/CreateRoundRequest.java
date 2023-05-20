@@ -18,7 +18,7 @@ public class CreateRoundRequest {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime studyTime;
-    private String studyPlace; // TODO : 추후 카카오톡 주소 api 연동
+    private String studyPlace; // TODO : 추후 카카오톡 주소 api 연동?
 
     public Round toEntity(Study study) {
         return Round.builder()

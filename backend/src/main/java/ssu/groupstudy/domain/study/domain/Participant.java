@@ -30,7 +30,7 @@ public class Participant {
     @Column(nullable = false)
     private String color;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // TODO : 강퇴 칼럼 삭제 검토
     private char banishYn;
 
     @Builder

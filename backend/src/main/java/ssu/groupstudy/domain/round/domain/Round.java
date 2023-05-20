@@ -23,13 +23,8 @@ public class Round extends BaseEntity {
     @Column(length = 50)
     private String detail;
 
-    @Column(length = 30)
-    private String studyPlace;
-
-    @Column
-    private LocalDateTime studyTime;
-    // TODO : place랑 time을 Appointment로 묶기
-    // TODO : 스터디 예정 시간 계산 하는 로직은 해당 객체에게 책임 부여하기
+    @Embedded
+    private Appointment appointment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="studyId", nullable = false)
@@ -41,7 +36,6 @@ public class Round extends BaseEntity {
     @Builder
     public Round(Study study, String studyPlace, LocalDateTime studyTime){
         this.study = study;
-        this.studyPlace = studyPlace;
-        this.studyTime = studyTime;
+        this.appointment = Appointment.init(studyPlace, studyTime);
     }
 }

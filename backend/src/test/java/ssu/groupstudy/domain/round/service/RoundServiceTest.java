@@ -110,8 +110,8 @@ class RoundServiceTest {
 
             // then
             assertThat(round).isNotNull();
-            assertThat(round.getStudyPlace()).isNull();
-            assertThat(round.getStudyTime()).isNull();
+            assertThat(round.getAppointment().getStudyPlace()).isNull();
+            assertThat(round.getAppointment().getStudyTime()).isNull();
         }
 
         @Test
@@ -126,7 +126,7 @@ class RoundServiceTest {
 
             // then
             assertThat(round).isNotNull();
-            assertThat(round.getStudyPlace()).isEqualTo("규현집");
+            assertThat(round.getAppointment().getStudyPlace()).isEqualTo("규현집");
             assertThat(round.getStudy().getStudyName()).isEqualTo("AlgorithmSSU");
         }
     }
