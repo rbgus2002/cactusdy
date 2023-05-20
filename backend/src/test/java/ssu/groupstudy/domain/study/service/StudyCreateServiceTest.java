@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -20,6 +20,7 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +38,7 @@ class StudyCreateServiceTest {
     private StudyRepository studyRepository;
 
     @Mock
-    private StudyPerUserRepository studyPerUserRepository;
+    private ParticipantRepository participantRepository;
 
     private CreateStudyRequest getRegisterStudyRequest() {
         return CreateStudyRequest.builder()
@@ -83,14 +84,12 @@ class StudyCreateServiceTest {
             assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
         }
 
-        // TODO : getUser, getStudy 메소드를 통해 가져오면 id 값이 존재하지 않는데 (실제 save 될 때 자동 생성되기 때문) 이는 제외하고 테스트해주면 되는가?
         @Test
         @DisplayName("성공")
         void 성공() {
             // given
             doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
             doReturn(getStudy()).when(studyRepository).save(any(Study.class));
-            doReturn(new Participant(getUser(), getStudy())).when(studyPerUserRepository).save(any(Participant.class));
 
             // when
             Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
@@ -98,6 +97,7 @@ class StudyCreateServiceTest {
             // then
             assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
             assertThat(newStudy.getParticipants().getHostUser().getName()).isEqualTo("최규현");
+            assertThat(newStudy.getParticipants().getParticipants().size()).isEqualTo(1);
         }
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.study.repository.StudyPerUserRepository;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
@@ -22,7 +22,7 @@ import ssu.groupstudy.global.ResultCode;
 public class StudyCreateService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
-    private final StudyPerUserRepository studyPerUserRepository;
+    private final ParticipantRepository participantRepository;
 
     @Transactional
     public Study createStudy(CreateStudyRequest dto) {
@@ -32,9 +32,6 @@ public class StudyCreateService {
         // 새로운 스터디 생성
         Study newStudy = dto.toEntity(hostUser);
         newStudy = studyRepository.save(newStudy);
-
-        // 스터디에 방장 추가 TODO : 연관관계로 refactoring
-        studyPerUserRepository.save(new Participant(hostUser, newStudy));
 
         return newStudy;
     }

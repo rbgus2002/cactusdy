@@ -146,7 +146,7 @@ class StudyApiTest {
         void 실패_회원존재X() throws Exception {
             // given
             final String url = "/study/invite";
-            doThrow(new UserNotFoundException(ResultCode.USER_NOT_FOUND)).when(studyInviteService).inviteUserToStudy(any(InviteUserRequest.class));
+            doThrow(new UserNotFoundException(ResultCode.USER_NOT_FOUND)).when(studyInviteService).inviteUser(any(InviteUserRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -167,7 +167,7 @@ class StudyApiTest {
         void 스터디초대_실패_스터디존재X() throws Exception {
             // given
             final String url = "/study/invite";
-            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(studyInviteService).inviteUserToStudy(any(InviteUserRequest.class));
+            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(studyInviteService).inviteUser(any(InviteUserRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -208,7 +208,7 @@ class StudyApiTest {
         void 스터디초대_성공() throws Exception {
             // given
             final String url = "/study/invite";
-            doReturn(getSignUpRequest().toEntity()).when(studyInviteService).inviteUserToStudy(any(InviteUserRequest.class));
+            doReturn(getSignUpRequest().toEntity()).when(studyInviteService).inviteUser(any(InviteUserRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)

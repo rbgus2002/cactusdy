@@ -31,14 +31,14 @@ public class StudyApi {
     public ResponseDto register(@Valid @RequestBody CreateStudyRequest dto){
         Study newStudy = studyCreateService.createStudy(dto);
 
-        return DataResponseDto.of("study", newStudy);
+        return DataResponseDto.of("studyId", newStudy.getStudyId());
     }
 
     @Operation(summary = "스터디에 회원 초대")
     @PostMapping("/invite")
     public ResponseDto inviteUser(@Valid @RequestBody InviteUserRequest dto){
-        User invitedUser = studyInviteService.inviteUserToStudy(dto);
+        studyInviteService.inviteUser(dto);
 
-        return DataResponseDto.of("invitedUser", invitedUser);
+        return ResponseDto.success();
     }
 }

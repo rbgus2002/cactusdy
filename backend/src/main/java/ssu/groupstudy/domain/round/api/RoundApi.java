@@ -20,7 +20,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @Tag(name = "Round", description = "회차 API")
 public class RoundApi {
-
     private final RoundService roundService;
 
     @Operation(summary = "회차 생성", description = "parameter에서 studyTime의 형식은 \"yyyy-MM-dd HH:mm\" 이다.")
@@ -28,6 +27,6 @@ public class RoundApi {
     public ResponseDto createRound(@Valid @RequestBody CreateRoundRequest dto){
         Round round = roundService.createRound(dto);
 
-        return DataResponseDto.of("round", round);
+        return ResponseDto.success();
     }
 }

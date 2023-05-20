@@ -16,18 +16,24 @@ public class Participants {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User hostUser;
+
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Participant> participants = new HashSet<>();
 
-    public static Participants empty(User hostUser) {
-        return new Participants(hostUser);
+    public static Participants empty(Participant participant) {
+        return new Participants(participant);
     }
 
-    private Participants(User hostUser) {
-        this.hostUser = hostUser;
+    private Participants(Participant participant) {
+        participants.add(participant);
+        this.hostUser = participant.getUser();
     }
 
     public boolean existParticipant(Participant participant) {
         return participants.contains(participant);
+    }
+
+    public void addParticipant(Participant participant) {
+        participants.add(participant);
     }
 }

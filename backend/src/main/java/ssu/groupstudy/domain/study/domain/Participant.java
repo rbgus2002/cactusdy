@@ -42,19 +42,19 @@ public class Participant {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
 
-        final Participant participant = (Participant) o;
-        return Objects.equals(user.getUserId(), participant.user.getUserId()) && Objects.equals(study.getStudyId(), participant.study.getStudyId());
+        Participant that = (Participant) o;
+        return user.equals(that.user) && study.equals(that.study);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user.getUserId(), study.getStudyId());
+        return Objects.hash(user, study);
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)

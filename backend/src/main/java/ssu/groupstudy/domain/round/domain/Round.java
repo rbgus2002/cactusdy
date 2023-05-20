@@ -28,6 +28,8 @@ public class Round extends BaseEntity {
 
     @Column
     private LocalDateTime studyTime;
+    // TODO : place랑 time을 Appointment로 묶기
+    // TODO : 스터디 예정 시간 계산 하는 로직은 해당 객체에게 책임 부여하기
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="studyId", nullable = false)
@@ -35,8 +37,6 @@ public class Round extends BaseEntity {
 
     @Column(nullable = false)
     private char deleteYn;
-
-    // TODO : 스터디 예정 시간 계산 하는 로직은 해당 객체에게 책임 부여하기
 
     @Builder
     public Round(Study study, String studyPlace, LocalDateTime studyTime){

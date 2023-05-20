@@ -26,15 +26,15 @@ public class NoticeApi {
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping("")
     public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto){
-        Notice newNotice = noticeService.createNotice(dto);
+        noticeService.createNotice(dto);
 
-        return DataResponseDto.of("notice", newNotice);
+        return ResponseDto.success();
     }
 
     @Operation(summary = "공지사항 체크 이모지 클릭")
     @PostMapping("/check")
     public ResponseDto switchCheckNotice(@Valid @RequestBody SwitchCheckNoticeRequest dto){
-        String isChecked = noticeService.switchCheckNotice(dto);
+        final String isChecked = noticeService.switchCheckNotice(dto);
 
         return DataResponseDto.of("isChecked", isChecked);
     }
