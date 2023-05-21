@@ -24,6 +24,7 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 import java.nio.charset.StandardCharsets;
@@ -134,7 +135,6 @@ class RuleApiTest {
         void 성공() throws Exception {
             // given
             final String url = "/rule";
-            doReturn(getCreateRuleRequest().toEntity(getStudy())).when(ruleService).createRule(any(CreateRuleRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -145,11 +145,11 @@ class RuleApiTest {
             // then
             resultActions.andExpect(status().isOk());
 
-            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+            ResponseDto response = gson.fromJson(resultActions.andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
 
-            assertThat(response.getData().get("rule")).isNotNull();
+            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
         }
     }
 

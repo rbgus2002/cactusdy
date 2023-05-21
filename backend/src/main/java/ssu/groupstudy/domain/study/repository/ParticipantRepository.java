@@ -6,5 +6,4 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.user.domain.User;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-    boolean existsByUserAndStudy(User user, Study study);
 }

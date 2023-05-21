@@ -18,7 +18,9 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -184,6 +186,8 @@ class NoticeServiceTest {
             assertThat(isChecked).isEqualTo("Unchecked");
         }
 
+
+        // TODO : 마저 작성
 //        @Test
 //        @DisplayName("공지사항 체크 버튼은 해당 스터디에 소속된 사용자만 누를 수 있다")
 //        void 실패_스터디소속X() {
@@ -193,19 +197,19 @@ class NoticeServiceTest {
 //                    .email("yejiisfree@naver.com")
 //                    .nickName("play_girl")
 //                    .build().toEntity();
+//
 //            doReturn(Optional.of(getNotice())).when(noticeRepository).findByNoticeId(any(Long.class));
 //            doReturn(Optional.of(user)).when(userRepository).findByUserId(any(Long.class));
 //
 //            // when
-//            noticeService.switchCheckNotice(SwitchCheckNoticeRequest.builder()
+//            assertThrows(UserNotParticipatedException.class, () -> noticeService.switchCheckNotice(SwitchCheckNoticeRequest.builder()
 //                    .noticeId(1L)
 //                    .userId(1L)
-//                    .build());
-//            notice.switchCheckNotice(new CheckNotice(notice, user));
-//
+//                    .build()));
 //            // then
-//            assertThat(notice).isNotNull();
-//            assertThat(notice.getCheckNotices().size()).isEqualTo(0);
+//
+////            EmailExistsException exception = assertThrows(EmailExistsException.class, () -> userService.signUp(getSignUpRequest()));
+//
 //        }
     }
 }

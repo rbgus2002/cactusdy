@@ -37,9 +37,6 @@ class StudyCreateServiceTest {
     @Mock
     private StudyRepository studyRepository;
 
-    @Mock
-    private ParticipantRepository participantRepository;
-
     private CreateStudyRequest getRegisterStudyRequest() {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
@@ -74,11 +71,10 @@ class StudyCreateServiceTest {
         @DisplayName("존재하지 않는 사용자가 스터디를 생성하면 예외를 던진다")
         void 실패_유저존재하지않음() {
             // given
-            CreateStudyRequest request = getRegisterStudyRequest();
-            doReturn(Optional.empty()).when(userRepository).findByUserId(request.getHostUserId());
+            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyCreateService.createStudy(request));
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyCreateService.createStudy(getRegisterStudyRequest()));
 
             // then
             assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);

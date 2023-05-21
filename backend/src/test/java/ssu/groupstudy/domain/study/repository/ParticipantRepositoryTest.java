@@ -48,50 +48,24 @@ class ParticipantRepositoryTest {
                 .build().toEntity(hostUser);
     }
 
-//    @DisplayName("사용자별 스터디 정보 등록하기")
-//    @Test
-//    void 사용자별스터디정보등록() {
-//        //given
-//        final User hostUser = userRepository.save(getUser());
-//        final User newUser = userRepository.save(SignUpRequest.builder()
-//                .name("장재우")
-//                .email("arkady@@naver.com")
-//                .nickName("킹적화")
-//                .build().toEntity());
-//
-//        final Study savedStudy = studyRepository.save(getStudy(hostUser));
-//
-//
-//        //when
-////        savedStudy.invite(newUser);
-//        savedStudy.getParticipants().getParticipants().add(new Participant(newUser, saev))
-//
-//        //then
-//        assertThat(savedStudy.getParticipants().getHostUser().getName()).isEqualTo("최규현");
-//        assertThat(savedStudy.getParticipants().getParticipants().size()).isEqualTo(2);
-//    }
-
-    @DisplayName("사용자가 스터디에 속해있는 지 여부 검사")
+    @DisplayName("사용자를 스터디에 초대한다.")
     @Test
-    void 사용자별스터디중복검사() {
+    void 성공_스터디초대() {
         //given
-        final User user = getUser();
-        final User hostUser = userRepository.save(user);
+        final User hostUser = userRepository.save(getUser());
+        final Study savedStudy = studyRepository.save(getStudy(hostUser));
 
-        final Study study = getStudy(hostUser);
-        final Study savedStudy = studyRepository.save(study);
-
-        final Participant participant = Participant.builder()
-                .study(savedStudy)
-                .user(hostUser)
-                .build();
+        final User newUser = userRepository.save(SignUpRequest.builder()
+                .name("장재우")
+                .email("arkady@@naver.com")
+                .nickName("킹적화")
+                .build().toEntity());
 
         //when
-        final Participant savedParticipant = participantRepository.save(participant);
-        final Boolean existStudyPerUser = participantRepository.existsByUserAndStudy(user, study);
+        savedStudy.invite(newUser);
 
         //then
-        assertThat(existStudyPerUser).isNotNull();
-        assertThat(existStudyPerUser).isEqualTo(true);
+        assertThat(savedStudy.getParticipants().getHostUser().getName()).isEqualTo("최규현");
+        assertThat(savedStudy.getParticipants().getParticipants().size()).isEqualTo(2);
     }
 }

@@ -10,16 +10,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
@@ -90,7 +93,7 @@ class NoticeApiTest {
     }
 
     @Nested
-    class 공지생성{
+    class 공지사항생성{
         @Test
         @DisplayName("빈 제목의 공지사항을 생성하는 경우 예외를 던진다")
         void 실패_비어있는제목() throws Exception {
@@ -117,7 +120,9 @@ class NoticeApiTest {
         void 성공() throws Exception {
             // given
             final String url = "/notice";
-            doReturn(getCreateNoticeRequest().toEntity(getUser(), getStudy())).when(noticeService).createNotice(any(CreateNoticeRequest.class));
+            Notice notice = getCreateNoticeRequest().toEntity(getUser(), getStudy());
+            doReturn(notice).when(noticeService).createNotice(any(CreateNoticeRequest.class));
+            ReflectionTestUtils.setField(notice, "noticeId", 1L);
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -128,11 +133,11 @@ class NoticeApiTest {
             // then
             resultActions.andExpect(status().isOk());
 
-            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+            ResponseDto response = gson.fromJson(resultActions.andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
 
-            assertThat(response.getData().get("notice")).isNotNull();
+            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
         }
     }
 }
