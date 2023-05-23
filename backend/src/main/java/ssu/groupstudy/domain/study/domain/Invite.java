@@ -16,7 +16,7 @@ public class Invite {
     private String qrCode;
 
     // TODO : invite 생성 코드 작성
-    public static Invite generate(){
+    protected static Invite generate(){
         return new Invite();
     }
 

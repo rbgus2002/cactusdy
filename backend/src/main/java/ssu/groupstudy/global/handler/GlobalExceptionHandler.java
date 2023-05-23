@@ -21,8 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        // TODO : Error message 안찍히는 에러 수정
-        log.error("handleHttpMessageNotReadableException : {}", e);
+        log.error("handleHttpMessageNotReadableException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_JSON);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
@@ -30,28 +29,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("handleMethodArgumentNotValidException : {}", e);
+        log.error("handleMethodArgumentNotValidException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_METHOD_ARGUMENT);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
     @ExceptionHandler(UnexpectedTypeException.class)
     public ResponseEntity<ErrorResponseDto> handleUnexpectedTypeException(UnexpectedTypeException e) {
-        log.error("handleUnexpectedTypeException : {}", e);
+        log.error("handleUnexpectedTypeException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_METHOD_ARGUMENT);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDto> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        log.error("handleDataIntegrityViolationException : {}", e);
+        log.error("handleDataIntegrityViolationException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.NOT_SATISFIED_DB_CONSTRAINT);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponseDto> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error("handleHttpRequestMethodNotSupportedException", e);
+        log.error("handleHttpRequestMethodNotSupportedException", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.METHOD_NOT_ALLOWED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
@@ -65,7 +64,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDto> handleException(Exception e) {
-        log.error("handleException", e);
+        log.error("handleException", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }

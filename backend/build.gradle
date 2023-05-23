@@ -28,6 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
 //	implementation 'org.springframework.boot:spring-boot-starter-security' // spring security
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 
 	// Junit
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
