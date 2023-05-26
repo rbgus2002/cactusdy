@@ -24,8 +24,28 @@ public class LoggingConfig {
     private static final String STR_START_EXECUTE_TIME = "[{}] START";
     private static final String STR_END_EXECUTE_TIME = "[{}] FINISH // Return({}) : {}";
 
-    @Around("execution(* ssu.groupstudy..*Api.*(..)) || execution(* ssu.groupstudy..*Service.*(..))")
-    public Object logging(final ProceedingJoinPoint pjp) throws Throwable {
+    @Around("execution(* ssu.groupstudy..*Api.*(..))")
+    public Object loggingInApi(final ProceedingJoinPoint pjp) throws Throwable {
+        Object retVal = null;
+        final String formatClassMethod = MessageFormat.format(STR_CLASS_METHOD, pjp.getTarget().getClass().getSimpleName(), pjp.getSignature().getName(), this.getArgumentNames(pjp.getArgs()));
+
+        try{
+            log.info(STR_START_EXECUTE_TIME, formatClassMethod);
+
+            // actual process
+            retVal = pjp.proceed();
+
+            log.info(STR_END_EXECUTE_TIME, formatClassMethod, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"));
+        }catch (Throwable e){
+            log.warn("[{}]\n{}", formatClassMethod, ExceptionUtils.getStackTrace(e));
+            throw e;
+        }
+
+        return retVal;
+    }
+
+    @Around("execution(* ssu.groupstudy..*Service.*(..))")
+    public Object loggingInService(final ProceedingJoinPoint pjp) throws Throwable {
         Object retVal = null;
         final String formatClassMethod = MessageFormat.format(STR_CLASS_METHOD, pjp.getTarget().getClass().getSimpleName(), pjp.getSignature().getName(), this.getArgumentNames(pjp.getArgs()));
 
