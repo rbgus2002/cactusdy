@@ -37,7 +37,7 @@ public class LoggingConfig {
 
             log.info(STR_END_EXECUTE_TIME, formatClassMethod, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"));
         }catch (Throwable e){
-            log.warn("[{}]\n{}", formatClassMethod, ExceptionUtils.getStackTrace(e));
+//            log.warn("[{}]\n{}", formatClassMethod, ExceptionUtils.getStackTrace(e));
             throw e;
         }
 
