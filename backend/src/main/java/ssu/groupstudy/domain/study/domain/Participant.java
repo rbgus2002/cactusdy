@@ -41,20 +41,18 @@ public class Participant {
         this.banishYn = 'N';
     }
 
+    // TODO : User에서 equals(), hashCode() override 했는데 왜 id값으로 비교해주어야 하는가
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Participant that = (Participant) o;
-        return user.equals(that.user) && study.equals(that.study);
+        return Objects.equals(user.getUserId(), that.user.getUserId()) && Objects.equals(study.getStudyId(), that.study.getStudyId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, study);
+        return Objects.hash(user.getUserId(), study.getStudyId());
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)

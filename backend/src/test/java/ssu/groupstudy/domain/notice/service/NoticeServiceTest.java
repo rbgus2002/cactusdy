@@ -135,7 +135,7 @@ class NoticeServiceTest {
     }
 
     @Nested
-    class 공지사항체크 { // TODO : 스터디 참여중인 사용자인지 고려해줘서 TEST CODE 짜기 (프로덕트 코드는 정상)
+    class 공지사항체크 {
         @Test
         @DisplayName("공지사항을 읽지 않은 사용자가 체크 버튼을 누르면 읽음 처리한다.")
         void 버튼클릭_추가() {
@@ -185,31 +185,5 @@ class NoticeServiceTest {
             assertThat(notice.getCheckNotices().size()).isEqualTo(0);
             assertThat(isChecked).isEqualTo("Unchecked");
         }
-
-
-        // TODO : 마저 작성
-//        @Test
-//        @DisplayName("공지사항 체크 버튼은 해당 스터디에 소속된 사용자만 누를 수 있다")
-//        void 실패_스터디소속X() {
-//            // given
-//            User user = SignUpRequest.builder()
-//                    .name("홍예지")
-//                    .email("yejiisfree@naver.com")
-//                    .nickName("play_girl")
-//                    .build().toEntity();
-//
-//            doReturn(Optional.of(getNotice())).when(noticeRepository).findByNoticeId(any(Long.class));
-//            doReturn(Optional.of(user)).when(userRepository).findByUserId(any(Long.class));
-//
-//            // when
-//            assertThrows(UserNotParticipatedException.class, () -> noticeService.switchCheckNotice(SwitchCheckNoticeRequest.builder()
-//                    .noticeId(1L)
-//                    .userId(1L)
-//                    .build()));
-//            // then
-//
-////            EmailExistsException exception = assertThrows(EmailExistsException.class, () -> userService.signUp(getSignUpRequest()));
-//
-//        }
     }
 }

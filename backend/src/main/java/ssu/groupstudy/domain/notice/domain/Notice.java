@@ -52,7 +52,7 @@ public class Notice extends BaseEntity {
     }
 
     public String switchCheckNotice(CheckNotice checkNotice){
-        validateUser(checkNotice);
+        checkUserInStudy(checkNotice);
 
         if(isAlreadyChecked(checkNotice)){
             uncheckNotice(checkNotice);
@@ -63,7 +63,7 @@ public class Notice extends BaseEntity {
         }
     }
 
-    private void validateUser(CheckNotice checkNotice) {
+    private void checkUserInStudy(CheckNotice checkNotice) {
         Study study = checkNotice.getNotice().getStudy();
         if(!study.isParticipated(checkNotice.getUser())){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
