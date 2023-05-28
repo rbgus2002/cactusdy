@@ -12,7 +12,7 @@ import 'package:group_study_app/widgets/circle_button.dart';
 // margin 추가
 
 class TagButton extends StatelessWidget{
-  static const double height = 26;
+  static const double height = 24;
 
   Color color;
 
