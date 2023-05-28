@@ -7,14 +7,18 @@ class PercentInfo {
 
   PercentInfo({
     this.percent = 0.0,
-    this.color = Colors.transparent,
+    this.color = ColorStyles.transparent,
   });
 }
 
 abstract class PercentGraph extends StatelessWidget {
   List<PercentInfo> percentInfos;
+  Color backgroundColor;
+  double stroke;
 
   PercentGraph({Key? key,
     required this.percentInfos,
+    this.backgroundColor = ColorStyles.grey,
+    this.stroke = 5,
   }) : super(key: key);
 }

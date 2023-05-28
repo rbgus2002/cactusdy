@@ -5,12 +5,16 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/widgets/percent_graphs/percent_graph.dart';
 
 class CirclePercentGraph extends PercentGraph {
-  double scale;
+  final double scale;
+  final double ratio;
 
   CirclePercentGraph({
     Key? key,
-    required this.scale,
     required super.percentInfos,
+    super.backgroundColor,
+
+    required this.scale,
+    this.ratio = 0.1,
   }) : super(key: key);
 
   @override
@@ -21,7 +25,9 @@ class CirclePercentGraph extends PercentGraph {
 
       child: CustomPaint(
         painter: _CirclePercentGraphPaint(
-          percentInfos: percentInfos
+          percentInfos: percentInfos,
+          backgroundColor: backgroundColor,
+          stroke: ratio * scale,
         ),
       )
     );
@@ -29,22 +35,21 @@ class CirclePercentGraph extends PercentGraph {
 }
 
 class _CirclePercentGraphPaint extends CustomPainter {
-  // ratio :'line_stroke':'radius' ratio
-  double ratio;
-  Color backgroundColor = Colors.transparent;
+  final Color backgroundColor;
+  final double stroke;
 
   final List<PercentInfo> percentInfos;
 
   _CirclePercentGraphPaint({
-    this.ratio = 0.1,
     required this.percentInfos,
+    this.backgroundColor = ColorStyles.grey,
+    this.stroke = 15,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    double stroke = size.width * ratio;
-    double radius = (size.width - stroke) * 0.5;
-    Offset center = Offset(size.width * 0.5, size.height * 0.5);
+    final double radius = (size.width - stroke) * 0.5;
+    final Offset center = Offset(size.width * 0.5, size.height * 0.5);
 
     Paint paint = Paint()
       ..color = backgroundColor
@@ -57,7 +62,6 @@ class _CirclePercentGraphPaint extends CustomPainter {
       startAngle += percentInfo.percent;
     }
     startAngle = 2 * pi * startAngle;
-    double tmp = startAngle;
 
     // draw background circle
     canvas.drawCircle(center, radius, paint);
