@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:group_study_app/widgets/charts/chart.dart';
 
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/widgets/percent_graphs/percent_graph.dart';
-
-class BarPercentGraph extends PercentGraph {
+class BarChart extends Chart {
   final double width;
 
-  BarPercentGraph({
+  BarChart({
     Key? key,
     required super.percentInfos,
     super.backgroundColor,
@@ -23,9 +20,9 @@ class BarPercentGraph extends PercentGraph {
         width: width,
 
         child: CustomPaint(
-          painter: _BarPercentGraphPaint(
+          painter: _BarChartPaint(
               percentInfos: percentInfos,
-              backgroundColor: backgroundColor,
+              bar_chart: backgroundColor,
               stroke: stroke
           ),
         )
@@ -33,15 +30,15 @@ class BarPercentGraph extends PercentGraph {
   }
 }
 
-class _BarPercentGraphPaint extends CustomPainter {
-  final Color backgroundColor;
+class _BarChartPaint extends CustomPainter {
+  final Color bar_chart;
   final double stroke;
 
   final List<PercentInfo> percentInfos;
 
-  _BarPercentGraphPaint({
+  _BarChartPaint({
     required this.percentInfos,
-    required this.backgroundColor,
+    required this.bar_chart,
     required this.stroke,
   });
 
@@ -53,7 +50,7 @@ class _BarPercentGraphPaint extends CustomPainter {
     Offset rightPoint = Offset(size.width, verticalBase);
 
     Paint paint = Paint()
-      ..color = backgroundColor
+      ..color = bar_chart
       ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -78,7 +75,7 @@ class _BarPercentGraphPaint extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_BarPercentGraphPaint oldDelegate) {
+  bool shouldRepaint(_BarChartPaint oldDelegate) {
     return true;
   }
 }

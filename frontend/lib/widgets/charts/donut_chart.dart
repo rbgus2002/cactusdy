@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/widgets/percent_graphs/percent_graph.dart';
+import 'package:group_study_app/widgets/charts/chart.dart';
 
-class CirclePercentGraph extends PercentGraph {
+class DonutChart extends Chart {
   final double scale;
   final double ratio;
 
-  CirclePercentGraph({
+  DonutChart({
     Key? key,
     required super.percentInfos,
     super.backgroundColor,
@@ -24,7 +24,7 @@ class CirclePercentGraph extends PercentGraph {
       height: scale,
 
       child: CustomPaint(
-        painter: _CirclePercentGraphPaint(
+        painter: _DonutChartPaint(
           percentInfos: percentInfos,
           backgroundColor: backgroundColor,
           stroke: ratio * scale,
@@ -34,13 +34,13 @@ class CirclePercentGraph extends PercentGraph {
   }
 }
 
-class _CirclePercentGraphPaint extends CustomPainter {
+class _DonutChartPaint extends CustomPainter {
   final Color backgroundColor;
   final double stroke;
 
   final List<PercentInfo> percentInfos;
 
-  _CirclePercentGraphPaint({
+  _DonutChartPaint({
     required this.percentInfos,
     this.backgroundColor = ColorStyles.grey,
     this.stroke = 15,
@@ -79,7 +79,7 @@ class _CirclePercentGraphPaint extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_CirclePercentGraphPaint oldDelegate) {
+  bool shouldRepaint(_DonutChartPaint oldDelegate) {
     return true;
   }
 }

@@ -11,12 +11,12 @@ class PercentInfo {
   });
 }
 
-abstract class PercentGraph extends StatelessWidget {
+abstract class Chart extends StatelessWidget {
   List<PercentInfo> percentInfos;
   Color backgroundColor;
   double stroke;
 
-  PercentGraph({Key? key,
+  Chart({Key? key,
     required this.percentInfos,
     this.backgroundColor = ColorStyles.grey,
     this.stroke = 5,
