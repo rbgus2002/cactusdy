@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../models/user.dart';
-import 'circle_button.dart';
+import 'buttons/circle_button.dart';
 
 class UserListButton extends StatelessWidget {
   final List<User> userList;

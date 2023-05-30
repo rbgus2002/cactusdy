@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/widgets/Tags/tag.dart';
+import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:intl/intl.dart';
 
 import '../themes/design.dart';
@@ -21,35 +24,30 @@ class RoundInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
+        Row ( // Round Text
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text("$roundIdx", style: TextStyles.titleLarge),
-            const Text(
-              " 회차",
-              style: TextStyles.bodyMedium,
-              textAlign: TextAlign.right,
-            ),
-          ],
-        ),
-        const SizedBox(
-          width: Design.padding,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(place ?? "", maxLines: 1, style: TextStyles.bodySmall),
-            Text(
-              DateFormat('yyyy-MM-dd').format(date!),
-              maxLines: 1,
-              style: TextStyles.bodySmall,
-            ),
-          ],
+            Text("$roundIdx", style: TextStyles.titleBig),
+            const Text("회차", style: TextStyles.titleSmall,),
+          ]
         ),
         Design.padding15,
-        Design.padding15,
-        Text(tag)
+
+        Flexible(
+          fit: FlexFit.tight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(place ?? "", maxLines: 1, style: TextStyles.titleTiny),
+              Text(DateFormat('yyyy-MM-dd').format(date!), maxLines: 1, style: TextStyles.titleTiny,),
+            ],
+          ),
+        ),
+        UserStateTag(color: Colors.red, text: "예정됨"),
       ],
     );
   }

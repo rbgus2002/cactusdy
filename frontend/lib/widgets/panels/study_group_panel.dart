@@ -3,15 +3,19 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/Task/check_box_task.dart';
-import 'package:group_study_app/widgets/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
+import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
+import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/percent_graphs/percent_graph.dart';
-import 'package:group_study_app/widgets/Task/task.dart';
+import 'package:group_study_app/widgets/tasks/check_box_task.dart';
+import 'package:group_study_app/widgets/tasks/task.dart';
 import 'package:group_study_app/widgets/user_list_button.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 
 class StudyGroupPanel extends Panel {
+  List<Task>? groupTasks;
+  List<Task>? personalTasks;
+
   StudyGroupPanel({
     super.key,
     super.backgroundColor,
@@ -19,6 +23,9 @@ class StudyGroupPanel extends Panel {
     super.width,
     super.height,
     super.padding,
+
+    this.groupTasks,
+    this.personalTasks,
     }) : super(
       boxShadows: Design.basicShadows,
       child: Column(
@@ -26,7 +33,7 @@ class StudyGroupPanel extends Panel {
         children: [
           Row(
             children: [
-              PercentCircleButton(scale: 60, percentInfos: [ PercentInfo(percent: 100, color: Colors.purple)]),
+              OutlineCircleButton(image: null, scale: 60, color: Colors.red, stroke: 5,),
               Design.padding10,
               Flexible(
                 child: Column(
@@ -46,20 +53,45 @@ class StudyGroupPanel extends Panel {
             ],
           ),
           Design.padding5,
-          Container(
-            color: Colors.red,
-            alignment: Alignment.centerLeft,
-            child: RoundInfo(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26),tag: "asd"),
-          ),
+          RoundInfo(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26),tag: "asd"),
+
           Design.padding5,
-          Text("GROUP", style: TextStyles.titleSmall,),
+          const Text("GROUP", style: TextStyles.titleMedium,),
           CheckBoxTask(taskid: 0, text: "백준 : 1203번 풀기"),
           CheckBoxTask(taskid: 0, text: "백준 : 23092번 풀기"),
+
           Design.padding15,
-          Text("PERSONAL", style: TextStyles.titleSmall,),
+          const Text("PERSONAL", style: TextStyles.titleMedium,),
           CheckBoxTask(taskid: 0, text: "알고리즘 강의 듣기"),
           CheckBoxTask(taskid: 0, text: "Flutter 강의 듣기"),
         ],
       )
     );
 }
+/*
+class ReorderableTasks extends StatefulWidget {
+  List<Task> tasks;
+  const ReorderableTasks({Key? key}) : super(key: key);
+
+  @override
+  State<ReorderableTasks> createState() => _ReorderableTask();
+}
+
+class _ReorderableTasks extends State<ReorderableTasks> {
+  late final List<int> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List<int>.generate(widget.tasks.length, (int index) => index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableListView(children: children, onReorder: onReorder)
+  }
+
+
+
+
+}*/

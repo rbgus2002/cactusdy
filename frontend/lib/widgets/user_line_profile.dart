@@ -3,7 +3,7 @@ import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/widgets/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 
 class UserLineProfile extends StatelessWidget {

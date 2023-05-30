@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   @override
@@ -11,10 +12,13 @@ class _StudyDetailRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Center(
-            child: Text(
-              'Study Detail Screen',
-            )
+        body: Column(
+          children: [
+            Row(children : [
+
+              ])
+
+          ],
         )
     );
   }

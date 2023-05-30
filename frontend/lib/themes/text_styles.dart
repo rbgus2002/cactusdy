@@ -12,6 +12,7 @@ class TextStyles {
   static const titleLarge = TextStyle(fontSize: 24, fontWeight: _bold );
   static const titleMedium = TextStyle(fontSize: 20, fontWeight: _bold);
   static const titleSmall = TextStyle(fontSize: 16, fontWeight: _bold);
+  static const titleTiny = TextStyle(fontSize: 14, fontWeight: _bold);
 
   static const bodyLarge = TextStyle(fontSize: 16);
   static const bodyMedium = TextStyle(fontSize: 12);
