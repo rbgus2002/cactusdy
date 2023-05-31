@@ -20,7 +20,7 @@ public class Participants {
     @JoinColumn(name = "userId", nullable = false)
     private User hostUser;
 
-    @OneToMany(mappedBy = "study", cascade = PERSIST)
+    @OneToMany(mappedBy = "study")
     private Set<Participant> participants = new HashSet<>();
 
     public static Participants empty(Participant participant) {

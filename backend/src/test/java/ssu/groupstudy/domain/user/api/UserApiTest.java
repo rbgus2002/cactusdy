@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
@@ -30,42 +33,29 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class UserApiTest{
+class UserApiTest extends ApiTest {
     @InjectMocks
     private UserApi userApi;
     @Mock
     private UserService userService;
-    protected MockMvc mockMvc; // 컨트롤러 테스트를 위한 HTTP 호출 객체
-    public Gson gson;
-
 
     @BeforeEach
     public void init() {
         mockMvc = MockMvcBuilders.standaloneSetup(userApi)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-        gson = new Gson();
-    }
 
-    private SignUpRequest getSignUpRequest() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus2002@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build();
     }
 
     @Nested
     class 회원가입{
-        @Test
         @DisplayName("이메일 형식이 아닌 경우 예외를 던진다.")
-        void fail_invalid_Email() throws Exception {
+        @ParameterizedTest
+        @ValueSource(strings = {"rbgus2002", "rbgus2002@", "naver.com"})
+        void fail_invalid_Email(String email) throws Exception {
             // given
             final String url = "/user";
-            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002");
+            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", email);
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -86,13 +76,13 @@ class UserApiTest{
         void success() throws Exception {
             // given
             final String url = "/user";
-            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002");
+            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002@naver.com");
             final User 최규현 = 최규현SignUpRequest.toEntity();
             doReturn(UserInfoResponse.from(최규현)).when(userService).findUser(any(Long.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
-                    .param("userId", "1")
+                    .param("userId", "-1")
                     .contentType(MediaType.APPLICATION_JSON)
             );
 
@@ -102,6 +92,7 @@ class UserApiTest{
             DataResponseDto response = gson.fromJson(resultActions.andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+            assertThat(response.getSuccess()).isTrue();
             assertThat(response.getData().get("user")).isNotNull();
         }
     }

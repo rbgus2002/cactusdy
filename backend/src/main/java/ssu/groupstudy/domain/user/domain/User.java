@@ -51,15 +51,6 @@ public class User extends BaseEntity {
         this.deleteYn = 'N';
     }
 
-    public User(Long userId, String name, String nickName, String email) {
-        this.userId = userId;
-        this.name = name;
-        this.nickName = nickName;
-        this.email = email;
-        this.activateDate = LocalDateTime.now();
-        this.deleteYn = 'N';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

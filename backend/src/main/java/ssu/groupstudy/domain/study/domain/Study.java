@@ -13,6 +13,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static ssu.groupstudy.domain.study.domain.Invite.*;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,7 +33,7 @@ public class Study extends BaseEntity {
     private String picture;
 
     @Embedded
-    private final Invite invite = Invite.generate();
+    private final Invite invite = generate();
 
     @Embedded
     private Participants participants;

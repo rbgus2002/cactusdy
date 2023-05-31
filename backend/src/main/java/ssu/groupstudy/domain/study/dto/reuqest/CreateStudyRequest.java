@@ -31,5 +31,4 @@ public class CreateStudyRequest {
                 .hostUser(hostUser)
                 .build();
     }
-
 }

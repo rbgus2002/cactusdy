@@ -30,4 +30,10 @@ public class SignUpRequest {
                 .email(this.email)
                 .build();
     }
+
+    public SignUpRequest(String name, String nickName, String email) {
+        this.name = name;
+        this.nickName = nickName;
+        this.email = email;
+    }
 }
