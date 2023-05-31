@@ -13,6 +13,9 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,15 +34,15 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
-    @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "notice", cascade = ALL, orphanRemoval = true)
     private Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder

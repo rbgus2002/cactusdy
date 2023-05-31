@@ -9,15 +9,18 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+
 @Embeddable
 @NoArgsConstructor
 @Getter
 public class Participants {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User hostUser;
 
-    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "study", cascade = PERSIST)
     private Set<Participant> participants = new HashSet<>();
 
     public static Participants empty(Participant participant) {

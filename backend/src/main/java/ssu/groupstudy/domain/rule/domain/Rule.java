@@ -10,6 +10,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -25,7 +27,7 @@ public class Rule extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 

@@ -9,6 +9,8 @@ import ssu.groupstudy.domain.user.domain.User;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static javax.persistence.FetchType.LAZY;
+
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,11 +21,11 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 

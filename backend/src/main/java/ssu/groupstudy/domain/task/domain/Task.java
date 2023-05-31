@@ -8,6 +8,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task{
@@ -25,7 +27,7 @@ public class Task{
     @Column(nullable = false)
     private char doneYn;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_round_id", nullable = false)
     private UserRound userRound;
 }

@@ -11,6 +11,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -26,7 +28,7 @@ public class Round extends BaseEntity {
     @Embedded
     private Appointment appointment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 

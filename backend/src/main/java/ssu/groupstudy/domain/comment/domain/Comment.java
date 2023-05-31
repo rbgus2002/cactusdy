@@ -10,6 +10,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "delete_yn = 'N'")
@@ -21,18 +23,18 @@ public class Comment extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="userId", nullable = false)
     private User writer;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="parentCommentId")
     private Comment parentComment;
 
     @Column(nullable = false)
     private char deleteYn;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="noticeId")
     private Notice notice;
 }

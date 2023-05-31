@@ -23,7 +23,7 @@ public class RoundApi {
     private final RoundService roundService;
 
     @Operation(summary = "회차 생성", description = "parameter에서 studyTime의 형식은 \"yyyy-MM-dd HH:mm\" 이다.")
-    @PostMapping("")
+    @PostMapping("") // TODO : swagger에 parameter에 대한 설명도 추가하기
     public ResponseDto createRound(@Valid @RequestBody CreateRoundRequest dto){
         Round round = roundService.createRound(dto);
 
