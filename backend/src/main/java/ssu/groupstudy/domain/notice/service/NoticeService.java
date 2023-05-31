@@ -16,6 +16,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -35,6 +36,11 @@ public class NoticeService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        
+        // TODO 소속중인 스터디인지 validate 검사 구현
+        if(!study.isParticipated(writer)){
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
 
         return noticeRepository.save(dto.toEntity(writer, study));
     }

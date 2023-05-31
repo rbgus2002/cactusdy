@@ -80,7 +80,7 @@ class StudyApiTest {
     }
 
     @Nested
-    class 스터디생성{
+    class 스터디생성 {
         @Test
         @DisplayName("스터디 생성 시 반드시 스터디의 이름을 반드시 정해주어야 한다")
         void 실패_이름존재X() throws Exception {
@@ -132,7 +132,7 @@ class StudyApiTest {
     }
 
     @Nested
-    class 스터디초대{
+    class 스터디초대 {
         @Test
         @DisplayName("존재하지 않는 사용자를 스터디에 초대하면 예외를 던진다")
         void 실패_회원존재X() throws Exception {

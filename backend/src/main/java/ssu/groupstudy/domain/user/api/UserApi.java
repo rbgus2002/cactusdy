@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.service.UserService;
@@ -30,8 +29,8 @@ public class UserApi {
 
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
-    public ResponseDto getUser(@RequestParam Long userId) {
-        UserInfoResponse user = userService.getUser(userId);
+    public ResponseDto findUser(@RequestParam Long userId) {
+        UserInfoResponse user = userService.findUser(userId);
         return DataResponseDto.of("user", user);
     }
 

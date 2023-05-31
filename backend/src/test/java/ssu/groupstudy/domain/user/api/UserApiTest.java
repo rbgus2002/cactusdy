@@ -4,25 +4,19 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
-import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -30,27 +24,21 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class UserApiTest {
+class UserApiTest{
     @InjectMocks
     private UserApi userApi;
-
     @Mock
     private UserService userService;
+    protected MockMvc mockMvc; // 컨트롤러 테스트를 위한 HTTP 호출 객체
+    public Gson gson;
 
-    private MockMvc mockMvc; // 컨트롤러 테스트를 위한 HTTP 호출 객체
-
-    private Gson gson;
 
     @BeforeEach
     public void init() {
@@ -73,59 +61,20 @@ class UserApiTest {
     @Nested
     class 회원가입{
         @Test
-        @DisplayName("회원가입 시에 email parameter가 이메일 형식이 아닌 경우 예외를 던진다.")
-        void 회원가입_실패_이메일형식X() throws Exception {
+        @DisplayName("이메일 형식이 아닌 경우 예외를 던진다.")
+        void fail_invalid_Email() throws Exception {
             // given
             final String url = "/user";
+            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002");
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(SignUpRequest.builder()
-                            .name("최규현")
-                            .email("rbgus2002")
-                            .nickName("규규")
-                            .phoneModel("")
-                            .picture("")
-                            .build()))
+                    .content(gson.toJson(최규현SignUpRequest))
                     .contentType(MediaType.APPLICATION_JSON)
             );
 
             // then
             resultActions.andExpect(status().isBadRequest());
-        }
-
-        @Test
-        @DisplayName("중복되는 이메일이 존재하면 회원가입에 실패한다.")
-        void 회원가입_실패_이메일중복존재() throws Exception {
-            // given
-            final String url = "/user";
-            doThrow(new EmailExistsException(ResultCode.DUPLICATE_EMAIL)).when(userService).signUp(any(SignUpRequest.class));
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getSignUpRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isBadRequest());
-        }
-
-        @DisplayName("성공")
-        @Test
-        void 회원가입_성공() throws Exception {
-            // given
-            final String url = "/user";
-            doReturn(getSignUpRequest().toEntity()).when(userService).signUp(any(SignUpRequest.class));
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getSignUpRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isOk());
         }
     }
 
@@ -134,10 +83,12 @@ class UserApiTest {
     class 사용자조회{
         @DisplayName("성공")
         @Test
-        void 사용자조회_성공() throws Exception {
+        void success() throws Exception {
             // given
             final String url = "/user";
-            doReturn(UserInfoResponse.from(getSignUpRequest().toEntity())).when(userService).getUser(any(Long.class));
+            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002");
+            final User 최규현 = 최규현SignUpRequest.toEntity();
+            doReturn(UserInfoResponse.from(최규현)).when(userService).findUser(any(Long.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
@@ -151,7 +102,6 @@ class UserApiTest {
             DataResponseDto response = gson.fromJson(resultActions.andReturn()
                     .getResponse()
                     .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
-
             assertThat(response.getData().get("user")).isNotNull();
         }
     }

@@ -55,21 +55,6 @@ public class User extends BaseEntity {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", picture='" + picture + '\'' +
-                ", statusMessage='" + statusMessage + '\'' +
-                ", email='" + email + '\'' +
-                ", activateDate=" + activateDate +
-                ", phoneModel='" + phoneModel + '\'' +
-                ", deleteYn=" + deleteYn +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

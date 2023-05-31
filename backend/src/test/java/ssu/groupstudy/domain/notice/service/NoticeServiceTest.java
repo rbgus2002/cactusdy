@@ -135,7 +135,7 @@ class NoticeServiceTest {
     }
 
     @Nested
-    class 공지사항체크 {
+    class 공지사항체크 { // TODO : 스터디 참여중인 사용자인지 고려해줘서 TEST CODE 짜기 (프로덕트 코드는 정상)
         @Test
         @DisplayName("공지사항을 읽지 않은 사용자가 체크 버튼을 누르면 읽음 처리한다.")
         void 버튼클릭_추가() {

@@ -3,12 +3,10 @@ package ssu.groupstudy.domain.user.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
@@ -18,62 +16,48 @@ import ssu.groupstudy.global.ResultCode;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceTest extends ServiceTest {
     @InjectMocks
     private UserService userService;
 
     @Mock
     private UserRepository userRepository;
 
-    private SignUpRequest getSignUpRequest() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build();
-    }
-
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
-
-
     @Nested
     class 회원가입{
         @Test
         @DisplayName("중복되는 이메일이 존재하면 회원가입이 불가능하다")
-        void 회원가입_실패_이메일중복() {
+        void fail_emailDuplicated() {
             // given
             doReturn(true).when(userRepository).existsByEmail(any(String.class));
 
-            // when
-            EmailExistsException exception = assertThrows(EmailExistsException.class, () -> userService.signUp(getSignUpRequest()));
-
-            // then
-            assertThat(exception.getResultCode()).isEqualTo(ResultCode.DUPLICATE_EMAIL);
+            // when, then
+            assertThatThrownBy(() -> userService.signUp(최규현SignUpRequest))
+                    .isInstanceOf(EmailExistsException.class)
+                    .hasMessage(ResultCode.DUPLICATE_EMAIL.getMessage());
         }
 
         @Test
         @DisplayName("회원가입 성공")
-        void 회원가입_성공() {
+        void success() {
             // given
             doReturn(false).when(userRepository).existsByEmail(any(String.class));
-            doReturn(getUser()).when(userRepository).save(any(User.class));
+            doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
-            final User newUser = userService.signUp(getSignUpRequest());
+            final User newUser = userService.signUp(최규현SignUpRequest);
 
             // then
-            assertThat(newUser).isNotNull();
-            assertThat(newUser.getName()).isEqualTo("최규현");
+            assertAll(
+                    () -> assertThat(newUser).isNotNull(),
+                    () -> assertThat(newUser.getName()).isEqualTo("최규현"),
+                    () -> assertThat(newUser.getEmail()).isEqualTo("rbgus200@naver.com")
+            );
         }
     }
 
@@ -81,29 +65,32 @@ class UserServiceTest {
     class 사용자조회{
         @Test
         @DisplayName("userId가 존재하지 않으면 예외를 던진다")
-        void 사용자_조회() {
+        void fail_invalidUserId() {
             // given
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-            // when
-            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.getUser(1L));
-
-            // then
-            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+            // when, then
+            assertThatThrownBy(() -> userService.findUser(-1L))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
 
         @Test
         @DisplayName("성공")
-        void 사용자조회_성공() {
+        void success() {
             // given
-            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            final UserInfoResponse UserInfoResponse = userService.getUser(1L);
+            final UserInfoResponse userInfoResponse = userService.findUser(1L);
 
             // then
-            assertThat(UserInfoResponse).isNotNull();
-            assertThat(UserInfoResponse.getNickName()).isEqualTo("규규");
+            assertAll(
+                    () -> assertThat(userInfoResponse).isNotNull(),
+                    () -> assertThat(userInfoResponse.getUserId()).isEqualTo(1L),
+                    () -> assertThat(userInfoResponse.getNickName()).isEqualTo("규규")
+
+            );
         }
     }
 }
