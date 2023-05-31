@@ -1,9 +1,6 @@
 package ssu.groupstudy.domain.user.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.global.domain.BaseEntity;
@@ -51,6 +48,15 @@ public class User extends BaseEntity {
         this.email = email;
         this.activateDate = LocalDateTime.now();
         this.phoneModel = phoneModel;
+        this.deleteYn = 'N';
+    }
+
+    public User(Long userId, String name, String nickName, String email) {
+        this.userId = userId;
+        this.name = name;
+        this.nickName = nickName;
+        this.email = email;
+        this.activateDate = LocalDateTime.now();
         this.deleteYn = 'N';
     }
 

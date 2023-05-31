@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.study.repository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ class StudyRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    protected User 최규현;
+    protected User 장재우;
+    protected Study 알고리즘스터디;
+
     private Study getStudy(User hostUser) {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
@@ -43,12 +48,19 @@ class StudyRepositoryTest {
                 .build().toEntity();
     }
 
+    @BeforeEach
+    void init(){
+        최규현 = new User(1L, "최규현", "규규", "rbgus2002@naver.com");
+        장재우 = new User(2L, "장재우", "킹적화", "arkady@naver.com");
+
+    }
+
 
     @DisplayName("스터디 생성")
     @Test
     void 스터디생성() {
         // given
-        final User hostUser = userRepository.save(getUser());
+        final User hostUser = userRepository.save(최규현);
         final Study study = getStudy(hostUser);
 
         // when
