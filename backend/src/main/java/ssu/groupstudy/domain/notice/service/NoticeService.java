@@ -36,11 +36,10 @@ public class NoticeService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-        
-        // TODO 소속중인 스터디인지 validate 검사 구현
-        if(!study.isParticipated(writer)){
-            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
-        }
+
+//        if(!study.isParticipated(writer)){
+//            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+//        }
 
         return noticeRepository.save(dto.toEntity(writer, study));
     }
@@ -52,6 +51,6 @@ public class NoticeService {
         User user = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        return notice.switchCheckNotice(new CheckNotice(notice, user));
+        return notice.switchCheckNotice(user);
     }
 }

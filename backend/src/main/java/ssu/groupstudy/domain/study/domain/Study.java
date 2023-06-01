@@ -50,12 +50,13 @@ public class Study extends BaseEntity {
         this.deleteYn = 'N';
     }
 
+    // FIXME
     public boolean isParticipated(User user) {
         return participants.existParticipant(new Participant(user, this));
     }
 
-    public void invite(User user){
-        if(isParticipated(user))
+    public void invite(User user) {
+        if (isParticipated(user))
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
 
         participants.addParticipant(new Participant(user, this));

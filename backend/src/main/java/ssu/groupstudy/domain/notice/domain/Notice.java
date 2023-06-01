@@ -54,8 +54,9 @@ public class Notice extends BaseEntity {
         this.deleteYn = 'N';
     }
 
-    public String switchCheckNotice(CheckNotice checkNotice){
-        checkUserInStudy(checkNotice);
+    public String switchCheckNotice(User user){
+//        validateUserInStudy(notice.getStudy(), user);
+        CheckNotice checkNotice = new CheckNotice(this, user);
 
         if(isAlreadyChecked(checkNotice)){
             uncheckNotice(checkNotice);
@@ -66,9 +67,9 @@ public class Notice extends BaseEntity {
         }
     }
 
-    private void checkUserInStudy(CheckNotice checkNotice) {
-        Study study = checkNotice.getNotice().getStudy();
-        if(!study.isParticipated(checkNotice.getUser())){
+    // FIXME
+    private void validateUserInStudy(Study study, User user) {
+        if(!study.isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
     }
