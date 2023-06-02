@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.rule.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
+import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
@@ -23,12 +26,12 @@ import ssu.groupstudy.global.ResultCode;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-@ExtendWith(MockitoExtension.class)
-class RuleServiceTest {
+class RuleServiceTest extends ServiceTest {
     @InjectMocks
     private RuleService ruleService;
 
@@ -38,72 +41,40 @@ class RuleServiceTest {
     @Mock
     private StudyRepository studyRepository;
 
-    private CreateRuleRequest getCreateRuleRequest() {
-        return CreateRuleRequest.builder()
-                .studyId(-1L)
-                .detail("숙제안해오면강퇴")
-                .build();
-    }
+    private Rule 규칙;
 
-    private CreateStudyRequest getRegisterStudyRequest() {
-        return CreateStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .detail("알고문풀")
-                .picture("")
-                .hostUserId(0L)
-                .build();
-    }
-
-    private SignUpRequest getSignUpRequest() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build();
-    }
-
-    private Rule getRule(){
-        return getCreateRuleRequest().toEntity(getStudy());
-    }
-
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
-
-    private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser());
+    @BeforeEach
+    void init(){
+        규칙 = new CreateRuleRequest(-1L, "detail").toEntity(알고리즘스터디);
+        ReflectionTestUtils.setField(규칙, "ruleId", 5L);
     }
 
     @Nested
-    class 규칙생성{
+    class createRule{
         @Test
-        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
-        void 실패_스터디존재X() {
+        @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
+        void fail_studyNotFound() {
             // given
             doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
 
-            // when
-            StudyNotFoundException exception = assertThrows(StudyNotFoundException.class, () -> ruleService.createRule(getCreateRuleRequest()));
-
-            // then
-            assertThat(exception.getResultCode()).isEqualTo(ResultCode.STUDY_NOT_FOUND);
+            // when, then
+            assertThatThrownBy(() -> ruleService.createRule(new CreateRuleRequest(-1L, "detail")))
+                    .isInstanceOf(StudyNotFoundException.class)
+                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(getStudy())).when(studyRepository).findByStudyId(any(Long.class));
-            doReturn(getRule()).when(ruleRepository).save(any(Rule.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(규칙).when(ruleRepository).save(any(Rule.class));
 
             // when
-            ruleService.createRule(getCreateRuleRequest());
+            Long ruleId = ruleService.createRule(new CreateRuleRequest(-1L, "detail"));
 
             // then
-//            assertThat(rule).isNotNull();
-//            assertThat(rule.getStudy().getStudyName()).isEqualTo("AlgorithmSSU");
+            assertThat(ruleId).isNotNull();
         }
     }
 

@@ -35,7 +35,7 @@ public class Rule extends BaseEntity {
     Rule(String detail, Study study){
         this.detail = detail;
         this.study = study;
-        this.deleteYn = 'N'; // TODO : 추후 자동으로 들어가게 변경
+        this.deleteYn = 'N';
     }
 }
 

@@ -21,10 +21,10 @@ public class RuleService {
     private final RuleRepository ruleRepository;
 
     @Transactional
-    public void createRule(CreateRuleRequest dto) {
+    public Long createRule(CreateRuleRequest dto) {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        ruleRepository.save(dto.toEntity(study));
+        return ruleRepository.save(dto.toEntity(study)).getRuleId();
     }
 }

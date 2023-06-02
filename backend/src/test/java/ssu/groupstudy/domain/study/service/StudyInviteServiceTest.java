@@ -126,10 +126,4 @@ class StudyInviteServiceTest extends ServiceTest {
             );
         }
     }
-
-    @Nested
-    class exitUser{
-
-    }
-
 }
