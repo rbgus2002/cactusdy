@@ -81,10 +81,11 @@ class StudyInviteServiceTest extends ServiceTest {
             // given
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-            // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
+            // when
+            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyInviteService.inviteUser(getInviteUserRequest()));
+
+            // then
+            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
         }
 
         @Test
@@ -143,6 +144,10 @@ class StudyInviteServiceTest extends ServiceTest {
             assertThatThrownBy(() -> studyInviteService.leaveUser(-1L, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+            // when, then
+            assertThatThrownBy(() -> studyInviteService.inviteUser(new InviteUserRequest(-1L, -1L)))
+                    .isInstanceOf(StudyNotFoundException.class)
+                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -161,6 +166,11 @@ class StudyInviteServiceTest extends ServiceTest {
                     () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
+    }
+
+    @Nested
+    class exitUser{
+
     }
 
 }
