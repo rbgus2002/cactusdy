@@ -81,11 +81,10 @@ class StudyInviteServiceTest extends ServiceTest {
             // given
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-            // when
-            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyInviteService.inviteUser(getInviteUserRequest()));
-
-            // then
-            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+            // when, then
+            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -145,7 +144,7 @@ class StudyInviteServiceTest extends ServiceTest {
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
             // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(new InviteUserRequest(-1L, -1L)))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }

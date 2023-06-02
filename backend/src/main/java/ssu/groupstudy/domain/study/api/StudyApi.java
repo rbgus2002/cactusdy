@@ -46,12 +46,4 @@ public class StudyApi {
 
         return ResponseDto.success();
     }
-
-    @Operation(summary = "스터디에서 회원 탈퇴")
-    @DeleteMapping("/invite")
-    public ResponseDto leaveUser(@Valid @RequestBody InviteUserRequest dto){
-        studyInviteService.leaveUser(dto);
-
-        return ResponseDto.success();
-    }
 }
