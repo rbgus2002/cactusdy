@@ -22,13 +22,22 @@ public class StudyInviteService {
     private final StudyRepository studyRepository;
 
     @Transactional
-    public void inviteUser(InviteUserRequest dto) {
-        User user = userRepository.findByUserId(dto.getUserId())
+    public void inviteUser(Long userId, Long studyId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-
-        Study study = studyRepository.findByStudyId(dto.getStudyId())
+        Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         study.invite(user);
+    }
+
+    @Transactional
+    public void leaveUser(Long userId, Long studyId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+        Study study = studyRepository.findByStudyId(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+
+        study.leave(user);
     }
 }

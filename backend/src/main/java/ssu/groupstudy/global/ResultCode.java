@@ -19,6 +19,7 @@ public enum ResultCode {
     INVALID_JSON(400, "request 정보를 읽을 수 없습니다."),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다.") ,
+    HOST_USER_CAN_NOT_LEAVE_STUDY(400, "방장은 스터디에 탈퇴할 수 없습니다."),
 
 
     // 404
@@ -35,8 +36,6 @@ public enum ResultCode {
     INTERNAL_SERVER_ERROR(500, "서버에서 문제가 발생했습니다."),
 
     ;
-
-
     int statusCode; // TODO : HttpStatus 타입으로 리팩토링
     private final String message;
 }
