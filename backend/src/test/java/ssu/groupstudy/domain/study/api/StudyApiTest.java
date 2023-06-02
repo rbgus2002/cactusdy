@@ -154,6 +154,7 @@ class StudyApiTest {
             resultActions.andExpect(status().isNotFound());
         }
 
+        // FIXME : 이 경우는 스터디 참여 인원 수를 assertThat 해줘야 함
         @Test
         @DisplayName("성공")
         void 성공() throws Exception {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -50,7 +51,6 @@ public class Study extends BaseEntity {
         this.deleteYn = 'N';
     }
 
-    // FIXME
     public boolean isParticipated(User user) {
         return participants.existParticipant(new Participant(user, this));
     }
@@ -60,5 +60,14 @@ public class Study extends BaseEntity {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
 
         participants.addParticipant(new Participant(user, this));
+    }
+
+
+    public void exit(User user) {
+        if(!isParticipated(user)){
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
+
+        participants.removeParticipant(new Participant(user, this));
     }
 }

@@ -20,7 +20,7 @@ public class Participants {
     @JoinColumn(name = "userId", nullable = false)
     private User hostUser;
 
-    @OneToMany(mappedBy = "study")
+    @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
     private Set<Participant> participants = new HashSet<>();
 
     public static Participants empty(Participant participant) {
@@ -36,7 +36,11 @@ public class Participants {
         return participants.contains(participant);
     }
 
-    public void addParticipant(Participant participant) {
+    protected void addParticipant(Participant participant) {
         participants.add(participant);
+    }
+
+    protected void removeParticipant(Participant participant){
+        participants.remove(participant);
     }
 }
