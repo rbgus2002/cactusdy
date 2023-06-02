@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
+import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
@@ -12,7 +13,6 @@ import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 import static ssu.groupstudy.domain.study.domain.Invite.*;
 
@@ -63,9 +63,12 @@ public class Study extends BaseEntity {
     }
 
 
-    public void exit(User user) {
+    public void leave(User user) {
         if(!isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
+        if(participants.getHostUser().equals(user)){
+            throw new CanNotLeaveStudyException(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY);
         }
 
         participants.removeParticipant(new Participant(user, this));

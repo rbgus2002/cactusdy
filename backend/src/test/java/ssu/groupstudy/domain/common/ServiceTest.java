@@ -8,6 +8,7 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
@@ -25,6 +26,8 @@ public class ServiceTest {
     protected CreateStudyRequest 영어스터디CreateRequest;
     protected Study 알고리즘스터디;
     protected Study 영어스터디;
+
+//    protected InviteUserRequest
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;

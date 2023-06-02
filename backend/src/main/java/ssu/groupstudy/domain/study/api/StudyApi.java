@@ -3,10 +3,7 @@ package ssu.groupstudy.domain.study.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
@@ -38,6 +35,14 @@ public class StudyApi {
     @PostMapping("/invite")
     public ResponseDto inviteUser(@Valid @RequestBody InviteUserRequest dto){
         studyInviteService.inviteUser(dto);
+
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "스터디에서 회원 탈퇴")
+    @DeleteMapping("/invite")
+    public ResponseDto leaveUser(@Valid @RequestBody InviteUserRequest dto){
+        studyInviteService.leaveUser(dto);
 
         return ResponseDto.success();
     }

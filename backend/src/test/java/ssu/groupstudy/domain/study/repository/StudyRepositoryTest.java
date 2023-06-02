@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -46,7 +47,7 @@ class StudyRepositoryTest {
         알고리즘스터디 = new CreateStudyRequest("알고리즘스터디", "화이팅", "", -1L).toEntity(최규현);
     }
 
-    @DisplayName("새로운 스터디를 생성한다.")
+    @DisplayName("새로운 스터디를 생성한다")
     @Test
     void createStudy() {
         // given
@@ -65,7 +66,7 @@ class StudyRepositoryTest {
         );
     }
 
-    @DisplayName("studyId로 스터디를 가져온다.")
+    @DisplayName("studyId로 스터디를 가져온다")
     @Test
     void findStudy() {
         //given
@@ -82,7 +83,7 @@ class StudyRepositoryTest {
         );
     }
 
-    @DisplayName("스터디 생성 시에 Participants가 영속화되는지 확인한다.")
+    @DisplayName("스터디 생성 시에 Participants가 영속화되는지 확인한다")
     @Test
     void findParticipant() {
         // given
@@ -114,7 +115,7 @@ class StudyRepositoryTest {
     
     @Nested
     class invite {
-        @DisplayName("이미 참여중인 사용자를 스터디에 초대하면 예외를 던진다.")
+        @DisplayName("이미 참여중인 사용자를 스터디에 초대하면 예외를 던진다")
         @Test
         void fail_alreadyExistUser() {
             // given
@@ -128,7 +129,7 @@ class StudyRepositoryTest {
                     .hasMessage(ResultCode.DUPLICATE_INVITE_USER.getMessage());
         }
 
-        @DisplayName("새로운 사용자를 스터디에 초대한다.")
+        @DisplayName("새로운 사용자를 스터디에 초대한다")
         @Test
         void success() {
             // given
@@ -150,8 +151,8 @@ class StudyRepositoryTest {
     }
 
     @Nested
-    class exit {
-        @DisplayName("참여중이지 않은 사용자가 스터디를 탈퇴하면 예외를 던진다.")
+    class leave {
+        @DisplayName("참여중이지 않은 사용자가 스터디 탈퇴를 시도하면 예외를 던진다")
         @Test
         void fail_userNotFound() {
             // given
@@ -160,22 +161,35 @@ class StudyRepositoryTest {
             studyRepository.save(알고리즘스터디);
             
             // when, then
-            assertThatThrownBy(() -> 알고리즘스터디.exit(장재우))
+            assertThatThrownBy(() -> 알고리즘스터디.leave(장재우))
                     .isInstanceOf(UserNotParticipatedException.class)
                     .hasMessage(ResultCode.USER_NOT_PARTICIPATED.getMessage());
         }
 
-        @DisplayName("사용자가 스터디에서 탈퇴한다.")
+        @DisplayName("방장은 스터디에 탈퇴할 수 없다")
+        @Test
+        void fail_hostUserInvalid() {
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+
+            // when, then
+            assertThatThrownBy(() -> 알고리즘스터디.leave(최규현))
+                    .isInstanceOf(CanNotLeaveStudyException.class)
+                    .hasMessage(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY.getMessage());
+        }
+
+        @DisplayName("사용자가 스터디에서 탈퇴한다")
         @Test
         void success() {
             // given
             userRepository.save(최규현).getUserId();
             userRepository.save(장재우);
             studyRepository.save(알고리즘스터디);
-            알고리즘스터디.invite(장재우);
 
             // when
-            알고리즘스터디.exit(장재우);
+            알고리즘스터디.invite(장재우);
+            알고리즘스터디.leave(장재우);
 
             // then
             assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(1);
