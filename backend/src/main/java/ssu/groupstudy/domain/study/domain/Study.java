@@ -61,17 +61,4 @@ public class Study extends BaseEntity {
 
         participants.addParticipant(new Participant(user, this));
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Study study = (Study) o;
-        return Objects.equals(studyId, study.studyId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(studyId);
-    }
 }

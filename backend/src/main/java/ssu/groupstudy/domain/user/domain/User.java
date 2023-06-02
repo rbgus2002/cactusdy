@@ -50,18 +50,5 @@ public class User extends BaseEntity {
         this.phoneModel = phoneModel;
         this.deleteYn = 'N';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(userId, user.userId); // TODO : id != null도 and 조건으로 걸어줘야 할 거 같은데 참고하기
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId);
-    }
 }
 
