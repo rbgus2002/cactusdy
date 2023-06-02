@@ -3,27 +3,20 @@ package ssu.groupstudy.domain.study.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.InviteUserRequest;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
-import ssu.groupstudy.global.exception.BusinessException;
 
 import java.util.Optional;
 
@@ -42,36 +35,6 @@ class StudyInviteServiceTest extends ServiceTest {
 
     @Mock
     private StudyRepository studyRepository;
-
-    private InviteUserRequest getInviteUserRequest() {
-        return InviteUserRequest.builder()
-                .studyId(-1L)
-                .userId(-1L)
-                .build();
-    }
-
-    private User getUser() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build().toEntity();
-    }
-
-    private Participant getStudyPerUser() {
-        return getInviteUserRequest().toEntity(getUser(), getStudy());
-    }
-
-    private Study getStudy() {
-        return CreateStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .detail("알고문풀")
-                .picture("")
-                .hostUserId(0L)
-                .build().toEntity(getUser());
-    }
 
     @Nested
     class inviteUser {
@@ -143,10 +106,6 @@ class StudyInviteServiceTest extends ServiceTest {
             assertThatThrownBy(() -> studyInviteService.leaveUser(-1L, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
-            // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
-                    .isInstanceOf(StudyNotFoundException.class)
-                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -157,11 +116,12 @@ class StudyInviteServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
 
             // when
+            알고리즘스터디.invite(장재우);
             studyInviteService.leaveUser(-1L, -1L);
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(2),
+                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(1),
                     () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
