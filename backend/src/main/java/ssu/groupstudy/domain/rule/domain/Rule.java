@@ -31,8 +31,7 @@ public class Rule extends BaseEntity {
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 
-    @Builder
-    Rule(String detail, Study study){
+    public Rule(String detail, Study study){
         this.detail = detail;
         this.study = study;
         this.deleteYn = 'N';

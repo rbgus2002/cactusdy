@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
-import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -16,7 +14,6 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 

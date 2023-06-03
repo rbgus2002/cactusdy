@@ -14,7 +14,7 @@ import ssu.groupstudy.global.ResultCode;
 
 @Service
 @AllArgsConstructor
-@Transactional(readOnly = true) // TODO : 이와 같은 Transaction 전략 세우는 이유 분석
+@Transactional(readOnly = true)
 @Slf4j
 public class RoundService {
 

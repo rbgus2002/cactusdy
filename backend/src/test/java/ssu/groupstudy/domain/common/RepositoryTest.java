@@ -29,7 +29,7 @@ public class RepositoryTest {
     protected NoticeRepository noticeRepository;
     @Autowired
     protected CheckNoticeRepository checkNoticeRepository;
-    
+
 
     protected User 최규현;
     protected User 장재우;
@@ -38,7 +38,7 @@ public class RepositoryTest {
     protected Notice 공지사항1;
 
     @BeforeEach
-    void init() {
+    void initDummyData() {
         최규현 = new SignUpRequest("최규현", "규규", "rbgus2002@naver.com").toEntity();
         장재우 = new SignUpRequest("장재우", "킹적화", "arkady@naver.com").toEntity();
         홍예지 = new SignUpRequest("홍예지", "찡찡이", "are_you_hungry@question.com").toEntity();

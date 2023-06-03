@@ -18,9 +18,6 @@ public class CreateRuleRequest {
     private String detail;
 
     public Rule toEntity(Study study){
-        return Rule.builder()
-                .detail(this.detail)
-                .study(study)
-                .build();
+        return new Rule(this.detail, study);
     }
 }

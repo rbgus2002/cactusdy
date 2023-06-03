@@ -22,6 +22,4 @@ public class Appointment {
     public static Appointment init(String studyPlace, LocalDateTime studyTime){
         return new Appointment(studyPlace, studyTime);
     }
-
-    // TODO : 스터디 예정 시간 계산 하는 로직은 해당 객체에게 책임 부여하기
 }

@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;

@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateRoundRequest {
     @NotNull
@@ -26,5 +26,9 @@ public class CreateRoundRequest {
                 .studyPlace(this.studyPlace)
                 .studyTime(studyTime)
                 .build();
+    }
+
+    public CreateRoundRequest(Long studyId) {
+        this.studyId = studyId;
     }
 }

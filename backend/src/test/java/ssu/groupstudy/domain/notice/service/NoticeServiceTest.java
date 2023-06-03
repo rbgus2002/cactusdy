@@ -7,15 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
 

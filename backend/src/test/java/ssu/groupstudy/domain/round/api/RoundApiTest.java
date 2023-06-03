@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.notice.api.NoticeApi;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
@@ -38,63 +39,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class RoundApiTest {
+class RoundApiTest extends ApiTest {
     @InjectMocks
     private RoundApi roundApi;
 
     @Mock
     private RoundService roundService;
 
-    private MockMvc mockMvc;
-
-    private Gson gson;
-
     @BeforeEach
     public void init() {
         mockMvc = MockMvcBuilders.standaloneSetup(roundApi)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-        gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm")
-                .create();
     }
-
-    private CreateRoundRequest getCreateRoundRequest() {
-        return CreateRoundRequest.builder()
-                .studyId(-1L)
-                .studyPlace("규현집")
-                .studyTime(LocalDateTime.of(2023, 5, 17, 16, 00))
-                .build();
-    }
-
-    private CreateStudyRequest getRegisterStudyRequest() {
-        return CreateStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .detail("알고문풀")
-                .picture("")
-                .hostUserId(0L)
-                .build();
-    }
-
-    private SignUpRequest getSignUpRequest() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build();
-    }
-
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
-
-    private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser());
-    }
-
 
     // TODO : Gson을 통해 LocalDateTime을 Json으로 만들기 위해선 따로 TypeAdapter 생성해주어야 함
     @Nested
