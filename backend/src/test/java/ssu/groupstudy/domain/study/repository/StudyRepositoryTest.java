@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ssu.groupstudy.domain.common.RepositoryTest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
@@ -24,29 +25,8 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class StudyRepositoryTest {
-    @Autowired
-    private StudyRepository studyRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ParticipantRepository participantRepository;
 
-    private User 최규현;
-    private User 장재우;
-    private User 홍예지;
-    private Study 알고리즘스터디;
-
-    @BeforeEach
-    void init() {
-        최규현 = new SignUpRequest("최규현", "규규", "rbgus2002@naver.com").toEntity();
-        장재우 = new SignUpRequest("장재우", "킹적화", "arkady@naver.com").toEntity();
-        홍예지 = new SignUpRequest("홍예지", "찡찡이", "are_you_hungry@question.com").toEntity();
-        알고리즘스터디 = new CreateStudyRequest("알고리즘스터디", "화이팅", "", -1L).toEntity(최규현);
-    }
-
+class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("새로운 스터디를 생성한다")
     @Test
     void createStudy() {
@@ -83,7 +63,7 @@ class StudyRepositoryTest {
         );
     }
 
-    @DisplayName("스터디 생성 시에 Participants가 영속화되는지 확인한다")
+    @DisplayName("스터디 생성 시에 participants가 영속화되는지 확인한다")
     @Test
     void findParticipant() {
         // given

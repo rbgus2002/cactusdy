@@ -47,6 +47,8 @@ public class Notice extends BaseEntity {
 
     @Builder
     public Notice(String title, String contents, User writer, Study study) {
+        validateUserInStudy(study, writer);
+
         this.title = title;
         this.contents = contents;
         this.writer = writer;
@@ -55,47 +57,33 @@ public class Notice extends BaseEntity {
     }
 
     public String switchCheckNotice(User user){
-//        validateUserInStudy(notice.getStudy(), user);
+        validateUserInStudy(this.study, user);
         CheckNotice checkNotice = new CheckNotice(this, user);
 
-        if(isAlreadyChecked(checkNotice)){
-            uncheckNotice(checkNotice);
-            return "Unchecked";
+        if(isNoticeAlreadyRead(checkNotice)){
+            return readNotice(checkNotice);
         }else{
-            checkNotice(checkNotice);
-            return "Checked";
+            return unreadNotice(checkNotice);
         }
     }
 
-    // FIXME
     private void validateUserInStudy(Study study, User user) {
         if(!study.isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
     }
 
-    private boolean isAlreadyChecked(CheckNotice checkNotice){
+    private boolean isNoticeAlreadyRead(CheckNotice checkNotice){
         return checkNotices.contains(checkNotice);
     }
 
-    private void uncheckNotice(CheckNotice checkNotice){
+    private String readNotice(CheckNotice checkNotice){
         checkNotices.remove(checkNotice);
+        return "Unchecked";
     }
 
-    private void checkNotice(CheckNotice checkNotice){
+    private String unreadNotice(CheckNotice checkNotice){
         checkNotices.add(checkNotice);
-    }
-
-    @Override
-    public String toString() {
-        return "Notice{" +
-                "noticeId=" + noticeId +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                ", deleteYn=" + deleteYn +
-                ", writer=" + writer +
-                ", study=" + study +
-                ", checkNotices=" + checkNotices +
-                '}';
+        return "Checked";
     }
 }

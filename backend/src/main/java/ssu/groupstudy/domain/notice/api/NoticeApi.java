@@ -3,10 +3,7 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.SwitchCheckNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
@@ -33,8 +30,8 @@ public class NoticeApi {
 
     @Operation(summary = "공지사항 체크 이모지 클릭")
     @PostMapping("/check")
-    public ResponseDto switchCheckNotice(@Valid @RequestBody SwitchCheckNoticeRequest dto){
-        final String isChecked = noticeService.switchCheckNotice(dto);
+    public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
+        final String isChecked = noticeService.switchCheckNotice(noticeId, userId);
 
         return DataResponseDto.of("isChecked", isChecked);
     }

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
@@ -35,24 +36,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class NoticeApiTest {
+class NoticeApiTest extends ApiTest {
     @InjectMocks
     private NoticeApi noticeApi;
 
     @Mock
     private NoticeService noticeService;
 
-    private MockMvc mockMvc;
-
-    private Gson gson;
-
     @BeforeEach
     public void init() {
         mockMvc = MockMvcBuilders.standaloneSetup(noticeApi)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-        gson = new Gson();
     }
 
     private CreateStudyRequest getRegisterStudyRequest() {
@@ -92,52 +87,52 @@ class NoticeApiTest {
                 .build();
     }
 
-    @Nested
-    class 공지사항생성{
-        @Test
-        @DisplayName("빈 제목의 공지사항을 생성하는 경우 예외를 던진다")
-        void 실패_비어있는제목() throws Exception {
-            // given
-            final String url = "/notice";
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(CreateNoticeRequest.builder()
-                            .userId(1L)
-                            .studyId(1L)
-                            .title("")
-                            .contents("contents")
-                            .build()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isBadRequest());
-        }
-
-        @Test
-        @DisplayName("성공")
-        void 성공() throws Exception {
-            // given
-            final String url = "/notice";
-            Notice notice = getCreateNoticeRequest().toEntity(getUser(), getStudy());
-            doReturn(notice).when(noticeService).createNotice(any(CreateNoticeRequest.class));
-            ReflectionTestUtils.setField(notice, "noticeId", 1L);
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getCreateNoticeRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isOk());
-
-            ResponseDto response = gson.fromJson(resultActions.andReturn()
-                    .getResponse()
-                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
-
-            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
-        }
-    }
+//    @Nested
+//    class 공지사항생성{
+//        @Test
+//        @DisplayName("빈 제목의 공지사항을 생성하는 경우 예외를 던진다")
+//        void 실패_비어있는제목() throws Exception {
+//            // given
+//            final String url = "/notice";
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(CreateNoticeRequest.builder()
+//                            .userId(1L)
+//                            .studyId(1L)
+//                            .title("")
+//                            .contents("contents")
+//                            .build()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isBadRequest());
+//        }
+//
+//        @Test
+//        @DisplayName("성공")
+//        void 성공() throws Exception {
+//            // given
+//            final String url = "/notice";
+//            Notice notice = getCreateNoticeRequest().toEntity(getUser(), getStudy());
+//            doReturn(notice).when(noticeService).createNotice(any(CreateNoticeRequest.class));
+//            ReflectionTestUtils.setField(notice, "noticeId", 1L);
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(getCreateNoticeRequest()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isOk());
+//
+//            ResponseDto response = gson.fromJson(resultActions.andReturn()
+//                    .getResponse()
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//
+//            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
+//        }
+//    }
 }

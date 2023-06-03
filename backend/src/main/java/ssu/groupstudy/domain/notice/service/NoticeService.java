@@ -37,18 +37,14 @@ public class NoticeService {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-//        if(!study.isParticipated(writer)){
-//            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
-//        }
-
         return noticeRepository.save(dto.toEntity(writer, study));
     }
 
     @Transactional
-    public String switchCheckNotice(SwitchCheckNoticeRequest dto){
-        Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
+    public String switchCheckNotice(Long noticeId, Long userId){
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
-        User user = userRepository.findByUserId(dto.getUserId())
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         return notice.switchCheckNotice(user);
