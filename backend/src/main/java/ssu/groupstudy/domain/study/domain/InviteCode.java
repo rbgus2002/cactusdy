@@ -1,27 +1,26 @@
 package ssu.groupstudy.domain.study.domain;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
-public class Invite {
+public class InviteCode {
     @Column(name = "invite_link", nullable = false)
-    private String link;
+    private String url;
 
     @Column(name = "invite_qr_code", nullable = false)
-    private String qrCode;
+    private String qrImage;
 
     // TODO : invite 생성 코드 작성
-    protected static Invite generate(){
-        return new Invite();
+    protected static InviteCode generate(){
+        return new InviteCode();
     }
 
-    public Invite(){
-        this.link = "not yet";
-        this.qrCode = "not yet";
+    public InviteCode(){
+        this.url = "not yet";
+        this.qrImage = "not yet";
     }
 }

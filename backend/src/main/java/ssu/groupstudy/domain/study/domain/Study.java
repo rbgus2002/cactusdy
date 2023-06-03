@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.PERSIST;
-import static ssu.groupstudy.domain.study.domain.Invite.*;
+import static ssu.groupstudy.domain.study.domain.InviteCode.*;
 
 @Entity
 @Getter
@@ -39,7 +39,7 @@ public class Study extends BaseEntity {
     private String picture;
 
     @Embedded
-    private final Invite invite = generate();
+    private final InviteCode inviteCode = generate();
 
     @Embedded
     private Participants participants;

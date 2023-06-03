@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-class StudyInviteServiceTest extends ServiceTest {
+class StudyInviteServiceTestCode extends ServiceTest {
     @InjectMocks
     private StudyInviteService studyInviteService;
 
