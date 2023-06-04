@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
@@ -20,14 +21,12 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-@ExtendWith(MockitoExtension.class)
-class StudyCreateServiceTest {
+class StudyCreateServiceTest extends ServiceTest {
     @InjectMocks
     private StudyCreateService studyCreateService;
 
@@ -36,34 +35,6 @@ class StudyCreateServiceTest {
 
     @Mock
     private StudyRepository studyRepository;
-
-    private CreateStudyRequest getRegisterStudyRequest() {
-        return CreateStudyRequest.builder()
-                .studyName("AlgorithmSSU")
-                .detail("알고문풀")
-                .picture("")
-                .hostUserId(0L)
-                .build();
-    }
-
-    private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser());
-    }
-
-
-    private SignUpRequest getSignUpRequest() {
-        return SignUpRequest.builder()
-                .name("최규현")
-                .email("rbgus200@@naver.com")
-                .nickName("규규")
-                .phoneModel("")
-                .picture("")
-                .build();
-    }
-
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
 
     @Nested
     class 스터디생성{
@@ -74,26 +45,23 @@ class StudyCreateServiceTest {
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> studyCreateService.createStudy(getRegisterStudyRequest()));
-
-            // then
-            assertThat(exception.getResultCode()).isEqualTo(ResultCode.USER_NOT_FOUND);
+            assertThatThrownBy(() -> studyCreateService.createStudy(알고리즘스터디CreateRequest))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
 
         @Test
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(getUser())).when(userRepository).findByUserId(any(Long.class));
-            doReturn(getStudy()).when(studyRepository).save(any(Study.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
+            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
 
             // when
-            Study newStudy = studyCreateService.createStudy(getRegisterStudyRequest());
+            Long studyId = studyCreateService.createStudy(알고리즘스터디CreateRequest);
 
             // then
-            assertThat(newStudy.getStudyName()).isEqualTo("AlgorithmSSU");
-            assertThat(newStudy.getParticipants().getHostUser().getName()).isEqualTo("최규현");
-            assertThat(newStudy.getParticipants().getParticipants().size()).isEqualTo(1);
+            assertThat(studyId).isNotNull();
         }
     }
 }

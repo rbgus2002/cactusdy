@@ -25,9 +25,9 @@ public class StudyApi {
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping("")
     public ResponseDto register(@Valid @RequestBody CreateStudyRequest dto){
-        Study newStudy = studyCreateService.createStudy(dto);
+        Long studyId = studyCreateService.createStudy(dto);
 
-        return DataResponseDto.of("studyId", newStudy.getStudyId());
+        return DataResponseDto.of("studyId", studyId);
     }
 
     @Operation(summary = "스터디에 회원 초대")

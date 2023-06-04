@@ -22,17 +22,12 @@ import ssu.groupstudy.global.ResultCode;
 public class StudyCreateService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
 
     @Transactional
-    public Study createStudy(CreateStudyRequest dto) {
+    public Long createStudy(CreateStudyRequest dto) {
         User hostUser = userRepository.findByUserId(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        // 새로운 스터디 생성
-        Study newStudy = dto.toEntity(hostUser);
-        newStudy = studyRepository.save(newStudy);
-
-        return newStudy;
+        return studyRepository.save(dto.toEntity(hostUser)).getStudyId();
     }
 }

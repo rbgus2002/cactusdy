@@ -107,11 +107,7 @@ class StudyApiTest {
             // given
             final String url = "/study";
 
-            User hostUser = getSignUpRequest().toEntity();
-            Study newStudy = getRegisterStudyRequest().toEntity(hostUser);
-            ReflectionTestUtils.setField(newStudy, "studyId", 1L);
-
-            doReturn(newStudy).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
+            doReturn(1L).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
