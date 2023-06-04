@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
-import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
@@ -15,10 +14,6 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.CascadeType.PERSIST;
 import static ssu.groupstudy.domain.study.domain.InviteCode.*;
 
 @Entity
@@ -43,9 +38,6 @@ public class Study extends BaseEntity {
 
     @Embedded
     private Participants participants;
-
-    @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
-    private List<Rule> rules = new ArrayList<>();
 
     @Column(nullable = false)
     private char deleteYn;

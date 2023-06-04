@@ -50,7 +50,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponseDto> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        log.error("handleHttpRequestMethodNotSupportedException", e.getMessage());
+        log.error("handleHttpRequestMethodNotSupportedException : {}", e.getMessage());
+        final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
+    }
+
+    @ExceptionHandler(UnsupportedOperationException.class)
+    protected ResponseEntity<ErrorResponseDto> handleUnsupportedOperationException(HttpRequestMethodNotSupportedException e) {
+        log.error("UnsupportedOperationException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.METHOD_NOT_ALLOWED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }

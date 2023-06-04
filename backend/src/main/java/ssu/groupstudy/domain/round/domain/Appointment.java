@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Embeddable
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Appointment {
     @Column(length = 30)
     private String studyPlace;
@@ -21,5 +20,10 @@ public class Appointment {
 
     public static Appointment init(String studyPlace, LocalDateTime studyTime){
         return new Appointment(studyPlace, studyTime);
+    }
+
+    private Appointment(String studyPlace, LocalDateTime studyTime){
+        this.studyPlace = studyPlace;
+        this.studyTime = studyTime;
     }
 }

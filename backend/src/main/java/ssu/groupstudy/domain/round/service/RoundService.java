@@ -22,12 +22,10 @@ public class RoundService {
     private final RoundRepository roundRepository;
 
     @Transactional
-    public Round createRound(CreateRoundRequest dto) {
+    public Long createRound(CreateRoundRequest dto) {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        // TODO : 스터디에 참여자 모두 UserRound 생성
-
-        return roundRepository.save(dto.toEntity(study));
+        return roundRepository.save(dto.toEntity(study)).getRoundId();
     }
 }

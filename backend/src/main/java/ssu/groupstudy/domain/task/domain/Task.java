@@ -2,9 +2,7 @@ package ssu.groupstudy.domain.task.domain;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
-import ssu.groupstudy.domain.round.domain.UserRound;
-import ssu.groupstudy.global.domain.BaseEntity;
+import ssu.groupstudy.domain.round.domain.RoundParticipant;
 
 import javax.persistence.*;
 
@@ -29,5 +27,5 @@ public class Task{
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_round_id", nullable = false)
-    private UserRound userRound;
+    private RoundParticipant roundParticipant;
 }

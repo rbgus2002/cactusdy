@@ -33,19 +33,6 @@ class RoundServiceTest extends ServiceTest {
     @Mock
     private StudyRepository studyRepository;
 
-    private CreateRoundRequest 라운드1CreateRoundRequest;
-    private Round 라운드1;
-
-    @BeforeEach
-    void init() {
-        라운드1CreateRoundRequest = CreateRoundRequest.builder()
-                .studyId(-1L)
-                .studyPlace("규현집")
-                .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
-                .build();
-        라운드1 = 라운드1CreateRoundRequest.toEntity(알고리즘스터디);
-    }
-
     @Nested
     class createRound {
         @Test
@@ -61,18 +48,17 @@ class RoundServiceTest extends ServiceTest {
         }
 
         @Test
-        @DisplayName("회차 생성 시에 스터디 장소와 약속 시간은 빈 값으로 둘수 있다")
+        @DisplayName("회차 생성 시에 스터디 장소와 약속 시간은 빈 값으로 둘수 있다") // api test에 있어야하는 것 아닌가?
         void success_emptyTimeAndPlace() {
             // given
-            Round roundEmptyTimeAndPlace = new CreateRoundRequest(-1L).toEntity(알고리즘스터디);
-            doReturn(roundEmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
+            doReturn(라운드2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
 
             // when
-            Round round = roundService.createRound(라운드1CreateRoundRequest);
+            Long roundId = roundService.createRound(라운드2CreateRoundRequest_EmptyTimeAndPlace);
 
             // then
-            assertThat(round).isEqualTo(roundEmptyTimeAndPlace);
+            assertThat(roundId).isNotNull();
         }
 
         @Test
@@ -83,11 +69,13 @@ class RoundServiceTest extends ServiceTest {
             doReturn(라운드1).when(roundRepository).save(any(Round.class));
 
             // when
-            Round round = roundService.createRound(라운드1CreateRoundRequest);
+            Long roundId = roundService.createRound(라운드1CreateRoundRequest);
 
             // then
-            assertThat(round).isEqualTo(라운드1);
+            assertThat(roundId).isNotNull();
         }
     }
+
+
 
 }

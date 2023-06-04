@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.rule.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

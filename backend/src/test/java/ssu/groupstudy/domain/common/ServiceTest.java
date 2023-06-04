@@ -6,10 +6,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+
+import java.time.LocalDateTime;
 
 /**
  * 모든 엔티티는 id를 갖으며 영속화 되어있다고 생각한다.
@@ -29,6 +33,11 @@ public class ServiceTest {
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
 
+    protected CreateRoundRequest 라운드1CreateRoundRequest;
+    protected CreateRoundRequest 라운드2CreateRoundRequest_EmptyTimeAndPlace;
+    protected Round 라운드1;
+    protected Round 라운드2_EmptyTimeAndPlace;
+
     @BeforeEach
     void initDummyData() {
         initSignUpRequest();
@@ -37,6 +46,8 @@ public class ServiceTest {
         initStudy();
         initCreateNoticeRequest();
         initNotice();
+        initCreateRoundRequest();
+        initRound();
     }
 
     private void initSignUpRequest() {
@@ -98,5 +109,24 @@ public class ServiceTest {
     private void initNotice() {
         공지사항1 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
         ReflectionTestUtils.setField(공지사항1, "noticeId", 5L);
+    }
+
+    private void initCreateRoundRequest() {
+        라운드1CreateRoundRequest = CreateRoundRequest.builder()
+                .studyId(-1L)
+                .studyPlace("규현집")
+                .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
+                .build();
+        라운드2CreateRoundRequest_EmptyTimeAndPlace = CreateRoundRequest.builder()
+                .studyId(-1L)
+                .studyPlace("재우집")
+                .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
+                .build();
+    }
+    private void initRound() {
+        라운드1 = 라운드1CreateRoundRequest.toEntity(알고리즘스터디);
+        ReflectionTestUtils.setField(라운드1, "roundId", 15L);
+        라운드2_EmptyTimeAndPlace = 라운드2CreateRoundRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        ReflectionTestUtils.setField(라운드2_EmptyTimeAndPlace, "roundId", 18L);
     }
 }

@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class CreateRoundRequest {
     @NotNull
     private Long studyId;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime studyTime;
     private String studyPlace; // TODO : 추후 카카오톡 주소 api 연동?

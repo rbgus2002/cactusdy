@@ -4,13 +4,19 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
+import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -28,6 +34,9 @@ public class Round extends BaseEntity {
     @Embedded
     private Appointment appointment;
 
+    @OneToMany(mappedBy = "round", cascade = PERSIST)
+    Set<RoundParticipant> roundParticipants = new HashSet<>();
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
@@ -37,7 +46,15 @@ public class Round extends BaseEntity {
 
     @Builder
     public Round(Study study, String studyPlace, LocalDateTime studyTime){
+        addParticipants(study.getParticipants());
         this.study = study;
         this.appointment = Appointment.init(studyPlace, studyTime);
+        this.deleteYn = 'N';
+    }
+
+    private void addParticipants(Participants participants){
+        for(Participant participant : participants.getParticipants()){
+            roundParticipants.add(new RoundParticipant(participant.getUser(), this));
+        }
     }
 }
