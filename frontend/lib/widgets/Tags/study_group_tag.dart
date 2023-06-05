@@ -4,12 +4,12 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/widgets/Tags/tag.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
-class StudyTag extends TagButton {
+class StudyGroupTag extends TagButton {
   static const studyTagPadding = EdgeInsets.fromLTRB(3, 3, 10, 3);
   Image? image;
   String name;
 
-  StudyTag({
+  StudyGroupTag({
     this.image,
     this.name = "",
     super.key,

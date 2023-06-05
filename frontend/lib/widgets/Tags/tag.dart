@@ -35,6 +35,7 @@ class TagButton extends StatelessWidget{
       height: height,
       padding: padding,
 
+      margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(height * 0.5),
