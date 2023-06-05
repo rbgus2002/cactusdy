@@ -19,6 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 public class RoundParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_round_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -37,6 +38,10 @@ public class RoundParticipant {
         this.user = user;
         this.round = round;
         this.statusTag = StatusTag.NONE;
+    }
+
+    public void updateStatus(String statusTag){
+        this.statusTag = StatusTag.valueOf(statusTag);
     }
 
     @Override

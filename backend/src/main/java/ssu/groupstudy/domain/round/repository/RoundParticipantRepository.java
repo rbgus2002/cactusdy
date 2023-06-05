@@ -10,4 +10,6 @@ import java.util.Optional;
 
 public interface RoundParticipantRepository extends JpaRepository<RoundParticipant, Long> {
     Optional<RoundParticipant> findByUserAndRound(User user, Round round);
+
+    Optional<RoundParticipant> findById(Long id);
 }

@@ -56,9 +56,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnsupportedOperationException.class)
-    protected ResponseEntity<ErrorResponseDto> handleUnsupportedOperationException(HttpRequestMethodNotSupportedException e) {
+    protected ResponseEntity<ErrorResponseDto> handleUnsupportedOperationException(UnsupportedOperationException e) {
         log.error("UnsupportedOperationException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.METHOD_NOT_ALLOWED);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<ErrorResponseDto> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("IllegalArgumentException : {}", e.getMessage());
+        final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_METHOD_ARGUMENT);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 

@@ -7,6 +7,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
@@ -35,8 +36,10 @@ public class ServiceTest {
 
     protected CreateRoundRequest 라운드1CreateRoundRequest;
     protected CreateRoundRequest 라운드2CreateRoundRequest_EmptyTimeAndPlace;
-    protected Round 라운드1;
-    protected Round 라운드2_EmptyTimeAndPlace;
+    protected Round 회차1;
+    protected Round 회차2_EmptyTimeAndPlace;
+
+    protected RoundParticipant 회차1_최규현;
 
     @BeforeEach
     void initDummyData() {
@@ -48,6 +51,7 @@ public class ServiceTest {
         initNotice();
         initCreateRoundRequest();
         initRound();
+        initRoundParticipant();
     }
 
     private void initSignUpRequest() {
@@ -123,10 +127,15 @@ public class ServiceTest {
                 .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
                 .build();
     }
+
     private void initRound() {
-        라운드1 = 라운드1CreateRoundRequest.toEntity(알고리즘스터디);
-        ReflectionTestUtils.setField(라운드1, "roundId", 15L);
-        라운드2_EmptyTimeAndPlace = 라운드2CreateRoundRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
-        ReflectionTestUtils.setField(라운드2_EmptyTimeAndPlace, "roundId", 18L);
+        회차1 = 라운드1CreateRoundRequest.toEntity(알고리즘스터디);
+        ReflectionTestUtils.setField(회차1, "roundId", 15L);
+        회차2_EmptyTimeAndPlace = 라운드2CreateRoundRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        ReflectionTestUtils.setField(회차2_EmptyTimeAndPlace, "roundId", 18L);
+    }
+
+    private void initRoundParticipant() {
+        회차1_최규현 = new RoundParticipant(최규현, 회차1);
     }
 }

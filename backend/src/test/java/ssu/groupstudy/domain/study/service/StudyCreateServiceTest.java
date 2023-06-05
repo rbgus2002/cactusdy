@@ -29,10 +29,8 @@ import static org.mockito.Mockito.doReturn;
 class StudyCreateServiceTest extends ServiceTest {
     @InjectMocks
     private StudyCreateService studyCreateService;
-
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private StudyRepository studyRepository;
 
