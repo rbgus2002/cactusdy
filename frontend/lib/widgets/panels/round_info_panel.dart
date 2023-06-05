@@ -5,11 +5,9 @@ import 'package:group_study_app/widgets/user_list_button.dart';
 
 import '../../models/user.dart';
 import '../../themes/design.dart';
-import '../../themes/text_styles.dart';
 import '../../utilities/test.dart';
-import 'dart:math' as math;
 
-class RoundInfoPanel extends StatelessWidget {
+class RoundInfoPanel extends Panel {
   final int roundIdx;
   final String? place;
   final DateTime? date;
@@ -17,51 +15,40 @@ class RoundInfoPanel extends StatelessWidget {
 
   final onTap;
 
-  const RoundInfoPanel({
-    Key? key,
+  RoundInfoPanel({
+    super.key,
+    super.backgroundColor,
+
+    super.width,
+    super.height,
+    super.padding,
+
     required this.roundIdx,
     this.place,
     this.date,
     required this.userList,
     this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Panel(
-        backgroundColor: Colors.white,
-        boxShadows: Design.basicShadows,
-        padding: 10,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                RoundInfo(
-                  roundIdx: roundIdx,
-                  place: place,
-                  date: date,
-                  tag: 'TAG',
-                ),
-                Transform(
-                  // FIXME : TAG 이름 길어지면 버튼 빠져 나옴.. Flexible 활용 방안 생각
-                  alignment: Alignment.centerRight,
-                  transform: Matrix4.rotationY(math.pi),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                    color: Colors.black87,
-                    iconSize: 35,
-                  ),
-                )
-              ],
-            ),
-            UserListButton(
-              userList:
-                  List<User>.generate(30, (index) => User(index, "d", "d")),
-              onTap: Test.onTabTest,
-              scale: 45.0,
-            ),
+  }) : super(
+    boxShadows: Design.basicShadows,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children : [
+            RoundInfo(roundIdx: roundIdx, place: place, date: date, tag: "ASd"),
+            Icon(Icons.edit),
           ],
-        ));
-  }
+        ),
+        Design.padding10,
+
+        UserListButton(
+          userList:
+          List<User>.generate(30, (index) => User(index, "d", "d")),
+          onTap: Test.onTabTest,
+          scale: 45.0,
+        ),
+      ],
+    )
+  );
 }
