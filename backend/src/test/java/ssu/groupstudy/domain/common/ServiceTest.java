@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
+import ssu.groupstudy.domain.round.dto.AppointmentRequest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
@@ -34,8 +34,8 @@ public class ServiceTest {
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
 
-    protected CreateRoundRequest 라운드1CreateRoundRequest;
-    protected CreateRoundRequest 라운드2CreateRoundRequest_EmptyTimeAndPlace;
+    protected AppointmentRequest 라운드1AppointmentRequest;
+    protected AppointmentRequest 라운드2AppointmentRequest_EmptyTimeAndPlace;
     protected Round 회차1;
     protected Round 회차2_EmptyTimeAndPlace;
 
@@ -116,22 +116,20 @@ public class ServiceTest {
     }
 
     private void initCreateRoundRequest() {
-        라운드1CreateRoundRequest = CreateRoundRequest.builder()
-                .studyId(-1L)
+        라운드1AppointmentRequest = AppointmentRequest.builder()
                 .studyPlace("규현집")
                 .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
                 .build();
-        라운드2CreateRoundRequest_EmptyTimeAndPlace = CreateRoundRequest.builder()
-                .studyId(-1L)
+        라운드2AppointmentRequest_EmptyTimeAndPlace = AppointmentRequest.builder()
                 .studyPlace("재우집")
                 .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
                 .build();
     }
 
     private void initRound() {
-        회차1 = 라운드1CreateRoundRequest.toEntity(알고리즘스터디);
+        회차1 = 라운드1AppointmentRequest.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차1, "roundId", 15L);
-        회차2_EmptyTimeAndPlace = 라운드2CreateRoundRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        회차2_EmptyTimeAndPlace = 라운드2AppointmentRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차2_EmptyTimeAndPlace, "roundId", 18L);
     }
 

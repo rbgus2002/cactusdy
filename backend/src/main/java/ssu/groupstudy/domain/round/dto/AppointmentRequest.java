@@ -11,13 +11,11 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateRoundRequest {
-    @NotNull
-    private Long studyId;
+@NoArgsConstructor
+public class AppointmentRequest {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime studyTime;
-    private String studyPlace; // TODO : 추후 카카오톡 주소 api 연동?
+    private String studyPlace;
 
     public Round toEntity(Study study) {
         return Round.builder()
@@ -25,9 +23,5 @@ public class CreateRoundRequest {
                 .studyPlace(this.studyPlace)
                 .studyTime(studyTime)
                 .build();
-    }
-
-    public CreateRoundRequest(Long studyId) {
-        this.studyId = studyId;
     }
 }

@@ -37,8 +37,8 @@ class RoundServiceTest extends ServiceTest {
             // given
             doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
 
-            // when
-            assertThatThrownBy(() -> roundService.createRound(라운드1CreateRoundRequest))
+            // when, then
+            assertThatThrownBy(() -> roundService.createRound(-1L, 라운드1AppointmentRequest))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
@@ -51,7 +51,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
 
             // when
-            Long roundId = roundService.createRound(라운드2CreateRoundRequest_EmptyTimeAndPlace);
+            Long roundId = roundService.createRound(-1L, 라운드2AppointmentRequest_EmptyTimeAndPlace);
 
             // then
             assertThat(roundId).isNotNull();
@@ -65,13 +65,10 @@ class RoundServiceTest extends ServiceTest {
             doReturn(회차1).when(roundRepository).save(any(Round.class));
 
             // when
-            Long roundId = roundService.createRound(라운드1CreateRoundRequest);
+            Long roundId = roundService.createRound(-1L, 라운드1AppointmentRequest);
 
             // then
             assertThat(roundId).isNotNull();
         }
     }
-
-
-
 }

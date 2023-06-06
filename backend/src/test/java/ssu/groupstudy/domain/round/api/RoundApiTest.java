@@ -1,43 +1,17 @@
 package ssu.groupstudy.domain.round.api;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.common.ApiTest;
-import ssu.groupstudy.domain.notice.api.NoticeApi;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
-import ssu.groupstudy.domain.notice.service.NoticeService;
-import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
 import ssu.groupstudy.domain.round.service.RoundService;
-import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RoundApiTest extends ApiTest {
     @InjectMocks
@@ -64,7 +38,7 @@ class RoundApiTest extends ApiTest {
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-//                    .content(gson.toJson(CreateRoundRequest.builder()
+//                    .content(gson.toJson(AppointmentRequest.builder()
 //                            .studyPlace("규현집")
 //                            .build()))
 //                    .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +57,7 @@ class RoundApiTest extends ApiTest {
 ////            // when
 ////            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 ////            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-////                    .content(gson.toJson(CreateRoundRequest.builder()
+////                    .content(gson.toJson(AppointmentRequest.builder()
 ////                            .studyTime(LocalDateTime.parse("2023-05-17 16:00", formatter))
 ////                            .studyId(-1L)
 ////                            .build()))
@@ -99,11 +73,11 @@ class RoundApiTest extends ApiTest {
 //        void 성공() throws Exception {
 //            // given
 //            final String url = "/round";
-//            doReturn(getCreateRoundRequest().toEntity(getStudy())).when(roundService).createRound(any(CreateRoundRequest.class));
+//            doReturn(getCreateRoundRequest().toEntity(getStudy())).when(roundService).createRound(any(AppointmentRequest.class));
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-//                    .content(gson.toJson(CreateRoundRequest.builder()
+//                    .content(gson.toJson(AppointmentRequest.builder()
 //                            .studyPlace("규현집")
 //                            .build()))
 //                    .contentType(MediaType.APPLICATION_JSON)

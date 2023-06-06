@@ -9,8 +9,7 @@ import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.CheckNoticeRepository;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.dto.CreateRoundRequest;
+import ssu.groupstudy.domain.round.dto.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -20,8 +19,6 @@ import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-
-import java.time.LocalDateTime;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -59,6 +56,6 @@ public class RepositoryTest {
 
         공지사항1 = new CreateNoticeRequest("공지사항1", "상세내용", -1L, -1L).toEntity(최규현, 알고리즘스터디);
 
-        회차1 = new CreateRoundRequest(-1L).toEntity(알고리즘스터디);
+        회차1 = new AppointmentRequest().toEntity(알고리즘스터디);
     }
 }
