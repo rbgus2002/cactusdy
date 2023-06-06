@@ -29,7 +29,9 @@ class StudyGroupPanel extends Panel {
     }) : super(
       boxShadows: Design.basicShadows,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [
           Row(
             children: [
@@ -55,7 +57,7 @@ class StudyGroupPanel extends Panel {
           Design.padding5,
           RoundInfo(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26),tag: "asd"),
 
-          Design.padding5,
+          Design.padding15,
           const Text("GROUP", style: TextStyles.titleMedium,),
           CheckBoxTask(taskid: 0, text: "백준 : 1203번 풀기"),
           CheckBoxTask(taskid: 0, text: "백준 : 23092번 풀기"),

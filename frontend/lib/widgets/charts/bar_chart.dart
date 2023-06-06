@@ -8,7 +8,7 @@ class BarChart extends Chart {
     Key? key,
     required super.percentInfos,
     super.backgroundColor,
-    super.stroke = 30,
+    super.stroke = 25,
 
     this.width = 100,
   }) : super(key: key);
@@ -17,12 +17,12 @@ class BarChart extends Chart {
   Widget build(BuildContext context) {
     return SizedBox(
         height: stroke,
-        width: width,
+        width: double.infinity,
 
         child: CustomPaint(
           painter: _BarChartPaint(
               percentInfos: percentInfos,
-              bar_chart: backgroundColor,
+              backgroundColor: backgroundColor,
               stroke: stroke
           ),
         )
@@ -31,26 +31,28 @@ class BarChart extends Chart {
 }
 
 class _BarChartPaint extends CustomPainter {
-  final Color bar_chart;
+  final Color backgroundColor;
   final double stroke;
 
   final List<PercentInfo> percentInfos;
 
   _BarChartPaint({
     required this.percentInfos,
-    required this.bar_chart,
+    required this.backgroundColor,
     required this.stroke,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     double verticalBase = size.height * 0.5;
+    double radius = stroke * 0.5;
+    double width = size.width - radius;
 
-    final Offset leftPoint = Offset(0, verticalBase);
-    Offset rightPoint = Offset(size.width, verticalBase);
+    final Offset leftPoint = Offset(radius, verticalBase);
+    Offset rightPoint = Offset(width, verticalBase);
 
     Paint paint = Paint()
-      ..color = bar_chart
+      ..color = backgroundColor
       ..strokeWidth = stroke
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -67,7 +69,7 @@ class _BarChartPaint extends CustomPainter {
     for (int i = percentInfos.length - 1; i >= 0; --i) {
       startPoint -= percentInfos[i].percent;
 
-      rightPoint = Offset((startPoint + percentInfos[i].percent) * size.width, verticalBase);
+      rightPoint = Offset((startPoint + percentInfos[i].percent) * width, verticalBase);
       paint.color = percentInfos[i].color;
 
       canvas.drawLine(leftPoint, rightPoint, paint);

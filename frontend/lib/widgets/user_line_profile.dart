@@ -30,7 +30,7 @@ class UserLineProfile extends StatelessWidget {
 
       children: [
         CircleButton(scale: 60.0, onTap: onTap, child: image,), //< FIXME : size should be calculated
-        const SizedBox(width: Design.padding,),
+        Design.padding10,
         Flexible(
           fit: FlexFit.tight,
           child: Column(

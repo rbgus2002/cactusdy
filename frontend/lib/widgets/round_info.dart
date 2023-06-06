@@ -10,10 +10,10 @@ import '../themes/text_styles.dart';
 class RoundInfo extends StatelessWidget {
   final int roundIdx;
   final String? place;
-  final String tag;
   final DateTime? date;
+  final String tag;
 
-  const RoundInfo({
+  RoundInfo({
     Key? key,
     required this.roundIdx,
     required this.tag,
@@ -23,32 +23,37 @@ class RoundInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row ( // Round Text
-          crossAxisAlignment: CrossAxisAlignment.end,
+    return Flexible(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("$roundIdx", style: TextStyles.titleBig),
-            const Text("회차", style: TextStyles.titleSmall,),
-          ]
-        ),
-        Design.padding15,
+            Row( // Round Text
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("$roundIdx", style: TextStyles.titleBig),
+                  const Text("회차", style: TextStyles.titleSmall,)
+                ]
+            ),
+            Design.padding15,
 
-        Flexible(
-          fit: FlexFit.tight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(place ?? "", maxLines: 1, style: TextStyles.titleTiny),
-              Text(DateFormat('yyyy-MM-dd').format(date!), maxLines: 1, style: TextStyles.titleTiny,),
-            ],
-          ),
-        ),
-        UserStateTag(color: Colors.red, text: "예정됨"),
-      ],
+            Flexible(
+              fit: FlexFit.tight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(place ?? "장소를 입력해 주세요", maxLines: 1,
+                      style: TextStyles.titleTiny),
+                  Text(DateFormat('yyyy-MM-dd').format(date ?? DateTime.now()),
+                    maxLines: 1, style: TextStyles.titleTiny,),
+                ],
+              ),
+            ),
+
+            UserStateTag(color: Colors.red, text: "예정됨"),
+          ],
+        )
     );
   }
 }

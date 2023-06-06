@@ -14,12 +14,14 @@ class _HomeRoute extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(Design.padding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             UserLineProfile(nickName: "nickName", comment: "comment"),
+            Design.padding10,
+            StudyGroupPanel(),
             Design.padding10,
             StudyGroupPanel(),
             Design.padding10,
