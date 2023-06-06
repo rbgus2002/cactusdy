@@ -48,7 +48,7 @@ public class Round extends BaseEntity {
     public Round(Study study, String studyPlace, LocalDateTime studyTime){
         addParticipants(study.getParticipants());
         this.study = study;
-        this.appointment = Appointment.init(studyPlace, studyTime);
+        this.appointment = new Appointment(studyPlace, studyTime);
         this.deleteYn = 'N';
     }
 
@@ -56,5 +56,9 @@ public class Round extends BaseEntity {
         for(Participant participant : participants.getParticipants()){
             roundParticipants.add(new RoundParticipant(participant.getUser(), this));
         }
+    }
+
+    public void updateAppointment(Appointment appointment){
+        this.appointment = appointment;
     }
 }

@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.dto.AppointmentRequest;
+import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -26,5 +28,13 @@ public class RoundService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         return roundRepository.save(dto.toEntity(study)).getRoundId();
+    }
+
+    @Transactional
+    public void updateAppointment(long roundId, AppointmentRequest dto) {
+        Round round = roundRepository.findByRoundId(roundId)
+                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+
+        round.updateAppointment(dto.toAppointment());
     }
 }

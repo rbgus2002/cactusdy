@@ -1,5 +1,6 @@
 package ssu.groupstudy.domain.round.domain;
 
+import antlr.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,20 +11,11 @@ import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Appointment {
     @Column(length = 30)
     private String studyPlace;
-
     @Column
     private LocalDateTime studyTime;
-
-    public static Appointment init(String studyPlace, LocalDateTime studyTime){
-        return new Appointment(studyPlace, studyTime);
-    }
-
-    private Appointment(String studyPlace, LocalDateTime studyTime){
-        this.studyPlace = studyPlace;
-        this.studyTime = studyTime;
-    }
 }

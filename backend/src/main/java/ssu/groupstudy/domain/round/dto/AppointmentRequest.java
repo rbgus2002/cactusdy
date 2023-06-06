@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.round.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 
@@ -23,5 +24,9 @@ public class AppointmentRequest {
                 .studyPlace(this.studyPlace)
                 .studyTime(studyTime)
                 .build();
+    }
+
+    public Appointment toAppointment(){
+        return new Appointment(this.studyPlace, this.studyTime);
     }
 }

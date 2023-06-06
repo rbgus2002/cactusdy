@@ -34,8 +34,8 @@ public class ServiceTest {
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
 
-    protected AppointmentRequest 라운드1AppointmentRequest;
-    protected AppointmentRequest 라운드2AppointmentRequest_EmptyTimeAndPlace;
+    protected AppointmentRequest 회차1AppointmentRequest;
+    protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
     protected Round 회차1;
     protected Round 회차2_EmptyTimeAndPlace;
 
@@ -116,20 +116,20 @@ public class ServiceTest {
     }
 
     private void initCreateRoundRequest() {
-        라운드1AppointmentRequest = AppointmentRequest.builder()
+        회차1AppointmentRequest = AppointmentRequest.builder()
                 .studyPlace("규현집")
                 .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
                 .build();
-        라운드2AppointmentRequest_EmptyTimeAndPlace = AppointmentRequest.builder()
+        회차2AppointmentRequest_EmptyTimeAndPlace = AppointmentRequest.builder()
                 .studyPlace("재우집")
                 .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
                 .build();
     }
 
     private void initRound() {
-        회차1 = 라운드1AppointmentRequest.toEntity(알고리즘스터디);
+        회차1 = 회차1AppointmentRequest.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차1, "roundId", 15L);
-        회차2_EmptyTimeAndPlace = 라운드2AppointmentRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        회차2_EmptyTimeAndPlace = 회차2AppointmentRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차2_EmptyTimeAndPlace, "roundId", 18L);
     }
 
