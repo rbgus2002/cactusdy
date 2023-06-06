@@ -28,7 +28,7 @@ public class Round extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String detail;
 
     @Embedded
@@ -60,5 +60,9 @@ public class Round extends BaseEntity {
 
     public void updateAppointment(Appointment appointment){
         this.appointment = appointment;
+    }
+
+    public void updateDetail(String detail){
+        this.detail = detail;
     }
 }

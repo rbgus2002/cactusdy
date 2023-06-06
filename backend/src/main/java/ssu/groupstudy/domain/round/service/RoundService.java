@@ -37,4 +37,12 @@ public class RoundService {
 
         round.updateAppointment(dto.toAppointment());
     }
+
+    @Transactional
+    public void updateDetail(long roundId, String detail) {
+        Round round = roundRepository.findByRoundId(roundId)
+                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+
+        round.updateDetail(detail);
+    }
 }

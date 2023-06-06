@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.round.dto.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.DetailRequest;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -31,6 +32,14 @@ public class RoundApi {
     @PatchMapping("")
     public ResponseDto updateAppointment(@RequestParam Long roundId, @Valid @RequestBody AppointmentRequest dto){
         roundService.updateAppointment(roundId, dto);
+
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "회차 상세내용 수정", description = "회차 상세내용을 수정한다")
+    @PatchMapping("/detail")
+    public ResponseDto updateDetail(@RequestParam Long roundId, @RequestBody DetailRequest dto){
+        roundService.updateDetail(roundId, dto.getDetail());
 
         return ResponseDto.success();
     }

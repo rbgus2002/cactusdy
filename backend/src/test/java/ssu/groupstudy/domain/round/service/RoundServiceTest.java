@@ -133,4 +133,32 @@ class RoundServiceTest extends ServiceTest {
             );
         }
     }
+
+    @Nested
+    class updateDetail{
+        @Test
+        @DisplayName("존재하지 않는 회차의 경우 예외를 던진다")
+        void fail_roundNotFound() {
+            // given
+            doReturn(Optional.empty()).when(roundRepository).findByRoundId(any(Long.class));
+
+            // when, then
+            assertThatThrownBy(() -> roundService.updateDetail(-1L, ""))
+                    .isInstanceOf(RoundNotFoundException.class)
+                    .hasMessage(ResultCode.ROUND_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("회차 상세내용을 수정한다")
+        void success(){
+            // given
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+
+            // when
+            roundService.updateDetail(-1L, "회차상세내용변경");
+
+            // then
+            assertThat(회차1.getDetail()).isEqualTo("회차상세내용변경");
+        }
+    }
 }
