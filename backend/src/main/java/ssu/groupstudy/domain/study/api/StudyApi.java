@@ -20,7 +20,6 @@ import javax.validation.Valid;
 @Tag(name = "Study", description = "스터디 API")
 public class StudyApi {
     private final StudyCreateService studyCreateService;
-    private final StudyInviteService studyInviteService;
 
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping("")
@@ -28,21 +27,5 @@ public class StudyApi {
         Long studyId = studyCreateService.createStudy(dto);
 
         return DataResponseDto.of("studyId", studyId);
-    }
-
-    @Operation(summary = "스터디에 회원 초대")
-    @PostMapping("/invite")
-    public ResponseDto inviteUser(@RequestParam Long userId, @RequestParam Long studyId){
-        studyInviteService.inviteUser(userId, studyId);
-
-        return ResponseDto.success();
-    }
-
-    @Operation(summary = "스터디에서 회원 탈퇴")
-    @DeleteMapping("/invite")
-    public ResponseDto leaveUser(@RequestParam Long userId, @RequestParam Long studyId){
-        studyInviteService.leaveUser(userId, studyId);
-
-        return ResponseDto.success();
     }
 }

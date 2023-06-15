@@ -10,7 +10,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 @RestController
 @RequestMapping("/round/participant")
 @AllArgsConstructor
-@Tag(name = "RoundParticipant", description = "회차 참여자 API")
+@Tag(name = "Round Participant", description = "회차 참여자 API")
 public class RoundParticipantApi {
     private final RoundParticipantService roundParticipantService;
 
