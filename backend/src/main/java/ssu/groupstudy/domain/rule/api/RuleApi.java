@@ -17,7 +17,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rule")
+@RequestMapping("/rules")
 @AllArgsConstructor
 @Tag(name = "Rule", description = "규칙 API")
 public class RuleApi {

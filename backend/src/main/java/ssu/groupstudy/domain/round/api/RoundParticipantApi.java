@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.round.service.RoundParticipantService;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
-@RequestMapping("/round/participant")
+@RequestMapping("/rounds/participants")
 @AllArgsConstructor
 @Tag(name = "Round Participant", description = "회차 참여자 API")
 public class RoundParticipantApi {

@@ -13,7 +13,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/round")
+@RequestMapping("/rounds")
 @AllArgsConstructor
 @Tag(name = "Round", description = "회차 API")
 public class RoundApi {
@@ -37,7 +37,7 @@ public class RoundApi {
     }
 
     @Operation(summary = "회차 상세내용 수정", description = "회차 상세내용을 수정한다")
-    @PatchMapping("/detail")
+    @PatchMapping("/details")
     public ResponseDto updateDetail(@RequestParam Long roundId, @RequestBody DetailRequest dto){
         roundService.updateDetail(roundId, dto.getDetail());
 

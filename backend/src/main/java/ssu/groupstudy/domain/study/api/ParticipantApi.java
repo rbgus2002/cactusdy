@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.study.service.StudyInviteService;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
-@RequestMapping("/study/participants")
+@RequestMapping("/studies/participants")
 @AllArgsConstructor
 @Tag(name = "Study Participants", description = "스터디 참여자 API")
 public class ParticipantApi {

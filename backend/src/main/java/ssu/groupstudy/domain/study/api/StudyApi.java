@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/study")
 @AllArgsConstructor
-@Tag(name = "Study", description = "스터디 API")
+@Tag(name = "Studies", description = "스터디 API")
 public class StudyApi {
     private final StudyCreateService studyCreateService;
 

@@ -13,7 +13,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @AllArgsConstructor
 @Tag(name = "User", description = "사용자 API")
 @CrossOrigin(maxAge = 3600) // Flutter cors 에러 해결

@@ -12,7 +12,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/notices")
 @AllArgsConstructor
 @Tag(name = "Notice", description = "공지사항 API")
 public class NoticeApi {
