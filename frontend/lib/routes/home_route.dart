@@ -19,6 +19,9 @@ class _HomeRoute extends State<StatefulWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Design.padding15,
+            Design.padding15,
+            Design.padding15,
             UserLineProfile(nickName: "nickName", comment: "comment"),
             Design.padding10,
             StudyGroupPanel(),

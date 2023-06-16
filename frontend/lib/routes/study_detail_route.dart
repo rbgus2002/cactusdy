@@ -3,10 +3,12 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/NoticeListWidget.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
+import 'package:group_study_app/widgets/title_widget.dart';
 import 'package:group_study_app/widgets/user_list_button.dart';
 
 class StudyDetailRoute extends StatefulWidget {
@@ -53,17 +55,15 @@ class _StudyDetailRoute extends State<StatefulWidget> {
             Design.padding15,
 
             //
-            const Text("MEMBER", style: TextStyles.titleMedium),
+            const TitleWidget(title: "MEMBER", icon: Icon(Icons.add)),
             UserListButton(userList: userList, scale: 45, ),
             Design.padding15,
 
             //
-            const Text("RULE", style: TextStyles.titleMedium,),
+            const TitleWidget(title: "RULE", icon: Icon(Icons.edit)),
             Design.padding15,
 
-            const Text("STUDY LIST", style: TextStyles.titleMedium),
-
-
+            const TitleWidget(title: "ROUND LIST", icon: Icon(Icons.add), onTap: Test.onTabTest),
 
             RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(0, "d", "d")]),
             RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(0, "d", "d")]),
