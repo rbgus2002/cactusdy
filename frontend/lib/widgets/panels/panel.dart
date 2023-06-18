@@ -27,7 +27,7 @@ class Panel extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: EdgeInsets.all(padding),
+      padding: Design.edge15,
 
       decoration: BoxDecoration(
         color: backgroundColor,

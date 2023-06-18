@@ -37,7 +37,7 @@ class RoundInfoPanel extends Panel {
           mainAxisSize: MainAxisSize.min,
           children : [
             RoundInfo(roundIdx: roundIdx, place: place, date: date, tag: "ASd"),
-            Icon(Icons.edit),
+            Icon(Icons.chevron_right),
           ],
         ),
         Design.padding10,

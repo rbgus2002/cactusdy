@@ -4,7 +4,7 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/NoticeListWidget.dart';
+import 'package:group_study_app/widgets/panels/notice_list_panel.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
@@ -30,6 +30,10 @@ class _StudyDetailRoute extends State<StatefulWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Design.padding15,
+            Design.padding15,
+            Design.padding15,
+            Design.padding15,
             // Study Head
             Row(children : [
               OutlineCircleButton(image:null, scale: 60, stroke: 5, color: ColorStyles.red),
@@ -51,7 +55,8 @@ class _StudyDetailRoute extends State<StatefulWidget> {
             Design.padding15,
 
             // Notice
-            NoticeListWidget(),
+            const TitleWidget(title: "NOTICE", icon: Icon(Icons.chevron_right)),
+            NoticeListPanel(),
             Design.padding15,
 
             //
