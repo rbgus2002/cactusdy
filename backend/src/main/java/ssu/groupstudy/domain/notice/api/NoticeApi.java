@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notices")
@@ -26,11 +28,19 @@ public class NoticeApi {
         return ResponseDto.success();
     }
 
-    @Operation(summary = "공지사항 체크 이모지 클릭")
+    @Operation(summary = "공지사항 읽음/안읽음 체크")
     @PostMapping("/check")
     public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
         final String isChecked = noticeService.switchCheckNotice(noticeId, userId);
 
         return DataResponseDto.of("isChecked", isChecked);
+    }
+
+    @Operation(summary = "공지사항 목록 가져오기")
+    @GetMapping("/list")
+    public ResponseDto getNoticeSummaryList(@RequestParam Long studyId){
+        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryList(studyId);
+
+        return DataResponseDto.of("noticeList", noticeSummaryList);
     }
 }

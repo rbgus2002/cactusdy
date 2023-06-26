@@ -44,6 +44,7 @@ public class RepositoryTest {
     protected User 홍예지;
     protected Study 알고리즘스터디;
     protected Notice 공지사항1;
+    protected Notice 공지사항2;
     protected Round 회차1;
 
     @BeforeEach
@@ -54,7 +55,8 @@ public class RepositoryTest {
 
         알고리즘스터디 = new CreateStudyRequest("알고리즘스터디", "화이팅", "", -1L).toEntity(최규현);
 
-        공지사항1 = new CreateNoticeRequest("공지사항1", "상세내용", -1L, -1L).toEntity(최규현, 알고리즘스터디);
+        공지사항1 = new CreateNoticeRequest("공지사항1", "상세내용1", -1L, -1L).toEntity(최규현, 알고리즘스터디);
+        공지사항2 = new CreateNoticeRequest("공지사항2", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
 
         회차1 = new AppointmentRequest().toEntity(알고리즘스터디);
     }

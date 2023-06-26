@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import ssu.groupstudy.domain.common.RepositoryTest;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
+import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.global.ResultCode;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -47,6 +50,23 @@ class NoticeRepositoryTest extends RepositoryTest {
                     () -> assertThat(checkNotice.getNotice()).isEqualTo(공지사항1)
             );
         }
+    }
+
+
+    @Test
+    @DisplayName("해당 스터디의 공지사항 리스트를 가져온다")
+    void getNoticeList(){
+        // given
+        userRepository.save(최규현);
+        studyRepository.save(알고리즘스터디);
+        noticeRepository.save(공지사항1);
+        noticeRepository.save(공지사항2);
+
+        // when
+        List<Notice> noticeList = noticeRepository.findNoticeByStudy(알고리즘스터디);
+
+        // then
+        assertThat(noticeList.size()).isEqualTo(2);
     }
 
 }

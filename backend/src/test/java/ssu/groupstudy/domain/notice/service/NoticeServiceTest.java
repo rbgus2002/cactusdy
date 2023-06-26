@@ -7,13 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -131,6 +135,38 @@ class NoticeServiceTest extends ServiceTest {
 
             // then
             assertThat(isChecked).isEqualTo("Unchecked");
+        }
+    }
+
+    @Nested
+    class getNoticeList{
+
+        @Test
+        @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
+        void fail_studyNotFound(){
+            // given
+            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+
+            // when, then
+            assertThatThrownBy(() -> noticeService.getNoticeSummaryList(-1L))
+                    .isInstanceOf(StudyNotFoundException.class)
+                    .hasMessage(STUDY_NOT_FOUND.getMessage());
+        }
+        @Test
+        @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
+        void success(){
+            // given
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            List<Notice> tmpNoticeList = new ArrayList<>();
+            tmpNoticeList.add(공지사항1);
+            doReturn(tmpNoticeList).when(noticeRepository).findNoticeByStudy(any(Study.class));
+
+            // when
+            List<NoticeSummary> noticeList = noticeService.getNoticeSummaryList(-1L);
+
+            // then
+            System.out.println(noticeList.get(0).getTitle());
+            assertThat(noticeList.size()).isEqualTo(1);
         }
     }
 }
