@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class NoticeSummary {
     private String title;
     private String contents;
-    private String nickName;
+    private String writerNickname;
     private LocalDateTime createDate;
 
     public NoticeSummary(Notice notice) {
         this.title = notice.getTitle();
         this.contents = notice.getContents();
-        this.nickName = notice.getWriter().getName();
+        this.writerNickname = notice.getWriter().getName();
         this.createDate = notice.getCreateDate();
     }
 }
