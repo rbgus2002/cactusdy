@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/design.dart';
 
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
@@ -8,6 +10,8 @@ import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/bar_chart.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
+import 'package:group_study_app/widgets/panels/notice_widget.dart';
+import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
@@ -54,7 +58,18 @@ class _WorkSpaceRoute extends State<StatefulWidget> {
 
                     ],
                   ),
+                ),
+                Panel(
+                  boxShadows: Design.basicShadows,
+                  child: NoticeWidget(
+                    noticeSummary: NoticeSummary(writerNickname: "Aaa",
+                    title: "[공지] 내일까지 적당히 긴 제목 만들어 오기",
+                    createDate: DateTime.now(),
+                    contents: "적당히 긴 내용 뭐가 있을까"),
+                  ),
                 )
+
+
               ],
             )
           )

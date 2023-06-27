@@ -46,7 +46,7 @@ class StudyGroupPanel extends Panel {
                     const Text('STUDY GROUP NAME', style: TextStyles.titleLarge,),
                     UserListButton(
                       userList:
-                      List<User>.generate(30, (index) => User(index, "d", "d")),
+                      List<User>.generate(30, (index) => User(userId: index, image: "d", nickName: "d")),
                       onTap: Test.onTabTest,
                       scale: 30.0,
                     ),

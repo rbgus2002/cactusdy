@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -6,20 +7,12 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:intl/intl.dart';
 
 class NoticeWidget extends StatefulWidget {
-  String title;
-  String content;
+  final NoticeSummary noticeSummary;
   bool fixed;
-
-  DateTime? date;
-  String? userId;
 
   NoticeWidget({
     Key? key,
-    required this.title,
-    required this.content,
-
-    this.date,
-    this.userId,
+    required this.noticeSummary,
 
     this.fixed = false,
   }) : super(key: key);
@@ -46,7 +39,7 @@ class _NoticeWidget extends State<NoticeWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.title, style: TextStyles.titleSmall,),
+                  Text(widget.noticeSummary.title, style: TextStyles.titleSmall,),
                   IconButton(
                     icon: Icon(Icons.push_pin_sharp, color: (widget.fixed)?null:ColorStyles.lightGrey,),
                     splashRadius: 16,
@@ -62,7 +55,7 @@ class _NoticeWidget extends State<NoticeWidget> {
               ),
 
               Design.padding15,
-              Text(widget.content,
+              Text(widget.noticeSummary.contents,
                 textAlign: TextAlign.justify,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -72,8 +65,8 @@ class _NoticeWidget extends State<NoticeWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(DateFormat('yyyy-MM-dd').format(widget.date?? DateTime.now())),
-                  Text("작성자 : ${widget.userId??"익명"}"),
+                  //Text(DateFormat('yyyy-MM-dd').format(widget.noticeSummary.createDate?? DateTime.now())),
+                  Text("작성자 : ${widget.noticeSummary.writerNickname??"익명"}"),
                 ],
               )
             ],

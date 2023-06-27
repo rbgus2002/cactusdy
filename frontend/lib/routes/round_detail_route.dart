@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 
 class RoundDetailRoute extends StatefulWidget {
   @override
@@ -7,14 +8,18 @@ class RoundDetailRoute extends StatefulWidget {
   }
 }
 
-class _RoundDetailRoute extends State<StatefulWidget> {
+class _RoundDetailRoute extends State<RoundDetailRoute> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Center(
-            child: Text(
-              'Round Detail Screen',
-            )
+        body: SingleChildScrollView(
+            child: Column(
+            children: [
+
+              Text("Asd", style: TextStyles.titleSmall,),
+              Text('Round Detail Screen',)
+              ],
+            ),
         )
     );
   }
