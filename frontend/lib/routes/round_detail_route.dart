@@ -3,7 +3,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 
 class RoundDetailRoute extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
+  State<RoundDetailRoute> createState() {
     return _RoundDetailRoute();
   }
 }
@@ -11,7 +11,8 @@ class RoundDetailRoute extends StatefulWidget {
 class _RoundDetailRoute extends State<RoundDetailRoute> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+        appBar: AppBar(backgroundColor: Colors.transparent,),
         body: SingleChildScrollView(
             child: Column(
             children: [

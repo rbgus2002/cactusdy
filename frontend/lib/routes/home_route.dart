@@ -5,15 +5,16 @@ import 'package:group_study_app/widgets/user_line_profile.dart';
 
 class HomeRoute extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
+  State<HomeRoute> createState() {
     return _HomeRoute();
   }
 }
 
-class _HomeRoute extends State<StatefulWidget> {
+class _HomeRoute extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent,),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(Design.padding),
         child: Column(
@@ -25,9 +26,7 @@ class _HomeRoute extends State<StatefulWidget> {
             UserLineProfile(nickName: "nickName", comment: "comment"),
             Design.padding10,
             StudyGroupPanel(),
-            Design.padding10,
             StudyGroupPanel(),
-            Design.padding10,
             StudyGroupPanel(),
           ],
         ),

@@ -10,7 +10,7 @@ import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/bar_chart.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
-import 'package:group_study_app/widgets/panels/notice_widget.dart';
+import 'package:group_study_app/widgets/panels/notice_panel.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
@@ -21,12 +21,12 @@ class WorkSpaceRoute extends StatefulWidget {
   const WorkSpaceRoute({super.key});
 
   @override
-  State<StatefulWidget> createState() {
+  State<WorkSpaceRoute> createState() {
     return _WorkSpaceRoute();
   }
 }
 
-class _WorkSpaceRoute extends State<StatefulWidget> {
+class _WorkSpaceRoute extends State<WorkSpaceRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +61,7 @@ class _WorkSpaceRoute extends State<StatefulWidget> {
                 ),
                 Panel(
                   boxShadows: Design.basicShadows,
-                  child: NoticeWidget(
+                  child: NoticePanel(
                     noticeSummary: NoticeSummary(writerNickname: "Aaa",
                     title: "[공지] 내일까지 적당히 긴 제목 만들어 오기",
                     createDate: DateTime.now(),

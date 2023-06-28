@@ -10,6 +10,7 @@ class Panel extends StatelessWidget {
   final double? width;
   final double? height;
   final double padding;
+  final double marginBottom;
 
   const Panel({
     Key? key,
@@ -20,6 +21,7 @@ class Panel extends StatelessWidget {
     this.width,
     this.height,
     this.padding = Design.padding,
+    this.marginBottom = 15,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class Panel extends StatelessWidget {
       width: width,
       height: height,
       padding: Design.edge15,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, marginBottom),
 
       decoration: BoxDecoration(
         color: backgroundColor,

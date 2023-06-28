@@ -13,17 +13,18 @@ import 'package:group_study_app/widgets/user_list_button.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
+  State<StudyDetailRoute> createState() {
     return _StudyDetailRoute();
   }
 }
 
-class _StudyDetailRoute extends State<StatefulWidget> {
+class _StudyDetailRoute extends State<StudyDetailRoute> {
   List<User> userList = List<User>.generate(30, (index) => User(userId: 0, image: "d", nickName: "d"));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(backgroundColor: Colors.transparent,),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(Design.padding),
         child: Column(
