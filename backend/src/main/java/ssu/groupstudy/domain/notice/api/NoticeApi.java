@@ -31,7 +31,7 @@ public class NoticeApi {
     @Operation(summary = "공지사항 읽음/안읽음 체크")
     @PatchMapping("/check")
     public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
-        final String isChecked = noticeService.switchCheckNotice(noticeId, userId);
+        final Character isChecked = noticeService.switchCheckNotice(noticeId, userId);
 
         return DataResponseDto.of("isChecked", isChecked);
     }
@@ -50,5 +50,13 @@ public class NoticeApi {
         final Character pinYn = noticeService.switchNoticePin(noticeId);
 
         return DataResponseDto.of("pinYn", pinYn);
+    }
+
+    @Operation(summary = "공지사항 읽은 사용자의 프로필 이미지 가져오기")
+    @GetMapping("/users/images")
+    public ResponseDto getCheckUserImageList(@RequestParam Long noticeId){
+        final List<String> userImageList = noticeService.getCheckUserImageList(noticeId);
+
+        return DataResponseDto.of("userImageList", userImageList);
     }
 }

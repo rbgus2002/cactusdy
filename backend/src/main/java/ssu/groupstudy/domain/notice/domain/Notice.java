@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -34,14 +35,14 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @Column(nullable = false) // FIXME : 이름 수정 pinYn
+    @Column(nullable = false)
     private char pinYn;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER) // EAGER 필수 (this.study issue 관련)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
@@ -60,15 +61,18 @@ public class Notice extends BaseEntity {
         this.pinYn = 'N';
     }
 
-    public String switchCheckNotice(User user){
+    public Character switchCheckNotice(User user){
         validateUserInStudy(this.study, user);
         CheckNotice checkNotice = new CheckNotice(this, user);
 
+        Character isChecked;
         if(isNoticeAlreadyRead(checkNotice)){
-            return readNotice(checkNotice);
+            isChecked = unreadNotice(checkNotice);
         }else{
-            return unreadNotice(checkNotice);
+            isChecked = readNotice(checkNotice);
         }
+
+        return isChecked;
     }
 
     public char switchPin(){
@@ -99,13 +103,13 @@ public class Notice extends BaseEntity {
         return checkNotices.contains(checkNotice);
     }
 
-    private String readNotice(CheckNotice checkNotice){
-        checkNotices.remove(checkNotice);
-        return "Unchecked";
+    private Character readNotice(CheckNotice checkNotice){
+        checkNotices.add(checkNotice);
+        return 'Y';
     }
 
-    private String unreadNotice(CheckNotice checkNotice){
-        checkNotices.add(checkNotice);
-        return "Checked";
+    private Character unreadNotice(CheckNotice checkNotice){
+        checkNotices.remove(checkNotice);
+        return 'N';
     }
 }

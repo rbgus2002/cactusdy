@@ -9,7 +9,9 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.global.ResultCode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -33,7 +35,7 @@ class NoticeRepositoryTest extends RepositoryTest {
         }
 
         @Test
-        @DisplayName("공지사항 읽음 상태에서 안읽음 상태로 전환한다")
+        @DisplayName("공지사항 읽음 상태로 전환한다")
         void switchCheckNotice() {
             // given
             userRepository.save(최규현);
@@ -41,14 +43,10 @@ class NoticeRepositoryTest extends RepositoryTest {
             noticeRepository.save(공지사항1);
 
             // when
-            String isChecked = 공지사항1.switchCheckNotice(최규현);
-            CheckNotice checkNotice = checkNoticeRepository.findByUserAndNotice(최규현, 공지사항1).get();
+            Character isChecked = 공지사항1.switchCheckNotice(최규현);
 
             // then
-            assertAll(
-                    () -> assertThat(isChecked).isEqualTo("Checked"),
-                    () -> assertThat(checkNotice.getNotice()).isEqualTo(공지사항1)
-            );
+            assertThat(isChecked).isEqualTo('Y');
         }
     }
 
@@ -106,5 +104,29 @@ class NoticeRepositoryTest extends RepositoryTest {
             // then
             assertThat(공지사항1.getPinYn()).isEqualTo('N');
         }
+    }
+
+    @Test
+    @DisplayName("공지사항에 체크 표시를 한 사용자 프로필 사진 리스트를 불러온다")
+    void getCheckUserImageListByNoticeId(){
+        // given
+        userRepository.save(최규현);
+        userRepository.save(장재우);
+        studyRepository.save(알고리즘스터디);
+        알고리즘스터디.invite(장재우);
+
+        noticeRepository.save(공지사항1);
+
+        공지사항1.switchCheckNotice(최규현);
+        공지사항1.switchCheckNotice(장재우);
+
+        // when
+        Set<CheckNotice> checkNotices = 공지사항1.getCheckNotices();
+        List<String> checkUserProfileList = new ArrayList<>();
+        for(CheckNotice checkNotice : checkNotices)
+            checkUserProfileList.add(checkNotice.getUser().getPicture());
+
+        // then
+        assertThat(checkUserProfileList.size()).isEqualTo(2);
     }
 }

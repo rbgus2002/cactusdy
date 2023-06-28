@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.domain.Notice;
@@ -18,7 +19,9 @@ import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ssu.groupstudy.global.ResultCode.*;
@@ -34,17 +37,17 @@ public class NoticeService {
     private NoticeRepository noticeRepository;
 
     @Transactional
-    public Notice createNotice(CreateNoticeRequest dto) {
+    public Long createNotice(CreateNoticeRequest dto) {
         User writer = userRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
-        return noticeRepository.save(dto.toEntity(writer, study));
+        return noticeRepository.save(dto.toEntity(writer, study)).getNoticeId();
     }
 
     @Transactional
-    public String switchCheckNotice(Long noticeId, Long userId){
+    public Character switchCheckNotice(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findByUserId(userId)
@@ -67,5 +70,19 @@ public class NoticeService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
 
         return notice.switchPin();
+    }
+
+    public List<String> getCheckUserImageList(Long noticeId){
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+
+        // TODO : 추후 stream 사용해서 refactoring 요망
+        Set<CheckNotice> checkNotices = notice.getCheckNotices();
+        List<String> profileImageList = new ArrayList<>();
+        for(CheckNotice checkNotice : checkNotices){
+            profileImageList.add(checkNotice.getUser().getPicture());
+        }
+
+        return profileImageList;
     }
 }

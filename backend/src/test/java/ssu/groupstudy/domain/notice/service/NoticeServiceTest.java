@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
@@ -20,6 +21,7 @@ import ssu.groupstudy.domain.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -87,10 +89,10 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(공지사항1).when(noticeRepository).save(any(Notice.class));
 
             // when
-            Notice notice = noticeService.createNotice(공지사항1CreateRequest);
+            Long noticeId = noticeService.createNotice(공지사항1CreateRequest);
 
             // then
-            assertThat(notice).isEqualTo(공지사항1);
+            assertThat(noticeId).isNotNull();
         }
     }
 
@@ -117,10 +119,10 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            String isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
 
             // then
-            assertThat(isChecked).isEqualTo("Checked");
+            assertThat(isChecked).isEqualTo('Y');
         }
 
         @Test
@@ -132,10 +134,10 @@ class NoticeServiceTest extends ServiceTest {
 
             // when
             공지사항1.switchCheckNotice(최규현);
-            String isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
 
             // then
-            assertThat(isChecked).isEqualTo("Unchecked");
+            assertThat(isChecked).isEqualTo('N');
         }
     }
 
@@ -194,6 +196,22 @@ class NoticeServiceTest extends ServiceTest {
             }
         }
 
+        // FIXME
+        @Test
+        @DisplayName("공지사항에 체크 표시를 한 사용자 프로필 사진 리스트를 불러온다")
+        void getCheckUserImageListByNoticeId(){
+            // given
 
+            // when
+            공지사항1.switchCheckNotice(최규현);
+            Set<CheckNotice> checkNotices = 공지사항1.getCheckNotices();
+            List<String> profileImageList = new ArrayList<>();
+            for(CheckNotice checkNotice : checkNotices){
+                profileImageList.add(checkNotice.getUser().getPicture());
+            }
+
+            // then
+            assertThat(profileImageList.size()).isEqualTo(1);
+        }
     }
 }

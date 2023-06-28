@@ -25,7 +25,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String nickName;
 
+    @Column
     private String picture;
+
+    @Column
     private String statusMessage;
     
     @Column(nullable = false)
@@ -37,7 +40,6 @@ public class User extends BaseEntity {
     private String phoneModel;
 
     @Column(nullable = false)
-    @ColumnDefault("N")
     private char deleteYn;
 
     @Builder
@@ -49,6 +51,7 @@ public class User extends BaseEntity {
         this.activateDate = LocalDateTime.now();
         this.phoneModel = phoneModel;
         this.deleteYn = 'N';
+        this.statusMessage = "";
     }
 }
 
