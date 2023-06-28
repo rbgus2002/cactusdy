@@ -29,7 +29,7 @@ public class NoticeApi {
     }
 
     @Operation(summary = "공지사항 읽음/안읽음 체크")
-    @PostMapping("/check")
+    @PatchMapping("/check")
     public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
         final String isChecked = noticeService.switchCheckNotice(noticeId, userId);
 
@@ -42,5 +42,13 @@ public class NoticeApi {
         final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryList(studyId);
 
         return DataResponseDto.of("noticeList", noticeSummaryList);
+    }
+
+    @Operation(summary = "공지사항 상단고정 상태 변경")
+    @PatchMapping("/pin")
+    public ResponseDto switchNoticePin(@RequestParam Long noticeId){
+        final Character pinYn = noticeService.switchNoticePin(noticeId);
+
+        return DataResponseDto.of("pinYn", pinYn);
     }
 }

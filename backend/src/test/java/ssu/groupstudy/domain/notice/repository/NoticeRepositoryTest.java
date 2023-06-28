@@ -18,7 +18,7 @@ class NoticeRepositoryTest extends RepositoryTest {
     @Nested
     class switchCheckNotice {
         @Test
-        @DisplayName("")
+        @DisplayName("스터디에 사용자가 소속되어있는지 검사한다")
         void validateUserInStudy() {
             // given
             userRepository.save(최규현);
@@ -33,7 +33,7 @@ class NoticeRepositoryTest extends RepositoryTest {
         }
 
         @Test
-        @DisplayName("공지사항 읽음 상태를 반대의 상태로 바꾼다")
+        @DisplayName("공지사항 읽음 상태에서 안읽음 상태로 전환한다")
         void switchCheckNotice() {
             // given
             userRepository.save(최규현);
@@ -64,7 +64,7 @@ class NoticeRepositoryTest extends RepositoryTest {
         noticeRepository.save(공지사항3);
 
         // when
-        List<Notice> noticeList = noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디); // TEST
+        List<Notice> noticeList = noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디);
 
         // then
         assertAll(
@@ -72,5 +72,39 @@ class NoticeRepositoryTest extends RepositoryTest {
                 () -> assertThat(noticeList.get(0)).isEqualTo(공지사항3),
                 () -> assertThat(noticeList.get(1).getCreateDate()).isAfter(noticeList.get(2).getCreateDate())
         );
+    }
+
+    @Nested
+    class switchNoticePin{
+        @Test
+        @DisplayName("공지사항을 상단고정한다")
+        void pin(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchPin(); // 공지사항3 상단 고정
+
+            // then
+            assertThat(공지사항1.getPinYn()).isEqualTo('Y');
+        }
+
+        @Test
+        @DisplayName("공지사항 상단고정을 해제한다")
+        void unPin(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchPin(); // 공지사항3 상단 고정
+            공지사항1.switchPin(); // 공지사항3 상단 고정 해제
+
+            // then
+            assertThat(공지사항1.getPinYn()).isEqualTo('N');
+        }
     }
 }

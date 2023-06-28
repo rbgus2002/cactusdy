@@ -21,6 +21,8 @@ import ssu.groupstudy.global.ResultCode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ssu.groupstudy.global.ResultCode.*;
+
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
@@ -34,9 +36,9 @@ public class NoticeService {
     @Transactional
     public Notice createNotice(CreateNoticeRequest dto) {
         User writer = userRepository.findByUserId(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         Study study = studyRepository.findByStudyId(dto.getStudyId())
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.save(dto.toEntity(writer, study));
     }
@@ -44,18 +46,26 @@ public class NoticeService {
     @Transactional
     public String switchCheckNotice(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
-                .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         return notice.switchCheckNotice(user);
     }
 
     public List<NoticeSummary> getNoticeSummaryList(Long studyId) {
         Study study = studyRepository.findByStudyId(studyId)
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study)
                 .stream().map(NoticeSummary::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Character switchNoticePin(Long noticeId) {
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+
+        return notice.switchPin();
     }
 }

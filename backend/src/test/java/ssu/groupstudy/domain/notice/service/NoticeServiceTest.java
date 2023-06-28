@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
+import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -164,8 +165,35 @@ class NoticeServiceTest extends ServiceTest {
             List<NoticeSummary> noticeList = noticeService.getNoticeSummaryList(-1L);
 
             // then
-            System.out.println(noticeList.get(0).getTitle());
             assertThat(noticeList.size()).isEqualTo(1);
         }
+
+
+        @Nested
+        class switchNoticePin{
+            @Test
+            @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
+            void fail_noticeNotFound(){
+                // given
+                doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+
+                // when, then
+                assertThatThrownBy(() -> noticeService.switchNoticePin(-1L))
+                        .isInstanceOf(NoticeNotFoundException.class)
+                        .hasMessage(NOTICE_NOT_FOUND.getMessage());
+            }
+
+            @Test
+            @DisplayName("공지사항을 상단고정하도록 상태를 변경한다")
+            void pin(){
+                // given, when
+                Character pinYn = 공지사항1.switchPin();
+
+                // then
+                assertThat(pinYn).isEqualTo('Y');
+            }
+        }
+
+
     }
 }
