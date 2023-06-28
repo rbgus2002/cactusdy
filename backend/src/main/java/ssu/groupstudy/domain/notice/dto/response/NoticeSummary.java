@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class NoticeSummary {
+public class
+NoticeSummary {
     private Long noticeId;
     private String title;
     private String contents;

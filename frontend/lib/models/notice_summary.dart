@@ -1,26 +1,33 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class NoticeSummary {
+  int noticeId;
   String title;
   String contents;
   String writerNickname;
+  bool pinYn;
   DateTime createDate;
 
   NoticeSummary({
+    required this.noticeId,
     required this.title,
     required this.contents,
     required this.writerNickname,
     required this.createDate,
+    required this.pinYn,
   });
 
   factory NoticeSummary.fromJson(Map<String, dynamic> json) {
     return NoticeSummary(
+        noticeId: json['noticeId'],
         title: json['title'],
         contents: json['contents'],
         writerNickname: json['writerNickname'],
+        pinYn: (json['pinYn'] == 'Y'),
         createDate: DateTime.parse(json['createDate']));
   }
 
@@ -47,4 +54,6 @@ class NoticeSummary {
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();
     }
   }
+
+
 }

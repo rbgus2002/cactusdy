@@ -10,13 +10,10 @@ import 'package:intl/intl.dart';
 
 class NoticePanel extends StatefulWidget {
   final NoticeSummary noticeSummary;
-  bool fixed;
 
   NoticePanel({
     Key? key,
     required this.noticeSummary,
-
-    this.fixed = false,
   }) : super(key: key);
 
   @override
@@ -38,13 +35,13 @@ class _NoticePanel extends State<NoticePanel> {
             children: [
               Text(widget.noticeSummary.title, style: TextStyles.titleSmall,),
               IconButton(
-                icon: Icon(Icons.push_pin_sharp, color: (widget.fixed)?null:ColorStyles.lightGrey,),
+                icon: Icon(Icons.push_pin_sharp, color: (widget.noticeSummary.pinYn)?null:ColorStyles.lightGrey,),
                 splashRadius: 16,
                 iconSize: 20,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 onPressed: () { setState(() {
-                     widget.fixed = !widget.fixed;
+                     widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn;
                      //< FIXME : 대충 API 호출
                    });},
               )

@@ -14,13 +14,13 @@ class TimeUtility {
     }
 
     else if (difference.inDays < 1) {
-      return '${difference.inHours} 시간 전';
+      return '${difference.inHours} 시간전';
     }
 
     else if (difference.inDays < 2) {
       return '어제';
     }
 
-    return DateFormat('yyyy-MM-dd').format(dateTime);
+    return DateFormat('yyyy.MM.dd').format(dateTime);
   }
 }
