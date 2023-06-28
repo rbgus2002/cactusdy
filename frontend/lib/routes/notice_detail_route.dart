@@ -23,7 +23,7 @@ class NoticeDetailRoute extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() {
+  State<NoticeDetailRoute> createState() {
     return _NoticeDetailRoute();
   }
 }
@@ -47,9 +47,6 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               // Title & Writer
               Text(widget.notice.title, style: TextStyles.titleMedium,),
               Design.padding15,
-
-              // line
-
 
               SelectableText(
                 widget.notice.content,

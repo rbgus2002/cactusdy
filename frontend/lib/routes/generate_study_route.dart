@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 class GenerateStudyRoute extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
+  State<GenerateStudyRoute> createState() {
     return _GenerateStudyRoute();
   }
 }
 
-class _GenerateStudyRoute extends State<StatefulWidget> {
+class _GenerateStudyRoute extends State<GenerateStudyRoute> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent,),
       body: Center(
         child: Text(
           'Home Screen',
