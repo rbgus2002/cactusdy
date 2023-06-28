@@ -51,10 +51,12 @@ class _NoticeListRoute extends State<NoticeListRoute> {
               );
             } else
               return NoticePanel(noticeSummary: NoticeSummary(
+                noticeId: 12345,
                 contents: "내용에 해당하는 부분입니다.",
                 createDate: DateTime.now(),
                 title: "[공지] 규현님의 취업을 축하드립니다.",
                 writerNickname: "Arkady",
+                pinYn: true,
               )
               );
               //return Text("공지가 없어용");
