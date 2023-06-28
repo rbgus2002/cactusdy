@@ -34,6 +34,9 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
+    @Column(nullable = false) // FIXME : 이름 수정 pinYn
+    private char pinYn;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
@@ -54,6 +57,7 @@ public class Notice extends BaseEntity {
         this.writer = writer;
         this.study = study;
         this.deleteYn = 'N';
+        this.pinYn = 'N';
     }
 
     public String switchCheckNotice(User user){
@@ -65,6 +69,24 @@ public class Notice extends BaseEntity {
         }else{
             return unreadNotice(checkNotice);
         }
+    }
+
+    public char switchPin(){
+        if(pinYn == 'N'){
+            pin();
+        }else{
+            unpin();
+        }
+
+        return this.pinYn;
+    }
+
+    private void pin(){
+        pinYn = 'Y';
+    }
+
+    private void unpin(){
+        pinYn = 'N';
     }
 
     private void validateUserInStudy(Study study, User user) {

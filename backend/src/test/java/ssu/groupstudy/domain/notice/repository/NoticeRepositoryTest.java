@@ -52,21 +52,25 @@ class NoticeRepositoryTest extends RepositoryTest {
         }
     }
 
-
     @Test
-    @DisplayName("해당 스터디의 공지사항 리스트를 가져온다")
-    void getNoticeList(){
+    @DisplayName("해당 스터디의 공지사항 리스트를 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져온다")
+    void getNoticeList() {
         // given
         userRepository.save(최규현);
         studyRepository.save(알고리즘스터디);
         noticeRepository.save(공지사항1);
         noticeRepository.save(공지사항2);
+        공지사항3.switchPin(); // 공지사항3 상단 고정
+        noticeRepository.save(공지사항3);
 
         // when
-        List<Notice> noticeList = noticeRepository.findNoticeByStudy(알고리즘스터디);
+        List<Notice> noticeList = noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디); // TEST
 
         // then
-        assertThat(noticeList.size()).isEqualTo(2);
+        assertAll(
+                () -> assertThat(noticeList.size()).isEqualTo(3),
+                () -> assertThat(noticeList.get(0)).isEqualTo(공지사항3),
+                () -> assertThat(noticeList.get(1).getCreateDate()).isAfter(noticeList.get(2).getCreateDate())
+        );
     }
-
 }

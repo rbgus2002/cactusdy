@@ -55,7 +55,7 @@ public class NoticeService {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        return noticeRepository.findNoticeByStudy(study)
+        return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study)
                 .stream().map(NoticeSummary::new).collect(Collectors.toList());
     }
 }

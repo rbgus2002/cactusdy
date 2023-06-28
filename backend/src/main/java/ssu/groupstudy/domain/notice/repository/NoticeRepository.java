@@ -12,5 +12,5 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     Optional<Notice> findByNoticeId(Long noticeId);
 
-    List<Notice> findNoticeByStudy(Study study);
+    List<Notice> findNoticeByStudyOrderByPinYnDescCreateDateDesc(Study study);
 }

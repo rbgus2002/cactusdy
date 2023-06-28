@@ -140,7 +140,6 @@ class NoticeServiceTest extends ServiceTest {
 
     @Nested
     class getNoticeList{
-
         @Test
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
         void fail_studyNotFound(){
@@ -159,7 +158,7 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
             List<Notice> tmpNoticeList = new ArrayList<>();
             tmpNoticeList.add(공지사항1);
-            doReturn(tmpNoticeList).when(noticeRepository).findNoticeByStudy(any(Study.class));
+            doReturn(tmpNoticeList).when(noticeRepository).findNoticeByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
 
             // when
             List<NoticeSummary> noticeList = noticeService.getNoticeSummaryList(-1L);
