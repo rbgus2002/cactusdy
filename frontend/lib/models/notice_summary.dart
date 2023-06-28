@@ -21,7 +21,7 @@ class NoticeSummary {
         title: json['title'],
         contents: json['contents'],
         writerNickname: json['writerNickname'],
-        createDate: json['createDate']);
+        createDate: DateTime.parse(json['createDate']));
   }
 
   Map<String, dynamic> toJson() => {
