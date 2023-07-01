@@ -8,12 +8,12 @@ import 'package:group_study_app/widgets/comment_widget.dart';
 import 'package:intl/intl.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
-  late final NoticeTmp notice;
+  late final Notice notice;
 
   NoticeDetailRoute() {
     User user = User(userId: 20182426, nickName: "Arkady", image: "");
 
-    notice = NoticeTmp(
+    notice = Notice(
         noticeId: 123,
         title: "[공지] 내일 늦게 오는 사람 커피 사기;; 그런데 만약 좀더 긴 이름의 제목이면?",
         content: "아니 요즘 정시에 오는 사람이 없음 ㅋㅋㅋㅋㅋ 고로 다음 스터디인 내일부터 늦게 오는 사람이 커피사는 걸로 합시다!! 반박시 이완용",

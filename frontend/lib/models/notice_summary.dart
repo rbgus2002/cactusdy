@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class NoticeSummary {
-  int noticeId;
-  String title;
-  String contents;
-  String writerNickname;
+  final int noticeId;
+  final String title;
+  final String contents;
+  final String writerNickname;
   bool pinYn;
-  DateTime createDate;
+  final DateTime createDate;
 
   NoticeSummary({
     required this.noticeId,
@@ -40,10 +38,10 @@ class NoticeSummary {
 
   static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}notices/list?studyId=$studyId'),
+        Uri.parse('${DatabaseService.serverUrl}notices/list?studyId=$studyId')
     );
-    print('${DatabaseService.serverUrl}notices/list?studyId=$studyId');
-    if (response.statusCode != 200) {
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to load data");
     } else {
       print("User Data sent successfully");
@@ -55,5 +53,19 @@ class NoticeSummary {
     }
   }
 
+  static Future<bool> switchNoticePin(int noticeId) async {
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}notices/pin?noticeId=$noticeId'),
+    );
 
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to change pin"); //< FIXME
+    } else {
+      print("pin is");
+
+      var responseJson = json.decode(
+          utf8.decode(response.bodyBytes))['data']['pinYn'];
+      return (responseJson == 'Y');
+    }
+  }
 }
