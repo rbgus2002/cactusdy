@@ -41,7 +41,8 @@ class _NoticePanel extends State<NoticePanel> {
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 onPressed: () { setState(() {
-                     widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn;
+                     widget.noticeSummary.pinYn;
+                     NoticeSummary.switchNoticePin(widget.noticeSummary.noticeId);
                      //< FIXME : 대충 API 호출
                    });},
               )

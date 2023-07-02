@@ -4,10 +4,11 @@ import 'package:group_study_app/models/notice_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
 class NoticeListRoute extends StatefulWidget {
-  final int studyId = 99;
+  final int studyId = Test.testStudy.studyId;
   @override
   State<NoticeListRoute> createState() {
     return _NoticeListRoute();
