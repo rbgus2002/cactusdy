@@ -3,7 +3,9 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.web.bind.annotation.*;
+import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.service.NoticeService;
@@ -23,9 +25,9 @@ public class NoticeApi {
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping("")
     public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto){
-        noticeService.createNotice(dto);
+        Long noticeId = noticeService.createNotice(dto);
 
-        return ResponseDto.success();
+        return DataResponseDto.of("noticeId", noticeId);
     }
 
     @Operation(summary = "공지사항 읽음/안읽음 체크")
