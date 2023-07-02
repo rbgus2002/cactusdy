@@ -21,7 +21,7 @@ NoticeSummary {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
-        this.writerNickname = notice.getWriter().getName();
+        this.writerNickname = notice.getWriter().getNickName();
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
     }
