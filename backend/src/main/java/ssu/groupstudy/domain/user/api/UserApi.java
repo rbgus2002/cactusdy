@@ -33,7 +33,4 @@ public class UserApi {
         UserInfoResponse user = userService.findUser(userId);
         return DataResponseDto.of("user", user);
     }
-
-    // TODO : swagger에 api별로 response 형식 명시
-    // TODO : return type 모두 ResponseDto로 변경
 }
