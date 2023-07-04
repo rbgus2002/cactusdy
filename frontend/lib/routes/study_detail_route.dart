@@ -19,7 +19,7 @@ class StudyDetailRoute extends StatefulWidget {
 }
 
 class _StudyDetailRoute extends State<StudyDetailRoute> {
-  List<User> userList = List<User>.generate(30, (index) => User(userId: 0, image: "d", nickName: "d"));
+  List<User> userList = List<User>.generate(30, (index) => User(userId: 0, nickName: "d", statusMessage: "", picture: ""));
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +71,9 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             const TitleWidget(title: "ROUND LIST", icon: Icon(Icons.add), onTap: Test.onTabTest),
 
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, image: "d", nickName: "d")]),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickName: "d", statusMessage: "", picture: "")]),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickName: "d", statusMessage: "", picture: "")]),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickName: "d", statusMessage: "", picture: "")]),
 
           ],
         ),

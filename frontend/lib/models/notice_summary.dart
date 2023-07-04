@@ -26,7 +26,8 @@ class NoticeSummary {
         contents: json['contents'],
         writerNickname: json['writerNickname'],
         pinYn: (json['pinYn'] == 'Y'),
-        createDate: DateTime.parse(json['createDate']));
+        createDate: DateTime.parse(json['createDate']),
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +48,6 @@ class NoticeSummary {
       print("User Data sent successfully");
 
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeList'];
-      print(responseJson);
 
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();
     }
@@ -61,7 +61,7 @@ class NoticeSummary {
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to change pin"); //< FIXME
     } else {
-      print("pin is");
+      print("pin is changed"); //< FIXME
 
       var responseJson = json.decode(
           utf8.decode(response.bodyBytes))['data']['pinYn'];

@@ -11,7 +11,7 @@ class NoticeDetailRoute extends StatefulWidget {
   late final Notice notice;
 
   NoticeDetailRoute() {
-    User user = User(userId: 20182426, nickName: "Arkady", image: "");
+    User user = User(userId: 20182426, nickName: "Arkady", statusMessage: "", picture: "");
 
     notice = Notice(
         noticeId: 123,
@@ -66,7 +66,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               ),
 
               CommentWidget(
-                comment: Comment(writer: User(userId: 1, nickName:  "Arkady", image:  "asd"), writingTime: DateTime.now(), content: "ㅋㅋㅋ 말이 되는 소리좀 하십시오 제발 ㅋㅋㅋ 사람들이 일직 오겠냐고 !!!"),
+                comment: Comment(writer: User(userId: 1, nickName:  "Arkady", picture:  "asd", statusMessage: "asdas"), writingTime: DateTime.now(), content: "ㅋㅋㅋ 말이 되는 소리좀 하십시오 제발 ㅋㅋㅋ 사람들이 일직 오겠냐고 !!!"),
               )
             ],
           ),

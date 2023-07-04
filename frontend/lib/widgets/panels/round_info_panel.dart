@@ -44,7 +44,7 @@ class RoundInfoPanel extends Panel {
 
         UserListButton(
           userList:
-          List<User>.generate(30, (index) => User(userId: index, image: "d", nickName: "d")),
+          List<User>.generate(30, (index) => Test.testUser),
           onTap: Test.onTabTest,
           scale: 45.0,
         ),
