@@ -23,7 +23,16 @@ class Notice {
     required this.writingTime,
   });
 
-  static Future<bool> createNotice(String title, String contents, int userId, int studyId) async {
+  static bool isValidate(int noticeId) {
+    return (noticeId >= 0);
+  }
+
+  static void getNotice(int noticeId) {
+
+
+  }
+
+  static Future<int> createNotice(String title, String contents, int userId, int studyId) async {
     try {
       Map<String, dynamic> data = {
         'title': title,
@@ -41,14 +50,14 @@ class Notice {
       if (response.statusCode != DatabaseService.SUCCESS_CODE) {
         throw Exception("Failed to create new notice");
       } else {
-        // 아 노티스 아이디가 필요하네..
+        int newStudyId = json.decode(response.body)['data']['noticeId'];
         print("New notice is created successfully");
-        return true;
+        return newStudyId;
       }
     }
     catch (e) {
       print(e);
-      return false;
+      return -1;
     }
   }
 }

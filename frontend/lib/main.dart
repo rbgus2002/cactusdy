@@ -81,7 +81,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NoticeDetailRoute()),
+                        builder: (context) => NoticeDetailRoute(21)),
                   );
                 }, child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 class NoticeDetailRoute extends StatefulWidget {
   late final Notice notice;
 
-  NoticeDetailRoute() {
+  NoticeDetailRoute(int noticeId) {
     User user = User(userId: 20182426, nickName: "Arkady", statusMessage: "", picture: "");
 
     notice = Notice(

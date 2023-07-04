@@ -14,18 +14,26 @@ class CreateNoticeRoute extends StatefulWidget {
 }
 
 class _CreateNoticeRoute extends State<CreateNoticeRoute> {
+  static const String _titleHintMessage = "제목을 입력해 주세요";
+  static const String _contentHintMessage = "내용을 입력해 주세요";
+  static const String _CreateFailMessage = "작성에 실패했습니다";
+
   String _title = "";
   String _contents = "";
 
   bool _checkValidation() {
-    //< FIXME : Button Deactivation | Toast Message?
-    if (_title.isEmpty || _contents.isEmpty) {
+    if (_title.isEmpty) {
+      Toast.showToast(_titleHintMessage);
+      return false;
+    }
+
+    if (_contents.isEmpty) {
+      Toast.showToast(_contentHintMessage);
       return false;
     }
 
     return true;
   }
-
 
 
   @override
@@ -37,23 +45,25 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextField( // [Title]
+                // [Title]
+                TextField(
                   style: TextStyles.titleSmall,
                   maxLength: Notice.titleMaxLength,
                   decoration: const InputDecoration(
-                    hintText: "제목을 입력해 주세요.",
+                    hintText: _titleHintMessage,
                   ),
                   onChanged: (text) {
                     setState(() { _title = text; });
                   },
                 ),
 
-                TextField( // [Contents]
+                // [Contents]
+                TextField(
                   maxLines: 16,
                   maxLength: Notice.contentsMaxLength,
                   textAlign: TextAlign.justify,
                   decoration: const InputDecoration(
-                    hintText: "내용을 입력해 주세요.",
+                    hintText: _contentHintMessage,
                     border: null,
                   ),
                   onChanged: (text) {
@@ -61,22 +71,24 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                   },
                 ),
 
-                ElevatedButton( // [Create Button]
+                // [Create Button]
+                ElevatedButton(
                     onPressed: () {
                       if (_checkValidation()) {
-                        Future<bool> result = Notice.createNotice(
+                        Future<int> result = Notice.createNotice(
                         _title, _contents, Test.testUser.userId, Test.testStudy.studyId);
-                        result.then((value) {
-                          if (value) {
+
+                        result.then((newNoticeId) {
+                          if (Notice.isValidate(newNoticeId)) {
                             Navigator.of(context).pop();
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => NoticeDetailRoute()),
+                              MaterialPageRoute(builder: (context) => NoticeDetailRoute(newNoticeId)),
                             );
                           }
+
                           else {
-                            //< FIXME : 대충 토스터로 게시물 작성에 실패했다고 띄우기
-                            //< FIXME : 혹은 그냥 버튼을 비활성화 시킬까?
+                            Toast.showToast(_CreateFailMessage);
                           }
                         });
                       }
