@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 class Notice {
   static const titleMaxLength = 50;
   static const contentsMaxLength = 100;
+  static const NOTICE_CREATION_ERROR = -1;
 
   final int noticeId;
   final String title;
@@ -22,10 +23,6 @@ class Notice {
     required this.writer,
     required this.writingTime,
   });
-
-  static bool isValidate(int noticeId) {
-    return (noticeId >= 0);
-  }
 
   static void getNotice(int noticeId) {
 
@@ -57,7 +54,7 @@ class Notice {
     }
     catch (e) {
       print(e);
-      return -1;
+      return NOTICE_CREATION_ERROR;
     }
   }
 }

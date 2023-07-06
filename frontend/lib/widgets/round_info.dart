@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/widgets/Tags/tag.dart';
+import 'package:group_study_app/widgets/Tags/tag_button.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:intl/intl.dart';
 

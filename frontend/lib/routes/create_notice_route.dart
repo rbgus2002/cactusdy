@@ -16,7 +16,7 @@ class CreateNoticeRoute extends StatefulWidget {
 class _CreateNoticeRoute extends State<CreateNoticeRoute> {
   static const String _titleHintMessage = "제목을 입력해 주세요";
   static const String _contentHintMessage = "내용을 입력해 주세요";
-  static const String _CreateFailMessage = "작성에 실패했습니다";
+  static const String _creationFailMessage = "작성에 실패했습니다";
 
   String _title = "";
   String _contents = "";
@@ -79,16 +79,15 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                         _title, _contents, Test.testUser.userId, Test.testStudy.studyId);
 
                         result.then((newNoticeId) {
-                          if (Notice.isValidate(newNoticeId)) {
+                          if (newNoticeId != Notice.NOTICE_CREATION_ERROR) {
                             Navigator.of(context).pop();
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => NoticeDetailRoute(newNoticeId)),
                             );
                           }
-
                           else {
-                            Toast.showToast(_CreateFailMessage);
+                            Toast.showToast(_creationFailMessage);
                           }
                         });
                       }

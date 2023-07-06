@@ -16,7 +16,7 @@ class UserLineProfile extends StatelessWidget {
 
   const UserLineProfile({
     Key? key,
-    this.scale: 65,
+    this.scale: 50,
     this.image,
     this.onTap,
     required this.user,
@@ -26,24 +26,26 @@ class UserLineProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
         // FIXME : user.image
-        CircleButton(scale: 60.0, onTap: onTap, child: image,), //< FIXME : size should be calculated
-        Design.padding10,
+        CircleButton(scale: scale, onTap: onTap, child: image,), //< FIXME : size should be calculated
+        Design.padding5,
         Flexible(
           fit: FlexFit.tight,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-              Text(user.nickName, maxLines: 1, style: TextStyles.titleLarge,),
-              Text(user.statusMessage, maxLines: 1, style: TextStyles.bodyLarge,),
+              Design.padding5,
+              Text(user.nickName, maxLines: 1, style: TextStyles.titleMedium,),
+              Text(user.statusMessage, maxLines: 1, style: TextStyles.bodyMedium, textAlign: TextAlign.justify,),
               ],
             ),
           ),
-        IconButton(onPressed: (){}, icon: AppIcons.edit), //< FIXME
+        IconButton(onPressed: (){}, icon: AppIcons.edit, iconSize: 20), //< FIXME
         ],
     );
   }

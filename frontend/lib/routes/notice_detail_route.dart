@@ -4,7 +4,10 @@ import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
+import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 import 'package:intl/intl.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
@@ -55,18 +58,26 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               ),
 
               Design.padding15,
+              NoticeReactionTag(studyId: 1, isChecked: false,),
+
+              Design.padding15,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(DateFormat('yyyy-MM-dd').format(widget.notice.writingTime?? DateTime.now()),
+                  Text(TimeUtility.timeToString(widget.notice.writingTime),
                     style: TextStyles.bodyMedium,),
                   Text("작성자 : ${widget.notice.writer.nickName??"익명"}",
                     style: TextStyles.bodyMedium,),
                 ],
               ),
 
+              Design.padding15,
               CommentWidget(
-                comment: Comment(writer: User(userId: 1, nickName:  "Arkady", picture:  "asd", statusMessage: "asdas"), writingTime: DateTime.now(), content: "ㅋㅋㅋ 말이 되는 소리좀 하십시오 제발 ㅋㅋㅋ 사람들이 일직 오겠냐고 !!!"),
+                comment: Comment(writer: Test.testUser, writingTime: DateTime.now(), content: "혹시 두 명 이상이 늦으면 커피 두잔씩 마시는 건가요?",),
+                replies: [
+                  Comment(writer: User(userId: 1, nickName:  "규규", picture:  "asd", statusMessage: "asdas"), writingTime: DateTime.now(), content: "겠냐고 ㅋㅋㅋㅋ 늦을 생각 자체를 하지마",),
+                  Comment(writer: User(userId: 1, nickName:  "Arkady", picture:  "asd", statusMessage: "asdas"), writingTime: DateTime.now(), content: "우리 저렴한 커피 나무로 갈까 ^_^ 아 근데 진짜 확실한 건 예지 누나는 이미 지각인 듯"),
+                ],
               )
             ],
           ),
