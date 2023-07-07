@@ -3,27 +3,22 @@ package ssu.groupstudy.domain.study.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ssu.groupstudy.domain.common.RepositoryTest;
-import ssu.groupstudy.domain.study.domain.Participants;
-import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.response.ParticipantSummary;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParticipantRepositoryTest extends RepositoryTest {
     @DisplayName("스터디에 소속되어있는 사용자인지 확인한다")
@@ -110,7 +105,7 @@ class ParticipantRepositoryTest extends RepositoryTest {
         @Test
         void success() {
             // given
-            userRepository.save(최규현).getUserId();
+            userRepository.save(최규현);
             userRepository.save(장재우);
             studyRepository.save(알고리즘스터디);
 
@@ -121,5 +116,26 @@ class ParticipantRepositoryTest extends RepositoryTest {
             // then
             assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(1);
         }
+    }
+
+    @Test
+    @DisplayName("스터디에 소속된 사용자의 프로필 이미지를 초대순서로 정렬해서 모두 불러온다")
+    void getParticipantsProfileImageList(){
+        // given
+        userRepository.save(최규현);
+        userRepository.save(장재우);
+        studyRepository.save(알고리즘스터디);
+        알고리즘스터디.invite(장재우);
+
+        // when
+        Set<Participant> participants = 알고리즘스터디.getParticipants().getParticipants();
+        List<ParticipantSummary> participantSummaryList = new ArrayList<>();
+        for(Participant participant : participants){
+            participantSummaryList.add(ParticipantSummary.from(participant));
+        }
+
+        // then
+        assertEquals(2, participantSummaryList.size());
+        System.out.println(participantSummaryList);
     }
 }

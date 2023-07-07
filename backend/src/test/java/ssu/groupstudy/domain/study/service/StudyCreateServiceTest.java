@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
@@ -33,6 +34,9 @@ class StudyCreateServiceTest extends ServiceTest {
     private UserRepository userRepository;
     @Mock
     private StudyRepository studyRepository;
+
+    @Mock
+    private ParticipantsService participantsService;
 
     @Nested
     class 스터디생성{

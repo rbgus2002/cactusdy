@@ -25,6 +25,7 @@ public class UserService {
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
 
+        // TODO : userId만 return 하도록 수정
         User newUser = userRepository.save(dto.toEntity());
         return newUser;
     }
