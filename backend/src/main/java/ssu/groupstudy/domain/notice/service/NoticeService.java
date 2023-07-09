@@ -61,7 +61,7 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study).stream()
-                .map(NoticeSummary::new)
+                .map(NoticeSummary::of)
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +69,6 @@ public class NoticeService {
     public Character switchNoticePin(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-
         return notice.switchPin();
     }
 

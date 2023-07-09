@@ -16,13 +16,17 @@ public class NoticeSummary {
     private char pinYn;
     private LocalDateTime createDate;
 
-    public NoticeSummary(Notice notice) {
+    private NoticeSummary(Notice notice) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.writerNickname = notice.getWriter().getNickName();
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
+    }
+
+    public static NoticeSummary of(Notice notice){
+        return new NoticeSummary(notice);
     }
 }
 
