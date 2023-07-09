@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.notice.dto.response;
 
 import lombok.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,7 @@ public class NoticeSummary {
         this.createDate = notice.getCreateDate();
     }
 
-    public static NoticeSummary of(Notice notice){
+    public static NoticeSummary from(Notice notice){
         return new NoticeSummary(notice);
     }
 }
