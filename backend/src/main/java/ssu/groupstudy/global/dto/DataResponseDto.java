@@ -5,10 +5,12 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class DataResponseDto<T> extends ResponseDto {
-    private final Map data;
+    private final Map<String, T> data;
 
     private DataResponseDto(String key, T data) {
         super(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
@@ -19,10 +21,8 @@ public class DataResponseDto<T> extends ResponseDto {
         return new DataResponseDto<>(key, data);
     }
 
-    // TODO : stream 사용해서 한 줄로 리턴하도록 수정
     private Map<String, T> stringToMap(String key, T data) {
-        Map map = new HashMap();
-        map.put(key, data);
-        return map;
+        return Stream.of(Map.entry(key, data))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

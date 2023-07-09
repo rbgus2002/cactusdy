@@ -60,8 +60,9 @@ public class NoticeService {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
-        return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study)
-                .stream().map(NoticeSummary::new).collect(Collectors.toList());
+        return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study).stream()
+                .map(NoticeSummary::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -73,16 +74,12 @@ public class NoticeService {
     }
 
     public List<String> getCheckUserImageList(Long noticeId){
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
-                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        Set<CheckNotice> checkNotices = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
+                .getCheckNotices();
 
-        // TODO : 추후 stream 사용해서 refactoring 요망
-        Set<CheckNotice> checkNotices = notice.getCheckNotices();
-        List<String> profileImageList = new ArrayList<>();
-        for(CheckNotice checkNotice : checkNotices){
-            profileImageList.add(checkNotice.getUser().getPicture());
-        }
-
-        return profileImageList;
+        return checkNotices.stream()
+                .map(checkNotice -> checkNotice.getUser().getPicture())
+                .collect(Collectors.toList());
     }
 }
