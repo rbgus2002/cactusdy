@@ -11,10 +11,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.global.ResultCode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -27,13 +24,25 @@ public class ParticipantsService {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        Set<Participant> participantList = study.getParticipants().getParticipants();
+        List<Participant> participantList = getParticipantListOrderByCreateDateAsc(study);
+
         List<ParticipantSummary> participantSummaryList = new ArrayList<>();
         for(Participant participant : participantList){
             participantSummaryList.add(ParticipantSummary.from(participant));
         }
-        // TODO : 가입순으로 오름차순 정렬
 
         return participantSummaryList;
+    }
+
+    private List<Participant> getParticipantListOrderByCreateDateAsc(Study study){
+        List<Participant> participantList = new ArrayList<>(study.getParticipants().getParticipants());
+        Collections.sort(participantList, new Comparator<Participant>() {
+            @Override
+            public int compare(Participant o1, Participant o2) {
+                return o1.getCreateDate().compareTo(o2.getCreateDate());
+            }
+        });
+
+        return participantList;
     }
 }

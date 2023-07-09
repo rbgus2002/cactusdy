@@ -36,10 +36,10 @@ public class ParticipantApi {
         return ResponseDto.success();
     }
 
-    @Operation(summary = "스터디에 소속된 사용자의 프로필 이미지를 모두 불러온다")
+    @Operation(summary = "스터디에 소속된 사용자의 프로필 이미지를 모두 불러온다", description = "가입 시각을 기준으로 오름차순 정렬한다")
     @GetMapping("/summary")
     public ResponseDto getParticipantsProfileImageList(@RequestParam Long studyId){
-        List<ParticipantSummary> participantSummaryList = participantsService.getParticipantsProfileImageList(studyId); // TODO : 가입순으로 정렬 구현
+        List<ParticipantSummary> participantSummaryList = participantsService.getParticipantsProfileImageList(studyId);
 
         return DataResponseDto.of("participantSummaryList", participantSummaryList);
     }

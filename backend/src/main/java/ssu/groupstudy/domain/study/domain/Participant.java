@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "rel_user_study")
 @Getter
-public class Participant {
+public class Participant extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
