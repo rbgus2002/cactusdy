@@ -50,14 +50,10 @@ class UserServiceTest extends ServiceTest {
             doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
-            final User newUser = userService.signUp(최규현SignUpRequest);
+            final Long userId = userService.signUp(최규현SignUpRequest);
 
             // then
-            assertAll(
-                    () -> assertThat(newUser).isNotNull(),
-                    () -> assertThat(newUser.getName()).isEqualTo("최규현"),
-                    () -> assertThat(newUser.getEmail()).isEqualTo("rbgus200@naver.com")
-            );
+            assertThat(userId).isNotNull();
         }
     }
 

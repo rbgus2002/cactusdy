@@ -20,14 +20,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User signUp(SignUpRequest dto){
+    public Long signUp(SignUpRequest dto){
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
-
-        // TODO : userId만 return 하도록 수정
-        User newUser = userRepository.save(dto.toEntity());
-        return newUser;
+        return userRepository.save(dto.toEntity()).getUserId();
     }
 
     public UserInfoResponse findUser(long userId) {

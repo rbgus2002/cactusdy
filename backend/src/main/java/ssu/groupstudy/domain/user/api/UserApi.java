@@ -23,8 +23,8 @@ public class UserApi {
     @Operation(summary = "회원가입")
     @PostMapping("")
     public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto) {
-        userService.signUp(dto);
-        return ResponseDto.success();
+        Long userId = userService.signUp(dto);
+        return DataResponseDto.of("userId", userId);
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
