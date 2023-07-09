@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -28,6 +29,14 @@ public class NoticeApi {
         Long noticeId = noticeService.createNotice(dto);
 
         return DataResponseDto.of("noticeId", noticeId);
+    }
+
+    @Operation(summary = "id를 통한 공지사항 조회")
+    @GetMapping("")
+    public ResponseDto getNotice(@RequestParam Long noticeId){
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeByNoticeId(noticeId);
+
+        return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
 
     @Operation(summary = "공지사항 읽음/안읽음 체크")

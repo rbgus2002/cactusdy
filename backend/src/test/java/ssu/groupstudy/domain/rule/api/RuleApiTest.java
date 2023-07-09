@@ -21,7 +21,6 @@ import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -30,7 +29,6 @@ import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -81,7 +79,7 @@ class RuleApiTest {
         return SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@@naver.com")
-                .nickName("규규")
+                .nickname("규규")
                 .phoneModel("")
                 .picture("")
                 .build();

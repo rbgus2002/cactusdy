@@ -58,14 +58,14 @@ public class ServiceTest {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@naver.com")
-                .nickName("규규")
+                .nickname("규규")
                 .phoneModel("")
                 .picture("")
                 .build();
         장재우SignUpRequest = SignUpRequest.builder()
                 .name("장재우")
                 .email("arkady@naver.com")
-                .nickName("킹적화")
+                .nickname("킹적화")
                 .phoneModel("")
                 .picture("")
                 .build();

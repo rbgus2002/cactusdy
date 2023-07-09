@@ -9,14 +9,14 @@ import ssu.groupstudy.domain.user.domain.User;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserInfoResponse {
     private Long userId;
-    private String nickName;
+    private String nickname;
     private String statusMessage;
     private String picture;
 
 
     private UserInfoResponse(User user) {
         this.userId = user.getUserId();
-        this.nickName = user.getNickName();
+        this.nickname = user.getNickname();
         this.statusMessage = user.getStatusMessage();
         this.picture = user.getPicture();
     }

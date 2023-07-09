@@ -27,7 +27,7 @@ public class UserService {
         return userRepository.save(dto.toEntity()).getUserId();
     }
 
-    public UserInfoResponse findUser(long userId) {
+    public UserInfoResponse getUserByUserId(long userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 

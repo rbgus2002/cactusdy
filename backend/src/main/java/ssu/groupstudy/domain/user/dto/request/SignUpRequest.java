@@ -14,7 +14,7 @@ public class SignUpRequest {
     @NotBlank(message = "이름을 입력하세요")
     private String name;
     @NotBlank(message = "닉네임을 입력하세요")
-    private String nickName;
+    private String nickname;
     private String phoneModel;
     private String picture;
     @Email(message = "이메일 형식이 아닙니다")
@@ -24,16 +24,16 @@ public class SignUpRequest {
     public User toEntity(){
         return User.builder()
                 .name(this.name)
-                .nickName(this.nickName)
+                .nickname(this.nickname)
                 .phoneModel(this.phoneModel)
                 .picture(this.picture)
                 .email(this.email)
                 .build();
     }
 
-    public SignUpRequest(String name, String nickName, String email) {
+    public SignUpRequest(String name, String nickname, String email) {
         this.name = name;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.email = email;
     }
 }

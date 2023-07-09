@@ -22,15 +22,15 @@ public class UserApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("")
-    public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto) {
+    public ResponseDto register(@Valid @RequestBody SignUpRequest dto) {
         Long userId = userService.signUp(dto);
         return DataResponseDto.of("userId", userId);
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
-    public ResponseDto findUser(@RequestParam Long userId) {
-        UserInfoResponse user = userService.findUser(userId);
+    public ResponseDto getUser(@RequestParam Long userId) {
+        UserInfoResponse user = userService.getUserByUserId(userId);
         return DataResponseDto.of("user", user);
     }
 }
