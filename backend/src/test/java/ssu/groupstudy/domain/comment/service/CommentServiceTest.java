@@ -81,28 +81,34 @@ class CommentServiceTest extends ServiceTest {
 
 
 
-    @Test
-    @DisplayName("공지사항이 존재하지 않으면 예외를 던진다")
-    void notFoundNotice(){
-        // given, when
-        doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+    @Nested
+    class GetComments{
+        @Test
+        @DisplayName("공지사항이 존재하지 않으면 예외를 던진다")
+        void notFoundNotice(){
+            // given, when
+            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
 
-        // then
-        assertThatThrownBy(() -> commentService.getCommentsOrderByCreateDateAsc(-1L))
-                .isInstanceOf(NoticeNotFoundException.class)
-                .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
-    }
-    @Test
-    @DisplayName("공지사항에 작성된 댓글을 작성 시각 순으로 불러온다")
-    void getCommentsOrderByCreateDateAsc(){
-        // given
-        doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            // then
+            assertThatThrownBy(() -> commentService.getCommentsOrderByCreateDateAsc(-1L))
+                    .isInstanceOf(NoticeNotFoundException.class)
+                    .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
+        }
 
-        // when
-        List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
+        // TODO : 스터디에 참여중이지 않은 사용자가 댓글 작성 시 예외를 던진다
 
-        // then
-        assertEquals(0, comments.size()); // TODO 테스트 고민해보기
+        @Test
+        @DisplayName("공지사항에 작성된 댓글을 작성 시각 순으로 불러온다")
+        void getCommentsOrderByCreateDateAsc(){
+            // given
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when
+            List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
+
+            // then
+            assertEquals(0, comments.size()); // TODO 테스트 고민해보기
+        }
     }
 
 }

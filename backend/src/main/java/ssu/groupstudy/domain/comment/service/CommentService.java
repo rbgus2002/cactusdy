@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -34,6 +35,10 @@ public class CommentService {
 
         Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
+
+        if(!notice.getStudy().isParticipated(writer)){
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
 
         return commentRepository.save(dto.toEntity(writer, notice)).getCommentId();
     }
