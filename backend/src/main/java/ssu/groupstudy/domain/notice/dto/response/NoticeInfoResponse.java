@@ -16,10 +16,7 @@ public class NoticeInfoResponse {
     private LocalDateTime createDate;
     private String writerNickname;
 
-    // TODO : 추후 댓글 Comment 추가
-
-
-    public NoticeInfoResponse(Notice notice) {
+    private NoticeInfoResponse(Notice notice) {
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.checkNoticeCount = notice.getCheckNotices().size();

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
+import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.CheckNoticeRepository;
@@ -37,6 +40,8 @@ public class RepositoryTest {
     protected RoundRepository roundRepository;
     @Autowired
     protected RoundParticipantRepository roundParticipantRepository;
+    @Autowired
+    protected CommentRepository commentRepository;
 
 
     protected User 최규현;
@@ -46,6 +51,8 @@ public class RepositoryTest {
     protected Notice 공지사항1;
     protected Notice 공지사항2;
     protected Notice 공지사항3;
+    protected Comment 댓글1;
+    protected Comment 댓글2;
     protected Round 회차1;
 
     @BeforeEach
@@ -59,6 +66,9 @@ public class RepositoryTest {
         공지사항1 = new CreateNoticeRequest("공지사항1", "상세내용1", -1L, -1L).toEntity(최규현, 알고리즘스터디);
         공지사항2 = new CreateNoticeRequest("공지사항2", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
         공지사항3 = new CreateNoticeRequest("공지사항3", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
+
+        댓글1 = new CreateCommentRequest(-1L, -1L, "댓글1").toEntity(최규현, 공지사항1);
+        댓글2 = new CreateCommentRequest(-1L, -1L, "댓글2").toEntity(최규현, 공지사항1);
 
         회차1 = new AppointmentRequest().toEntity(알고리즘스터디);
     }

@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.comment.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "delete_yn = 'N'")
 @Getter
+@Where(clause = "delete_yn = 'N'")
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
