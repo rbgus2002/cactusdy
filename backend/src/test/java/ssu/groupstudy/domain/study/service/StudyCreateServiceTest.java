@@ -43,10 +43,10 @@ class StudyCreateServiceTest extends ServiceTest {
         @Test
         @DisplayName("존재하지 않는 사용자가 스터디를 생성하면 예외를 던진다")
         void 실패_유저존재하지않음() {
-            // given
+            // given, when
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
-            // when
+            // then
             assertThatThrownBy(() -> studyCreateService.createStudy(알고리즘스터디CreateRequest))
                     .isInstanceOf(UserNotFoundException.class)
                     .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());

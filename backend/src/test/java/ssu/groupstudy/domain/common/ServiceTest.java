@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
@@ -34,6 +36,9 @@ public class ServiceTest {
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
 
+    protected CreateCommentRequest 댓글1CreateRequest;
+    protected Comment 댓글1;
+
     protected AppointmentRequest 회차1AppointmentRequest;
     protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
     protected Round 회차1;
@@ -49,6 +54,8 @@ public class ServiceTest {
         initStudy();
         initCreateNoticeRequest();
         initNotice();
+        initCreateCommentRequest();
+        initComment();
         initCreateRoundRequest();
         initRound();
         initRoundParticipant();
@@ -113,6 +120,19 @@ public class ServiceTest {
     private void initNotice() {
         공지사항1 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
         ReflectionTestUtils.setField(공지사항1, "noticeId", 5L);
+    }
+
+    private void initCreateCommentRequest(){
+        댓글1CreateRequest = CreateCommentRequest.builder()
+                .userId(-1L)
+                .noticeId(-1L)
+                .contents("댓글 내용1")
+                .build();
+    }
+
+    private void initComment(){
+        댓글1 = 댓글1CreateRequest.toEntity(최규현, 공지사항1);
+        ReflectionTestUtils.setField(댓글1, "commentId", 7L);
     }
 
     private void initCreateRoundRequest() {

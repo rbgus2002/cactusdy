@@ -33,7 +33,7 @@ public class NoticeService {
 
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
-    private NoticeRepository noticeRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional
     public Long createNotice(CreateNoticeRequest dto) {

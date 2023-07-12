@@ -1,6 +1,8 @@
 package ssu.groupstudy.domain.comment.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.notice.domain.Notice;
@@ -15,6 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "delete_yn = 'N'")
+@Getter
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +31,25 @@ public class Comment extends BaseEntity {
     private User writer;
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name="noticeId")
+    private Notice notice;
+
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="parentCommentId")
     private Comment parentComment;
 
     @Column(nullable = false)
     private char deleteYn;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="noticeId")
-    private Notice notice;
+
+    @Builder
+    public Comment(String contents, User writer, Notice notice) {
+        this.contents = contents;
+        this.writer = writer;
+        this.notice = notice;
+        this.deleteYn = 'N';
+
+        // TODO 대댓글 구현
+        parentComment = null;
+    }
 }

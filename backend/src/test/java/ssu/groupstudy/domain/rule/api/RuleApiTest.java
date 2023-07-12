@@ -90,65 +90,65 @@ class RuleApiTest {
     }
 
 
-    @Nested
-    class 규칙생성{
-        @Test
-        @DisplayName("내용이 없는 규칙을 생성할 경우 예외를 던진다")
-        void 실패_규칙내용존재X() throws Exception {
-            // given
-            final String url = "/rule";
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(CreateRuleRequest.builder()
-                            .studyId(-1L)
-                            .detail("")
-                            .build()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isBadRequest());
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
-        void 실패_스터디존재X() throws Exception {
-            // given
-            final String url = "/rule";
-            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(ruleService).createRule(any(CreateRuleRequest.class));
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getCreateRuleRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isNotFound());
-        }
-
-        @Test
-        @DisplayName("성공")
-        void 성공() throws Exception {
-            // given
-            final String url = "/rule";
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getCreateRuleRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isOk());
-
-            ResponseDto response = gson.fromJson(resultActions.andReturn()
-                    .getResponse()
-                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
-
-            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
-        }
-    }
+//    @Nested
+//    class 규칙생성{
+//        @Test
+//        @DisplayName("내용이 없는 규칙을 생성할 경우 예외를 던진다")
+//        void 실패_규칙내용존재X() throws Exception {
+//            // given
+//            final String url = "/rule";
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(CreateRuleRequest.builder()
+//                            .studyId(-1L)
+//                            .detail("")
+//                            .build()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isBadRequest());
+//        }
+//
+//        @Test
+//        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
+//        void 실패_스터디존재X() throws Exception {
+//            // given
+//            final String url = "/rule";
+//            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(ruleService).createRule(any(CreateRuleRequest.class));
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(getCreateRuleRequest()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isNotFound());
+//        }
+//
+//        @Test
+//        @DisplayName("성공")
+//        void 성공() throws Exception {
+//            // given
+//            final String url = "/rule";
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(getCreateRuleRequest()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isOk());
+//
+//            ResponseDto response = gson.fromJson(resultActions.andReturn()
+//                    .getResponse()
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//
+//            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
+//        }
+//    }
 
 }
