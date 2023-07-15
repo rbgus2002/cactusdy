@@ -21,7 +21,7 @@ import java.util.List;
 public class CommentApi {
     private final CommentService commentService;
 
-    @Operation(summary = "새로운 댓글 작성")
+    @Operation(summary = "새로운 댓글 작성", description = "대댓글 작성의 경우에만 parentCommentId에 부모 댓글의 id를 포함해서 요청한다")
     @PostMapping("")
     public ResponseDto writeComment(@Valid @RequestBody CreateCommentRequest dto){
         Long commentId = commentService.createComment(dto);

@@ -42,15 +42,18 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-
-    @Builder
     public Comment(String contents, User writer, Notice notice) {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;
         this.deleteYn = 'N';
+        this.parentComment = null;
+    }
 
-        // TODO 대댓글 구현
-        parentComment = null;
+    public Comment(String contents, User writer, Notice notice, Comment parentComment) {
+        this.contents = contents;
+        this.writer = writer;
+        this.notice = notice;
+        this.parentComment = parentComment;
     }
 }

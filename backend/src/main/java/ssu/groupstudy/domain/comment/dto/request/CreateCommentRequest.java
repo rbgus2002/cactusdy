@@ -8,6 +8,7 @@ import ssu.groupstudy.domain.user.domain.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @Getter
 @AllArgsConstructor
@@ -16,18 +17,17 @@ import javax.validation.constraints.NotNull;
 public class CreateCommentRequest {
     @NotNull
     private Long userId;
-
     @NotNull
     private Long noticeId;
-
     @NotBlank
     private String contents;
 
+    private Long parentCommentId;
+
     public Comment toEntity(User writer, Notice notice){
-        return Comment.builder()
-                .writer(writer)
-                .notice(notice)
-                .contents(contents)
-                .build();
+        return new Comment(contents, writer, notice);
+    }
+    public Comment toEntity(User writer, Notice notice, Comment parentComment){
+        return new Comment(contents, writer, notice, parentComment);
     }
 }

@@ -67,8 +67,8 @@ public class RepositoryTest {
         공지사항2 = new CreateNoticeRequest("공지사항2", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
         공지사항3 = new CreateNoticeRequest("공지사항3", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
 
-        댓글1 = new CreateCommentRequest(-1L, -1L, "댓글1").toEntity(최규현, 공지사항1);
-        댓글2 = new CreateCommentRequest(-1L, -1L, "댓글2").toEntity(최규현, 공지사항1);
+        댓글1 = new CreateCommentRequest(-1L, -1L, "댓글1", null).toEntity(최규현, 공지사항1);
+        댓글2 = new CreateCommentRequest(-1L, -1L, "댓글2", null).toEntity(최규현, 공지사항1);
 
         회차1 = new AppointmentRequest().toEntity(알고리즘스터디);
     }

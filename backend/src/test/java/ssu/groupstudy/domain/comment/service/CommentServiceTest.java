@@ -62,7 +62,7 @@ class CommentServiceTest extends ServiceTest {
                     .isInstanceOf(NoticeNotFoundException.class)
                     .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
         }
-
+        
         @Test
         @DisplayName("댓글을 생성한다")
         void createNotice(){

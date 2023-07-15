@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
@@ -40,7 +41,22 @@ public class CommentService {
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
 
-        return commentRepository.save(dto.toEntity(writer, notice)).getCommentId();
+        Comment comment = getCommentIncludingParent(dto, writer, notice);
+        return commentRepository.save(comment).getCommentId();
+    }
+
+    /**
+     * 부모 댓글이 존재하는 경우를 구분해서 생성할 Comment 객체를 생성한다
+     */
+    private Comment getCommentIncludingParent(CreateCommentRequest dto, User writer, Notice notice) {
+        Comment comment;
+        if(dto.getParentCommentId() != null){
+            Comment parent = commentRepository.getReferenceById(dto.getParentCommentId());
+            comment = dto.toEntity(writer, notice, parent);
+        }else{
+            comment = dto.toEntity(writer, notice);
+        }
+        return comment;
     }
 
 
