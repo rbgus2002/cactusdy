@@ -8,5 +8,9 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findCommentsByNoticeOrderByCreateDate(Notice notice);
+    List<Comment> findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(Notice notice);
+
+//    List<Comment> findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(Notice notce);
+
+    List<Comment> findCommentsByParentCommentOrderByCreateDate(Comment comment);
 }

@@ -54,6 +54,7 @@ public class Comment extends BaseEntity {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;
+        this.deleteYn = 'N';
         this.parentComment = parentComment;
     }
 }

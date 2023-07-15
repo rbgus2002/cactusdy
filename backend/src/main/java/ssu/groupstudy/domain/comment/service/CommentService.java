@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
+import ssu.groupstudy.domain.comment.dto.response.ReplyCommentInfoResponse;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
@@ -59,13 +60,27 @@ public class CommentService {
         return comment;
     }
 
-
     public List<CommentInfoResponse> getCommentsOrderByCreateDateAsc(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
 
-        return commentRepository.findCommentsByNoticeOrderByCreateDate(notice).stream()
+        List<Comment> comments = commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
+        List<CommentInfoResponse> commentInfoResponses = comments.stream()
                 .map(CommentInfoResponse::from)
                 .collect(Collectors.toList());
+        appendReplies(comments, commentInfoResponses);
+
+        return commentInfoResponses;
+    }
+
+    private void appendReplies(List<Comment> comments, List<CommentInfoResponse> commentInfoResponses){
+        for(int i = 0; i < comments.size(); i++){
+            Comment comment = comments.get(i);
+            CommentInfoResponse commentInfo = commentInfoResponses.get(i);
+            commentInfo.appendReplies(commentRepository.findCommentsByParentCommentOrderByCreateDate(comment)
+                    .stream()
+                    .map(ReplyCommentInfoResponse::from)
+                    .collect(Collectors.toList()));
+        }
     }
 }

@@ -1,5 +1,7 @@
 package ssu.groupstudy.domain.comment.service;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +18,7 @@ import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,8 +82,6 @@ class CommentServiceTest extends ServiceTest {
         }
     }
 
-
-
     @Nested
     class GetComments{
         @Test
@@ -95,8 +96,6 @@ class CommentServiceTest extends ServiceTest {
                     .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
         }
 
-        // TODO : 스터디에 참여중이지 않은 사용자가 댓글 작성 시 예외를 던진다
-
         @Test
         @DisplayName("공지사항에 작성된 댓글을 작성 시각 순으로 불러온다")
         void getCommentsOrderByCreateDateAsc(){
@@ -109,6 +108,18 @@ class CommentServiceTest extends ServiceTest {
             // then
             assertEquals(0, comments.size()); // TODO 테스트 고민해보기
         }
-    }
 
+        @Test
+        @DisplayName("공지사항에 작성된 댓글을 가져오고 각 댓글에 대댓글이 존재하면 추가한다")
+        void getCommentWithReplies(){
+            // given
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when
+            List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
+
+            // then
+            System.out.println(comments); // TODO 테스트 어케하냐.,.,
+        }
+    }
 }

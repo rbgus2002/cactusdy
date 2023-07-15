@@ -53,6 +53,8 @@ public class RepositoryTest {
     protected Notice 공지사항3;
     protected Comment 댓글1;
     protected Comment 댓글2;
+    protected Comment 대댓글1;
+    protected Comment 대댓글2;
     protected Round 회차1;
 
     @BeforeEach
@@ -69,6 +71,9 @@ public class RepositoryTest {
 
         댓글1 = new CreateCommentRequest(-1L, -1L, "댓글1", null).toEntity(최규현, 공지사항1);
         댓글2 = new CreateCommentRequest(-1L, -1L, "댓글2", null).toEntity(최규현, 공지사항1);
+
+        대댓글1 = new CreateCommentRequest(-1L, -1L, "대댓글1", -1L).toEntity(최규현, 공지사항1, 댓글1);
+        대댓글2 = new CreateCommentRequest(-1L, -1L, "대댓글2", -1L).toEntity(최규현, 공지사항1, 댓글1);
 
         회차1 = new AppointmentRequest().toEntity(알고리즘스터디);
     }
