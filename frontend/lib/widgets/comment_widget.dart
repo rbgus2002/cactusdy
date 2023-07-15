@@ -1,31 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
-
-class CommentWidget extends StatelessWidget {
+class CommentWidget extends StatefulWidget {
   final Comment comment;
   final List<Comment> replies;
-  final double paddingLeft;
+  final bool isReply;
+  bool isSelected;
 
-  const CommentWidget({
+  CommentWidget({
     Key? key,
     required this.comment,
     this.replies = const [],
-    this.paddingLeft = 0,
+    this.isReply = false,
+    this.isSelected = false,
   }) : super(key: key);
+
+  @override
+  State<CommentWidget> createState() => _CommentWidget();
+}
+
+class _CommentWidget extends State<CommentWidget> {
+  static const double _replyLeftPadding = 18;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(paddingLeft, 10, 0, 0),
+      padding: EdgeInsets.fromLTRB((widget.isReply)?_replyLeftPadding:0, 0, 0, 0),
       child: Column (
         children: [
-          Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          InkWell(
+          child :Container(
+            decoration: BoxDecoration(
+              color: (widget.isSelected)?ColorStyles.grey:null,
+              borderRadius: BorderRadius.circular(Design.borderRadius),
+            ),
+            padding: Design.edge5,
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
             CircleButton(scale: 36,),
@@ -35,16 +51,21 @@ class CommentWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  Text(comment.writer.nickName, style: TextStyles.titleSmall),
+                  Text(widget.comment.writer.nickname, style: TextStyles.titleSmall),
                   Design.padding5,
 
-                  Text(comment.content, textAlign: TextAlign.justify,),
+                  Text(widget.comment.content, textAlign: TextAlign.justify,),
                   Design.padding5,
 
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children : [
-                        Text(TimeUtility.timeToString(comment.writingTime), style: TextStyles.bodyMedium,),
-                        Text(" | 답글 달기", style: TextStyles.bodyMedium,),
+                        Text(TimeUtility.timeToString(widget.comment.writingTime), style: TextStyles.bodyMedium,),
+                        const Text(" | "),
+                        InkWell(child: Text("답글 달기", style: TextStyles.bodyMedium),
+                          onTap: ()=>null,
+
+                        ),
                       ]
                   ),
                 ],)
@@ -52,8 +73,17 @@ class CommentWidget extends StatelessWidget {
             Icon(Icons.more_vert, size: 18,)
           ]
         ),
-        for (var reply in replies)
-          CommentWidget(comment: reply, paddingLeft: 18,),
+          ),
+          onLongPress: () => setState(() {
+            widget.isSelected = true;
+          }),
+            onTapCancel: () => setState(() {
+              widget.isSelected = false;
+            }),
+
+          ),
+        for (var reply in widget.replies)
+          CommentWidget(comment: reply, isReply: true,),
       ]
       ),
     );

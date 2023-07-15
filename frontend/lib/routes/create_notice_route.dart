@@ -7,6 +7,8 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 
 class CreateNoticeRoute extends StatefulWidget {
+  const CreateNoticeRoute({super.key});
+
   @override
   State<CreateNoticeRoute> createState() {
     return _CreateNoticeRoute();
@@ -83,7 +85,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                             Navigator.of(context).pop();
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => NoticeDetailRoute(newNoticeId)),
+                              MaterialPageRoute(builder: (context) => NoticeDetailRoute(noticeId: newNoticeId)),
                             );
                           }
                           else {
