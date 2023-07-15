@@ -40,13 +40,13 @@ class RoundInfoPanel extends Panel {
             Icon(Icons.chevron_right),
           ],
         ),
-        Design.padding10,
+        if (!userList.isEmpty)
+          Design.padding10,
 
         UserListButton(
-          userList:
-          List<User>.generate(30, (index) => Test.testUser),
+          userList: userList,
           onTap: Test.onTabTest,
-          scale: 45.0,
+          scale: 42.0,
         ),
       ],
     )

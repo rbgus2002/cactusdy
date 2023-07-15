@@ -7,7 +7,7 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/user_list_button.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  final double studyId;
+  final int noticeId;
   final int checkerNum;
   final int duration;
 
@@ -15,9 +15,9 @@ class NoticeReactionTag extends StatefulWidget {
 
   NoticeReactionTag({
     Key? key,
-    required this.studyId,
+    required this.noticeId,
     required this.isChecked,
-    this.checkerNum = 5,
+    required this.checkerNum,
     this.duration = 1,
   }) : super(key: key);
 
@@ -32,6 +32,10 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const int _showCountMax = 5;
 
   double _width = 0;
+
+  bool _isNeedUpdate = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
           _width = (_width != 0)? 0 : _boarderRadius * showCount;
         })
       },
+
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(_boarderRadius),
@@ -60,8 +65,10 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.check_circle, color: (widget.isChecked)?ColorStyles.green : ColorStyles.darkGrey,),
+            // Check Icon
+            Icon(Icons.check_circle, color: (widget.isChecked)? ColorStyles.green : ColorStyles.darkGrey),
 
+            // User List
             AnimatedContainer(
               width: _width,
               duration: Duration(seconds: widget.duration),
@@ -73,6 +80,8 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
               ),
             ),
             Design.padding5,
+
+            // checker Num
             Text("${widget.checkerNum}"),
             Design.padding5,
           ]
