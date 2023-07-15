@@ -62,7 +62,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
             Design.padding15,
 
             // Reaction Tag
-            NoticeReactionTag(studyId: 1, isChecked: false,),
+            NoticeReactionTag(noticeId: notice.noticeId, isChecked: false, checkerNum: notice.checkNoticeCount),
             Design.padding15,
 
             Row(
@@ -93,6 +93,8 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     return Container(
       padding: Design.edge10,
       child: TextField(
+        minLines: 1,
+        maxLines: 5,
 
         style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,

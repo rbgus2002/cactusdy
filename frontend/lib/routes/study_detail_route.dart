@@ -70,9 +70,9 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             const TitleWidget(title: "ROUND LIST", icon: Icon(Icons.add), onTap: Test.onTabTest),
 
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickname: "d", statusMessage: "", picture: "")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickname: "d", statusMessage: "", picture: "")]),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: [ User(userId: 0, nickname: "d", statusMessage: "", picture: "")]),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
 
           ],
         ),

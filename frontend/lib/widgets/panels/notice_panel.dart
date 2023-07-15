@@ -36,20 +36,20 @@ class _NoticePanel extends State<NoticePanel> {
               children: [
                 Text(widget.noticeSummary.title, style: TextStyles.titleSmall,),
                 IconButton(
-                  icon: Icon(Icons.push_pin_sharp,
-                    color: (widget.noticeSummary.pinYn) ? null : ColorStyles
-                        .lightGrey,),
-                  splashRadius: 16,
-                  iconSize: 20,
+                  icon: Icon(Icons.push_pin_sharp, size: 20,),
+                  color: (widget.noticeSummary.pinYn) ? null : ColorStyles.lightGrey,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   onPressed: () {
-                    setState(() {
-                      widget.noticeSummary.pinYn;
-                      NoticeSummary.switchNoticePin(
-                          widget.noticeSummary.noticeId);
-                      //< FIXME : 대충 API 호출
-                    });
+                    // Fast Unsafe State Update
+                    setState(() { widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn; } );
+
+                    NoticeSummary.switchNoticePin(widget.noticeSummary.noticeId)
+                        .then((pinYn) => {
+                          // Verify State
+                          setState(() { widget.noticeSummary.pinYn = pinYn; })
+                        }
+                    );
                   },
                 )
               ],

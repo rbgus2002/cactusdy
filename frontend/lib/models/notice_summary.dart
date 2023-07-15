@@ -61,11 +61,9 @@ class NoticeSummary {
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to change pin"); //< FIXME
     } else {
-      print("pin is changed"); //< FIXME
-
-      var responseJson = json.decode(
+      String result = json.decode(
           utf8.decode(response.bodyBytes))['data']['pinYn'];
-      return (responseJson == 'Y');
+      return (result == 'Y');
     }
   }
 }
