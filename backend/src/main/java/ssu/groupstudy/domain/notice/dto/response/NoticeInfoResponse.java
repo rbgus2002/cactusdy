@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NoticeInfoResponse {
+    private Long noticeId;
     private String title;
     private String contents;
     private int checkNoticeCount;
@@ -17,6 +18,7 @@ public class NoticeInfoResponse {
     private String writerNickname;
 
     private NoticeInfoResponse(Notice notice) {
+        this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.checkNoticeCount = notice.getCheckNotices().size();
@@ -31,7 +33,8 @@ public class NoticeInfoResponse {
     @Override
     public String toString() {
         return "NoticeInfoResponse{" +
-                "title='" + title + '\'' +
+                "noticeId=" + noticeId +
+                ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", checkNoticeCount=" + checkNoticeCount +
                 ", createDate=" + createDate +
