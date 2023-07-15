@@ -75,7 +75,7 @@ class _NoticePanel extends State<NoticePanel> {
           onTap: () => {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NoticeDetailRoute(widget.noticeSummary.noticeId))
+                MaterialPageRoute(builder: (context) => NoticeDetailRoute(noticeId: widget.noticeSummary.noticeId))
             )
           },
         )

@@ -40,7 +40,7 @@ class UserLineProfile extends StatelessWidget {
 
             children: [
               Design.padding5,
-              Text(user.nickName, maxLines: 1, style: TextStyles.titleMedium,),
+              Text(user.nickname, maxLines: 1, style: TextStyles.titleMedium,),
               Text(user.statusMessage, maxLines: 1, style: TextStyles.bodyMedium, textAlign: TextAlign.justify,),
               ],
             ),
