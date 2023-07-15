@@ -36,5 +36,4 @@ public class CommentApi {
 
         return DataResponseDto.of("comments", comments);
     }
-
 }

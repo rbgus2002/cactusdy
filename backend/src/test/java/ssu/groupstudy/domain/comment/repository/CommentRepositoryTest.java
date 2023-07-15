@@ -48,4 +48,22 @@ class CommentRepositoryTest extends RepositoryTest {
         assertEquals(대댓글1, replies.get(0));
         assertEquals(대댓글2, replies.get(1));
     }
+    
+    @Test
+    @DisplayName("공지사항에 작성된 댓글의 개수를 가져온다")
+    void countCommentByNotice(){
+        // given
+        userRepository.save(최규현);
+        studyRepository.save(알고리즘스터디);
+        noticeRepository.save(공지사항1);
+        commentRepository.save(댓글1);
+        commentRepository.save(대댓글1);
+        commentRepository.save(대댓글2);
+
+        // when
+        Long commentCount = commentRepository.countCommentByNotice(공지사항1);
+        
+        // then
+        assertEquals(3, commentCount);
+    }
 }

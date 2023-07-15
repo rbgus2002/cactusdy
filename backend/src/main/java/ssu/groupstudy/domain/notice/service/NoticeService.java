@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -34,6 +35,7 @@ public class NoticeService {
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final NoticeRepository noticeRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Long createNotice(CreateNoticeRequest dto) {
@@ -85,6 +87,8 @@ public class NoticeService {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
 
-        return NoticeInfoResponse.from(notice);
+        Long commentCount = commentRepository.countCommentByNotice(notice);
+
+        return NoticeInfoResponse.of(notice, commentCount);
     }
 }

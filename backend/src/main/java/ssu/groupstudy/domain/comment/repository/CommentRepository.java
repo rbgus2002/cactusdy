@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(Notice notice);
 
-//    List<Comment> findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(Notice notce);
-
     List<Comment> findCommentsByParentCommentOrderByCreateDate(Comment comment);
+
+    Long countCommentByNotice(Notice notice);
 }

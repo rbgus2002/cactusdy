@@ -17,28 +17,19 @@ public class NoticeInfoResponse {
     private LocalDateTime createDate;
     private String writerNickname;
 
-    private NoticeInfoResponse(Notice notice) {
+    private Long commentCount;
+
+    private NoticeInfoResponse(Notice notice, Long commentCount) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.checkNoticeCount = notice.getCheckNotices().size();
         this.createDate = notice.getCreateDate();
         this.writerNickname = notice.getWriter().getNickname();
+        this.commentCount = commentCount;
     }
 
-    public static NoticeInfoResponse from(Notice notice){
-        return new NoticeInfoResponse(notice);
-    }
-
-    @Override
-    public String toString() {
-        return "NoticeInfoResponse{" +
-                "noticeId=" + noticeId +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                ", checkNoticeCount=" + checkNoticeCount +
-                ", createDate=" + createDate +
-                ", writerNickname='" + writerNickname + '\'' +
-                '}';
+    public static NoticeInfoResponse of(Notice notice, Long commentCount){
+        return new NoticeInfoResponse(notice, commentCount);
     }
 }
