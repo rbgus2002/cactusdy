@@ -8,14 +8,12 @@ import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class CommentWidget extends StatefulWidget {
   final Comment comment;
-  final List<Comment> replies;
   final bool isReply;
   bool isSelected;
 
   CommentWidget({
     Key? key,
     required this.comment,
-    this.replies = const [],
     this.isReply = false,
     this.isSelected = false,
   }) : super(key: key);
@@ -51,16 +49,16 @@ class _CommentWidget extends State<CommentWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  Text(widget.comment.writer.nickname, style: TextStyles.titleSmall),
+                  Text(widget.comment.nickname, style: TextStyles.titleSmall),
                   Design.padding5,
 
-                  Text(widget.comment.content, textAlign: TextAlign.justify,),
+                  Text(widget.comment.contents, textAlign: TextAlign.justify,),
                   Design.padding5,
 
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                       children : [
-                        Text(TimeUtility.timeToString(widget.comment.writingTime), style: TextStyles.bodyMedium,),
+                        Text(TimeUtility.timeToString(widget.comment.createDate), style: TextStyles.bodyMedium,),
                         const Text(" | "),
                         InkWell(child: Text("답글 달기", style: TextStyles.bodyMedium),
                           onTap: ()=>null,
@@ -82,8 +80,9 @@ class _CommentWidget extends State<CommentWidget> {
             }),
 
           ),
-        for (var reply in widget.replies)
-          CommentWidget(comment: reply, isReply: true,),
+        if (widget.comment.replies.isNotEmpty)
+          for (var reply in widget.comment.replies)
+            CommentWidget(comment: reply, isReply: true,),
       ]
       ),
     );
