@@ -44,7 +44,9 @@ class Notice {
   }
 
   static Future<Notice> getNotice(int noticeId, int userId) async {
-      final response = await http.get(Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId&userId=$userId'));
+      final response = await http.get(
+          Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId&userId=$userId'),
+      );
 
       if (response.statusCode != DatabaseService.SUCCESS_CODE) {
         throw Exception("Failed to load notice");
@@ -89,10 +91,24 @@ class Notice {
     );
 
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
-      throw Exception("Fail to switch check notice");
+      throw Exception("Failed to switch check notice");
     } else {
       String isChecked = json.decode(response.body)['data']["isChecked"];
       return (isChecked == "Y");
+    }
+  }
+
+  static Future<List<String>> getCheckUserImageList(int noticeId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService
+          .serverUrl}notices/users/images?noticeId=$noticeId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to get Checked User Images");
+    } else {
+      var responseJson = json.decode(response.body)['data']['userImageList'];
+      return (responseJson as List).map((e) => e as String).toList();
     }
   }
 }
