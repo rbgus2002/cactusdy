@@ -51,6 +51,7 @@ public class RepositoryTest {
     protected Notice 공지사항1;
     protected Notice 공지사항2;
     protected Notice 공지사항3;
+    protected Notice 공지사항4;
     protected Comment 댓글1;
     protected Comment 댓글2;
     protected Comment 대댓글1;
@@ -67,7 +68,8 @@ public class RepositoryTest {
 
         공지사항1 = new CreateNoticeRequest("공지사항1", "상세내용1", -1L, -1L).toEntity(최규현, 알고리즘스터디);
         공지사항2 = new CreateNoticeRequest("공지사항2", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
-        공지사항3 = new CreateNoticeRequest("공지사항3", "상세내용2", -1L, -1L).toEntity(최규현, 알고리즘스터디);
+        공지사항3 = new CreateNoticeRequest("공지사항3", "상세내용3", -1L, -1L).toEntity(최규현, 알고리즘스터디);
+        공지사항4 = new CreateNoticeRequest("공지사항4", "상세내용4", -1L, -1L).toEntity(최규현, 알고리즘스터디);
 
         댓글1 = new CreateCommentRequest(-1L, -1L, "댓글1", null).toEntity(최규현, 공지사항1);
         댓글2 = new CreateCommentRequest(-1L, -1L, "댓글2", null).toEntity(최규현, 공지사항1);

@@ -35,6 +35,9 @@ public class ServiceTest {
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
+    protected Notice 공지사항2;
+    protected Notice 공지사항3;
+    protected Notice 공지사항4;
 
     protected CreateCommentRequest 댓글1CreateRequest;
     protected CreateCommentRequest 대댓글1CreateRequest;
@@ -122,6 +125,12 @@ public class ServiceTest {
     private void initNotice() {
         공지사항1 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
         ReflectionTestUtils.setField(공지사항1, "noticeId", 5L);
+        공지사항2 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항2, "noticeId", 5L);
+        공지사항3 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항3, "noticeId", 5L);
+        공지사항4 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항4, "noticeId", 5L);
     }
 
     private void initCreateCommentRequest(){

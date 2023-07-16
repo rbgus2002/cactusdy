@@ -55,6 +55,14 @@ public class NoticeApi {
         return DataResponseDto.of("noticeList", noticeSummaryList);
     }
 
+    @Operation(summary = "공지사항 목록 상위 3개 가져오기")
+    @GetMapping("/list/limited")
+    public ResponseDto getNoticeSummaryListLimit3(@RequestParam Long studyId){
+        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryListLimit3(studyId);
+
+        return DataResponseDto.of("noticeList", noticeSummaryList);
+    }
+
     @Operation(summary = "공지사항 상단고정 상태 변경")
     @PatchMapping("/pin")
     public ResponseDto switchNoticePin(@RequestParam Long noticeId){
