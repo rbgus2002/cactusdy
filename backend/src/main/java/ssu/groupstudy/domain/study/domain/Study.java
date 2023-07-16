@@ -19,7 +19,6 @@ import static ssu.groupstudy.domain.study.domain.InviteCode.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "delete_yn = 'N'")
 public class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

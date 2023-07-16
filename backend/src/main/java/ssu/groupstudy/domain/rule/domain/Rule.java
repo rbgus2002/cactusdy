@@ -16,7 +16,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "delete_yn = 'N'")
 public class Rule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
