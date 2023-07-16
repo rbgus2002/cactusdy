@@ -33,8 +33,8 @@ public class NoticeApi {
 
     @Operation(summary = "id를 통한 공지사항 조회")
     @GetMapping("")
-    public ResponseDto getNotice(@RequestParam Long noticeId){
-        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeByNoticeId(noticeId);
+    public ResponseDto getNotice(@RequestParam Long noticeId, @RequestParam Long userId){
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeByNoticeId(noticeId, userId);
 
         return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }

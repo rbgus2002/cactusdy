@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NoticeRepositoryTest extends RepositoryTest {
     @Nested
@@ -148,5 +147,41 @@ class NoticeRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(checkUserProfileList.size()).isEqualTo(2);
+    }
+
+    @Nested
+    class isRead{
+        @Test
+        @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
+        void read_true(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchCheckNotice(최규현);
+            boolean read = 공지사항1.isRead(최규현);
+
+            // then
+            assertTrue(read);
+        }
+        
+        @Test
+        @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
+        void read_false(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchCheckNotice(최규현);
+            공지사항1.switchCheckNotice(최규현);
+            boolean read = 공지사항1.isRead(최규현);
+
+            // then
+            assertFalse(read);
+        }
     }
 }

@@ -63,9 +63,7 @@ public class Notice extends BaseEntity {
 
     public Character switchCheckNotice(User user){
         validateUserInStudy(this.study, user);
-        CheckNotice checkNotice = new CheckNotice(this, user);
-
-        return isRead(checkNotice) ? unreadNotice(checkNotice) : readNotice(checkNotice);
+        return isRead(user) ? unreadNotice(user) : readNotice(user);
     }
 
     public char switchPin(){
@@ -91,23 +89,23 @@ public class Notice extends BaseEntity {
         }
     }
 
-    public boolean isRead(CheckNotice checkNotice){
-        return checkNotices.contains(checkNotice);
+    public boolean isRead(User user){
+        return checkNotices.contains(new CheckNotice(this, user));
     }
 
     /**
      * 공지사항을 읽지 않은 사용자를 읽음 처리한다
      */
-    private Character readNotice(CheckNotice checkNotice){
-        checkNotices.add(checkNotice);
+    private Character readNotice(User user){
+        checkNotices.add(new CheckNotice(this, user));
         return 'Y';
     }
 
     /**
      * 공지사항을 읽은 사용자를 안읽음 처리한다
      */
-    private Character unreadNotice(CheckNotice checkNotice){
-        checkNotices.remove(checkNotice);
+    private Character unreadNotice(User user){
+        checkNotices.remove(new CheckNotice(this, user));
         return 'N';
     }
 }
