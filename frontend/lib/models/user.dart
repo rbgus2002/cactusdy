@@ -24,6 +24,7 @@ class User{
         picture: json['picture'],
     );
   }
+
   static Future<User> getUserProfileSummary(int userId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}users?userId=$userId'),
