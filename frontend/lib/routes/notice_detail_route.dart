@@ -10,8 +10,13 @@ import 'package:group_study_app/widgets/comment_widget.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
+  User user = Test.testUser;
   final int noticeId;
-  const NoticeDetailRoute({ required this.noticeId });
+
+  NoticeDetailRoute({
+    super.key,
+    required this.noticeId,
+  });
 
   @override
   State<NoticeDetailRoute> createState() {
@@ -21,6 +26,8 @@ class NoticeDetailRoute extends StatefulWidget {
 
 class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   static const String _commentHintMessage = "댓글을 입력해 주세요";
+
+  late final commentEditingController = TextEditingController();
 
   late final Notice notice;
   late List<Comment> comments;
@@ -47,7 +54,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
         Design.padding15,
 
         // Reaction Tag
-        NoticeReactionTag(noticeId: notice.noticeId, isChecked: false, checkerNum: notice.checkNoticeCount),
+        NoticeReactionTag(noticeId: notice.noticeId, isChecked: notice.read, checkerNum: notice.checkNoticeCount),
         Design.padding15,
 
         Row(
@@ -63,12 +70,22 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     );
   }
 
-  Widget _comments() {
-    return Column(
-      children: [
-        for (var comment in comments)
-          CommentWidget(comment: comment),
-      ]
+  Widget _commentListWidget() {
+    return FutureBuilder(
+        future: Comment.getComments(widget.noticeId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            comments = snapshot.data!;
+            return Column(
+                children: [
+                  for (var comment in comments)
+                    CommentWidget(comment: comment),
+                ]
+            );
+          }
+
+          return Text("응 안됌 ㅋㅋ"); //< FIXME
+        }
     );
   }
 
@@ -76,9 +93,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     return Container(
       padding: Design.edge10,
       child: TextField(
-        minLines: 1,
-        maxLines: 5,
-
+        minLines: 1, maxLines: 5,
         style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,
 
@@ -91,6 +106,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
 
           suffixIcon: IconButton(
             icon: const Icon(Icons.send, size: 16),
+            splashRadius: 16,
             onPressed: () => true,),
         ),
       ),
@@ -110,8 +126,9 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
                 padding: Design.edge10,
                 child: Column(
                   children: [
+                    // Nootice Body
                     FutureBuilder(
-                      future: Notice.getNotice(widget.noticeId),
+                      future: Notice.getNotice(widget.noticeId, widget.user.userId),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           notice = snapshot.data!;
@@ -120,17 +137,10 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
 
                         return Text("Asd"); //< FIXME
                       },),
-                    FutureBuilder(
-                      future: Comment.getComments(widget.noticeId),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          comments = snapshot.data!;
-                          return _comments();
-                        }
+                    Design.padding15,
 
-                        return Text("응 안됌 ㅋㅋ"); //< FIXME
-                      }
-                    )
+                    // Comments
+                    _commentListWidget(),
                   ]
                 ),
               ),

@@ -1,16 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/user_list_button.dart';
+import 'package:group_study_app/models/user.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  final int noticeId;
-  final int checkerNum;
-  final int duration;
+  User user = Test.testUser;
 
+  final int noticeId;
+  final int duration;
+  int checkerNum;
   bool isChecked;
 
   NoticeReactionTag({
@@ -31,22 +34,31 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const double _boarderRadius = _height + 2 * _padding;
   static const int _showCountMax = 5;
 
+  late List<User>
+
   double _width = 0;
 
   bool _isNeedUpdate = false;
 
+  void _switchCheck() async {
+    // Fast Unsafe State Update
+    setState(() {
+      widget.isChecked = !widget.isChecked;
+      if (widget.isChecked) ++widget.checkerNum;
+      else --widget.checkerNum;
 
+      _isNeedUpdate = true;
+    });
+
+    // Call API and Verify State
+    Notice.switchCheckNotice(widget.noticeId, widget.user.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(_boarderRadius),
-      onTap: () => {
-        setState(() {
-          //< FIXME : 대충 버튼 API호출
-          widget.isChecked = !widget.isChecked;
-        })
-      },
+      onTap: _switchCheck,
       onLongPress: () => {
         setState(() {
           final int showCount = min(widget.checkerNum, _showCountMax);
@@ -59,7 +71,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
           borderRadius: BorderRadius.circular(_boarderRadius),
           color: ColorStyles.grey,
         ),
-        padding: EdgeInsets.all(_padding),
+        padding: const EdgeInsets.all(_padding),
 
         child: Row(
           mainAxisSize: MainAxisSize.min,

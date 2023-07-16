@@ -12,16 +12,26 @@ import 'package:intl/intl.dart';
 class NoticePanel extends StatefulWidget {
   final NoticeSummary noticeSummary;
 
-  NoticePanel({
-    Key? key,
+  const NoticePanel({
+    super.key,
     required this.noticeSummary,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticePanel> createState() => _NoticePanel();
 }
 
 class _NoticePanel extends State<NoticePanel> {
+  void _switchPin() async {
+    // Fast Unsafe State Update
+    setState(() { widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn; } );
+
+    // Call API and Verify State
+    NoticeSummary.switchNoticePin(widget.noticeSummary.noticeId).then((pinYn) =>
+      setState(() { widget.noticeSummary.pinYn = pinYn; })
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Panel(
@@ -36,21 +46,11 @@ class _NoticePanel extends State<NoticePanel> {
               children: [
                 Text(widget.noticeSummary.title, style: TextStyles.titleSmall,),
                 IconButton(
-                  icon: Icon(Icons.push_pin_sharp, size: 20,),
+                  icon: const Icon(Icons.push_pin_sharp, size: 20,),
                   color: (widget.noticeSummary.pinYn) ? null : ColorStyles.lightGrey,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  onPressed: () {
-                    // Fast Unsafe State Update
-                    setState(() { widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn; } );
-
-                    NoticeSummary.switchNoticePin(widget.noticeSummary.noticeId)
-                        .then((pinYn) => {
-                          // Verify State
-                          setState(() { widget.noticeSummary.pinYn = pinYn; })
-                        }
-                    );
-                  },
+                  onPressed: _switchPin,
                 )
               ],
             ),
