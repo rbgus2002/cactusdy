@@ -65,7 +65,7 @@ public class Notice extends BaseEntity {
         validateUserInStudy(this.study, user);
         CheckNotice checkNotice = new CheckNotice(this, user);
 
-        return isNoticeAlreadyRead(checkNotice) ? unreadNotice(checkNotice) : readNotice(checkNotice);
+        return isRead(checkNotice) ? unreadNotice(checkNotice) : readNotice(checkNotice);
     }
 
     public char switchPin(){
@@ -91,7 +91,7 @@ public class Notice extends BaseEntity {
         }
     }
 
-    private boolean isNoticeAlreadyRead(CheckNotice checkNotice){
+    public boolean isRead(CheckNotice checkNotice){
         return checkNotices.contains(checkNotice);
     }
 
