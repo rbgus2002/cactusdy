@@ -49,20 +49,20 @@ class _CheckBoxTask extends State<CheckBoxTask> {
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
             ),
             Expanded(
-                child: TextField(
-                  style: TextStyles.taskTextStyle,
-                  maxLines: 1,
+              child: TextField(
+                style: TextStyles.taskTextStyle,
+                maxLines: 1,
 
-                  controller: textEditingController,
-                  decoration: InputDecoration(
-                    disabledBorder: InputBorder.none,
-                    enabled: _isEditable,
-                  ),
-                  textAlignVertical: TextAlignVertical.center,
-                  onTapOutside: (event) {
-                    setState(() { _isEditable = false; });
-                  },
-                )
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  disabledBorder: InputBorder.none,
+                  enabled: _isEditable,
+                ),
+                textAlignVertical: TextAlignVertical.center,
+                onTapOutside: (event) {
+                  setState(() { _isEditable = false; });
+                },
+              )
             ),
           ],
         ),

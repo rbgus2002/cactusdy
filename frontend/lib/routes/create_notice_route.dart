@@ -83,7 +83,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                     onPressed: () {
                       if (_checkValidation()) {
                         Future<int> result = Notice.createNotice(
-                        _title, _contents, widget.user.userId, widget.study.studyId);
+                          _title, _contents, widget.user.userId, widget.study.studyId);
 
                         result.then((newNoticeId) {
                           if (newNoticeId != Notice.NOTICE_CREATION_ERROR) {

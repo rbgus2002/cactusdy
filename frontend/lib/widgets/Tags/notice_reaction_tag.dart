@@ -35,62 +35,17 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const double _boarderRadius = _height + 2 * _padding;
   static const int _showCountMax = 5;
 
+  List<CircleButton> _checkerImages = [];
   double _width = 0;
-
   bool _isNeedUpdate = true;
   bool _isExpended = false;
-
-  List<CircleButton> _checkerImages = [];
-
-  void getCheckerImages() async {
-    Notice.getCheckUserImageList(widget.noticeId).then(
-      (profileURIs) {
-        setState(() { _checkerImages = List.generate(profileURIs.length,//< FIXME
-                (index) => const CircleButton(child: null)).toList();
-        });
-      },
-    );
-
-    _isNeedUpdate = false;
-  }
-
-  void _switchCheck() async {
-    // Fast Unsafe State Update
-    setState(() {
-      widget.isChecked = !widget.isChecked;
-      (widget.isChecked)? ++widget.checkerNum: --widget.checkerNum;
-    });
-
-    // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeId, widget.user.userId).then((value) {
-      if (value != widget.isChecked) {
-        (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
-        widget.isChecked = value;
-      }
-    });
-
-    _isNeedUpdate = true;
-  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(_boarderRadius),
       onTap: _switchCheck,
-      onLongPress: () => {
-        setState(() {
-          _isExpended = !_isExpended;
-
-          if (_isExpended) {
-            if (_isNeedUpdate) { getCheckerImages(); }
-
-            final int showCount = min(widget.checkerNum, _showCountMax);
-            _width = _boarderRadius * showCount;
-          }
-
-          else { _width = 0; }
-        })
-      },
+      onLongPress: _switchExpend,
 
       child: Container(
         decoration: BoxDecoration(
@@ -125,5 +80,51 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
         ),
       ),
     );
+  }
+
+  void _switchCheck() async {
+    // Fast Unsafe State Update
+    setState(() {
+      widget.isChecked = !widget.isChecked;
+      (widget.isChecked)? ++widget.checkerNum: --widget.checkerNum;
+    });
+
+    // Call API and Verify State
+    Notice.switchCheckNotice(widget.noticeId, widget.user.userId).then((value) {
+      if (value != widget.isChecked) {
+        (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
+        widget.isChecked = value;
+      }
+    });
+
+    _isNeedUpdate = true;
+  }
+
+  void _switchExpend() {
+    setState(() {
+      _isExpended = !_isExpended;
+
+      if (_isExpended) {
+        _getCheckerImages();
+
+        final int showCount = min(widget.checkerNum, _showCountMax);
+        _width = _boarderRadius * showCount;
+      }
+
+      else { _width = 0; }
+    });
+  }
+
+  void _getCheckerImages() async {
+    if (_isNeedUpdate) {
+      Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
+        setState(() {
+          _checkerImages = List.generate(profileURIs.length, //< FIXME
+                  (index) => const CircleButton(child: null)).toList();
+        });
+      },);
+    }
+
+    _isNeedUpdate = false;
   }
 }
