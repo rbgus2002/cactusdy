@@ -7,16 +7,16 @@ import ssu.groupstudy.domain.study.domain.Participant;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParticipantSummary{
+public class ParticipantSummaryResponse {
     private Long userId;
     private String picture;
 
-    private ParticipantSummary(Participant participant) {
+    private ParticipantSummaryResponse(Participant participant) {
         this.userId = participant.getUser().getUserId();
         this.picture = participant.getUser().getPicture();
     }
 
-    public static ParticipantSummary from(Participant participant){
-        return new ParticipantSummary(participant);
+    public static ParticipantSummaryResponse from(Participant participant){
+        return new ParticipantSummaryResponse(participant);
     }
 }

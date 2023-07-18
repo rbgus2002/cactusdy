@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.study.service.StudyCreateService;
+import ssu.groupstudy.domain.study.service.StudyService;
 import ssu.groupstudy.domain.study.service.StudyInviteService;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -38,7 +38,7 @@ class StudyApiTest {
     private StudyInviteService studyInviteService;
 
     @Mock
-    private StudyCreateService studyCreateService;
+    private StudyService studyService;
 
     private MockMvc mockMvc;
 
@@ -100,7 +100,7 @@ class StudyApiTest {
             // given
             final String url = "/study";
 
-            doReturn(1L).when(studyCreateService).createStudy(any(CreateStudyRequest.class));
+            doReturn(1L).when(studyService).createStudy(any(CreateStudyRequest.class));
 
             // when
             final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
