@@ -7,8 +7,8 @@ class NoticeSummary {
   final String title;
   final String contents;
   final String writerNickname;
-  bool pinYn;
   final DateTime createDate;
+  bool pinYn;
 
   NoticeSummary({
     required this.noticeId,
@@ -21,12 +21,12 @@ class NoticeSummary {
 
   factory NoticeSummary.fromJson(Map<String, dynamic> json) {
     return NoticeSummary(
-        noticeId: json['noticeId'],
-        title: json['title'],
-        contents: json['contents'],
-        writerNickname: json['writerNickname'],
-        pinYn: (json['pinYn'] == 'Y'),
-        createDate: DateTime.parse(json['createDate']),
+      noticeId: json['noticeId'],
+      title: json['title'],
+      contents: json['contents'],
+      writerNickname: json['writerNickname'],
+      createDate: DateTime.parse(json['createDate']),
+      pinYn: (json['pinYn'] == 'Y'),
     );
   }
 
@@ -46,7 +46,6 @@ class NoticeSummary {
       throw Exception("Failed to load data");
     } else {
       print("User Data sent successfully");
-
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeList'];
 
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();

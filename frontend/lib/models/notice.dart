@@ -8,56 +8,53 @@ import 'package:http/http.dart' as http;
 class Notice {
   static const titleMaxLength = 50;
   static const contentsMaxLength = 100;
+
   static const NOTICE_CREATION_ERROR = -1;
+  static const COMMENT_CREATION_ERROR = -1;
 
   final int noticeId;
   final String title;
   final String contents;
+  final String writerNickname;
   final int checkNoticeCount;
   final DateTime createDate;
-  final String writerNickname;
+  int commentCount;
+  bool read;
 
-  const Notice({
+  Notice({
     required this.noticeId,
     required this.title,
     required this.contents,
+    required this.writerNickname,
     required this.checkNoticeCount,
     required this.createDate,
-    required this.writerNickname,
+    required this.commentCount,
+    required this.read,
   });
 
-  factory Notice.fromJson(Map<String, dynamic> json, int noticeId) {
+  factory Notice.fromJson(Map<String, dynamic> json) {
     return Notice(
-      noticeId: noticeId,
+      noticeId: json["noticeId"],
       title: json["title"],
       contents: json["contents"],
+      writerNickname: json["writerNickname"],
       checkNoticeCount: json["checkNoticeCount"],
       createDate: DateTime.parse(json["createDate"]),
-      writerNickname: json["writerNickname"],
+      commentCount: json["commentCount"],
+      read: json["read"],
     );
   }
 
-  static Future<bool> switchCheckNotice(int noticeId, int userId) async {
-    final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}notices/check?noticeId=$noticeId&userId=$userId'),
-    );
-
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
-      throw Exception("Fail to switch check notice");
-    } else {
-      String isChecked = json.decode(response.body)['data']["isChecked"];
-      return (isChecked == "Y");
-    }
-  }
-
-  static Future<Notice> getNotice(int noticeId) async {
-      final response = await http.get(Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId'));
+  static Future<Notice> getNotice(int noticeId, int userId) async {
+      final response = await http.get(
+          Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId&userId=$userId'),
+      );
 
       if (response.statusCode != DatabaseService.SUCCESS_CODE) {
         throw Exception("Failed to load notice");
       } else {
         var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
-        return Notice.fromJson(responseJson, noticeId);
+        return Notice.fromJson(responseJson);
       }
   }
 
@@ -71,9 +68,9 @@ class Notice {
       };
 
       final response = await http.post(
-          Uri.parse('${DatabaseService.serverUrl}notices'),
-          headers: DatabaseService.header,
-          body: json.encode(data),
+        Uri.parse('${DatabaseService.serverUrl}notices'),
+        headers: DatabaseService.header,
+        body: json.encode(data),
       );
 
       if (response.statusCode != DatabaseService.SUCCESS_CODE) {
@@ -82,6 +79,61 @@ class Notice {
         int newStudyId = json.decode(response.body)['data']['noticeId'];
         print("New notice is created successfully");
         return newStudyId;
+      }
+    }
+    catch (e) {
+      print(e);
+      return NOTICE_CREATION_ERROR;
+    }
+  }
+
+  static Future<bool> switchCheckNotice(int noticeId, int userId) async {
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}notices/check?noticeId=$noticeId&userId=$userId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to switch check notice");
+    } else {
+      String isChecked = json.decode(response.body)['data']["isChecked"];
+      return (isChecked == "Y");
+    }
+  }
+
+  static Future<List<String>> getCheckUserImageList(int noticeId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService
+          .serverUrl}notices/users/images?noticeId=$noticeId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to get Checked User Images");
+    } else {
+      var responseJson = json.decode(response.body)['data']['userImageList'];
+      return (responseJson as List).map((e) => e as String).toList();
+    }
+  }
+
+  static Future<int> writeComment(int userId, int noticeId, String contents, int parentCommentId) async {
+    Map<String, dynamic> data = {
+      'userId': userId,
+      'noticeId': noticeId,
+      'contents': contents,
+      'parentCommentId': (parentCommentId < 0)? null : parentCommentId
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('${DatabaseService.serverUrl}comments'),
+        headers: DatabaseService.header,
+        body: json.encode(data),
+      );
+
+      if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+        throw Exception("Failed to write new comment");
+      } else {
+        int newCommentId = json.decode(response.body)['data']['commentId'];
+        return newCommentId;
       }
     }
     catch (e) {

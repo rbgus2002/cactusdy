@@ -10,7 +10,7 @@ import 'package:group_study_app/widgets/panels/notice_list_panel.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
-import 'package:group_study_app/widgets/user_list_button.dart';
+import 'package:group_study_app/widgets/circle_button_list.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   @override
@@ -61,7 +61,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             //
             TitleWidget(title: "MEMBER", icon: const Icon(Icons.add),),
-            UserListButton(userList: userList, scale: 45, ),
+            //CircleButtonList(circleButtons: userList, scale: 45, ),
             Design.padding15,
 
             //
@@ -70,9 +70,9 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             const TitleWidget(title: "ROUND LIST", icon: Icon(Icons.add), onTap: Test.onTabTest),
 
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
-            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
 
           ],
         ),

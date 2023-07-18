@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
-import 'package:group_study_app/widgets/user_list_button.dart';
+import 'package:group_study_app/widgets/circle_button_list.dart';
 
-import '../../models/user.dart';
 import '../../themes/design.dart';
 import '../../utilities/test.dart';
 
@@ -11,7 +11,7 @@ class RoundInfoPanel extends Panel {
   final int roundIdx;
   final String? place;
   final DateTime? date;
-  final List<User> userList;
+  final List<CircleButton> userList; //< FIXME need to be renamed
 
   final onTap;
 
@@ -43,11 +43,13 @@ class RoundInfoPanel extends Panel {
         if (!userList.isEmpty)
           Design.padding10,
 
-        UserListButton(
-          userList: userList,
+        /*< FIXME
+        CircleButtonList(
+          circleButtons: userList,
           onTap: Test.onTabTest,
           scale: 42.0,
         ),
+         */
       ],
     )
   );

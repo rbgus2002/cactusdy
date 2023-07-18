@@ -7,7 +7,7 @@ import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/tasks/check_box_task.dart';
 import 'package:group_study_app/widgets/tasks/task.dart';
-import 'package:group_study_app/widgets/user_list_button.dart';
+import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 
 class StudyGroupPanel extends Panel {
@@ -42,12 +42,14 @@ class StudyGroupPanel extends Panel {
 
                   children: [
                     const Text('STUDY GROUP NAME', style: TextStyles.titleMedium,),
-                    UserListButton(
-                      userList:
+                    /*< FIXME
+                    CircleButtonList(
+                      circleButtons:
                       List<User>.generate(30, (index) => Test.testUser),
                       onTap: Test.onTabTest,
                       scale: 24.0,
                     ),
+                     */
                   ]),
               ),
             ],

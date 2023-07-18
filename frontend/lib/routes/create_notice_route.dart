@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -7,7 +9,10 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 
 class CreateNoticeRoute extends StatefulWidget {
-  const CreateNoticeRoute({super.key});
+  final User user = Test.testUser;  //< FIXME
+  final Study study = Test.testStudy; //< FIXME
+
+  CreateNoticeRoute({super.key});
 
   @override
   State<CreateNoticeRoute> createState() {
@@ -78,7 +83,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                     onPressed: () {
                       if (_checkValidation()) {
                         Future<int> result = Notice.createNotice(
-                        _title, _contents, Test.testUser.userId, Test.testStudy.studyId);
+                          _title, _contents, widget.user.userId, widget.study.studyId);
 
                         result.then((newNoticeId) {
                           if (newNoticeId != Notice.NOTICE_CREATION_ERROR) {
