@@ -41,8 +41,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
 
     return true;
   }
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +85,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                           _title, _contents, widget.user.userId, widget.study.studyId);
 
                         result.then((newNoticeId) {
-                          if (newNoticeId != Notice.NOTICE_CREATION_ERROR) {
+                          if (newNoticeId != Notice.noticeCreationError) {
                             Navigator.of(context).pop();
                             Navigator.push(
                               context,

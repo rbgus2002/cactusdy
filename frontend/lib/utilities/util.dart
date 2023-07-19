@@ -7,7 +7,4 @@ class Util {
       MaterialPageRoute(builder: builder),
     );
   }
-
-
-
 }

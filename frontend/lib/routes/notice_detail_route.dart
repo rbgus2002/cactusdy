@@ -25,17 +25,17 @@ class NoticeDetailRoute extends StatefulWidget {
 
 class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   static const String _commentHintMessage = "댓글을 입력해 주세요";
-  static const String _wrtingFailMessage = "작성에 실패했습니다";
+  static const String _writingFailMessage = "작성에 실패했습니다";
 
-  late final _commentEditer = TextEditingController();
-  late Future<Notice> futureNotice;
-
-  int _replyTo = -1;
+  late final _commentEditor = TextEditingController();
+  late Future<List<Comment>> futureComments;
+  late List<Comment> comments;
+  int _selectedIdx = Comment.commentWithNoParent;
 
   @override
   void initState() {
     super.initState();
-    futureNotice = Notice.getNotice(widget.noticeId, widget.user.userId);
+    futureComments = Comment.getComments(widget.noticeId);
   }
 
   @override
@@ -50,12 +50,12 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               padding: const EdgeInsets.all(Design.padding),
               child: Column(
                   children: [
-                    // Nootice Body
-                    _noticeBody(),
+                    // Notice Body
+                    _NoticeBody(noticeId: widget.noticeId, userId: widget.user.userId),
                     Design.padding15,
 
                     // Comments
-                    _commentListWidget(),
+                    _commentList(),
                   ]
               ),
             ),
@@ -68,70 +68,36 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     );
   }
 
+  void setReplyTo(int index) {
+    setState(() {
+      _selectedIdx =
+      (_selectedIdx == index) ? Comment.commentWithNoParent : index;
+    });
+  }
+
   @override
   void dispose() {
-    _commentEditer.dispose();
+    _commentEditor.dispose();
     super.dispose();
   }
 
-  Widget _noticeBody() {
+  Widget _commentList() {
     return FutureBuilder(
-      future: futureNotice,
+      future: futureComments,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          Notice notice = snapshot.data!;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          comments = snapshot.data!;
 
-            children: [
-              // Title
-              SelectableText(notice.title,
-                style: TextStyles.titleMedium,),
-              Design.padding15,
-
-              // Body
-              SelectableText(notice.contents,
-                style: TextStyles.bodyLarge,
-                textAlign: TextAlign.justify,),
-              Design.padding15,
-
-              // Reaction Tag
-              NoticeReactionTag(noticeId: notice.noticeId,
-                  isChecked: notice.read,
-                  checkerNum: notice.checkNoticeCount),
-              Design.padding15,
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(TimeUtility.timeToString(notice.createDate),
-                    style: TextStyles.bodyMedium,),
-                  Text("작성자 : ${notice.writerNickname ?? "익명"}",
-                    style: TextStyles.bodyMedium,),
-                ],
-              ),
-            ],
-          );
-        }
-        return Text("Asd"); //< FIXME
-      },
-    );
-  }
-
-  Widget _commentListWidget() {
-    return FutureBuilder(
-      future: Comment.getComments(widget.noticeId),
-      builder: (context, comments) {
-        if (comments.hasData) {
           return Column(
             children: [
-              for (var comment in comments.data!)
-                CommentWidget(comment: comment),
+              for (int i = 0; i < comments.length; ++i)
+                CommentWidget(comment: comments[i], index: i,
+                    isSelected: (_selectedIdx == i), onTap: setReplyTo),
             ]
           );
         }
 
-        return Text("응 안됌 ㅋㅋ"); //< FIXME
+        return const CircularProgressIndicator();
       }
     );
   }
@@ -143,7 +109,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
         minLines: 1, maxLines: 5,
         style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,
-        controller: _commentEditer,
+        controller: _commentEditor,
 
         decoration: InputDecoration(
           isDense: true,
@@ -167,7 +133,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   }
 
   bool _checkValidate() {
-    if (_commentEditer.text.isEmpty) {
+    if (_commentEditor.text.isEmpty) {
       Toast.showToast(_commentHintMessage);
       return false;
     }
@@ -175,19 +141,90 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   }
 
   void _writeComment() {
-    Future<int> result = Notice.writeComment(
-        widget.user.userId, widget.noticeId, _commentEditer.text, _replyTo);
+    int? parentCommentId = (_selectedIdx != Comment.commentWithNoParent)? comments[_selectedIdx].commentId : null;
+    Future<int> result = Comment.writeComment(
+        widget.user.userId, widget.noticeId, _commentEditor.text, parentCommentId);
 
     result.then((newCommentId) {
-      if (newCommentId != Notice.COMMENT_CREATION_ERROR) {
+      if (newCommentId != Comment.commentCreationError) {
         setState(() {
-          _commentEditer.text = "";
-          _replyTo = -1;
+          _commentEditor.text = "";
+          futureComments = Comment.getComments(widget.noticeId);
+          _selectedIdx = Comment.commentWithNoParent;
         });
       }
       else {
-        Toast.showToast(_wrtingFailMessage);
+        Toast.showToast(_writingFailMessage);
       }
     });
+  }
+}
+
+class _NoticeBody extends StatelessWidget {
+  late Future<Notice> futureNotice;
+
+  _NoticeBody({
+    super.key,
+    required int noticeId,
+    required int userId }) {
+    futureNotice = Notice.getNotice(noticeId, userId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: futureNotice,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Notice notice = snapshot.data!;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+              // Title
+              SelectableText(notice.title,
+                style: TextStyles.titleMedium,),
+              Design.padding5,
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(TimeUtility.timeToString(notice.createDate),
+                    style: TextStyles.bodySmall,),
+                  Text('작성자 | ${notice.writerNickname ?? "익명"}',
+                    style: TextStyles.bodySmall,),
+                ],
+              ),
+              Design.padding10,
+
+              // Body
+              SelectableText(notice.contents,
+                style: TextStyles.bodyLarge,
+                textAlign: TextAlign.justify,),
+              Design.padding15,
+
+              // Reaction Tag
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NoticeReactionTag(noticeId: notice.noticeId,
+                      isChecked: notice.read,
+                      checkerNum: notice.checkNoticeCount),
+                  Row (
+                    children : [
+                      Icon(Icons.comment, size: 18,),
+                      Design.padding5,
+                      Text('${notice.commentCount}'),
+                      Design.padding5
+                    ]
+                  )
+                ]
+              ),
+            ],
+          );
+        }
+        return const CircularProgressIndicator(); //< FXIME
+      },
+    );
   }
 }

@@ -9,8 +9,7 @@ class Notice {
   static const titleMaxLength = 50;
   static const contentsMaxLength = 100;
 
-  static const NOTICE_CREATION_ERROR = -1;
-  static const COMMENT_CREATION_ERROR = -1;
+  static const noticeCreationError = -1;
 
   final int noticeId;
   final String title;
@@ -83,7 +82,7 @@ class Notice {
     }
     catch (e) {
       print(e);
-      return NOTICE_CREATION_ERROR;
+      return noticeCreationError;
     }
   }
 
@@ -111,34 +110,6 @@ class Notice {
     } else {
       var responseJson = json.decode(response.body)['data']['userImageList'];
       return (responseJson as List).map((e) => e as String).toList();
-    }
-  }
-
-  static Future<int> writeComment(int userId, int noticeId, String contents, int parentCommentId) async {
-    Map<String, dynamic> data = {
-      'userId': userId,
-      'noticeId': noticeId,
-      'contents': contents,
-      'parentCommentId': (parentCommentId < 0)? null : parentCommentId
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}comments'),
-        headers: DatabaseService.header,
-        body: json.encode(data),
-      );
-
-      if (response.statusCode != DatabaseService.SUCCESS_CODE) {
-        throw Exception("Failed to write new comment");
-      } else {
-        int newCommentId = json.decode(response.body)['data']['commentId'];
-        return newCommentId;
-      }
-    }
-    catch (e) {
-      print(e);
-      return NOTICE_CREATION_ERROR;
     }
   }
 }
