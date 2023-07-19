@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
+import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
@@ -120,6 +121,34 @@ class CommentServiceTest extends ServiceTest {
 
             // then
             System.out.println(comments); // TODO 테스트 어케하냐.,.,
+        }
+    }
+
+    @Nested
+    class deleteComment{
+        @Test
+        @DisplayName("존재하지 않는 댓글이면 예외를 던진다")
+        void noticeNotFound(){
+            // given, when
+            doReturn(Optional.empty()).when(commentRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> commentService.deleteComment(-1L))
+                    .isInstanceOf(CommentNotFoundException.class)
+                    .hasMessage(ResultCode.COMMENT_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("댓글을 삭제한다")
+        void success(){
+            // given
+            doReturn(Optional.of(댓글1)).when(commentRepository).findById(any(Long.class));
+
+            // when
+            commentService.deleteComment(-1L);
+
+            // then
+            assertEquals('Y', 댓글1.getDeleteYn());
         }
     }
 }

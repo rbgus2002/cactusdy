@@ -36,4 +36,12 @@ public class CommentApi {
 
         return DataResponseDto.of("comments", comments);
     }
+
+    @Operation(summary = "댓글 삭제")
+    @DeleteMapping("")
+    public ResponseDto deleteComment(@RequestParam Long commentId){
+        commentService.deleteComment(commentId);
+
+        return ResponseDto.success();
+    }
 }

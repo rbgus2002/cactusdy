@@ -8,6 +8,7 @@ import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.dto.response.ReplyCommentInfoResponse;
+import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
@@ -21,6 +22,8 @@ import ssu.groupstudy.global.ResultCode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ssu.groupstudy.global.ResultCode.*;
+
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
@@ -33,13 +36,13 @@ public class CommentService {
     @Transactional
     public Long createComment(CreateCommentRequest dto) {
         User writer = userRepository.findByUserId(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
-                .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
 
         if(!notice.getStudy().isParticipated(writer)){
-            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+            throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
 
         Comment comment = getCommentIncludingParent(dto, writer, notice);
@@ -62,7 +65,7 @@ public class CommentService {
 
     public List<CommentInfoResponse> getCommentsOrderByCreateDateAsc(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
-                .orElseThrow(() -> new NoticeNotFoundException(ResultCode.NOTICE_NOT_FOUND));
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
 
         List<Comment> comments = commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
         List<CommentInfoResponse> commentInfoResponses = comments.stream()
@@ -82,5 +85,12 @@ public class CommentService {
                     .map(ReplyCommentInfoResponse::from)
                     .collect(Collectors.toList()));
         }
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND));
+        comment.delete();
     }
 }

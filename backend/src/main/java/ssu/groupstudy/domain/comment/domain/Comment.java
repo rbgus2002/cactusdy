@@ -18,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Where(clause = "delete_yn = 'N'")
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +56,9 @@ public class Comment extends BaseEntity {
         this.notice = notice;
         this.deleteYn = 'N';
         this.parentComment = parentComment;
+    }
+
+    public void delete() {
+        this.deleteYn = 'Y';
     }
 }
