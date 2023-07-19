@@ -92,7 +92,7 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeByNoticeId(Long noticeId, Long userId){
+    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findByUserId(userId)
@@ -100,5 +100,12 @@ public class NoticeService {
         Long commentCount = commentRepository.countCommentByNotice(notice);
 
         return NoticeInfoResponse.of(notice, user, commentCount);
+    }
+
+    @Transactional
+    public void delete(Long noticeId) {
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        notice.deleteNotice();
     }
 }

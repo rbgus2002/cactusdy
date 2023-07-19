@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -239,6 +240,35 @@ class NoticeServiceTest extends ServiceTest {
 
             // then
             assertThat(profileImageList.size()).isEqualTo(1);
+        }
+    }
+
+
+    @Nested
+    class deleteNotice{
+        @Test
+        @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
+        void fail_noticeNotFound(){
+            // given
+            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when, then
+            assertThatThrownBy(() -> noticeService.delete(-1L))
+                    .isInstanceOf(NoticeNotFoundException.class)
+                    .hasMessage(NOTICE_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("공지사항을 삭제한다")
+        void success(){
+            // given
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when
+            noticeService.delete(-1L);
+            
+            // then
+            assertEquals('Y', 공지사항1.getDeleteYn());
         }
     }
 }

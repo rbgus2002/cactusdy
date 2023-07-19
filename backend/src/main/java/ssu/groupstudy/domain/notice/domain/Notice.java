@@ -20,6 +20,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "delete_yn = 'N'")
 public class Notice extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,5 +107,9 @@ public class Notice extends BaseEntity {
     private Character unreadNotice(User user){
         checkNotices.remove(new CheckNotice(this, user));
         return 'N';
+    }
+
+    public void deleteNotice(){
+        this.deleteYn = 'Y';
     }
 }

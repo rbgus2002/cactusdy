@@ -3,9 +3,7 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -34,7 +32,7 @@ public class NoticeApi {
     @Operation(summary = "id를 통한 공지사항 조회")
     @GetMapping("")
     public ResponseDto getNotice(@RequestParam Long noticeId, @RequestParam Long userId){
-        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeByNoticeId(noticeId, userId);
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userId);
 
         return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
@@ -77,5 +75,12 @@ public class NoticeApi {
         final List<String> userImageList = noticeService.getCheckUserImageList(noticeId);
 
         return DataResponseDto.of("userImageList", userImageList);
+    }
+
+    @Operation(summary = "공지사항 삭제")
+    @DeleteMapping("")
+    public ResponseDto deleteNotice(@RequestParam Long noticeId){
+        noticeService.delete(noticeId);
+        return ResponseDto.success();
     }
 }

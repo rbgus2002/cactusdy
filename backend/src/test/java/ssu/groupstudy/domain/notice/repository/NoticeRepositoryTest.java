@@ -11,6 +11,7 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -183,5 +184,21 @@ class NoticeRepositoryTest extends RepositoryTest {
             // then
             assertFalse(read);
         }
+    }
+
+    @Test
+    @DisplayName("삭제된 공지사항을 읽는 경우 빈 값을 가져온다")
+    void getNoticeDeleted(){
+        // given
+        userRepository.save(최규현);
+        studyRepository.save(알고리즘스터디);
+        공지사항1 = noticeRepository.save(공지사항1);
+
+        // when
+        공지사항1.deleteNotice();
+        Optional<Notice> notice = noticeRepository.findByNoticeId(공지사항1.getNoticeId());
+
+        // then
+        assertEquals(Optional.empty(), notice);
     }
 }
