@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:group_study_app/models/notice_summary.dart';
-import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,6 +81,20 @@ class Notice {
     catch (e) {
       print(e);
       return noticeCreationError;
+    }
+  }
+
+  static Future<bool> deleteNotice(int noticeId) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Fail to delete notice");
+    } else {
+      print(response.body);
+      bool result = json.decode(response.body)['success'];
+      return result;
     }
   }
 

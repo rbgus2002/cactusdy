@@ -44,7 +44,13 @@ class _NoticePanel extends State<NoticePanel> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.noticeSummary.title, style: TextStyles.titleSmall,),
+                Flexible(child:
+                  Text(widget.noticeSummary.title,
+                    style: TextStyles.titleSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 IconButton(
                   icon: const Icon(Icons.push_pin_sharp, size: 20,),
                   color: (widget.noticeSummary.pinYn) ? null : ColorStyles.lightGrey,

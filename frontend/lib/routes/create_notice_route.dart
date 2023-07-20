@@ -7,6 +7,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 class CreateNoticeRoute extends StatefulWidget {
   final User user = Test.testUser;  //< FIXME
@@ -30,12 +31,12 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
 
   bool _checkValidation() {
     if (_title.isEmpty) {
-      Toast.showToast(_titleHintMessage);
+      Toast.showToast(msg: _titleHintMessage);
       return false;
     }
 
     if (_contents.isEmpty) {
-      Toast.showToast(_contentHintMessage);
+      Toast.showToast(msg: _contentHintMessage);
       return false;
     }
 
@@ -79,26 +80,24 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
 
                 // [Create Button]
                 ElevatedButton(
-                    onPressed: () {
-                      if (_checkValidation()) {
-                        Future<int> result = Notice.createNotice(
-                          _title, _contents, widget.user.userId, widget.study.studyId);
+                  onPressed: () {
+                    if (_checkValidation()) {
+                      Future<int> result = Notice.createNotice(
+                        _title, _contents, widget.user.userId, widget.study.studyId);
 
-                        result.then((newNoticeId) {
-                          if (newNoticeId != Notice.noticeCreationError) {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => NoticeDetailRoute(noticeId: newNoticeId)),
-                            );
-                          }
-                          else {
-                            Toast.showToast(_creationFailMessage);
-                          }
-                        });
-                      }
-                    },
-                    child: const Text("등록"))
+                      result.then((newNoticeId) {
+                        if (newNoticeId != Notice.noticeCreationError) {
+                          Navigator.of(context).pop();
+                          Util.pushRoute(context, (context) => NoticeDetailRoute(noticeId: newNoticeId));
+                        }
+                        else {
+                          Toast.showToast(msg: _creationFailMessage);
+                        }
+                      });
+                    }
+                  },
+                  child: const Text("등록"),
+                )
               ]
             )
           )

@@ -50,7 +50,29 @@ class CommentWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-                      Text(comment.nickname, style: TextStyles.titleSmall),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(child: Text(comment.nickname, style: TextStyles.titleSmall)),
+                          SizedBox(
+                            width: 18,
+                            height: 18,
+                            child :PopupMenuButton(
+                              icon: const Icon(Icons.more_vert, size: 18,),
+                              splashRadius: 12,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              offset: const Offset(0, 18),
+
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  child: Text("삭제하기", style: TextStyles.bodyMedium,),
+                                ),
+                              ],
+                            )
+                          ),
+                        ]
+                      ),
                       Design.padding5,
 
                       SelectableText(comment.contents, textAlign: TextAlign.justify,),
@@ -70,7 +92,6 @@ class CommentWidget extends StatelessWidget {
                       ),
                     ],)
                 ),
-                const Icon(Icons.more_vert, size: 18,)
               ]
             ),
           ),
