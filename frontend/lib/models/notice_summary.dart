@@ -37,6 +37,21 @@ class NoticeSummary {
     'createDate' : createDate,
   };
 
+  static Future<List<NoticeSummary>> getNoticeSummaryListLimit3(int studyId) async {
+    final response = await http.get(
+        Uri.parse('${DatabaseService.serverUrl}notices/list/limited?studyId=$studyId')
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to load data");
+    } else {
+      print("Notices 3 successfully");
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeList'];
+
+      return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();
+    }
+  }
+
   static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId) async {
     final response = await http.get(
         Uri.parse('${DatabaseService.serverUrl}notices/list?studyId=$studyId')
@@ -45,7 +60,7 @@ class NoticeSummary {
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to load data");
     } else {
-      print("User Data sent successfully");
+      print("Notices successfully");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeList'];
 
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();
