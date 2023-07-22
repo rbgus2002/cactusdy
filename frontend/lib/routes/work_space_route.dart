@@ -71,8 +71,6 @@ class _WorkSpaceRoute extends State<WorkSpaceRoute> {
                     contents: "적당히 긴 내용 뭐가 있을까"),
                   ),
                 )
-
-
               ],
             )
           )

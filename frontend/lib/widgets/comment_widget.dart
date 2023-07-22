@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
-import 'package:group_study_app/routes/notice_detail_route.dart';
-import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class CommentWidget extends StatelessWidget {
+  static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?";
+  static const String _deleteNoticeFailMessage = "댓글 삭제에 실패했습니다";
+
+  static const String _checkMessage = "확인";
+  static const String _cancelMessage = "취소";
+
   static const double _replyLeftPadding = 18;
 
   final Comment comment;
@@ -51,7 +55,7 @@ class CommentWidget extends StatelessWidget {
 
                     children: [
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(child: Text(comment.nickname, style: TextStyles.titleSmall)),
                           SizedBox(
@@ -65,8 +69,9 @@ class CommentWidget extends StatelessWidget {
                               offset: const Offset(0, 18),
 
                               itemBuilder: (context) => [
-                                const PopupMenuItem(
+                                PopupMenuItem(
                                   child: Text("삭제하기", style: TextStyles.bodyMedium,),
+                                  onTap: () => _showDeleteCommentDialog(context),
                                 ),
                               ],
                             )
@@ -89,7 +94,7 @@ class CommentWidget extends StatelessWidget {
                               child: const Text("답글 달기", style: TextStyles.bodyMedium),
                             ),
                           ]
-                      ),
+                        ),
                     ],)
                 ),
               ]
@@ -101,6 +106,38 @@ class CommentWidget extends StatelessWidget {
             CommentWidget(comment: reply, isReply: true, index: index, onTap: onTap,),
         ]
       ),
+    );
+  }
+
+  void _showDeleteCommentDialog(BuildContext context) {
+    Future.delayed(Duration.zero, ()=> showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: const Text(_deleteNoticeCautionMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(_cancelMessage),),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _deleteComment();
+              },
+              child: const Text(_checkMessage),),
+          ],
+        )
+    ));
+  }
+
+  void _deleteComment() {
+    Comment.deleteComment(comment.commentId).then((result) {
+        if (result == false) {
+          Toast.showToast(msg: _deleteNoticeFailMessage);
+          onTap(Comment.commentWithNoParent);
+        }
+      },
     );
   }
 }

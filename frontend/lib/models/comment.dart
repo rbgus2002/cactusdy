@@ -87,4 +87,18 @@ class Comment {
       return commentCreationError;
     }
   }
+
+  static Future<bool> deleteComment(int commentId) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}comments?commentId=$commentId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Fail to delete comment");
+    } else {
+      print(response.body);
+      bool result = json.decode(response.body)['success'];
+      return result;
+    }
+  }
 }

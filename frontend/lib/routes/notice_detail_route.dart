@@ -26,6 +26,7 @@ class NoticeDetailRoute extends StatefulWidget {
 class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
+
   static const String _commentHintMessage = "댓글을 입력해 주세요";
   static const String _writingFailMessage = "작성에 실패했습니다";
 
@@ -48,6 +49,10 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     futureComments = Comment.getComments(widget.noticeId);
   }
 
+  void getComments() {
+    futureComments = Comment.getComments(widget.noticeId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +67,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: Text("삭제하기", style: TextStyles.bodyMedium,),
-                  onTap: () { showDeleteNoticeDialog(context); },
+                  onTap: () => _showDeleteNoticeDialog(context),
                 ),
               ],
           )
@@ -147,7 +152,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
                       checkerNum: notice.checkNoticeCount),
 
                   InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     onTap: _focusNode.requestFocus,
                     child: Row (
                       children : [
@@ -194,7 +199,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     );
   }
 
-  void showDeleteNoticeDialog(BuildContext context) {
+  void _showDeleteNoticeDialog(BuildContext context) {
     Future.delayed(Duration.zero, ()=> showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -294,8 +299,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   }
 
   void _deleteNotice() {
-    Notice.deleteNotice(widget.noticeId).then(
-      (result) {
+    Notice.deleteNotice(widget.noticeId).then((result) {
         if (result == false) {
           Toast.showToast(msg: _deleteNoticeFailMessage);
         }
