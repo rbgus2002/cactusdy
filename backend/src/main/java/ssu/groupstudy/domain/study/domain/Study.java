@@ -61,7 +61,6 @@ public class Study extends BaseEntity {
         participants.addParticipant(new Participant(user, this));
     }
 
-
     public void leave(User user) {
         if(!isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);

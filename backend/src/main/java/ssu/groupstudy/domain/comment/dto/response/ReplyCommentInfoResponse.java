@@ -18,6 +18,7 @@ public class ReplyCommentInfoResponse {
     private Long commentId;
     private String contents;
     private LocalDateTime createDate;
+    private char deleteYn;
 
     private ReplyCommentInfoResponse(Comment comment) {
         User writer = comment.getWriter();
@@ -28,6 +29,16 @@ public class ReplyCommentInfoResponse {
         this.commentId = comment.getCommentId();
         this.contents = comment.getContents();
         this.createDate = comment.getCreateDate();
+        this.deleteYn = comment.getDeleteYn();
+        processDeletedComment(comment);
+    }
+
+    private void processDeletedComment(Comment comment) {
+        if(comment.isDeleted()){
+            this.nickname = "(삭제)";
+            this.contents = "삭제된 댓글입니다.";
+            this.picture = "";
+        }
     }
 
     public static ReplyCommentInfoResponse from(Comment comment) {

@@ -17,8 +17,8 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +72,7 @@ public class CommentService {
                 .map(CommentInfoResponse::from)
                 .collect(Collectors.toList());
         appendReplies(comments, commentInfoResponses);
+        processDeletedComment(commentInfoResponses);
 
         return commentInfoResponses;
     }
@@ -85,6 +86,10 @@ public class CommentService {
                     .map(ReplyCommentInfoResponse::from)
                     .collect(Collectors.toList()));
         }
+    }
+
+    private void processDeletedComment(List<CommentInfoResponse> commentInfoResponses) {
+        commentInfoResponses.removeIf(commentInfo -> commentInfo.isDeleted() && !commentInfo.existReplies());
     }
 
     @Transactional

@@ -11,14 +11,12 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "delete_yn = 'N'")
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,5 +58,9 @@ public class Comment extends BaseEntity {
 
     public void delete() {
         this.deleteYn = 'Y';
+    }
+
+    public boolean isDeleted(){
+        return this.deleteYn == 'Y';
     }
 }

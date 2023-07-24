@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.comment.domain.Comment;
-import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.user.domain.User;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,7 @@ public class CommentInfoResponse {
     private Long commentId;
     private String contents;
     private LocalDateTime createDate;
+    private char deleteYn;
 
     private List<ReplyCommentInfoResponse> replies = null;
 
@@ -32,6 +32,16 @@ public class CommentInfoResponse {
         this.commentId = comment.getCommentId();
         this.contents = comment.getContents();
         this.createDate = comment.getCreateDate();
+        this.deleteYn = comment.getDeleteYn();
+        processDeletedComment(comment);
+    }
+
+    private void processDeletedComment(Comment comment) {
+        if(comment.isDeleted()){
+            this.nickname = "(삭제)";
+            this.contents = "삭제된 댓글입니다.";
+            this.picture = "";
+        }
     }
 
     public static CommentInfoResponse from(Comment comment) {
@@ -42,7 +52,11 @@ public class CommentInfoResponse {
         this.replies = replies;
     }
 
-    public Long getCommentId() {
-        return commentId;
+    public boolean isDeleted(){
+        return this.deleteYn == 'Y';
+    }
+
+    public boolean existReplies(){
+        return this.replies != null && !this.replies.isEmpty();
     }
 }

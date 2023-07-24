@@ -40,8 +40,10 @@ public class ServiceTest {
     protected Notice 공지사항4;
 
     protected CreateCommentRequest 댓글1CreateRequest;
+    protected CreateCommentRequest 댓글2CreateRequest;
     protected CreateCommentRequest 대댓글1CreateRequest;
     protected Comment 댓글1;
+    protected Comment 댓글2;
     protected Comment 대댓글1;
 
     protected AppointmentRequest 회차1AppointmentRequest;
@@ -139,6 +141,11 @@ public class ServiceTest {
                 .noticeId(-1L)
                 .contents("댓글 내용1")
                 .build();
+        댓글2CreateRequest = CreateCommentRequest.builder()
+                .userId(-1L)
+                .noticeId(-1L)
+                .contents("댓글 내용2")
+                .build();
         대댓글1CreateRequest = CreateCommentRequest.builder()
                 .userId(-1L)
                 .noticeId(-1L)
@@ -149,6 +156,8 @@ public class ServiceTest {
     private void initComment(){
         댓글1 = 댓글1CreateRequest.toEntity(최규현, 공지사항1);
         ReflectionTestUtils.setField(댓글1, "commentId", 7L);
+        댓글2 = 댓글2CreateRequest.toEntity(최규현, 공지사항1);
+        ReflectionTestUtils.setField(댓글2, "commentId", 9L);
         대댓글1 = 대댓글1CreateRequest.toEntity(최규현, 공지사항1, 댓글1);
         ReflectionTestUtils.setField(대댓글1, "commentId", 8L);
     }

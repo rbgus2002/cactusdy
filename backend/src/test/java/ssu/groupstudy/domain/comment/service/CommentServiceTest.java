@@ -120,7 +120,7 @@ class CommentServiceTest extends ServiceTest {
             List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
 
             // then
-            System.out.println(comments); // TODO 테스트 어케하냐.,.,
+            System.out.println(comments); // TODO 테스트 어케하냐.,., (일대다 연관관계 아니어서 그럼)
         }
     }
 
