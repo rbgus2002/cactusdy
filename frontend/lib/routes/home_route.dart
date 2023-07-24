@@ -3,10 +3,13 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/panels/study_group_panel.dart';
-import 'package:group_study_app/widgets/user_line_profile.dart';
+import 'package:group_study_app/widgets/line_profiles/user_line_profile.dart';
+import 'package:group_study_app/widgets/line_profiles/user_line_profile_widget.dart';
 
 class HomeRoute extends StatefulWidget {
   final int userId = Test.testUser.userId;
+
+  HomeRoute({super.key});
 
   @override
   State<HomeRoute> createState() {
@@ -38,13 +41,15 @@ class _HomeRoute extends State<HomeRoute> {
             FutureBuilder(
               future: user,
               builder: (context, snapshot) {
+
                 if (snapshot.hasData) {
-                  return UserLineProfile(user: snapshot.data!);
+                  return UserLineProfileWidget(user: snapshot.data!);
                 }
                 else
                   return Container();
               }
             ),
+
             Design.padding10,
             StudyGroupPanel(),
             StudyGroupPanel(),

@@ -7,6 +7,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 
+@Deprecated("구버전")
 class UserLineProfile extends StatelessWidget {
   final double scale;
   final Image? image;

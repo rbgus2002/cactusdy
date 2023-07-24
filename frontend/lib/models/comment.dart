@@ -17,6 +17,8 @@ class Comment {
 
   List<Comment> replies;
 
+  final bool isDeleted;
+
   Comment({
     required this.userId,
     required this.nickname,
@@ -27,6 +29,8 @@ class Comment {
     required this.createDate,
 
     this.replies = const [],
+
+    this.isDeleted = false,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -43,6 +47,8 @@ class Comment {
       contents: json["contents"],
       createDate: DateTime.parse(json["createDate"]),
       replies: replies,
+
+      isDeleted: false,
     );
   }
 

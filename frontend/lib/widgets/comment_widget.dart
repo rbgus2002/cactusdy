@@ -58,24 +58,25 @@ class CommentWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(child: Text(comment.nickname, style: TextStyles.titleSmall)),
-                          SizedBox(
-                            width: 18,
-                            height: 18,
-                            child :PopupMenuButton(
-                              icon: const Icon(Icons.more_vert, size: 18,),
-                              splashRadius: 12,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              offset: const Offset(0, 18),
+                          if (!comment.isDeleted)
+                            SizedBox(
+                              width: 18,
+                              height: 18,
+                              child :PopupMenuButton(
+                                icon: const Icon(Icons.more_vert, size: 18,),
+                                splashRadius: 12,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                offset: const Offset(0, 18),
 
-                              itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  child: Text("삭제하기", style: TextStyles.bodyMedium,),
-                                  onTap: () => _showDeleteCommentDialog(context),
-                                ),
-                              ],
-                            )
-                          ),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text("삭제하기", style: TextStyles.bodyMedium,),
+                                    onTap: () => _showDeleteCommentDialog(context),
+                                  ),
+                                ],
+                              )
+                            ),
                         ]
                       ),
                       Design.padding5,
@@ -83,18 +84,19 @@ class CommentWidget extends StatelessWidget {
                       SelectableText(comment.contents, textAlign: TextAlign.justify,),
                       Design.padding5,
 
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                          children : [
-                            Text(TimeUtility.timeToString(comment.createDate), style: TextStyles.bodyMedium,),
-                            const Text(" | "),
-                            InkWell(
-                              borderRadius: BorderRadius.circular(3),
-                              onTap: (){onTap(index);},
-                              child: const Text("답글 달기", style: TextStyles.bodyMedium),
-                            ),
-                          ]
-                        ),
+                      if (!comment.isDeleted)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children : [
+                              Text(TimeUtility.timeToString(comment.createDate), style: TextStyles.bodyMedium,),
+                              const Text(" | "),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(3),
+                                onTap: (){onTap(index);},
+                                child: const Text("답글 달기", style: TextStyles.bodyMedium),
+                              ),
+                            ]
+                          ),
                     ],)
                 ),
               ]

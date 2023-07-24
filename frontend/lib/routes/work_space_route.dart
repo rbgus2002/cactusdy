@@ -15,7 +15,7 @@ import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
-import 'package:group_study_app/widgets/user_line_profile.dart';
+import 'package:group_study_app/widgets/line_profiles/user_line_profile.dart';
 
 class WorkSpaceRoute extends StatefulWidget {
   const WorkSpaceRoute({super.key});

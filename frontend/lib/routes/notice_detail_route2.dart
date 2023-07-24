@@ -10,46 +10,36 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
-class NoticeDetailRoute extends StatefulWidget {
+/*
+class NoticeDetailRoute2 extends StatefulWidget {
   User user = Test.testUser;
   final int noticeId;
 
-  NoticeDetailRoute({
+  NoticeDetailRoute2({
     super.key,
     required this.noticeId,
   });
 
   @override
-  State<NoticeDetailRoute> createState() => _NoticeDetailRoute();
+  State<NoticeDetailRoute2> createState() => _NoticeDetailRoute2();
 }
 
-class _NoticeDetailRoute extends State<NoticeDetailRoute> {
+class _NoticeDetailRoute2 extends State<NoticeDetailRoute2> {
   static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
 
-  static const String _commentHintMessage = "댓글을 입력해 주세요";
-  static const String _writingFailMessage = "작성에 실패했습니다";
-
   static const String _checkMessage = "확인";
   static const String _cancelMessage = "취소";
-
-  late final _commentEditor = TextEditingController();
-  late final _focusNode = FocusNode();
 
   late Future<Notice> futureNotice;
   late Future<List<Comment>> futureComments;
 
   late List<Comment> comments;
-  int _selectedIdx = Comment.commentWithNoParent;
 
   @override
   void initState() {
     super.initState();
     futureNotice = Notice.getNotice(widget.noticeId, widget.user.userId);
-    futureComments = Comment.getComments(widget.noticeId);
-  }
-
-  void getComments() {
     futureComments = Comment.getComments(widget.noticeId);
   }
 
@@ -100,12 +90,6 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     );
   }
 
-  @override
-  void dispose() {
-    _commentEditor.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget _noticeBody() {
@@ -152,7 +136,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
                       checkerNum: notice.checkNoticeCount),
 
                   InkWell(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                     onTap: _focusNode.requestFocus,
                     child: Row (
                       children : [
@@ -185,16 +169,11 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           comments = snapshot.data!;
-
-          Comment removed = Comment(userId: 1, nickname: "(삭제)",
-              isDeleted: true, picture: "", commentId: -1, contents: "삭제된 댓글 입니다.", createDate: DateTime.now(),
-          replies: [ Comment(userId: 1, nickname: "Arkady", picture: "", commentId: -1, contents: "뭐래 ㅋㅋ 뒤져라 그냥", createDate: DateTime.now()) ]);
           return Column(
             children: [
               for (int i = 0; i < comments.length; ++i)
                 CommentWidget(comment: comments[i], index: i,
                     isSelected: (_selectedIdx == i), onTap: setReplyTo),
-              CommentWidget(comment: removed, index: -1, onTap: (p0) => null,),
             ]
           );
         }
@@ -226,83 +205,6 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     ));
   }
 
-  Widget _writingCommentBox() {
-    return Container(
-      padding: Design.edge10,
-      child: TextField(
-        minLines: 1, maxLines: 5,
-        style: TextStyles.bodyMedium,
-        textAlign: TextAlign.justify,
-        controller: _commentEditor,
-        focusNode: _focusNode,
-
-        decoration: InputDecoration(
-          isDense: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          hintText: _commentHintMessage,
-
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.send, size: 16),
-            splashRadius: 16,
-            onPressed: () {
-              if (_checkValidate()) {
-                _writeComment();
-              }
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  void setReplyTo(int index) {
-    setState(() {
-      // #Case : double check => uncheck
-      if (_selectedIdx == index) {
-        _focusNode.unfocus();
-        _selectedIdx = Comment.commentWithNoParent;
-      }
-      // #Case : check
-      else {
-        _focusNode.requestFocus();
-        _selectedIdx = index;
-      }
-    });
-  }
-
-  bool _checkValidate() {
-    if (_commentEditor.text.isEmpty) {
-      Toast.showToast(msg: _commentHintMessage);
-      return false;
-    }
-    return true;
-  }
-
-  void _writeComment() {
-    int? parentCommentId = (_selectedIdx != Comment.commentWithNoParent)? comments[_selectedIdx].commentId : null;
-    Future<int> result = Comment.writeComment(
-        widget.user.userId, widget.noticeId, _commentEditor.text, parentCommentId);
-
-    result.then((newCommentId) {
-      if (newCommentId != Comment.commentCreationError) {
-        setState(() {
-          // writing box reset
-          _commentEditor.text = "";
-          _focusNode.unfocus();
-
-          // commentList reloads
-          futureComments = Comment.getComments(widget.noticeId);
-          futureNotice.then((value) => ++value.commentCount); //< FIXME : this is not validated value, see also removeComment
-        });
-      }
-      else {
-        Toast.showToast(msg: _writingFailMessage);
-      }
-    });
-  }
-
   void _deleteNotice() {
     Notice.deleteNotice(widget.noticeId).then((result) {
         if (result == false) {
@@ -315,3 +217,5 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
     );
   }
 }
+
+ */
