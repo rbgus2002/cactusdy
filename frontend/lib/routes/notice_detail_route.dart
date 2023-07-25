@@ -186,15 +186,11 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
         if (snapshot.hasData) {
           comments = snapshot.data!;
 
-          Comment removed = Comment(userId: 1, nickname: "(삭제)",
-              isDeleted: true, picture: "", commentId: -1, contents: "삭제된 댓글 입니다.", createDate: DateTime.now(),
-          replies: [ Comment(userId: 1, nickname: "Arkady", picture: "", commentId: -1, contents: "뭐래 ㅋㅋ 뒤져라 그냥", createDate: DateTime.now()) ]);
           return Column(
             children: [
               for (int i = 0; i < comments.length; ++i)
                 CommentWidget(comment: comments[i], index: i,
                     isSelected: (_selectedIdx == i), onTap: setReplyTo),
-              CommentWidget(comment: removed, index: -1, onTap: (p0) => null,),
             ]
           );
         }

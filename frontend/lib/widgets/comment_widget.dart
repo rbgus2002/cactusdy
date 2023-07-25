@@ -58,7 +58,7 @@ class CommentWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(child: Text(comment.nickname, style: TextStyles.titleSmall)),
-                          if (!comment.isDeleted)
+                          if (!comment.deleteYn)
                             SizedBox(
                               width: 18,
                               height: 18,
@@ -84,7 +84,7 @@ class CommentWidget extends StatelessWidget {
                       SelectableText(comment.contents, textAlign: TextAlign.justify,),
                       Design.padding5,
 
-                      if (!comment.isDeleted)
+                      if (!comment.deleteYn)
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                             children : [

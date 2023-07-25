@@ -28,12 +28,12 @@ class Study {
 
   Map<String, dynamic> toJson() => {
     'studyId': studyId,
-    'studyNAme': studyName,
+    'studyName': studyName,
     'detail': detail,
     'picture': picture
   };
 
-  Future<Study> getStudySummary(int studyId) async {
+  static Future<Study> getStudySummary(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}studies?studyId=$studyId'),
     );
@@ -41,7 +41,7 @@ class Study {
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to get Study Summary");
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studySumaary'];
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studySummary'];
       return Study.fromJson(responseJson);
     }
   }

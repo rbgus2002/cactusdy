@@ -47,7 +47,7 @@ class UserLineProfile extends StatelessWidget {
             ),
           ),
         IconButton(onPressed: (){}, icon: AppIcons.edit, iconSize: 20), //< FIXME
-        ],
+      ],
     );
   }
 }

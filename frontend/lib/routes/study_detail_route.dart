@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/participantSummary.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
@@ -8,13 +9,17 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_list_panel.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
+import 'package:group_study_app/widgets/rule_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
+  const StudyDetailRoute({super.key});
+
   @override
   State<StudyDetailRoute> createState() {
     return _StudyDetailRoute();
@@ -22,11 +27,16 @@ class StudyDetailRoute extends StatefulWidget {
 }
 
 class _StudyDetailRoute extends State<StudyDetailRoute> {
-  List<User> userList = List<User>.generate(30, (index) => User(userId: 0, nickname: "d", statusMessage: "", picture: ""));
-  
+  late Future<List<ParticipantSummary>> userList;
+  late Future<Study> study;
   int studyId = 1; //< FIXME
 
-  Study study = const Study(studyId: 1, studyName: "스터디", detail: "additional comment", picture: "");
+  @override
+  void initState() {
+    super.initState();
+    study = Study.getStudySummary(studyId);
+    userList = ParticipantSummary.getParticipantsProfileImageList(studyId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +63,16 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
             //
             TitleWidget(title: "MEMBER", icon: AppIcons.add,
               onTap: () => null,),
-            FutureBuilder(
-                future: ,
-                builder: )
-
-            CircleButtonList(circleButtons: userList,),
+            _participantsImages(),
             Design.padding15,
 
             //
-            const TitleWidget(title: "RULE", icon: Icon(Icons.edit, size: 18,)),
+            TitleWidget(title: "RULE", icon: AppIcons.edit,
+                onTap: ()=> null,),
+            RuleWidget(studyId: studyId),
             Design.padding15,
 
-            const TitleWidget(title: "ROUND LIST", icon: Icon(Icons.add), onTap: Test.onTabTest),
+            const TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: Test.onTabTest),
 
             //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
             //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
@@ -73,6 +81,24 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
           ],
         ),
       )
+    );
+  }
+
+  Widget _participantsImages() {
+    return FutureBuilder(
+      future: userList,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<CircleButton> userImages = snapshot.data!.map((e) =>
+              CircleButton(child: null, onTap: (){},
+                  scale: 42),).toList();
+
+          return CircleButtonList(circleButtons: userImages, paddingVertical: 5,);
+        }
+        else {
+          return SizedBox();
+        }
+      }
     );
   }
 }

@@ -17,7 +17,7 @@ class Comment {
 
   List<Comment> replies;
 
-  final bool isDeleted;
+  final bool deleteYn;
 
   Comment({
     required this.userId,
@@ -30,7 +30,7 @@ class Comment {
 
     this.replies = const [],
 
-    this.isDeleted = false,
+    this.deleteYn = false,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -46,9 +46,8 @@ class Comment {
       commentId: json["commentId"],
       contents: json["contents"],
       createDate: DateTime.parse(json["createDate"]),
+      deleteYn: (json["deleteYn"] == 'Y'),
       replies: replies,
-
-      isDeleted: false,
     );
   }
 

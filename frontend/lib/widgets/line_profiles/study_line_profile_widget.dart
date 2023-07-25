@@ -11,7 +11,7 @@ class StudyLineProfileWidget extends StatelessWidget {
   static const double _scale = 50; //60
   static const double _stroke = 5;
 
-  final Study study;
+  final Future<Study> study;
 
   const StudyLineProfileWidget({
     super.key,
@@ -20,17 +20,33 @@ class StudyLineProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LineProfileWidget(
-      circleButton: OutlineCircleButton(
-        color: ColorStyles.red,
-        scale: _scale,
-        stroke: _stroke,
-      ),
+    return FutureBuilder(
+      future: study,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return LineProfileWidget(
+            circleButton: OutlineCircleButton(
+              color: ColorStyles.red,
+              scale: _scale,
+              stroke: _stroke,
+            ),
 
-      topWidget: Text(study.studyName, maxLines: 1, style: TextStyles.titleMedium,),
-      bottomWidget: Text(study.detail, maxLines: 1, style: TextStyles.bodyMedium, ),
+            topWidget: Text(snapshot.data!.studyName, maxLines: 1, style: TextStyles.titleMedium,),
+            bottomWidget: Text(snapshot.data!.detail, maxLines: 1, style: TextStyles.bodyMedium, ),
 
-      iconButton: IconButton(onPressed: (){}, icon: AppIcons.edit, iconSize: 20),
+            iconButton: IconButton(
+              icon: AppIcons.edit,
+              splashRadius: 16,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 18,
+              onPressed: (){},
+            ),
+          );
+        }
+        else
+          return SizedBox(); //< FIXME;
+      }
     );
   }
 }

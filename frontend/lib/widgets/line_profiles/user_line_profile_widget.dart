@@ -27,7 +27,14 @@ class UserLineProfileWidget extends StatelessWidget {
       bottomWidget: Text(user.statusMessage, maxLines: 1, style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,),
 
-      iconButton: IconButton(onPressed: (){}, icon: AppIcons.edit, iconSize: 20),
+      iconButton: IconButton(
+        icon: AppIcons.edit,
+        splashRadius: 16,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        iconSize: 18,
+        onPressed: (){},
+      ),
     );
   }
 }

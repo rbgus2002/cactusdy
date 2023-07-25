@@ -20,7 +20,7 @@ class LineProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      //crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
         circleButton,
@@ -33,7 +33,6 @@ class LineProfileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-              Design.padding5,
               topWidget,
               bottomWidget,
             ],
