@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
+import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
@@ -11,7 +16,7 @@ class RoundInfoPanel extends Panel {
   final int roundIdx;
   final String? place;
   final DateTime? date;
-  final List<CircleButton> userList; //< FIXME need to be renamed
+  //final List<CircleButton> userList; //< FIXME need to be renamed
 
   final onTap;
 
@@ -26,7 +31,7 @@ class RoundInfoPanel extends Panel {
     required this.roundIdx,
     this.place,
     this.date,
-    required this.userList,
+    //required this.userList,
     this.onTap,
   }) : super(
     boxShadows: Design.basicShadows,
@@ -40,15 +45,13 @@ class RoundInfoPanel extends Panel {
             Icon(Icons.chevron_right),
           ],
         ),
-        if (!userList.isEmpty)
-          Design.padding10,
 
-        /*< FIXME
+        /*
         CircleButtonList(
-          circleButtons: userList,
-          onTap: Test.onTabTest,
-          scale: 42.0,
+          circleButtons: Test.testUserList.map((e) { double percent = Random.secure().nextDouble(); return PercentCircleButton(percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42, onTap: (){},
+          ); }).toList(),
         ),
+
          */
       ],
     )

@@ -8,7 +8,7 @@ class CircleButtonList extends StatelessWidget {
   const CircleButtonList({
     super.key,
     required this.circleButtons,
-    this.paddingVertical = 10,
+    this.paddingVertical = 5,
   });
 
   @override

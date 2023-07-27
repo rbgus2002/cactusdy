@@ -14,6 +14,7 @@ import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_list_panel.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
+import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/rule_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -74,7 +75,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             const TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: Test.onTabTest),
 
-            //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
+            RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26),),
             //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
             //RoundInfoPanel(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26), userList: Test.testUserList),
 
