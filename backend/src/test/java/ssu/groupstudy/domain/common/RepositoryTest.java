@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.CheckNoticeRepository;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.dto.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;

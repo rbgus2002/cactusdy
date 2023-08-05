@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.round.dto;
+package ssu.groupstudy.domain.round.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

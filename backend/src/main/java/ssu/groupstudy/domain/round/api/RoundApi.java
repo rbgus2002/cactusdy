@@ -4,13 +4,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.round.dto.AppointmentRequest;
-import ssu.groupstudy.domain.round.dto.DetailRequest;
+import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.request.DetailRequest;
+import ssu.groupstudy.domain.round.dto.response.RoundInfoResponse;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rounds")
@@ -43,4 +45,13 @@ public class RoundApi {
 
         return ResponseDto.success();
     }
+
+    @Operation(summary = "회차 목록 가져오기", description = "스터디에 속해있는 회차 정보를 가져온다")
+    @GetMapping("/list")
+    public ResponseDto getRoundInfoResponses(@RequestParam Long studyId){
+        List<RoundInfoResponse> roundInfos = roundService.getRoundInfoResponses(studyId);
+
+        return DataResponseDto.of("roundList", roundInfos);
+    }
+
 }

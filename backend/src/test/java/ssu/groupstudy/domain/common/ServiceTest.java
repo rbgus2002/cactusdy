@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.dto.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;

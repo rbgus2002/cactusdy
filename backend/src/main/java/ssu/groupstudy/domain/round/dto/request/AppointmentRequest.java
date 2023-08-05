@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.round.dto;
+package ssu.groupstudy.domain.round.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

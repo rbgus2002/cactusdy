@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.dto.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
