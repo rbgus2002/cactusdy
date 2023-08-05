@@ -46,6 +46,8 @@ public class RoundApi {
         return ResponseDto.success();
     }
 
+    // TODO : 회차 참여자들 정보는 스터디에 소속된 순으로 정렬하도록 변경 필요
+    // TODO : 회차 정보는 약속 시간 순으로 정렬하도록 변경 필요
     @Operation(summary = "회차 목록 가져오기", description = "스터디에 속해있는 회차 정보를 가져온다")
     @GetMapping("/list")
     public ResponseDto getRoundInfoResponses(@RequestParam Long studyId){
