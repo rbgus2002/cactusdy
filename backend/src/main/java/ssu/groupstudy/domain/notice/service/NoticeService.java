@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
+import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.domain.Notice;
@@ -17,9 +19,7 @@ import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +34,8 @@ public class NoticeService {
 
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
-    private NoticeRepository noticeRepository;
+    private final NoticeRepository noticeRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Long createNotice(CreateNoticeRequest dto) {
@@ -60,29 +61,51 @@ public class NoticeService {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
-        return noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(study)
-                .stream().map(NoticeSummary::new).collect(Collectors.toList());
+        return noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study).stream()
+                .map(NoticeSummary::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
+        Study study = studyRepository.findByStudyId(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+
+        return noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
+                .map(NoticeSummary::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public Character switchNoticePin(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-
         return notice.switchPin();
     }
 
     public List<String> getCheckUserImageList(Long noticeId){
+        Set<CheckNotice> checkNotices = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
+                .getCheckNotices();
+
+        return checkNotices.stream()
+                .map(checkNotice -> checkNotice.getUser().getPicture())
+                .collect(Collectors.toList());
+    }
+
+    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        Long commentCount = commentRepository.countCommentByNotice(notice);
 
-        // TODO : 추후 stream 사용해서 refactoring 요망
-        Set<CheckNotice> checkNotices = notice.getCheckNotices();
-        List<String> profileImageList = new ArrayList<>();
-        for(CheckNotice checkNotice : checkNotices){
-            profileImageList.add(checkNotice.getUser().getPicture());
-        }
+        return NoticeInfoResponse.of(notice, user, commentCount);
+    }
 
-        return profileImageList;
+    @Transactional
+    public void delete(Long noticeId) {
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        notice.deleteNotice();
     }
 }

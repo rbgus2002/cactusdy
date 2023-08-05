@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    Notice save(Notice notice);
-
     Optional<Notice> findByNoticeId(Long noticeId);
 
-    List<Notice> findNoticeByStudyOrderByPinYnDescCreateDateDesc(Study study);
+    List<Notice> findNoticesByStudyOrderByPinYnDescCreateDateDesc(Study study);
+
+    List<Notice> findTop3ByStudyOrderByPinYnDescCreateDateDesc(Study study);
 }

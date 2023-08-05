@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class
-NoticeSummary {
+public class NoticeSummary {
     private Long noticeId;
     private String title;
     private String contents;
@@ -16,13 +15,17 @@ NoticeSummary {
     private char pinYn;
     private LocalDateTime createDate;
 
-    public NoticeSummary(Notice notice) {
+    private NoticeSummary(Notice notice) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.writerNickname = notice.getWriter().getNickname();
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
+    }
+
+    public static NoticeSummary from(Notice notice){
+        return new NoticeSummary(notice);
     }
 }
 

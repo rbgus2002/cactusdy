@@ -50,14 +50,10 @@ class UserServiceTest extends ServiceTest {
             doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
-            final User newUser = userService.signUp(최규현SignUpRequest);
+            final Long userId = userService.signUp(최규현SignUpRequest);
 
             // then
-            assertAll(
-                    () -> assertThat(newUser).isNotNull(),
-                    () -> assertThat(newUser.getName()).isEqualTo("최규현"),
-                    () -> assertThat(newUser.getEmail()).isEqualTo("rbgus200@naver.com")
-            );
+            assertThat(userId).isNotNull();
         }
     }
 
@@ -70,7 +66,7 @@ class UserServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> userService.findUser(-1L))
+            assertThatThrownBy(() -> userService.getUserByUserId(-1L))
                     .isInstanceOf(UserNotFoundException.class)
                     .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
@@ -82,13 +78,13 @@ class UserServiceTest extends ServiceTest {
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
 
             // when
-            final UserInfoResponse userInfoResponse = userService.findUser(1L);
+            final UserInfoResponse userInfoResponse = userService.getUserByUserId(1L);
 
             // then
             assertAll(
                     () -> assertThat(userInfoResponse).isNotNull(),
                     () -> assertThat(userInfoResponse.getUserId()).isEqualTo(1L),
-                    () -> assertThat(userInfoResponse.getNickName()).isEqualTo("규규")
+                    () -> assertThat(userInfoResponse.getNickname()).isEqualTo("규규")
 
             );
         }

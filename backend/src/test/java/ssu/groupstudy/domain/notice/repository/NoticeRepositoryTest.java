@@ -11,10 +11,11 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NoticeRepositoryTest extends RepositoryTest {
     @Nested
@@ -62,7 +63,7 @@ class NoticeRepositoryTest extends RepositoryTest {
         noticeRepository.save(공지사항3);
 
         // when
-        List<Notice> noticeList = noticeRepository.findNoticeByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디);
+        List<Notice> noticeList = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디);
 
         // then
         assertAll(
@@ -70,6 +71,25 @@ class NoticeRepositoryTest extends RepositoryTest {
                 () -> assertThat(noticeList.get(0)).isEqualTo(공지사항3),
                 () -> assertThat(noticeList.get(1).getCreateDate()).isAfter(noticeList.get(2).getCreateDate())
         );
+    }
+
+    @Test
+    @DisplayName("해당 스터디의 공지사항 리스트를 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져오며 최대 3개만 가져온다")
+    void getNoticeListLimit3() {
+        // given
+        userRepository.save(최규현);
+        studyRepository.save(알고리즘스터디);
+        noticeRepository.save(공지사항1);
+        noticeRepository.save(공지사항2);
+        공지사항3.switchPin(); // 공지사항3 상단 고정
+        noticeRepository.save(공지사항3);
+        noticeRepository.save(공지사항4);
+
+        // when
+        List<Notice> noticeList = noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘스터디);
+
+        // then
+        assertEquals(3, noticeList.size());
     }
 
     @Nested
@@ -128,5 +148,57 @@ class NoticeRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(checkUserProfileList.size()).isEqualTo(2);
+    }
+
+    @Nested
+    class isRead{
+        @Test
+        @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
+        void read_true(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchCheckNotice(최규현);
+            boolean read = 공지사항1.isRead(최규현);
+
+            // then
+            assertTrue(read);
+        }
+        
+        @Test
+        @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
+        void read_false(){
+            // given
+            userRepository.save(최규현);
+            studyRepository.save(알고리즘스터디);
+            noticeRepository.save(공지사항1);
+
+            // when
+            공지사항1.switchCheckNotice(최규현);
+            공지사항1.switchCheckNotice(최규현);
+            boolean read = 공지사항1.isRead(최규현);
+
+            // then
+            assertFalse(read);
+        }
+    }
+
+    @Test
+    @DisplayName("삭제된 공지사항을 읽는 경우 빈 값을 가져온다")
+    void getNoticeDeleted(){
+        // given
+        userRepository.save(최규현);
+        studyRepository.save(알고리즘스터디);
+        공지사항1 = noticeRepository.save(공지사항1);
+
+        // when
+        공지사항1.deleteNotice();
+        Optional<Notice> notice = noticeRepository.findByNoticeId(공지사항1.getNoticeId());
+
+        // then
+        assertEquals(Optional.empty(), notice);
     }
 }

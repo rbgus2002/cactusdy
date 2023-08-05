@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -159,15 +160,42 @@ class NoticeServiceTest extends ServiceTest {
         void success(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
-            List<Notice> tmpNoticeList = new ArrayList<>();
-            tmpNoticeList.add(공지사항1);
-            doReturn(tmpNoticeList).when(noticeRepository).findNoticeByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
+            doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
 
             // when
             List<NoticeSummary> noticeList = noticeService.getNoticeSummaryList(-1L);
 
             // then
-            assertThat(noticeList.size()).isEqualTo(1);
+            assertThat(noticeList.size()).isEqualTo(4);
+        }
+
+        @Nested
+        class getNoticeListLimit3 {
+            @Test
+            @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
+            void fail_studyNotFound() {
+                // given
+                doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+
+                // when, then
+                assertThatThrownBy(() -> noticeService.getNoticeSummaryListLimit3(-1L))
+                        .isInstanceOf(StudyNotFoundException.class)
+                        .hasMessage(STUDY_NOT_FOUND.getMessage());
+            }
+
+            @Test
+            @DisplayName("스터디에 작성된 공지사항 목록을 최대 3개 불러온다")
+            void success() {
+                // given
+                doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+                doReturn(List.of(공지사항1, 공지사항2, 공지사항3)).when(noticeRepository).findTop3ByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
+
+                // when
+                List<NoticeSummary> noticeList = noticeService.getNoticeSummaryListLimit3(-1L);
+
+                // then
+                assertThat(noticeList.size()).isEqualTo(3);
+            }
         }
 
 
@@ -212,6 +240,35 @@ class NoticeServiceTest extends ServiceTest {
 
             // then
             assertThat(profileImageList.size()).isEqualTo(1);
+        }
+    }
+
+
+    @Nested
+    class deleteNotice{
+        @Test
+        @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
+        void fail_noticeNotFound(){
+            // given
+            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when, then
+            assertThatThrownBy(() -> noticeService.delete(-1L))
+                    .isInstanceOf(NoticeNotFoundException.class)
+                    .hasMessage(NOTICE_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("공지사항을 삭제한다")
+        void success(){
+            // given
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+
+            // when
+            noticeService.delete(-1L);
+            
+            // then
+            assertEquals('Y', 공지사항1.getDeleteYn());
         }
     }
 }

@@ -35,34 +35,35 @@ class _CheckBoxTask extends State<CheckBoxTask> {
         onLongPress: Test.onTabTest,
 
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
 
           children: [
             SizedBox(
-              width: 24,
-              height: 24,
+              width: 26,
+              height: 26,
               child: Checkbox(
                 //activeColor: Colors.red,
                   value: widget._isChecked,
                   onChanged: (value) { setState(() { widget._isChecked = value!; });},
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
             ),
-            Expanded(
-                child: TextField(
-                  style: TextStyles.taskTextStyle,
-                  maxLines: 1,
+            Flexible(
+              fit: FlexFit.tight,
+              child: TextField(
+                maxLines: 1,
+                style: TextStyles.taskTextStyle,
 
-                  controller: textEditingController,
-                  decoration: InputDecoration(
-                    disabledBorder: InputBorder.none,
-                    enabled: _isEditable,
-                  ),
-                  textAlignVertical: TextAlignVertical.center,
-                  onTapOutside: (event) {
-                    setState(() { _isEditable = false; });
-                  },
-                )
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  disabledBorder: InputBorder.none,
+                  enabled: _isEditable,
+                ),
+                //textAlignVertical: TextAlignVertical.top,
+                onTapOutside: (event) {
+                  setState(() { _isEditable = false; });
+                },
+              ),
             ),
           ],
         ),

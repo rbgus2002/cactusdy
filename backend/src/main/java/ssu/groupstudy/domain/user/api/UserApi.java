@@ -22,18 +22,15 @@ public class UserApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("")
-    public ResponseDto registerUser(@Valid @RequestBody SignUpRequest dto) {
-        userService.signUp(dto);
-        return ResponseDto.success();
+    public ResponseDto register(@Valid @RequestBody SignUpRequest dto) {
+        Long userId = userService.signUp(dto);
+        return DataResponseDto.of("userId", userId);
     }
 
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
-    public ResponseDto findUser(@RequestParam Long userId) {
-        UserInfoResponse user = userService.findUser(userId);
+    public ResponseDto getUser(@RequestParam Long userId) {
+        UserInfoResponse user = userService.getUserByUserId(userId);
         return DataResponseDto.of("user", user);
     }
-
-    // TODO : swagger에 api별로 response 형식 명시
-    // TODO : return type 모두 ResponseDto로 변경
 }

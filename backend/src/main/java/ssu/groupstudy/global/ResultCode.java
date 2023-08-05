@@ -27,6 +27,7 @@ public enum ResultCode {
     STUDY_NOT_FOUND(404, "존재하지 않는 스터디입니다."),
     NOTICE_NOT_FOUND(404, "존재하지 않는 공지사항입니다."),
     ROUND_NOT_FOUND(404, "존재하지 않는 회차입니다."),
+    COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
 
 
     // 405
@@ -38,6 +39,6 @@ public enum ResultCode {
 
     ;
 
-    int statusCode; // TODO : HttpStatus 타입으로 리팩토링
+    private final int statusCode; // TODO : HttpStatus 타입으로 리팩토링
     private final String message;
 }

@@ -13,7 +13,6 @@ class UserProfileDialog {
   static const double borderRadius = 30;
   static Future<dynamic> showProfileDialog(BuildContext context) {
     return showDialog(
-
       context: context,
       builder: (context) {
         return AlertDialog(

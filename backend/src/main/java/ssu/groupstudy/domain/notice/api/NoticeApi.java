@@ -3,10 +3,9 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -30,6 +29,14 @@ public class NoticeApi {
         return DataResponseDto.of("noticeId", noticeId);
     }
 
+    @Operation(summary = "id를 통한 공지사항 조회")
+    @GetMapping("")
+    public ResponseDto getNotice(@RequestParam Long noticeId, @RequestParam Long userId){
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userId);
+
+        return DataResponseDto.of("noticeInfo", noticeInfoResponse);
+    }
+
     @Operation(summary = "공지사항 읽음/안읽음 체크")
     @PatchMapping("/check")
     public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
@@ -42,6 +49,14 @@ public class NoticeApi {
     @GetMapping("/list")
     public ResponseDto getNoticeSummaryList(@RequestParam Long studyId){
         final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryList(studyId);
+
+        return DataResponseDto.of("noticeList", noticeSummaryList);
+    }
+
+    @Operation(summary = "공지사항 목록 상위 3개 가져오기")
+    @GetMapping("/list/limited")
+    public ResponseDto getNoticeSummaryListLimit3(@RequestParam Long studyId){
+        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryListLimit3(studyId);
 
         return DataResponseDto.of("noticeList", noticeSummaryList);
     }
@@ -60,5 +75,12 @@ public class NoticeApi {
         final List<String> userImageList = noticeService.getCheckUserImageList(noticeId);
 
         return DataResponseDto.of("userImageList", userImageList);
+    }
+
+    @Operation(summary = "공지사항 삭제")
+    @DeleteMapping("")
+    public ResponseDto deleteNotice(@RequestParam Long noticeId){
+        noticeService.delete(noticeId);
+        return ResponseDto.success();
     }
 }

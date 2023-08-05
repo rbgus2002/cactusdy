@@ -20,16 +20,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User signUp(SignUpRequest dto){
+    public Long signUp(SignUpRequest dto){
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
-
-        User newUser = userRepository.save(dto.toEntity());
-        return newUser;
+        return userRepository.save(dto.toEntity()).getUserId();
     }
 
-    public UserInfoResponse findUser(long userId) {
+    public UserInfoResponse getUserByUserId(long userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 

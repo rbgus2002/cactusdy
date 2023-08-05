@@ -15,7 +15,7 @@ import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/round_info.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
-import 'package:group_study_app/widgets/user_line_profile.dart';
+import 'package:group_study_app/widgets/line_profiles/user_line_profile.dart';
 
 class WorkSpaceRoute extends StatefulWidget {
   const WorkSpaceRoute({super.key});
@@ -36,7 +36,7 @@ class _WorkSpaceRoute extends State<WorkSpaceRoute> {
             child: Column(
               children: [
                 PercentCircleButton(scale: 60.0, image: null, percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context); }),
-                const UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
+                //const UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
                 const SizedBox(
                   height: 5,
                 ),
@@ -71,8 +71,6 @@ class _WorkSpaceRoute extends State<WorkSpaceRoute> {
                     contents: "적당히 긴 내용 뭐가 있을까"),
                   ),
                 )
-
-
               ],
             )
           )

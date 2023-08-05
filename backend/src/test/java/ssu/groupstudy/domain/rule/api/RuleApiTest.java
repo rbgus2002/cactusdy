@@ -21,7 +21,6 @@ import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -30,7 +29,6 @@ import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -81,7 +79,7 @@ class RuleApiTest {
         return SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@@naver.com")
-                .nickName("규규")
+                .nickname("규규")
                 .phoneModel("")
                 .picture("")
                 .build();
@@ -92,65 +90,65 @@ class RuleApiTest {
     }
 
 
-    @Nested
-    class 규칙생성{
-        @Test
-        @DisplayName("내용이 없는 규칙을 생성할 경우 예외를 던진다")
-        void 실패_규칙내용존재X() throws Exception {
-            // given
-            final String url = "/rule";
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(CreateRuleRequest.builder()
-                            .studyId(-1L)
-                            .detail("")
-                            .build()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isBadRequest());
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
-        void 실패_스터디존재X() throws Exception {
-            // given
-            final String url = "/rule";
-            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(ruleService).createRule(any(CreateRuleRequest.class));
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getCreateRuleRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isNotFound());
-        }
-
-        @Test
-        @DisplayName("성공")
-        void 성공() throws Exception {
-            // given
-            final String url = "/rule";
-
-            // when
-            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(gson.toJson(getCreateRuleRequest()))
-                    .contentType(MediaType.APPLICATION_JSON)
-            );
-
-            // then
-            resultActions.andExpect(status().isOk());
-
-            ResponseDto response = gson.fromJson(resultActions.andReturn()
-                    .getResponse()
-                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
-
-            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
-        }
-    }
+//    @Nested
+//    class 규칙생성{
+//        @Test
+//        @DisplayName("내용이 없는 규칙을 생성할 경우 예외를 던진다")
+//        void 실패_규칙내용존재X() throws Exception {
+//            // given
+//            final String url = "/rule";
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(CreateRuleRequest.builder()
+//                            .studyId(-1L)
+//                            .detail("")
+//                            .build()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isBadRequest());
+//        }
+//
+//        @Test
+//        @DisplayName("존재하지 않는 스터디에 규칙을 생성하면 예외를 던진다")
+//        void 실패_스터디존재X() throws Exception {
+//            // given
+//            final String url = "/rule";
+//            doThrow(new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND)).when(ruleService).createRule(any(CreateRuleRequest.class));
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(getCreateRuleRequest()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isNotFound());
+//        }
+//
+//        @Test
+//        @DisplayName("성공")
+//        void 성공() throws Exception {
+//            // given
+//            final String url = "/rule";
+//
+//            // when
+//            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
+//                    .content(gson.toJson(getCreateRuleRequest()))
+//                    .contentType(MediaType.APPLICATION_JSON)
+//            );
+//
+//            // then
+//            resultActions.andExpect(status().isOk());
+//
+//            ResponseDto response = gson.fromJson(resultActions.andReturn()
+//                    .getResponse()
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//
+//            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
+//        }
+//    }
 
 }

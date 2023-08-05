@@ -19,7 +19,6 @@ import static ssu.groupstudy.domain.study.domain.InviteCode.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "delete_yn = 'N'")
 public class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +60,6 @@ public class Study extends BaseEntity {
 
         participants.addParticipant(new Participant(user, this));
     }
-
 
     public void leave(User user) {
         if(!isParticipated(user)){

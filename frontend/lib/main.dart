@@ -7,7 +7,9 @@ import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/routes/work_space_route.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -78,12 +80,8 @@ class _MyApp extends State<MyApp> {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NoticeDetailRoute()),
-                  );
-                }, child: const Text('Notice Detail Screen')
+                  Util.pushRoute(context, (context)=>NoticeDetailRoute(noticeId: 21), ); },
+                  child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(
                     fixedSize: Size(300, 50),
                     backgroundColor: Colors.grey,
@@ -147,15 +145,24 @@ class _MyApp extends State<MyApp> {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreateNoticeRoute()),
-                  );
+                  Util.pushRoute(context, (context)=>CreateNoticeRoute());
                 }, style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 50),
                   backgroundColor: Colors.grey,
                 ), child: const Text('Create Notice Screen')
+                  ,
+                ),
+
+
+                Container(height: 15,),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => TestRoute()),
+                  );
+                }, style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(300, 50),
+                  backgroundColor: Colors.grey,
+                ), child: const Text('Test Screen')
                   ,
                 ),
               ],

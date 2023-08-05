@@ -16,8 +16,8 @@ class Panel extends StatelessWidget {
     Key? key,
     this.backgroundColor = ColorStyles.panelBackgroundColor, //< FIXME
     this.boxShadows,
-
     required this.child,
+
     this.width,
     this.height,
     this.padding = Design.padding,

@@ -6,13 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
@@ -25,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-class StudyInviteServiceTestCode extends ServiceTest {
+class StudyInviteServiceTest extends ServiceTest {
     @InjectMocks
     private StudyInviteService studyInviteService;
 
@@ -125,4 +121,6 @@ class StudyInviteServiceTestCode extends ServiceTest {
             );
         }
     }
+
+
 }

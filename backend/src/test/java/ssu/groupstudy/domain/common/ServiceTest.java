@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
@@ -33,6 +35,16 @@ public class ServiceTest {
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
+    protected Notice 공지사항2;
+    protected Notice 공지사항3;
+    protected Notice 공지사항4;
+
+    protected CreateCommentRequest 댓글1CreateRequest;
+    protected CreateCommentRequest 댓글2CreateRequest;
+    protected CreateCommentRequest 대댓글1CreateRequest;
+    protected Comment 댓글1;
+    protected Comment 댓글2;
+    protected Comment 대댓글1;
 
     protected AppointmentRequest 회차1AppointmentRequest;
     protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
@@ -49,6 +61,8 @@ public class ServiceTest {
         initStudy();
         initCreateNoticeRequest();
         initNotice();
+        initCreateCommentRequest();
+        initComment();
         initCreateRoundRequest();
         initRound();
         initRoundParticipant();
@@ -58,14 +72,14 @@ public class ServiceTest {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@naver.com")
-                .nickName("규규")
+                .nickname("규규")
                 .phoneModel("")
                 .picture("")
                 .build();
         장재우SignUpRequest = SignUpRequest.builder()
                 .name("장재우")
                 .email("arkady@naver.com")
-                .nickName("킹적화")
+                .nickname("킹적화")
                 .phoneModel("")
                 .picture("")
                 .build();
@@ -113,6 +127,39 @@ public class ServiceTest {
     private void initNotice() {
         공지사항1 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
         ReflectionTestUtils.setField(공지사항1, "noticeId", 5L);
+        공지사항2 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항2, "noticeId", 5L);
+        공지사항3 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항3, "noticeId", 5L);
+        공지사항4 = 공지사항1CreateRequest.toEntity(최규현, 알고리즘스터디);
+        ReflectionTestUtils.setField(공지사항4, "noticeId", 5L);
+    }
+
+    private void initCreateCommentRequest(){
+        댓글1CreateRequest = CreateCommentRequest.builder()
+                .userId(-1L)
+                .noticeId(-1L)
+                .contents("댓글 내용1")
+                .build();
+        댓글2CreateRequest = CreateCommentRequest.builder()
+                .userId(-1L)
+                .noticeId(-1L)
+                .contents("댓글 내용2")
+                .build();
+        대댓글1CreateRequest = CreateCommentRequest.builder()
+                .userId(-1L)
+                .noticeId(-1L)
+                .contents("대댓글 내용1")
+                .build();
+    }
+
+    private void initComment(){
+        댓글1 = 댓글1CreateRequest.toEntity(최규현, 공지사항1);
+        ReflectionTestUtils.setField(댓글1, "commentId", 7L);
+        댓글2 = 댓글2CreateRequest.toEntity(최규현, 공지사항1);
+        ReflectionTestUtils.setField(댓글2, "commentId", 9L);
+        대댓글1 = 대댓글1CreateRequest.toEntity(최규현, 공지사항1, 댓글1);
+        ReflectionTestUtils.setField(대댓글1, "commentId", 8L);
     }
 
     private void initCreateRoundRequest() {
