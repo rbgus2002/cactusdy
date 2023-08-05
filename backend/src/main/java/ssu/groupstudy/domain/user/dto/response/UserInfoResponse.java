@@ -14,7 +14,7 @@ public class UserInfoResponse {
 
     public UserInfoResponse(User user){
         this.userId = user.getUserId();
-        this.nickName = user.getNickName();
+        this.nickName = user.getNickname();
         this.statusMessage = user.getStatusMessage();
     }
 

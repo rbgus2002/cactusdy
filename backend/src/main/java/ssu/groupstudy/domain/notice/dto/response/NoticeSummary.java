@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.notice.dto.response;
 
 import lombok.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ NoticeSummary {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
-        this.writerNickname = notice.getWriter().getNickName();
+        this.writerNickname = notice.getWriter().getNickname();
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
     }

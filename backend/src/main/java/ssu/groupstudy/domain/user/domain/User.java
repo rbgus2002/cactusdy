@@ -1,13 +1,11 @@
 package ssu.groupstudy.domain.user.domain;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 
 @Entity
@@ -23,7 +21,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String nickName;
+    private String nickname;
 
     @Column
     private String picture;
@@ -43,9 +41,9 @@ public class User extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public User(String name, String nickName, String picture, String phoneModel, String email) {
+    public User(String name, String nickname, String picture, String phoneModel, String email) {
         this.name = name;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.picture = picture;
         this.email = email;
         this.activateDate = LocalDateTime.now();

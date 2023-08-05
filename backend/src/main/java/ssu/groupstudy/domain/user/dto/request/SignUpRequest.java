@@ -24,7 +24,7 @@ public class SignUpRequest {
     public User toEntity(){
         return User.builder()
                 .name(this.name)
-                .nickName(this.nickName)
+                .nickname(this.nickName)
                 .phoneModel(this.phoneModel)
                 .picture(this.picture)
                 .email(this.email)
