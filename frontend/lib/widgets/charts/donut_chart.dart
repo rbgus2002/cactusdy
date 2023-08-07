@@ -14,7 +14,7 @@ class DonutChart extends Chart {
     super.backgroundColor,
 
     required this.scale,
-    this.ratio = 0.1,
+    this.ratio = 0.075,
   }) : super(key: key);
 
   @override

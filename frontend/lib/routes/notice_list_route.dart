@@ -1,8 +1,11 @@
 import 'package:group_study_app/models/notice_summary.dart';
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/routes/create_notice_route.dart';
+import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
 class NoticeListRoute extends StatefulWidget {
@@ -31,7 +34,18 @@ class _NoticeListRoute extends State<NoticeListRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(shadowColor: Colors.transparent,),
+      appBar: AppBar(shadowColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: AppIcons.add,
+            splashRadius: 16,
+            onPressed: () {
+              Util.pushRoute(context, (context) => CreateNoticeRoute());
+            },
+
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: FutureBuilder(
           future: notices,

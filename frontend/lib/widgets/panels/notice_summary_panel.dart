@@ -7,7 +7,7 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 
-class NoticeListPanel extends StatelessWidget {
+class NoticeSummaryPanel extends StatelessWidget {
   static const int _length = 3;
 
   late Future<List<NoticeSummary>> noticeSummaries;
@@ -15,7 +15,7 @@ class NoticeListPanel extends StatelessWidget {
 
   List<String> contents = List<String>.filled(_length, "");
 
-  NoticeListPanel({
+  NoticeSummaryPanel({
     super.key,
     required this.noticeId,
   });

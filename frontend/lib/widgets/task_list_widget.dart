@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/widgets/tasks/task.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -16,7 +17,7 @@ class TaskListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TitleWidget(title: title, icon: Icon(Icons.add)),
+        TitleWidget(title: title, icon: AppIcons.add),
       ],
     );
   }

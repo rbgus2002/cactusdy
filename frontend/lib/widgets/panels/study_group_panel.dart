@@ -8,7 +8,7 @@ import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/tasks/check_box_task.dart';
 import 'package:group_study_app/widgets/tasks/task.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
-import 'package:group_study_app/widgets/round_info.dart';
+import 'package:group_study_app/widgets/round_information_widget.dart';
 
 class StudyGroupPanel extends Panel {
   List<Task>? groupTasks;
@@ -55,7 +55,7 @@ class StudyGroupPanel extends Panel {
             ],
           ),
           Design.padding5,
-          RoundInfo(roundIdx: 3, place: "asd", date: DateTime(2019, 3, 26),tag: "asd"),
+          //RoundInformationWidget(round: Test.testRound),
 
           Design.padding15,
           const Text("GROUP", style: TextStyles.titleSmall,),

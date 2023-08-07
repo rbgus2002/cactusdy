@@ -7,4 +7,20 @@ class Util {
       MaterialPageRoute(builder: builder),
     );
   }
+
+  @deprecated
+  static Widget customIconButton({
+    required Icon icon,
+    Function? onTap,
+  }) {
+    return IconButton(
+      icon: icon,
+      splashRadius: 16,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      onPressed: () {
+        if (onTap != null) { onTap!(); }
+      }
+    );
+  }
 }

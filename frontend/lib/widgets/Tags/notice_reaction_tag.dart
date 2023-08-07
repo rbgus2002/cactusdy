@@ -13,7 +13,6 @@ class NoticeReactionTag extends StatefulWidget {
   User user = Test.testUser; //< FIXME
 
   final int noticeId;
-  final int duration;
   int checkerNum;
   bool isChecked;
 
@@ -22,7 +21,6 @@ class NoticeReactionTag extends StatefulWidget {
     required this.noticeId,
     required this.isChecked,
     required this.checkerNum,
-    this.duration = 1,
   }) : super(key: key);
 
   @override
@@ -34,6 +32,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const double _padding = 2;
   static const double _boarderRadius = _height + 2 * _padding;
   static const int _showCountMax = 5;
+  static const int _duration = 1;
 
   List<CircleButton> _checkerImages = [];
   double _width = 0;
@@ -66,7 +65,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
             AnimatedContainer(
               padding: const EdgeInsets.fromLTRB(_padding, 0, 0, 0),
               width: _width,
-              duration: Duration(seconds: widget.duration),
+              duration: Duration(seconds: _duration),
               curve: Curves.fastOutSlowIn,
 
               child: CircleButtonList(circleButtons: _checkerImages, paddingVertical: _padding * 2),

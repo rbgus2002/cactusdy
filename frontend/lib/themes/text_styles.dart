@@ -21,4 +21,5 @@ class TextStyles {
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
   static const tagTextStyle = TextStyle(fontSize: 14, leadingDistribution: TextLeadingDistribution.even, fontWeight: _bold);
   static const taskTextStyle = TextStyle(fontSize: 14, fontWeight: _semiBold, height: 1, color: ColorStyles.taskTextColor);
+  static const roundTextStyle = TextStyle(fontSize: 14, fontWeight: _semiBold, height: 1, color: ColorStyles.taskTextColor);
 }

@@ -22,15 +22,14 @@ class TitleWidget extends StatelessWidget {
       children: [
         Flexible(fit: FlexFit.tight,child: Text(title, style: TextStyles.titleMedium),),
         IconButton(
-            icon: icon,
-            splashRadius: 16,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            onPressed: () {
-          if (onTap != null) {
-            onTap!();
+          icon: icon,
+          splashRadius: 16,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
+          onPressed: () {
+            if (onTap != null) { onTap!(); }
           }
-        }),
+        ),
       ],
     );
   }

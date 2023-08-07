@@ -227,6 +227,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
       padding: Design.edge10,
       child: TextField(
         minLines: 1, maxLines: 5,
+        maxLength: 100,
         style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,
         controller: _commentEditor,

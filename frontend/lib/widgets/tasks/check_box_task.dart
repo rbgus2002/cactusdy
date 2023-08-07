@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/tasks/task.dart';
@@ -61,7 +62,9 @@ class _CheckBoxTask extends State<CheckBoxTask> {
                 ),
                 //textAlignVertical: TextAlignVertical.top,
                 onTapOutside: (event) {
-                  setState(() { _isEditable = false; });
+                  if (_isEditable) {
+                    setState(() { _isEditable = false; });
+                  }
                 },
               ),
             ),
