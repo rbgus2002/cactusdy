@@ -8,7 +8,7 @@ import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/tasks/check_box_task.dart';
 import 'package:group_study_app/widgets/tasks/task.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
-import 'package:group_study_app/widgets/round_information_widget.dart';
+import 'package:group_study_app/widgets/round_info_widget.dart';
 
 class StudyGroupPanel extends Panel {
   List<Task>? groupTasks;

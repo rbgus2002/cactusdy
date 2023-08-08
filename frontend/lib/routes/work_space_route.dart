@@ -13,7 +13,7 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/round_info_panel.dart';
-import 'package:group_study_app/widgets/round_information_widget.dart';
+import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
 import 'package:group_study_app/widgets/line_profiles/user_line_profile.dart';
 

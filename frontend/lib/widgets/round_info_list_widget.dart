@@ -7,21 +7,21 @@ import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/round_information_widget.dart';
+import 'package:group_study_app/widgets/round_info_widget.dart';
 
-class RoundInformationListWidget extends StatefulWidget {
+class RoundInfoListWidget extends StatefulWidget {
   final int studyId;
 
-  const RoundInformationListWidget({
+  const RoundInfoListWidget({
     super.key,
     required this.studyId,
   });
 
   @override
-  State<RoundInformationListWidget> createState() => RoundInformationListWidgetState();
+  State<RoundInfoListWidget> createState() => RoundInfoListWidgetState();
 }
 
-class RoundInformationListWidgetState extends State<RoundInformationListWidget> {
+class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   late final Future<ListModel<Round>> _listModel;
   late ListModel<Round> _rounds;
@@ -34,7 +34,6 @@ class RoundInformationListWidgetState extends State<RoundInformationListWidget> 
 
   @override
   Widget build(BuildContext context) {
-    print(Colors.blue.toString());
     return FutureBuilder(
       future: _listModel,
       builder: (context, snapshot) {
@@ -48,15 +47,7 @@ class RoundInformationListWidgetState extends State<RoundInformationListWidget> 
             scrollDirection: Axis.vertical,
 
             initialItemCount: _rounds.length,
-            itemBuilder: (context, index, animation) {
-              return Panel(
-                boxShadows: Design.basicShadows,
-                onTap: () {
-                  Util.pushRoute(context, (context) => RoundDetailRoute());
-                },
-                child: RoundInformationWidget(round: _rounds[index], animation: animation),
-              );
-            },
+            itemBuilder: _buildItem,
           );
         }
         else {
@@ -66,8 +57,24 @@ class RoundInformationListWidgetState extends State<RoundInformationListWidget> 
     );
   }
 
+  Widget _buildItem(
+      BuildContext context, int index, Animation<double> animation) {
+    print(_rounds[index].studyPlace);
+    return Panel(
+      boxShadows: Design.basicShadows,
+      onTap: () {
+        Util.pushRoute(context, (context) => RoundDetailRoute());
+      },
+      child: RoundInfoWidget(
+        index: _rounds.length - index,
+        round: _rounds[index],
+        animation: animation,
+      ),
+    );
+  }
+
   Future<ListModel<Round>> getRound() async {
-    final List<Round> rounds = await Round.getRoundList(widget.studyId);
+    List<Round> rounds = await Round.getRoundInfoResponses(widget.studyId);
     return ListModel(
       listKey: _listKey,
       initialItems: rounds,
@@ -75,8 +82,7 @@ class RoundInformationListWidgetState extends State<RoundInformationListWidget> 
   }
 
   void addNewRound() {
-    setState(() {
-      _rounds.insert(0, Round(roundIdx: 4, roundId: 1));
-    });
+      _rounds.insert(0, Round(roundId: 0,
+      ));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participantSummary.dart';
+import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
@@ -12,7 +12,7 @@ import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
-import 'package:group_study_app/widgets/round_information_list_widget.dart';
+import 'package:group_study_app/widgets/round_info_list_widget.dart';
 import 'package:group_study_app/widgets/rule_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -32,7 +32,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
 
   // is this right?
-  final GlobalKey<RoundInformationListWidgetState> _roundInformationListKey = GlobalKey<RoundInformationListWidgetState>();
+  final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
 
   late ListModel<Round> _roundList;
 
@@ -78,7 +78,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
             Design.padding15,
 
             TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _insert),
-            RoundInformationListWidget(key: _roundInformationListKey, studyId: studyId),
+            RoundInfoListWidget(key: _roundInformationListKey, studyId: studyId),
           ],
         )
       )

@@ -6,7 +6,7 @@ import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/round_information_widget.dart';
+import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 
 import '../../themes/design.dart';
