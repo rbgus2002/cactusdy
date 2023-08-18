@@ -169,12 +169,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           );
         }
 
-        return const SizedBox(
-          height: 128,
-          child: Center(
-            child: CircularProgressIndicator()
-          )
-        );//< FXIME
+        return Design.loadingIndicator;
       },
     );
   }

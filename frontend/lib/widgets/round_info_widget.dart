@@ -59,7 +59,13 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                   const Text("회차", style: TextStyles.titleSmall,)
                 ]
               ),
-              Design.padding15,
+              Design.padding10,
+              const Column(
+                children: [
+                  Text('장소:', style: TextStyles.roundTextStyle,),
+                  Text('시간:', style: TextStyles.roundTextStyle,),
+                ],
+              ),
               _studyTimeAndPlace(),
 
               if (widget.round.isPlanned == true)

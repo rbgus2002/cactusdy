@@ -7,6 +7,8 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Round {
+  static const int nonAllocatedRoundId = -1;
+
   final int roundId;
   String? studyPlace;
   DateTime? studyTime;
@@ -35,6 +37,13 @@ class Round {
   }
 
   static Future<List<Round>> getRoundInfoResponses(int studyId) async {
+    ///< FIXME TEST MODULE
+    List<Round> rounds = [];
+    rounds.add(Round(roundId: 1));
+    rounds.add(Round(roundId: 2));
+    rounds.add(Round(roundId: 3));
+    return rounds;
+
     final response = await http.get(
         Uri.parse('${DatabaseService.serverUrl}rounds/list?studyId=$studyId'),
     );

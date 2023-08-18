@@ -18,5 +18,12 @@ class Design{
       spreadRadius: 2,
       blurRadius: 3,
       offset: Offset(4, 4),
-  )];
+    )];
+
+  static const Widget loadingIndicator = SizedBox(
+      height: 128,
+      child: Center(
+        child: CircularProgressIndicator()
+      )
+    );
 }

@@ -77,7 +77,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
             RuleWidget(studyId: studyId),
             Design.padding15,
 
-            TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _insert),
+            TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _addRound),
             RoundInfoListWidget(key: _roundInformationListKey, studyId: studyId),
           ],
         )
@@ -85,7 +85,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
     );
   }
 
-  void _insert() {
+  void _addRound() {
     _roundInformationListKey.currentState!.addNewRound();
   }
 

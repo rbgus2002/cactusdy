@@ -24,7 +24,8 @@ class RoundInfoListWidget extends StatefulWidget {
 class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   late final Future<ListModel<Round>> _listModel;
-  late ListModel<Round> _rounds;
+  late final ListModel<Round> _rounds;
+  bool _isInit = false;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _rounds = snapshot.data!;
+          _isInit = true;
 
           return AnimatedList(
             key: _listKey,
@@ -50,16 +52,14 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
             itemBuilder: _buildItem,
           );
         }
-        else {
-          return const CircularProgressIndicator();
-        }
+
+        return Design.loadingIndicator;
       }
     );
   }
 
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
-    print(_rounds[index].studyPlace);
     return Panel(
       boxShadows: Design.basicShadows,
       onTap: () {
@@ -82,7 +82,10 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   }
 
   void addNewRound() {
+    if (_isInit) {
       _rounds.insert(0, Round(roundId: 0,
+
       ));
+    }
   }
 }

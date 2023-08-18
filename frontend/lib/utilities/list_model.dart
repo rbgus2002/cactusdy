@@ -22,6 +22,12 @@ class ListModel<E> {
     _animatedList!.insertItem(index);
   }
 
+  void add(E item) {
+    int index = _items.length;
+    _items.insert(index, item);
+    _animatedList!.insertItem(index);
+  }
+
   /*
   E removeAt(int index) {
     final E removedItem = _items.removeAt(index);
