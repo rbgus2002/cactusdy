@@ -56,6 +56,7 @@ public class RoundService {
         round.updateDetail(detail);
     }
 
+    // FIXME : N+1
     public List<RoundInfoResponse> getRoundInfoResponses(long studyId){
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
