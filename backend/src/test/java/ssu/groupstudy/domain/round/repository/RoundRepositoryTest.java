@@ -25,14 +25,4 @@ class RoundRepositoryTest extends RepositoryTest {
                 () -> assertThat(회차1.getRoundParticipants()).contains(new RoundParticipant(최규현, 회차1))
         );
     }
-
-    @Test
-    @DisplayName("")
-    void findBy(){
-        // given
-        
-        // when
-        
-        // then
-    }
 }
