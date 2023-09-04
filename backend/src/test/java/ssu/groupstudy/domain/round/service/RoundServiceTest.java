@@ -19,9 +19,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static ssu.groupstudy.global.ResultCode.*;
 
 class RoundServiceTest extends ServiceTest {
     @InjectMocks
@@ -44,12 +45,11 @@ class RoundServiceTest extends ServiceTest {
             // when, then
             assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentRequest))
                     .isInstanceOf(StudyNotFoundException.class)
-                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+                    .hasMessage(STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
         @DisplayName("회차 생성 시에 스터디 장소와 약속 시간은 빈 값으로 둘수 있다")
-            // api test에 있어야하는 것 아닌가?
         void success_emptyTimeAndPlace() {
             // given
             doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
@@ -88,7 +88,7 @@ class RoundServiceTest extends ServiceTest {
             // when, then
             assertThatThrownBy(() -> roundService.updateAppointment(-1L, 회차1AppointmentRequest))
                     .isInstanceOf(RoundNotFoundException.class)
-                    .hasMessage(ResultCode.ROUND_NOT_FOUND.getMessage());
+                    .hasMessage(ROUND_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -135,7 +135,50 @@ class RoundServiceTest extends ServiceTest {
     }
 
     @Nested
-    class updateDetail{
+    class GetDetail{
+        @Test
+        @DisplayName("회차가 존재하지 않으면 예외를 던진다")
+        void roundNotFound(){
+            // given, when
+            doReturn(Optional.empty()).when(roundRepository).findByRoundId(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> roundService.getDetail(-1L))
+                    .isInstanceOf(RoundNotFoundException.class)
+                    .hasMessage(ROUND_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("회차의 상세설명이 null인 경우 빈 string을 반환한다")
+        void GetDetail(){
+            // given
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+
+            // when
+            final String detail = roundService.getDetail(-1L);
+
+            // then
+            assertNotNull(detail);
+        }
+
+        @Test
+        @DisplayName("회차의 상세설명을 가져온다")
+        void success(){
+            // given
+            final String detailOf회차1 = "회차의 상세설명";
+            회차1.updateDetail(detailOf회차1);
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+
+            // when
+            final String detail = roundService.getDetail(-1L);
+
+            // then
+            assertEquals(detailOf회차1, detail);
+        }
+    }
+
+    @Nested
+    class UpdateDetail{
         @Test
         @DisplayName("존재하지 않는 회차의 경우 예외를 던진다")
         void fail_roundNotFound() {
@@ -145,7 +188,7 @@ class RoundServiceTest extends ServiceTest {
             // when, then
             assertThatThrownBy(() -> roundService.updateDetail(-1L, ""))
                     .isInstanceOf(RoundNotFoundException.class)
-                    .hasMessage(ResultCode.ROUND_NOT_FOUND.getMessage());
+                    .hasMessage(ROUND_NOT_FOUND.getMessage());
         }
 
         @Test
