@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.round.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 
@@ -12,5 +13,10 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     Optional<Round> findByRoundId(Long roundId);
 
-    List<Round> findRoundsByStudy(Study study);
+    /**
+     * 스터디의 회차 목록 가져오기
+     * order by studyTime (null 값 우선)
+     */
+    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC")
+    List<Round> findRoundsByStudyOrderByStudyTime(Study study);
 }

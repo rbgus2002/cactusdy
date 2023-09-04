@@ -57,12 +57,12 @@ public class RoundService {
     }
 
     // FIXME : N+1
+    // FIXME : WARNING (in console)
     public List<RoundInfoResponse> getRoundInfoResponses(long studyId){
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        List<Round> rounds = roundRepository.findRoundsByStudy(study);
-        return rounds.stream()
+        return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundInfoResponse::from)
                 .collect(Collectors.toList());
     }
