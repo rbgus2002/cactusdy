@@ -14,7 +14,6 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.global.ResultCode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +39,13 @@ public class RoundService {
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
 
         round.updateAppointment(dto.toAppointment());
+    }
+
+    public String getDetail(long roundId) {
+        Round round = roundRepository.findByRoundId(roundId)
+                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+        final String detail = round.getDetail();
+        return (detail != null) ? detail : "";
     }
 
     @Transactional

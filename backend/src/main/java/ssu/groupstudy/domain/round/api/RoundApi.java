@@ -38,6 +38,13 @@ public class RoundApi {
         return ResponseDto.success();
     }
 
+    @Operation(summary = "회차 상세보기", description = "회차의 세부 내용을 확인한다")
+    @GetMapping("/details")
+    public ResponseDto getDetail(@RequestParam Long roundId){
+        final String detail = roundService.getDetail(roundId);
+        return DataResponseDto.of("detail", detail);
+    }
+
     @Operation(summary = "회차 상세내용 수정", description = "회차 상세내용을 수정한다")
     @PatchMapping("/details")
     public ResponseDto updateDetail(@RequestParam Long roundId, @RequestBody DetailRequest dto){
