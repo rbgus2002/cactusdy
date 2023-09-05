@@ -9,13 +9,10 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static ssu.groupstudy.global.ResultCode.*;
@@ -37,7 +34,7 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.removeTask(-1L))
+            assertThatThrownBy(() -> taskService.deleteTask(-1L))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
         }
