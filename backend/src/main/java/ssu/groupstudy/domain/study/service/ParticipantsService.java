@@ -21,6 +21,7 @@ import java.util.*;
 public class ParticipantsService {
     private final StudyRepository studyRepository;
 
+    // TODO : userId가 아닌 userParticipantId를 보내주어야 하는 것이 아닌가?
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
