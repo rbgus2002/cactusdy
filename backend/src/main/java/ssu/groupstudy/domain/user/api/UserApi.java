@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.user.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "User", description = "사용자 API")
 @CrossOrigin(maxAge = 3600) // Flutter cors 에러 해결
 public class UserApi {

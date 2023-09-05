@@ -3,13 +3,14 @@ package ssu.groupstudy.domain.round.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.round.service.RoundParticipantService;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
 @RequestMapping("/rounds/participants")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Round Participant", description = "회차 참여자 API")
 public class RoundParticipantApi {
     private final RoundParticipantService roundParticipantService;

@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.round.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.request.DetailRequest;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rounds")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Round", description = "회차 API")
 public class RoundApi {
     private final RoundService roundService;

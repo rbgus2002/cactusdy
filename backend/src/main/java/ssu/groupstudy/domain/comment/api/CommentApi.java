@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.comment.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Comment", description = "댓글 API")
 public class CommentApi {
     private final CommentService commentService;

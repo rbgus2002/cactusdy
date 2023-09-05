@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notices")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Notice", description = "공지사항 API")
 public class NoticeApi {
     private final NoticeService noticeService;

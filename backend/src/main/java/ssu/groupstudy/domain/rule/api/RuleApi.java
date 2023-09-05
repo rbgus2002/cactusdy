@@ -4,6 +4,7 @@ package ssu.groupstudy.domain.rule.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rules")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Rule", description = "규칙 API")
 public class RuleApi {
     private final RuleService ruleService;
