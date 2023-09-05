@@ -34,7 +34,7 @@ public class Round extends BaseEntity {
     private Appointment appointment;
 
     @OneToMany(mappedBy = "round", cascade = PERSIST)
-    Set<RoundParticipant> roundParticipants = new HashSet<>();
+    private Set<RoundParticipant> roundParticipants = new HashSet<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
