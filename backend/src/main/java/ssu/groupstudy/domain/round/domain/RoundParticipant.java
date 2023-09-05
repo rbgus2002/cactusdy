@@ -4,12 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.notice.domain.CheckNotice;
+import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -33,6 +38,9 @@ public class RoundParticipant {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatusTag statusTag;
+
+    @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
+    private Set<Task> tasks = new HashSet<>();
 
     public RoundParticipant(User user, Round round){
         this.user = user;

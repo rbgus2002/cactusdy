@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.task.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 
@@ -10,6 +11,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Task{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
