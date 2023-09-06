@@ -20,6 +20,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Participant extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_study_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
