@@ -64,8 +64,7 @@ class _CommentWritingBox extends State<CommentWritingBox> {
     _focusNode.dispose();
     super.dispose();
   }
-
-  /*
+/*
   void _writeComment() {
     int? parentCommentId = (_selectedIdx != Comment.commentWithNoParent)? comments[_selectedIdx].commentId : null;
     Future<int> result = Comment.writeComment(
@@ -97,5 +96,5 @@ class _CommentWritingBox extends State<CommentWritingBox> {
     return true;
   }
 
-   */
+ */
 }

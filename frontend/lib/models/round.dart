@@ -37,13 +37,6 @@ class Round {
   }
 
   static Future<List<Round>> getRoundInfoResponses(int studyId) async {
-    ///< FIXME TEST MODULE
-    List<Round> rounds = [];
-    rounds.add(Round(roundId: 1));
-    rounds.add(Round(roundId: 2));
-    rounds.add(Round(roundId: 3));
-    return rounds;
-
     final response = await http.get(
         Uri.parse('${DatabaseService.serverUrl}rounds/list?studyId=$studyId'),
     );

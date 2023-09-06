@@ -7,10 +7,12 @@ class Task {
   static const int nonAllocatedTaskId = -1;
 
   int taskId;
+  int userId;
   String text;
   bool isDone;
 
   Task({
+    this.userId = -1,
     this.taskId = nonAllocatedTaskId,
     this.text = "",
     this.isDone = false,

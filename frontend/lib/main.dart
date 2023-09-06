@@ -4,6 +4,7 @@ import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/login_route.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
+import 'package:group_study_app/routes/notice_detail_route2.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
@@ -157,7 +158,7 @@ class _MyApp extends State<MyApp> {
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
                   Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => TestRoute()),
+                    context, MaterialPageRoute(builder: (context) => NoticeDetailRoute2(noticeId: 1)),
                   );
                 }, style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 50),

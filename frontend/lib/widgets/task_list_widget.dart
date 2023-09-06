@@ -116,6 +116,18 @@ class _TaskListWidget extends State<TaskListWidget> {
     );
   }
 
+  /*
+  Widget _buildRemovedItem(
+      int item, BuildContext context, Animation<double> animation) {
+    return TaskWidget(
+      index: item,
+      animation: animation,
+      task: _personalTaskListModel[item],
+      // No gesture detector here: we don't want removed items to be interactive.
+    );
+  }
+   */
+
   Widget _buildGroupTask(
       BuildContext context, int index, Animation<double> animation) {
     return TaskWidget(task: _groupTaskListModel[index], animation: animation,);

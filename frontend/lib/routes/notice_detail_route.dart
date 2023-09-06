@@ -66,6 +66,10 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
 
               itemBuilder: (context) => [
                 PopupMenuItem(
+                  child: Text("프로필보기", style: TextStyles.bodyMedium,),
+                  onTap: () => _showDeleteNoticeDialog(context),
+                ),
+                PopupMenuItem(
                   child: Text("삭제하기", style: TextStyles.bodyMedium,),
                   onTap: () => _showDeleteNoticeDialog(context),
                 ),
