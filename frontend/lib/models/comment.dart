@@ -61,6 +61,7 @@ class Comment {
       throw Exception("Failed to load comment");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['comments'];
+      print(responseJson);
       return (responseJson as List).map((e) => Comment.fromJson(e)).toList();
     }
   }

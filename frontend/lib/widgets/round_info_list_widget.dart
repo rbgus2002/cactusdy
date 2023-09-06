@@ -65,10 +65,12 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
       onTap: () {
         Util.pushRoute(context, (context) => RoundDetailRoute());
       },
-      child: RoundInfoWidget(
-        index: _rounds.length - index,
-        round: _rounds[index],
-        animation: animation,
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: RoundInfoWidget(
+          index: _rounds.length - index,
+          round: _rounds[index],
+        ),
       ),
     );
   }

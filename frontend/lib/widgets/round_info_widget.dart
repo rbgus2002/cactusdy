@@ -16,13 +16,11 @@ import 'package:intl/intl.dart';
 class RoundInfoWidget extends StatefulWidget {
   final int index;
   final Round round;
-  final Animation<double> animation;
 
   const RoundInfoWidget({
     super.key,
     required this.index,
     required this.round,
-    required this.animation,
   });
 
   @override
@@ -44,46 +42,44 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
   @override
   Widget build(BuildContext context) {
     placeEditingController.text = widget.round.studyPlace??"";
-    return SizeTransition(
-      sizeFactor: widget.animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Row( // Round Text
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("${widget.index}", style: TextStyles.titleBig),
-                  const Text("회차", style: TextStyles.titleSmall,)
-                ]
-              ),
-              Design.padding10,
-              const Column(
-                children: [
-                  Text('장소:', style: TextStyles.roundTextStyle,),
-                  Text('시간:', style: TextStyles.roundTextStyle,),
-                ],
-              ),
-              _studyTimeAndPlace(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Row( // Round Text
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("${widget.index}", style: TextStyles.titleBig),
+                const Text("회차", style: TextStyles.titleSmall,)
+              ]
+            ),
+            Design.padding10,
+            const Column(
+              children: [
+                Text('장소:', style: TextStyles.roundTextStyle,),
+                Text('시간:', style: TextStyles.roundTextStyle,),
+              ],
+            ),
+            _studyTimeAndPlace(),
 
-              if (widget.round.isPlanned == true)
-                UserStateTag(color: Colors.red, text: "예정됨"),
-            ],
-          ),
+            if (widget.round.isPlanned == true)
+              UserStateTag(color: Colors.red, text: "예정됨"),
+          ],
+        ),
 
-          CircleButtonList(
-            circleButtons: widget.round.roundParticipantInfos.map((r) {
-              double percent = Random.secure().nextDouble();
-              return PercentCircleButton(
-                image: null, //< FXIME
-                percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42,
-                onTap: () => UserProfileDialog.showProfileDialog(context),
-            ); }).toList(),
-          )
-        ],
-      ),
+        /*
+        CircleButtonList(
+          circleButtons: widget.round.roundParticipantInfos.map((r) {
+            double percent = Random.secure().nextDouble();
+            return PercentCircleButton(
+              image: null, //< FXIME
+              percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42,
+              onTap: () => UserProfileDialog.showProfileDialog(context),
+          ); }).toList(),
+        )*/
+      ],
     );
   }
 
