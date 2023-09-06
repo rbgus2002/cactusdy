@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.round.dto.response.RoundDetailResponse;
-import ssu.groupstudy.domain.round.dto.response.RoundInfoResponse;
+import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -42,10 +41,10 @@ public class RoundService {
         round.updateAppointment(dto.toAppointment());
     }
 
-    public RoundDetailResponse getDetail(long roundId) {
+    public RoundDto.RoundDetailResponse getDetail(long roundId) {
         Round round = roundRepository.findByRoundId(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-        return RoundDetailResponse.from(round);
+        return RoundDto.createRoundDetail(round);
     }
 
     @Transactional
@@ -58,12 +57,12 @@ public class RoundService {
 
     // FIXME : N+1
     // FIXME : WARNING (in console)
-    public List<RoundInfoResponse> getRoundInfoResponses(long studyId){
+    public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId){
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
-                .map(RoundInfoResponse::from)
+                .map(RoundDto::createRoundInfo)
                 .collect(Collectors.toList());
     }
 }

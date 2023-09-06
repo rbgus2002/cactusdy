@@ -8,12 +8,11 @@ import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.round.dto.response.RoundDetailResponse;
+import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.global.ResultCode;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -156,7 +155,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
 
             // when
-            final RoundDetailResponse detail = roundService.getDetail(-1L);
+            RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
 
             // then
             assertNotNull(detail.getDetail());
@@ -172,7 +171,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
 
             // when
-            RoundDetailResponse detail = roundService.getDetail(-1L);
+            RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
 
             // then
             assertEquals(detailOf회차1, detail.getDetail());

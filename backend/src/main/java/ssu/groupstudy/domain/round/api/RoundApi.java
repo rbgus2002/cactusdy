@@ -2,13 +2,11 @@ package ssu.groupstudy.domain.round.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.request.DetailRequest;
-import ssu.groupstudy.domain.round.dto.response.RoundDetailResponse;
-import ssu.groupstudy.domain.round.dto.response.RoundInfoResponse;
+import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -43,7 +41,7 @@ public class RoundApi {
     @Operation(summary = "회차 상세보기", description = "회차의 세부 내용을 확인한다")
     @GetMapping("/details")
     public ResponseDto getDetail(@RequestParam Long roundId){
-        RoundDetailResponse detail = roundService.getDetail(roundId);
+        RoundDto.RoundDetailResponse detail = roundService.getDetail(roundId);
         return DataResponseDto.of("detail", detail);
     }
 
@@ -60,7 +58,7 @@ public class RoundApi {
     @Operation(summary = "회차 목록 가져오기", description = "스터디에 속해있는 회차 정보를 가져온다")
     @GetMapping("/list")
     public ResponseDto getRoundInfoResponses(@RequestParam Long studyId){
-        List<RoundInfoResponse> roundInfos = roundService.getRoundInfoResponses(studyId);
+        List<RoundDto.RoundInfoResponse> roundInfos = roundService.getRoundInfoResponses(studyId);
 
         return DataResponseDto.of("roundList", roundInfos);
     }
