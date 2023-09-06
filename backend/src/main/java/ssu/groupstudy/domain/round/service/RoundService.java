@@ -56,7 +56,7 @@ public class RoundService {
     }
 
     // FIXME : N+1
-    // FIXME : WARNING (in console)
+    // TODO : 정렬 관련 테스트 코드 작성
     public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId){
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
