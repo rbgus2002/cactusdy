@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.study.exception.InvalidColorException;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -32,7 +34,7 @@ public class Participant extends BaseEntity {
     private Study study;
 
     @Column(nullable = false)
-    private int color;
+    private String color;
 
     @Column(nullable = false) // TODO : 강퇴 칼럼 삭제 검토
     private char banishYn;
@@ -59,11 +61,19 @@ public class Participant extends BaseEntity {
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
-    private int generateColor() {
-        return 0;
+    private String generateColor() {
+        return "0x00";
     }
 
-    public boolean isBanished() {
-        return (banishYn == 'Y');
+    public void setColor(String color){
+        validateHex(color);
+        this.color = color;
+    }
+
+    private void validateHex(String color) {
+        boolean isHex = color.matches("^(0[xX])?[0-9a-fA-F]+$");
+        if(!isHex){
+            throw new InvalidColorException(ResultCode.INVALID_COLOR);
+        }
     }
 }

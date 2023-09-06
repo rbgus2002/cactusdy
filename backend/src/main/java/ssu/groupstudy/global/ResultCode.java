@@ -17,6 +17,7 @@ public enum ResultCode {
     DUPLICATE_INVITE_USER(400, "이미 초대된 사용자입니다."),
     INVALID_TYPE(400, "잘못된 타입입니다."),
     INVALID_JSON(400, "request 정보를 읽을 수 없습니다."),
+    INVALID_COLOR(400, "잘못된 색상 입력입니다."),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "방장은 스터디에 탈퇴할 수 없습니다."),
@@ -29,6 +30,7 @@ public enum ResultCode {
     ROUND_NOT_FOUND(404, "존재하지 않는 회차입니다."),
     COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
     TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다."),
+    PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다."),
 
 
     // 405

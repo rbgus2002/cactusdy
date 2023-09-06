@@ -7,11 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
+import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.global.ResultCode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import static ssu.groupstudy.global.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +25,12 @@ import java.util.*;
 @Slf4j
 public class ParticipantsService {
     private final StudyRepository studyRepository;
+    private final ParticipantRepository participantRepository;
 
-    // TODO : userId가 아닌 userParticipantId를 보내주어야 하는 것이 아닌가?
+    // TODO : userId가 아닌 userStudyId를 보내주어야 하는 것이 아닌가?
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
         Study study = studyRepository.findByStudyId(studyId)
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         List<Participant> participantList = getParticipantListOrderByCreateDateAsc(study);
 
@@ -45,5 +52,12 @@ public class ParticipantsService {
         });
 
         return participantList;
+    }
+
+    @Transactional
+    public void modifyColor(Long participantId, String colorCode){
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
+        participant.setColor(colorCode);
     }
 }
