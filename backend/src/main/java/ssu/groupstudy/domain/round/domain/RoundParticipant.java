@@ -1,15 +1,12 @@
 package ssu.groupstudy.domain.round.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

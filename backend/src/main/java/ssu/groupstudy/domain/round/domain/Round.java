@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -17,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

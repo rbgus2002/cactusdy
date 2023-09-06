@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;

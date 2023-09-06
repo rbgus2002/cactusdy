@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.task.dto;
 
 import lombok.Getter;
-import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.task.domain.Task;
 

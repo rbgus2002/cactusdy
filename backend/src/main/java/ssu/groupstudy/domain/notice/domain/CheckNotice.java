@@ -1,13 +1,11 @@
 package ssu.groupstudy.domain.notice.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static javax.persistence.FetchType.LAZY;

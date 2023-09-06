@@ -1,13 +1,11 @@
 package ssu.groupstudy.domain.round.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.global.ResultCode;
 

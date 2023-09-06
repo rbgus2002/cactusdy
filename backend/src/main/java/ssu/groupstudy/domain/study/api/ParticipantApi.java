@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;

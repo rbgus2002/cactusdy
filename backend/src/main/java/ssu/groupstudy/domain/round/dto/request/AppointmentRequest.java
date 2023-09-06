@@ -6,7 +6,6 @@ import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter

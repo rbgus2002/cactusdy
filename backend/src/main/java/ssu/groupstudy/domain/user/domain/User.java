@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.user.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Where;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;

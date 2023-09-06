@@ -1,6 +1,5 @@
 package ssu.groupstudy.domain.round.domain;
 
-import antlr.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

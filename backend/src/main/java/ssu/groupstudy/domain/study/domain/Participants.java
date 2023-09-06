@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;

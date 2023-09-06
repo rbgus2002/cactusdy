@@ -2,10 +2,8 @@ package ssu.groupstudy.domain.comment.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.service.CommentService;

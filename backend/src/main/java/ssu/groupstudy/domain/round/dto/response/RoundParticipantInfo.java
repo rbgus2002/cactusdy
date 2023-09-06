@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
-import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

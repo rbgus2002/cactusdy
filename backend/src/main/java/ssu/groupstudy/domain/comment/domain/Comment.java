@@ -2,10 +2,7 @@ package ssu.groupstudy.domain.comment.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.domain.BaseEntity;
