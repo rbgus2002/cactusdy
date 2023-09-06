@@ -1,12 +1,12 @@
 package ssu.groupstudy.domain.round.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
+import ssu.groupstudy.domain.round.dto.response.RoundDetailResponse;
 import ssu.groupstudy.domain.round.dto.response.RoundInfoResponse;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
@@ -42,11 +42,10 @@ public class RoundService {
         round.updateAppointment(dto.toAppointment());
     }
 
-    public String getDetail(long roundId) {
+    public RoundDetailResponse getDetail(long roundId) {
         Round round = roundRepository.findByRoundId(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-        final String detail = round.getDetail();
-        return (detail != null) ? detail : "";
+        return RoundDetailResponse.from(round);
     }
 
     @Transactional

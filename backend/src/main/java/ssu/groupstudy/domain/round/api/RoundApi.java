@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.request.DetailRequest;
+import ssu.groupstudy.domain.round.dto.response.RoundDetailResponse;
 import ssu.groupstudy.domain.round.dto.response.RoundInfoResponse;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -42,7 +43,7 @@ public class RoundApi {
     @Operation(summary = "회차 상세보기", description = "회차의 세부 내용을 확인한다")
     @GetMapping("/details")
     public ResponseDto getDetail(@RequestParam Long roundId){
-        final String detail = roundService.getDetail(roundId);
+        RoundDetailResponse detail = roundService.getDetail(roundId);
         return DataResponseDto.of("detail", detail);
     }
 
