@@ -60,15 +60,17 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
 
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
+    int _roundNum = _rounds.length - index;
     return Panel(
       boxShadows: Design.basicShadows,
       onTap: () {
-        Util.pushRoute(context, (context) => RoundDetailRoute());
+        Util.pushRoute(context, (context) =>
+            RoundDetailRoute(roundNum: _roundNum, roundId: _rounds[index].roundId));
       },
       child: SizeTransition(
         sizeFactor: animation,
         child: RoundInfoWidget(
-          index: _rounds.length - index,
+          roundNum: _roundNum,
           round: _rounds[index],
         ),
       ),

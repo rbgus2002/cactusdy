@@ -14,12 +14,12 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:intl/intl.dart';
 
 class RoundInfoWidget extends StatefulWidget {
-  final int index;
+  final int roundNum;
   final Round round;
 
   const RoundInfoWidget({
     super.key,
-    required this.index,
+    required this.roundNum,
     required this.round,
   });
 
@@ -51,7 +51,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${widget.index}", style: TextStyles.titleBig),
+                Text("${widget.roundNum}", style: TextStyles.titleBig),
                 const Text("회차", style: TextStyles.titleSmall,)
               ]
             ),
@@ -69,7 +69,6 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
           ],
         ),
 
-        /*
         CircleButtonList(
           circleButtons: widget.round.roundParticipantInfos.map((r) {
             double percent = Random.secure().nextDouble();
@@ -78,7 +77,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42,
               onTap: () => UserProfileDialog.showProfileDialog(context),
           ); }).toList(),
-        )*/
+        )
       ],
     );
   }

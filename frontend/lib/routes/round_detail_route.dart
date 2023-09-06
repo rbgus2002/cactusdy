@@ -6,17 +6,19 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/panels/round_info_panel.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class RoundDetailRoute extends StatefulWidget {
-  String content = "오늘도 규현이와 예지누나가 숙제를 안해왔다. 뒤졌다 진짜." +
-       "이제 앞으로는 안해온 사람이 밥사기로 결정하였다. 근데 벌써부터 다음주에 얻어먹을 것 같은 기분이다. " +
-       "다음주부터는 시험기간이니 다다음주에 다음 스터디를 하기로 결정하였다.";
-
-  int index = 1;
+  int roundNum = 1;
   int roundId = 1;
+
+  RoundDetailRoute({
+    super.key,
+    required this.roundNum,
+    required this.roundId,
+  });
+
   @override
   State<RoundDetailRoute> createState() {
     return _RoundDetailRoute();
@@ -55,11 +57,12 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
                   Design.padding15,
                   Design.padding15,
 
+
                   // Round Info
                   Panel(
                     boxShadows: Design.basicShadows,
                     child: RoundInfoWidget(
-                      index: widget.index,
+                      roundNum: widget.roundNum,
                       round: snapshot.data!,
                     ),
                   ),
@@ -74,7 +77,7 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
             }
 
             else {
-              return SizedBox();
+              return Design.loadingIndicator;
             }
           },)
         ),

@@ -19,21 +19,31 @@ class Round {
   bool? isPlanned;
   String? detail;
 
+  final List<RoundParticipantInfo> roundParticipantInfos;
+
   Round({
     required this.roundId,
     this.studyPlace,
     this.studyTime,
     this.isPlanned,
     this.detail,
+    this.roundParticipantInfos = const[],
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
+    List<RoundParticipantInfo> roundParticipantInfos = [];
+    if (json['roundParticipantInfos'] != null) {
+      roundParticipantInfos = (json['roundParticipantInfos'] as List).map(
+              (r) => RoundParticipantInfo.fromJson(r)).toList();
+    }
+
     return Round(
       roundId: json['roundId'],
       studyPlace: json['studyPlace'],
       studyTime: (json['studyTime'] != null)? DateTime.parse(json['studyTime']) : null,
       isPlanned: json['isPlanned'],
       detail: json['detail'],
+      roundParticipantInfos: roundParticipantInfos,
     );
   }
 
