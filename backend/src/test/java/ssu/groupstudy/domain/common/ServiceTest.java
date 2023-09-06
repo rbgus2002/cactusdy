@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.user.domain.User;
@@ -32,6 +33,8 @@ public class ServiceTest {
     protected CreateStudyRequest 영어스터디CreateRequest;
     protected Study 알고리즘스터디;
     protected Study 영어스터디;
+
+    protected Participant 스터디참여자_최규현;
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
@@ -59,6 +62,7 @@ public class ServiceTest {
         initUser();
         initCreateStudyRequest();
         initStudy();
+        initParticipant();
         initCreateNoticeRequest();
         initNotice();
         initCreateCommentRequest();
@@ -121,6 +125,13 @@ public class ServiceTest {
                 .studyId(-1L)
                 .title("공지사항1")
                 .contents("내용1")
+                .build();
+    }
+
+    private void initParticipant() {
+        스터디참여자_최규현 = Participant.builder()
+                .user(최규현)
+                .study(알고리즘스터디)
                 .build();
     }
 
