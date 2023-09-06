@@ -23,7 +23,7 @@ class NoticeSummaryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       height: 105,
 
       color: ColorStyles.lightGrey,

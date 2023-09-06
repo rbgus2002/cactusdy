@@ -59,8 +59,6 @@ class _NoticeListRoute extends State<NoticeListRoute> {
                       children: [
                         for (NoticeSummary notice in snapshot.data!)
                           NoticePanel(noticeSummary: notice),
-                        for (NoticeSummary notice in snapshot.data!)
-                          NoticePanel(noticeSummary: notice),
                       ]
                     )
                 ),
