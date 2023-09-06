@@ -31,7 +31,7 @@ public class Participant extends BaseEntity {
     private Study study;
 
     @Column(nullable = false)
-    private String color;
+    private int color;
 
     @Column(nullable = false) // TODO : 강퇴 칼럼 삭제 검토
     private char banishYn;
@@ -40,7 +40,7 @@ public class Participant extends BaseEntity {
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;
-        this.color = generateColor(); // TODO : 색상 입력 구현 (color picker?)
+        this.color = generateColor(); // TODO : 초기 색상 결정 정책 논의하기
         this.banishYn = 'N';
     }
 
@@ -58,8 +58,8 @@ public class Participant extends BaseEntity {
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
-    private String generateColor() {
-        return "";
+    private int generateColor() {
+        return 0;
     }
 
     public boolean isBanished() {
