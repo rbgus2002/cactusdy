@@ -31,7 +31,7 @@ public class CommentApi {
     @Operation(summary = "공지사항에 작성된 댓글 가져오기")
     @GetMapping("")
     public ResponseDto viewComments(@RequestParam Long noticeId){
-        List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(noticeId);
+        List<CommentInfoResponse> comments = commentService.getComments(noticeId);
 
         return DataResponseDto.of("comments", comments);
     }

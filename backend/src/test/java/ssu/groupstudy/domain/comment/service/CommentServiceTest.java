@@ -1,7 +1,5 @@
 package ssu.groupstudy.domain.comment.service;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -12,14 +10,12 @@ import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +88,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> commentService.getCommentsOrderByCreateDateAsc(-1L))
+            assertThatThrownBy(() -> commentService.getComments(-1L))
                     .isInstanceOf(NoticeNotFoundException.class)
                     .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
         }
@@ -104,7 +100,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // when
-            List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
+            List<CommentInfoResponse> comments = commentService.getComments(-1L);
 
             // then
             assertEquals(0, comments.size()); // TODO 테스트 고민해보기
@@ -117,7 +113,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // when
-            List<CommentInfoResponse> comments = commentService.getCommentsOrderByCreateDateAsc(-1L);
+            List<CommentInfoResponse> comments = commentService.getComments(-1L);
 
             // then
             System.out.println(comments); // TODO 테스트 어케하냐.,., (일대다 연관관계 아니어서 그럼)

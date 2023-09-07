@@ -62,7 +62,7 @@ public class CommentService {
         return comment;
     }
 
-    public List<CommentInfoResponse> getCommentsOrderByCreateDateAsc(Long noticeId) {
+    public List<CommentInfoResponse> getComments(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
 
