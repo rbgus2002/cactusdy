@@ -107,7 +107,8 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RoundDetailRoute()),
+                        builder: (context) => RoundDetailRoute(
+                            roundNum: -1, roundId: 1)),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(
