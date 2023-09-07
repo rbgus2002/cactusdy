@@ -13,12 +13,14 @@ public class RoundParticipantInfo {
     private Long userId;
     private String picture;
     private StatusTag statusTag;
+    private double taskProgress;
 
     private RoundParticipantInfo(RoundParticipant participant) {
         this.roundParticipantId = participant.getId();
         this.userId = participant.getUser().getUserId();
         this.picture = participant.getUser().getPicture();
         this.statusTag = participant.getStatusTag();
+        this.taskProgress = 0.7;
     }
 
     public static RoundParticipantInfo from(RoundParticipant participant){
