@@ -42,7 +42,7 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
-    @ManyToOne(fetch = EAGER) // EAGER 필수 (this.study issue 관련)
+    @ManyToOne(fetch = EAGER) // FIXME : EAGER 필수 (this.study issue 관련)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 

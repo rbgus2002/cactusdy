@@ -12,5 +12,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findCommentsByParentCommentOrderByCreateDate(Comment comment);
 
-    Long countCommentByNotice(Notice notice);
+    Long countCommentByNoticeAndDeleteYn(Notice notice, char deleteYn); // TODO : test 추가
 }
