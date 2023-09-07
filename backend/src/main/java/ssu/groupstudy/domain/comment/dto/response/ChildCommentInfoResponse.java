@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReplyCommentInfoResponse {
+public class ChildCommentInfoResponse {
     private Long userId;
     private String nickname;
     private String picture;
@@ -20,7 +20,7 @@ public class ReplyCommentInfoResponse {
     private LocalDateTime createDate;
     private char deleteYn;
 
-    private ReplyCommentInfoResponse(Comment comment) {
+    private ChildCommentInfoResponse(Comment comment) {
         User writer = comment.getWriter();
         this.userId = writer.getUserId();
         this.nickname = writer.getNickname();
@@ -41,7 +41,7 @@ public class ReplyCommentInfoResponse {
         }
     }
 
-    public static ReplyCommentInfoResponse from(Comment comment) {
-        return new ReplyCommentInfoResponse(comment);
+    public static ChildCommentInfoResponse from(Comment comment) {
+        return new ChildCommentInfoResponse(comment);
     }
 }

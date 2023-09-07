@@ -21,7 +21,7 @@ public class CommentInfoResponse {
     private LocalDateTime createDate;
     private char deleteYn;
 
-    private List<ReplyCommentInfoResponse> replies = null;
+    private List<ChildCommentInfoResponse> replies = null;
 
     private CommentInfoResponse(Comment comment) {
         User writer = comment.getWriter();
@@ -48,15 +48,20 @@ public class CommentInfoResponse {
         return new CommentInfoResponse(comment);
     }
 
-    public void appendReplies(List<ReplyCommentInfoResponse> replies){
+    public void appendReplies(List<ChildCommentInfoResponse> replies){
         this.replies = replies;
     }
 
-    public boolean isDeleted(){
+    // TODO : 테스트 추가
+    public boolean requireDeleted(){
+        return this.isDeleted() && !this.existReplies();
+    }
+
+    private boolean isDeleted(){
         return this.deleteYn == 'Y';
     }
 
-    public boolean existReplies(){
+    private boolean existReplies(){
         return this.replies != null && !this.replies.isEmpty();
     }
 }

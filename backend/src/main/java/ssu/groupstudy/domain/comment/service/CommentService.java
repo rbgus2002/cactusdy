@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
-import ssu.groupstudy.domain.comment.dto.response.ReplyCommentInfoResponse;
+import ssu.groupstudy.domain.comment.dto.response.ChildCommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
@@ -65,30 +65,36 @@ public class CommentService {
     public List<CommentInfoResponse> getComments(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        List<Comment> parentComments = getParentComments(notice);
+        return transformToCommentsWithReplies(parentComments);
+    }
 
-        List<Comment> comments = commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
-        List<CommentInfoResponse> commentInfoResponses = comments.stream()
-                .map(CommentInfoResponse::from)
+    private List<Comment> getParentComments(Notice notice) {
+        return commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
+    }
+
+    private List<CommentInfoResponse> transformToCommentsWithReplies(List<Comment> parentComments){
+        return parentComments.stream()
+                .map(this::transformToCommentsWithReplies)
+                .filter(commentInfo -> !commentInfo.requireDeleted())
                 .collect(Collectors.toList());
-        appendReplies(comments, commentInfoResponses);
-        processDeletedComment(commentInfoResponses);
-
-        return commentInfoResponses;
     }
 
-    private void appendReplies(List<Comment> comments, List<CommentInfoResponse> commentInfoResponses){
-        for(int i = 0; i < comments.size(); i++){
-            Comment comment = comments.get(i);
-            CommentInfoResponse commentInfo = commentInfoResponses.get(i);
-            commentInfo.appendReplies(commentRepository.findCommentsByParentCommentOrderByCreateDate(comment)
-                    .stream()
-                    .map(ReplyCommentInfoResponse::from)
-                    .collect(Collectors.toList()));
-        }
+    private CommentInfoResponse transformToCommentsWithReplies(Comment comment){
+        CommentInfoResponse commentInfo = CommentInfoResponse.from(comment);
+        List<Comment> childComments = getChildComments(comment);
+        commentInfo.appendReplies(transformToChildComments(childComments));
+        return commentInfo;
     }
 
-    private void processDeletedComment(List<CommentInfoResponse> commentInfoResponses) {
-        commentInfoResponses.removeIf(commentInfo -> commentInfo.isDeleted() && !commentInfo.existReplies());
+    private List<Comment> getChildComments(Comment comment) {
+        return commentRepository.findCommentsByParentCommentOrderByCreateDate(comment);
+    }
+
+    private List<ChildCommentInfoResponse> transformToChildComments(List<Comment> childComments) {
+        return childComments.stream()
+                .map(ChildCommentInfoResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional
