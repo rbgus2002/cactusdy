@@ -68,7 +68,8 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
                   ),
 
                   // Detail Record
-                  TitleWidget(title: "Detail Record", icon: AppIcons.edit, onTap: () {},),
+                  TitleWidget(title: "Detail Record", icon: AppIcons.edit,
+                    onTap: () { _focusNode.requestFocus(); },),
                   _detailRecord(),
 
                   //TitleWidget(title: "Detail Record", icon: null),
@@ -100,7 +101,6 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
       onChanged: (value) { _isEdited = true; },
       onTapOutside: (event) {
         if (_isEdited) {
-          Test.onTabTest();
           Round.updateDetail(widget.roundId, _detailRecordEditingController.text);
           _isEdited = false;
         }

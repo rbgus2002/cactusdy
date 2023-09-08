@@ -75,7 +75,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             return PercentCircleButton(
               image: null, //< FXIME
               percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42,
-              onTap: () => UserProfileDialog.showProfileDialog(context),
+              onTap: () => UserProfileDialog.showProfileDialog(context,1),//< FIXME
           ); }).toList(),
         )
       ],

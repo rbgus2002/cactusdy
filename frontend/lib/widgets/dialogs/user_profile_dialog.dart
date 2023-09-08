@@ -11,7 +11,7 @@ import 'package:group_study_app/widgets/tags/study_group_tag.dart';
 
 class UserProfileDialog {
   static const double borderRadius = 30;
-  static Future<dynamic> showProfileDialog(BuildContext context) {
+  static Future<dynamic> showProfileDialog(BuildContext context, int userId) {
     return showDialog(
       context: context,
       builder: (context) {

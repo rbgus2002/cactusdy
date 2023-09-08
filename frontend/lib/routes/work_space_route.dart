@@ -34,7 +34,7 @@ class _WorkSpaceRoute extends State<WorkSpaceRoute> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                PercentCircleButton(scale: 60.0, image: null, percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context); }),
+                PercentCircleButton(scale: 60.0, image: null, percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context, 1); }),
                 //const UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
                 const SizedBox(
                   height: 5,

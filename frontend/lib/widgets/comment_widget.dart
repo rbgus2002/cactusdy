@@ -3,18 +3,28 @@ import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 class CommentWidget extends StatelessWidget {
   static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "댓글 삭제에 실패했습니다";
 
-  static const String _checkMessage = "확인";
-  static const String _cancelMessage = "취소";
+  static const String _checkText = "확인";
+  static const String _cancelText = "취소";
+
+  static const String _showProfileText = "프로필 보기";
+  static const String _deleteCommentText = "삭제하기";
+
+  static const String _writeReplyText = "답글 달기";
 
   static const double _replyLeftPadding = 18;
+
+  //< FIXME
+  final int userId = Test.testUser.userId;
 
   final Comment comment;
   final Function(int) onTap;
@@ -62,20 +72,7 @@ class CommentWidget extends StatelessWidget {
                             SizedBox(
                               width: 18,
                               height: 18,
-                              child :PopupMenuButton(
-                                icon: const Icon(Icons.more_vert, size: 18,),
-                                splashRadius: 12,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                offset: const Offset(0, 18),
-
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    child: Text("삭제하기", style: TextStyles.bodyMedium,),
-                                    onTap: () => _showDeleteCommentDialog(context),
-                                  ),
-                                ],
-                              )
+                              child : _commentPopupMenu(),
                             ),
                         ]
                       ),
@@ -93,7 +90,7 @@ class CommentWidget extends StatelessWidget {
                               InkWell(
                                 borderRadius: BorderRadius.circular(3),
                                 onTap: (){onTap(index);},
-                                child: const Text("답글 달기", style: TextStyles.bodyMedium),
+                                child: const Text(_writeReplyText, style: TextStyles.bodyMedium),
                               ),
                             ]
                           ),
@@ -111,6 +108,31 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
+  Widget _commentPopupMenu() {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert, size: 18,),
+      splashRadius: 12,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      offset: const Offset(0, 18),
+
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
+          onTap: () {
+            Future.delayed(Duration.zero, ()=>
+              UserProfileDialog.showProfileDialog(context, comment.userId)); }
+        ),
+
+        if (userId == comment.userId)
+        PopupMenuItem(
+          child: const Text(_deleteCommentText, style: TextStyles.bodyMedium,),
+          onTap: () => _showDeleteCommentDialog(context),
+        )
+      ],
+    );
+  }
+
   void _showDeleteCommentDialog(BuildContext context) {
     Future.delayed(Duration.zero, ()=> showDialog<String>(
         context: context,
@@ -121,13 +143,13 @@ class CommentWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text(_cancelMessage),),
+              child: const Text(_cancelText),),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 _deleteComment();
               },
-              child: const Text(_checkMessage),),
+              child: const Text(_checkText),),
           ],
         )
     ));
