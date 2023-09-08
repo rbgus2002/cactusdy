@@ -53,7 +53,8 @@ public class CommentInfoResponse {
     }
 
     // TODO : 테스트 추가
-    public boolean requireDeleted(){
+    // TODO : 해당 로직을 어디다 두어야 할까? dto가 아닌 service 로직에서 처리해야 한다고 생각함
+    public boolean requireRemoved(){
         return this.isDeleted() && !this.existReplies();
     }
 
@@ -62,6 +63,11 @@ public class CommentInfoResponse {
     }
 
     private boolean existReplies(){
-        return this.replies != null && !this.replies.isEmpty();
+        return this.replies != null && !isReplyEmpty();
+    }
+
+    private boolean isReplyEmpty(){
+        return replies.stream()
+                .noneMatch(reply -> reply.getDeleteYn() == 'N');
     }
 }

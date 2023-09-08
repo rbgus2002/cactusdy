@@ -76,7 +76,7 @@ public class CommentService {
     private List<CommentInfoResponse> transformToCommentsWithReplies(List<Comment> parentComments){
         return parentComments.stream()
                 .map(this::transformToCommentsWithReplies)
-                .filter(commentInfo -> !commentInfo.requireDeleted())
+                .filter(commentInfo -> !commentInfo.requireRemoved())
                 .collect(Collectors.toList());
     }
 
