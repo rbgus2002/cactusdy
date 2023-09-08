@@ -15,6 +15,7 @@ public class NoticeInfoResponse {
     private String title;
     private String contents;
     private String writerNickname;
+    private Long writerId;
     private boolean isRead;
 
     private int checkNoticeCount;
@@ -29,6 +30,7 @@ public class NoticeInfoResponse {
         this.checkNoticeCount = notice.getCheckNotices().size();
         this.createDate = notice.getCreateDate();
         this.writerNickname = notice.getWriter().getNickname();
+        this.writerId = notice.getWriter().getUserId();
         this.commentCount = commentCount;
         this.isRead = notice.isRead(user);
     }
