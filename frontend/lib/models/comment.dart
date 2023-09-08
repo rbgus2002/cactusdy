@@ -52,7 +52,7 @@ class Comment {
   }
 
   static Future<List<Comment>> getComments(int noticeId) async {
-    print("this is called");
+    print("this is called"); // FIXME
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}comments?noticeId=$noticeId'),
     );
@@ -61,7 +61,6 @@ class Comment {
       throw Exception("Failed to load comment");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['comments'];
-      print(responseJson);
       return (responseJson as List).map((e) => Comment.fromJson(e)).toList();
     }
   }
