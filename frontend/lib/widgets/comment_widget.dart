@@ -13,7 +13,7 @@ class CommentWidget extends StatelessWidget {
   static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "댓글 삭제에 실패했습니다";
 
-  static const String _checkText = "확인";
+  static const String _confirmText = "확인";
   static const String _cancelText = "취소";
 
   static const String _showProfileText = "프로필 보기";
@@ -27,7 +27,8 @@ class CommentWidget extends StatelessWidget {
   final int userId = Test.testUser.userId;
 
   final Comment comment;
-  final Function(int) onTap;
+  final Function(int) setReplyTo;
+  final Function onDelete;
   final bool isReply;
   final int index;
   bool isSelected;
@@ -36,7 +37,8 @@ class CommentWidget extends StatelessWidget {
     Key? key,
     required this.comment,
     required this.index,
-    required this.onTap,
+    required this.setReplyTo,
+    required this.onDelete,
     this.isReply = false,
     this.isSelected = false,
   }) : super(key: key);
@@ -89,7 +91,7 @@ class CommentWidget extends StatelessWidget {
                               const Text(" | "),
                               InkWell(
                                 borderRadius: BorderRadius.circular(3),
-                                onTap: (){onTap(index);},
+                                onTap: (){setReplyTo(index);},
                                 child: const Text(_writeReplyText, style: TextStyles.bodyMedium),
                               ),
                             ]
@@ -102,7 +104,7 @@ class CommentWidget extends StatelessWidget {
 
         if (comment.replies.isNotEmpty)
           for (var reply in comment.replies)
-            CommentWidget(comment: reply, isReply: true, index: index, onTap: onTap,),
+            CommentWidget(comment: reply, isReply: true, index: index, setReplyTo: setReplyTo, onDelete: onDelete,),
         ]
       ),
     );
@@ -147,21 +149,11 @@ class CommentWidget extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                _deleteComment();
+                onDelete(comment.commentId);
               },
-              child: const Text(_checkText),),
+              child: const Text(_confirmText),),
           ],
         )
     ));
-  }
-
-  void _deleteComment() {
-    Comment.deleteComment(comment.commentId).then((result) {
-        if (result == false) {
-          Toast.showToast(msg: _deleteNoticeFailMessage);
-          onTap(Comment.commentWithNoParent);
-        }
-      },
-    );
   }
 }
