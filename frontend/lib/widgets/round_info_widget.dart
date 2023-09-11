@@ -71,15 +71,23 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
         CircleButtonList(
           circleButtons: widget.round.roundParticipantInfos.map((r) {
-            double percent = Random.secure().nextDouble();
+            Color color = getColor(r.taskProgress);
+
             return PercentCircleButton(
-              image: null, //< FXIME
-              percentInfos: [ PercentInfo(percent: percent, color: (percent > 0.5)?ColorStyles.green : ColorStyles.red)], scale: 42,
-              onTap: () => UserProfileDialog.showProfileDialog(context,1),//< FIXME
+              image: null, //< FIXME
+              percentInfos: [ PercentInfo(percent: r.taskProgress, color: color)], scale: 42,
+              onTap: () => UserProfileDialog.showProfileDialog(context, r.userId),//< FIXME
           ); }).toList(),
         )
       ],
     );
+  }
+
+  Color getColor(double taskProgress) {
+    Color color = (taskProgress > 0.8)? ColorStyles.green :
+    (taskProgress > 0.5)? ColorStyles.orange : ColorStyles.red;
+
+    return color;
   }
 
   Widget _studyTimeAndPlace() {
