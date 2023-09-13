@@ -30,6 +30,7 @@ public class TaskService {
     public void deleteTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
+        // TODO : 본인의 태스크인지 여부 검사
         taskRepository.delete(task);
     }
 
