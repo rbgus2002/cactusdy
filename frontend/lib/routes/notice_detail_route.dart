@@ -37,14 +37,13 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   static const String _showProfileText = "프로필 보기";
   static const String _deleteNoticeText = "삭제하기";
 
-
   late final _commentEditor = TextEditingController();
   late final focusNode = FocusNode();
 
   late Future<Notice> futureNotice;
-
   late List<Comment> comments;
   int _replyTo = Comment.commentWithNoParent;
+  int _writerId = -1;
 
   @override
   void initState() {
@@ -75,7 +74,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
                         future: futureNotice,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            //writerId = snapshot.data. < FIXME
+                            _writerId = snapshot.data!.writerId;
                             return _NoticeBody(notice: snapshot.data!, focusNode: focusNode);
                           }
                           else {
@@ -109,10 +108,11 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
             onTap: () {
               Future.delayed(Duration.zero, ()=>
-                  UserProfileDialog.showProfileDialog(context, 1)); }//< FIXME..
+                  UserProfileDialog.showProfileDialog(context, _writerId)); }//< FIXME : userId
         ),
+        if (widget.user.userId == _writerId)
         PopupMenuItem(
-          child: Text(_deleteNoticeText, style: TextStyles.bodyMedium,),
+          child: const Text(_deleteNoticeText, style: TextStyles.bodyMedium,),
           onTap: () => _showDeleteNoticeDialog(context),
         ),
       ],
@@ -243,6 +243,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   void deleteComment(int commentId) {
     Comment.deleteComment(commentId).then((result) {
       if (result == false) {
+        futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
         Toast.showToast(msg: _deleteNoticeFailMessage);
       }
       else { setState(() { }); }

@@ -15,6 +15,7 @@ class Notice {
   final String title;
   final String contents;
   final String writerNickname;
+  final int writerId;
   final int checkNoticeCount;
   final DateTime createDate;
   int commentCount;
@@ -25,6 +26,7 @@ class Notice {
     required this.title,
     required this.contents,
     required this.writerNickname,
+    required this.writerId,
     required this.checkNoticeCount,
     required this.createDate,
     required this.commentCount,
@@ -40,6 +42,7 @@ class Notice {
       checkNoticeCount: json["checkNoticeCount"],
       createDate: DateTime.parse(json["createDate"]),
       commentCount: json["commentCount"],
+      writerId: json["writerId"],
       read: json["read"],
     );
   }
