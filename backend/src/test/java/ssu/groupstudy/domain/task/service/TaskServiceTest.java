@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.task.dto.TaskDetailRequest;
+import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
 
@@ -90,7 +90,7 @@ class TaskServiceTest extends ServiceTest {
 
     @Nested
     class updateTaskDetail{
-        TaskDetailRequest request = TaskDetailRequest.builder()
+        UpdateTaskRequest request = UpdateTaskRequest.builder()
                 .taskId(-1L)
                 .roundParticipantId(-1L)
                 .detail("수정내용")

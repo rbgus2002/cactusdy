@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.dto.TaskDetailRequest;
+import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.dto.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
@@ -53,7 +53,7 @@ public class TaskService {
 
 
     @Transactional
-    public void updateTaskDetail(TaskDetailRequest request) {
+    public void updateTaskDetail(UpdateTaskRequest request) {
         Task task = taskRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
