@@ -28,7 +28,7 @@ public class TaskApi {
         return DataResponseDto.of("tasks", tasks);
     }
 
-    @Operation(summary = "태스크 생성", description = "그룹 혹은 개인 태스크를 생성한다. 그룹 태스크 생성 시에 회차 참여자들 모두에게 태스크가 할당된다.")
+    @Operation(summary = "태스크 생성", description = "그룹 혹은 개인 태스크를 생성한다. 그룹 태스크 생성 시에 회차 참여자들 모두에게 태스크가 할당된다. (GROUP / PERSONAL)")
     @PostMapping
     public ResponseDto createTask(@Valid @RequestBody CreateTaskRequest request){
         taskService.createTask(request);
