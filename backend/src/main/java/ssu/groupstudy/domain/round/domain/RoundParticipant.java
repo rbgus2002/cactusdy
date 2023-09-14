@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.task.domain.Task;
+import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
@@ -45,10 +46,6 @@ public class RoundParticipant {
         this.statusTag = StatusTag.NONE;
     }
 
-    public void updateStatus(String statusTag){
-        this.statusTag = StatusTag.valueOf(statusTag);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,6 +57,15 @@ public class RoundParticipant {
     @Override
     public int hashCode() {
         return Objects.hash(user, round);
+    }
+
+    public void updateStatus(String statusTag){
+        this.statusTag = StatusTag.valueOf(statusTag);
+    }
+
+    public void createTask(String detail, TaskType type){
+        Task task = Task.of(detail, type, this);
+        tasks.add(task);
     }
 }
 

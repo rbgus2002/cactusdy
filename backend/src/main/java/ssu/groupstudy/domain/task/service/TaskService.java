@@ -10,6 +10,8 @@ import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
+import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
 import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.dto.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
@@ -30,17 +32,6 @@ public class TaskService {
     private final RoundParticipantRepository roundParticipantRepository;
 
 
-    @Transactional
-    public void deleteTask(Long taskId, Long roundParticipantId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
-                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
-        task.validateDelete(roundParticipant);
-
-        taskRepository.delete(task);
-    }
-
     public List<TaskResponse> getTasks(Long roundId) {
         Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
@@ -51,6 +42,35 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void createTask(CreateTaskRequest request) {
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        String detail = request.getDetail();
+        TaskType taskType = request.getTaskType();
+
+        handleTaskCreation(roundParticipant, detail, taskType);
+    }
+
+    private void handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        if(taskType == TaskType.GROUP){
+            Round round = roundParticipant.getRound();
+            round.createGroupTaskForAll(detail, taskType);
+        }else{
+            roundParticipant.createTask(detail, taskType);
+        }
+    }
+
+    @Transactional
+    public void deleteTask(Long taskId, Long roundParticipantId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        task.validateAccess(roundParticipant);
+
+        taskRepository.delete(task);
+    }
 
     @Transactional
     public void updateTaskDetail(UpdateTaskRequest request) {
@@ -58,7 +78,7 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
-        task.validateDelete(roundParticipant);
+        task.validateAccess(roundParticipant);
 
         task.setDetail(request.getDetail());
     }

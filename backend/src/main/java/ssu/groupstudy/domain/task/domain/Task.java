@@ -34,7 +34,7 @@ public class Task{
     @JoinColumn(name="user_round_id", nullable = false)
     private RoundParticipant roundParticipant;
 
-    @Builder // TODO : TEST 용으로 만든건데 괜찮을지 고민해보기
+    @Builder
     public Task(String detail, TaskType taskType, RoundParticipant roundParticipant) {
         this.detail = detail;
         this.taskType = taskType;
@@ -42,7 +42,15 @@ public class Task{
         this.roundParticipant = roundParticipant;
     }
 
-    public void validateDelete(RoundParticipant roundParticipant){
+    public static Task of(String detail, TaskType type, RoundParticipant roundParticipant){
+        return Task.builder()
+                .detail(detail)
+                .taskType(type)
+                .roundParticipant(roundParticipant)
+                .build();
+    }
+
+    public void validateAccess(RoundParticipant roundParticipant){
         if(!roundParticipant.equals(this.roundParticipant)){
             throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }

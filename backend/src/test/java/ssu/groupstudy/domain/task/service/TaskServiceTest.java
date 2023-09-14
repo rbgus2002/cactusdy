@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
 import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
@@ -20,6 +21,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static ssu.groupstudy.domain.task.domain.TaskType.GROUP;
+import static ssu.groupstudy.domain.task.domain.TaskType.PERSONAL;
 import static ssu.groupstudy.global.ResultCode.*;
 
 class TaskServiceTest extends ServiceTest {
@@ -86,6 +89,33 @@ class TaskServiceTest extends ServiceTest {
                     .isInstanceOf(RoundNotFoundException.class)
                     .hasMessage(ROUND_NOT_FOUND.getMessage());
         }
+    }
+
+    @Nested
+    class createTask{
+        CreateTaskRequest requestOfGroup = CreateTaskRequest.builder()
+                .roundParticipantId(-1L)
+                .taskType(GROUP)
+                .detail("그룹 태스크")
+                .build();
+        CreateTaskRequest requestOfPersonal = CreateTaskRequest.builder()
+                .roundParticipantId(-1L)
+                .taskType(PERSONAL)
+                .detail("개인 태스크")
+                .build();
+
+        @Test
+        @DisplayName("회차 참여자가 존재하지 않는 경우 예외를 던진다")
+        void RoundParticipantNotFound(){
+            // given, when
+            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> taskService.createTask(requestOfGroup))
+                    .isInstanceOf(RoundParticipantNotFoundException.class)
+                    .hasMessage(ROUND_PARTICIPANT_NOT_FOUND.getMessage());
+        }
+
     }
 
     @Nested
