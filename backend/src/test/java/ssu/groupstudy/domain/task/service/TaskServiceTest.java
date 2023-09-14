@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
+import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
@@ -26,6 +28,8 @@ class TaskServiceTest extends ServiceTest {
     private RoundRepository roundRepository;
     @Mock
     private TaskRepository taskRepository;
+    @Mock
+    private RoundParticipantRepository roundParticipantRepository;
 
     @Nested
     class DeleteTask{
@@ -36,9 +40,35 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.deleteTask(-1L))
+            assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
+        }
+        
+        @Test
+        @DisplayName("회차 참여자가 존재하지 않는 경우 예외를 던진다")
+        void RoundParticipantNotFound(){
+            // given, when
+            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
+                    .isInstanceOf(RoundParticipantNotFoundException.class)
+                    .hasMessage(ROUND_PARTICIPANT_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("본인의 태스크가 아니라면 예외를 던진다")
+        void invalidDeleteTask(){
+            // given, when
+            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
+            doReturn(Optional.of(회차1_장재우)).when(roundParticipantRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
+                    .isInstanceOf(InvalidRoundParticipantException.class)
+                    .hasMessage(INVALID_TASK_DELETION.getMessage());
         }
     }
 

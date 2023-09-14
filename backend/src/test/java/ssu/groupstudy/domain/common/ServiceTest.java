@@ -14,6 +14,8 @@ import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.task.domain.Task;
+import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
@@ -55,6 +57,10 @@ public class ServiceTest {
     protected Round 회차2_EmptyTimeAndPlace;
 
     protected RoundParticipant 회차1_최규현;
+    protected RoundParticipant 회차1_장재우;
+
+    protected Task 그룹태스크;
+    protected Task 개인태스크;
 
     @BeforeEach
     void initDummyData() {
@@ -70,6 +76,7 @@ public class ServiceTest {
         initCreateRoundRequest();
         initRound();
         initRoundParticipant();
+        initTask();
     }
 
     private void initSignUpRequest() {
@@ -193,5 +200,21 @@ public class ServiceTest {
 
     private void initRoundParticipant() {
         회차1_최규현 = new RoundParticipant(최규현, 회차1);
+        회차1_장재우 = new RoundParticipant(장재우, 회차1);
+    }
+
+    private void initTask() {
+        그룹태스크 = Task.builder()
+                .detail("그룹태스크 detail")
+                .taskType(TaskType.GROUP)
+                .roundParticipant(회차1_최규현)
+                .build();
+        ReflectionTestUtils.setField(그룹태스크, "taskId", 19L);
+        개인태스크 = Task.builder()
+                .detail("개인태스크 detail")
+                .taskType(TaskType.PERSONAL)
+                .roundParticipant(회차1_최규현)
+                .build();
+        ReflectionTestUtils.setField(개인태스크, "taskId", 20L);
     }
 }

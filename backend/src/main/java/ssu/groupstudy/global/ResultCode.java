@@ -21,6 +21,9 @@ public enum ResultCode {
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "방장은 스터디에 탈퇴할 수 없습니다."),
+    INVALID_TASK_DELETION(400, "본인이 생성하지 않은 태스크는 삭제할 수 없습니다."),
+
+
 
 
     // 404
@@ -28,6 +31,7 @@ public enum ResultCode {
     STUDY_NOT_FOUND(404, "존재하지 않는 스터디입니다."),
     NOTICE_NOT_FOUND(404, "존재하지 않는 공지사항입니다."),
     ROUND_NOT_FOUND(404, "존재하지 않는 회차입니다."),
+    ROUND_PARTICIPANT_NOT_FOUND(404, "존재하지 않는 회차 참여자입니다."),
     COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
     TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다."),
     PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다."),

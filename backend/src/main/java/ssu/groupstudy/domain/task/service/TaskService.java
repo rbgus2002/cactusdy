@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
+import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.dto.TaskResponse;
@@ -24,13 +26,17 @@ import static ssu.groupstudy.global.ResultCode.*;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final RoundRepository roundRepository;
+    private final RoundParticipantRepository roundParticipantRepository;
 
 
     @Transactional
-    public void deleteTask(Long taskId) {
+    public void deleteTask(Long taskId, Long roundParticipantId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        // TODO : 본인의 태스크인지 여부 검사
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        task.validateDelete(roundParticipant);
+
         taskRepository.delete(task);
     }
 

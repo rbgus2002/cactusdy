@@ -61,7 +61,7 @@ class CommentRepositoryTest extends RepositoryTest {
         commentRepository.save(대댓글2);
 
         // when
-        Long commentCount = commentRepository.countCommentByNotice(공지사항1);
+        Long commentCount = commentRepository.countCommentByNoticeAndDeleteYn(공지사항1, 'N');
         
         // then
         assertEquals(3, commentCount);

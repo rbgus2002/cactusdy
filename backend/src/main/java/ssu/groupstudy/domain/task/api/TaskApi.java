@@ -27,8 +27,8 @@ public class TaskApi {
 
     @Operation(summary = "태스크 삭제", description = "태스크를 완전히 삭제한다. (삭제 여부 플래그 존재X)")
     @DeleteMapping("")
-    public ResponseDto deleteTask(@RequestParam Long taskId){
-        taskService.deleteTask(taskId);
+    public ResponseDto deleteTask(@RequestParam Long taskId, @RequestParam Long roundParticipantId){
+        taskService.deleteTask(taskId, roundParticipantId);
         return ResponseDto.success();
     }
 }
