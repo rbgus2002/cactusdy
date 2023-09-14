@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ssu.groupstudy.domain.task.dto.TaskDetailRequest;
 import ssu.groupstudy.domain.task.dto.TaskResponse;
 import ssu.groupstudy.domain.task.service.TaskService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,16 +21,23 @@ public class TaskApi {
     private final TaskService taskService;
 
     @Operation(summary = "회차의 태스크 목록 조회", description = "특정 회차에 태스크 목록을 모두 가져온다.")
-    @GetMapping("")
+    @GetMapping
     public ResponseDto getTasks(@RequestParam Long roundId){
         List<TaskResponse> tasks = taskService.getTasks(roundId);
         return DataResponseDto.of("tasks", tasks);
     }
 
     @Operation(summary = "태스크 삭제", description = "태스크를 완전히 삭제한다. (삭제 여부 플래그 존재X)")
-    @DeleteMapping("")
+    @DeleteMapping
     public ResponseDto deleteTask(@RequestParam Long taskId, @RequestParam Long roundParticipantId){
         taskService.deleteTask(taskId, roundParticipantId);
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "태스크 수정", description = "태스크의 내용을 수정한다")
+    @PatchMapping
+    public ResponseDto updateTaskDetail(@Valid @RequestBody TaskDetailRequest request){
+        taskService.updateTaskDetail(request);
         return ResponseDto.success();
     }
 }

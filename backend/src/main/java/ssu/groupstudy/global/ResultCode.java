@@ -21,7 +21,7 @@ public enum ResultCode {
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "방장은 스터디에 탈퇴할 수 없습니다."),
-    INVALID_TASK_DELETION(400, "본인이 생성하지 않은 태스크는 삭제할 수 없습니다."),
+    INVALID_TASK_ACCESS(400, "본인이 생성한 태스크만 접근이 가능합니다"),
 
 
 

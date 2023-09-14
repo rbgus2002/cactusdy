@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.EAGER;
-import static ssu.groupstudy.global.ResultCode.INVALID_TASK_DELETION;
+import static ssu.groupstudy.global.ResultCode.INVALID_TASK_ACCESS;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,7 +20,7 @@ public class Task{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 200)
     private String detail;
 
     @Enumerated(EnumType.STRING)
@@ -44,7 +44,11 @@ public class Task{
 
     public void validateDelete(RoundParticipant roundParticipant){
         if(!roundParticipant.equals(this.roundParticipant)){
-            throw new InvalidRoundParticipantException(INVALID_TASK_DELETION);
+            throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }
+    }
+
+    public void setDetail(String detail){
+        this.detail = detail;
     }
 }

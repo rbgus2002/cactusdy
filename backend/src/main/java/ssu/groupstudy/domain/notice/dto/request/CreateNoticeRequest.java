@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateNoticeRequest {
     @NotBlank
     private String title;

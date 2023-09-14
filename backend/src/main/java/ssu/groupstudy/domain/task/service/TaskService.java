@@ -10,6 +10,7 @@ import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
+import ssu.groupstudy.domain.task.dto.TaskDetailRequest;
 import ssu.groupstudy.domain.task.dto.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
@@ -48,5 +49,17 @@ public class TaskService {
                 .sorted(Comparator.comparing(RoundParticipant::getId))
                 .map(TaskResponse::from)
                 .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void updateTaskDetail(TaskDetailRequest request) {
+        Task task = taskRepository.findById(request.getTaskId())
+                .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        task.validateDelete(roundParticipant);
+
+        task.setDetail(request.getDetail());
     }
 }
