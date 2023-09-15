@@ -62,7 +62,7 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study).stream()
-                .map(NoticeSummary::from)
+                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNoticeAndDeleteYn(notice, 'N')))
                 .collect(Collectors.toList());
     }
 

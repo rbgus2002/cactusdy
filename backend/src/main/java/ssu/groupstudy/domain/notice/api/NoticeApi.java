@@ -49,7 +49,6 @@ public class NoticeApi {
     @GetMapping("/list")
     public ResponseDto getNoticeSummaryList(@RequestParam Long studyId){
         final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryList(studyId);
-        // TODO : 공지사항 별로 작성된 댓글 개수 추가
         return DataResponseDto.of("noticeList", noticeSummaryList);
     }
 
