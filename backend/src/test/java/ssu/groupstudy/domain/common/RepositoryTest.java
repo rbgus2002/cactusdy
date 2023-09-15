@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
@@ -23,7 +25,9 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+@ActiveProfiles("test")
 @DataJpaTest
+@TestPropertySource(locations = "classpath:application-test.yml")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class RepositoryTest {
     @Autowired

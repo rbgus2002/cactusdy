@@ -40,6 +40,7 @@ dependencies {
 	testImplementation('org.mockito:mockito-junit-jupiter')
 	testImplementation('org.hamcrest:hamcrest')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+	testImplementation 'com.h2database:h2'
 
 	implementation 'com.google.code.gson:gson:2.9.0' // Gson
 }
