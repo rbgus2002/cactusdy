@@ -7,10 +7,10 @@ INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_y
 INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '알고리즘스터디', 1);
 
 -- notice
-INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (1, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용1', 'N', 'Y', '공지사항1', 1, 1);
-INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (2, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용2', 'N', 'Y', '공지사항2', 1, 1);
-INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (3, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용3', 'N', 'N', '공지사항3', 1, 1);
-INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (4, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용4', 'N', 'N', '공지사항4', 1, 1);
+INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (1, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용1', 'N', 'N', '공지사항1', 1, 1);
+INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (2, '2023-09-08 00:09:20.247088', '2023-09-08 00:10:34.784027', '상세내용2', 'N', 'N', '공지사항2', 1, 1);
+INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (3, '2023-09-09 00:09:20.247088', '2023-09-09 00:10:34.784027', '상세내용3', 'N', 'N', '공지사항3', 1, 1);
+INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (4, '2023-09-10 00:09:20.247088', '2023-09-10 00:10:34.784027', '상세내용4', 'N', 'N', '공지사항4', 1, 1);
 
 -- comment
 INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (1, '2023-09-04 21:08:38.757307', '2023-09-04 21:08:38.757307', '댓글1', 'N', 1, null, 1);
