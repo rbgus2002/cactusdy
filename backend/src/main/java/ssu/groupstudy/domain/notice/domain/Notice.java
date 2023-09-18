@@ -62,7 +62,7 @@ public class Notice extends BaseEntity {
     }
 
     public Character switchCheckNotice(User user){
-        validateUserInStudy(this.study, user);
+//        validateUserInStudy(this.study, user); // FIXME : 로딩 관련 개념 학습 후 적용
         return isRead(user) ? unreadNotice(user) : readNotice(user);
     }
 
