@@ -39,18 +39,9 @@ class Task {
   }
 
   //< FIXME : this is test module
-  //static Future<int> modifyTask(int task)
-
-  //< FIXME : this is test module
-
-
-  //< FIXME : this is test module
   static Future<bool> switchIsDone(int taskId, bool current) async {
     if (taskId == nonAllocatedTaskId) { return false; }
 
     return !current;
   }
-
-
-  //< FIXME : this is test module
 }

@@ -298,7 +298,7 @@ class _NoticeBody extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(TimeUtility.timeToString(notice.createDate),
+            Text(TimeUtility.getElapsedTime(notice.createDate),
               style: TextStyles.bodySmall,),
             Text('$_writerText : ${notice.writerNickname}',
               style: TextStyles.bodySmall,),

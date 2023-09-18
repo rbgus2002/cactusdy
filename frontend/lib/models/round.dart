@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:group_study_app/models/round_participant_info.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Round {
   // string length limits
@@ -45,6 +46,30 @@ class Round {
       detail: json['detail'],
       roundParticipantInfos: roundParticipantInfos,
     );
+  }
+
+  static Future<bool> updateAppointment(Round round) async {
+    String? studyTime = (round.studyTime != null)?
+      DateFormat('yyyy-MM-dd HH:mm').format(round.studyTime!) : null;
+
+    Map<String, dynamic> data = {
+      'studyTime': studyTime,
+      'studyPlace': round.studyPlace,
+    };
+
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}rounds?roundId=${round.roundId}'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to update round detail");
+    } else {
+      bool success = json.decode(response.body)['success'];
+      if(success) print("SUCCESS!!"); //< FIXME
+      return success;
+    }
   }
 
   static Future<Round> getDetail(int roundId) async {

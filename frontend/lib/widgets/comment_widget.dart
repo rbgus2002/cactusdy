@@ -87,7 +87,7 @@ class CommentWidget extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                             children : [
-                              Text(TimeUtility.timeToString(comment.createDate), style: TextStyles.bodyMedium,),
+                              Text(TimeUtility.getElapsedTime(comment.createDate), style: TextStyles.bodyMedium,),
                               const Text(" | "),
                               InkWell(
                                 borderRadius: BorderRadius.circular(3),

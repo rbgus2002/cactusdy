@@ -6,6 +6,7 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
@@ -15,9 +16,9 @@ import 'package:intl/intl.dart';
 
 class RoundInfoWidget extends StatefulWidget {
   final int roundNum;
-  final Round round;
+  Round round;
 
-  const RoundInfoWidget({
+  RoundInfoWidget({
     super.key,
     required this.roundNum,
     required this.round,
@@ -29,9 +30,16 @@ class RoundInfoWidget extends StatefulWidget {
 
 class _RoundInformationWidget extends State<RoundInfoWidget> {
   static const String _placeHintMessage = "장소를 입력해 주세요";
+  static const String _timeHintMessage = "시간을 입력해 주세요";
+
+  static const String _roundText = "회차";
+  static const String _placeText = "장소";
+  static const String _timeText = "시간";
+  static const String _reserved = "예정됨";
 
   late final TextEditingController placeEditingController;
   bool _isEditable = false;
+  bool _isEdited = false;
   @override
   void initState() {
     super.initState();
@@ -52,26 +60,26 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("${widget.roundNum}", style: TextStyles.titleBig),
-                const Text("회차", style: TextStyles.titleSmall,)
+                const Text(_roundText, style: TextStyles.titleSmall,)
               ]
             ),
             Design.padding10,
             const Column(
               children: [
-                Text('장소:', style: TextStyles.roundTextStyle,),
-                Text('시간:', style: TextStyles.roundTextStyle,),
+                Text('$_placeText : ', style: TextStyles.roundTextStyle,),
+                Text('$_timeText : ', style: TextStyles.roundTextStyle,),
               ],
             ),
             _studyTimeAndPlace(),
 
             if (widget.round.isPlanned == true)
-              UserStateTag(color: Colors.red, text: "예정됨"),
+              UserStateTag(color: Colors.red, text: _reserved),
           ],
         ),
 
         CircleButtonList(
           circleButtons: widget.round.roundParticipantInfos.map((r) {
-            Color color = getColor(r.taskProgress);
+            Color color = _getColor(r.taskProgress);
 
             return PercentCircleButton(
               image: null, //< FIXME
@@ -83,7 +91,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
     );
   }
 
-  Color getColor(double taskProgress) {
+  Color _getColor(double taskProgress) {
     Color color = (taskProgress > 0.8)? ColorStyles.green :
     (taskProgress > 0.5)? ColorStyles.orange : ColorStyles.red;
 
@@ -105,24 +113,26 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                 controller: placeEditingController,
                 decoration: InputDecoration(
                   hintText: _placeHintMessage,
-                  hintStyle: TextStyles.roundTextStyle,
+                  hintStyle: TextStyles.roundHintTextStyle,
                   isDense: true,
                   enabled: _isEditable,
                   contentPadding: EdgeInsets.zero,
                   disabledBorder: InputBorder.none,
                 ),
-                onTapOutside: (event) {
-                  if (_isEditable) {
-                    setState(() { _isEditable = false; });
-                  }
-                },
+                onChanged: (value) { _isEdited = true; },
+                onTapOutside: (event) { updatePlace(); },
+                onSubmitted: (value) { updatePlace(); },
               ),
 
               // Time
               InkWell(
                 enableFeedback: _isEditable,
-                child: Text((widget.round.studyTime != null)?DateFormat('yyyy-MM-dd').format(widget.round.studyTime!):'시간을 입력해주세요',
-                  maxLines: 1, style: TextStyles.titleTiny,
+                onTap: updateDateAndTime,
+                child: Text((widget.round.studyTime != null)?
+                  TimeUtility.timeToString(widget.round.studyTime!):_timeHintMessage,
+                  maxLines: 1,
+                  style: (widget.round.studyTime != null)? TextStyles.roundTextStyle:
+                  TextStyles.roundHintTextStyle,
                 ),
               )
             ],
@@ -137,20 +147,28 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
       );
   }
 
-  void getDateAndTime() async {
-    final selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    if (selectedDate != null) {
-      final time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
+  void updatePlace() {
+    if (_isEditable) {
+      if (_isEdited) {
+        widget.round.studyPlace = placeEditingController.text;
+        Round.updateAppointment(widget.round);
+        _isEdited = false;
+      }
+      _isEditable = false;
+      setState(() {});
     }
+  }
+
+  void updateDateAndTime() async {
+    TimeUtility.showDateTimePicker(context).then(
+            (dateTime) {
+              if (dateTime != null) {
+                widget.round.studyTime = dateTime;
+                Round.updateAppointment(widget.round);
+                widget.round.isPlanned = (dateTime.compareTo(DateTime.now()) > 0);
+                setState(() { });
+              }
+            });
   }
 
   @override
