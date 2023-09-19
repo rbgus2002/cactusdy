@@ -57,7 +57,7 @@ public class RoundApi {
         return DataResponseDto.of("roundList", roundInfos);
     }
 
-    @Operation(summary = "회차 삭제하기", description = "오직 방장만 회차를 삭제할 수 있다")
+    @Operation(summary = "회차 삭제하기", description = "방장만 회차를 삭제할 수 있다")
     @DeleteMapping
     public ResponseDto deleteRound(@RequestParam Long roundId, @RequestParam Long userId){
         roundService.deleteRound(roundId, userId);
