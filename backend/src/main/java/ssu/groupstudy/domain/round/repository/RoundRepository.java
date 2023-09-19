@@ -11,7 +11,8 @@ import java.util.Optional;
 public interface RoundRepository extends JpaRepository<Round, Long> {
     Round save(Round round);
 
-    Optional<Round> findByRoundId(Long roundId);
+    @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
+    Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
 
     /**
      * 스터디의 회차 목록 가져오기

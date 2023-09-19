@@ -26,41 +26,37 @@ public class RoundService {
     private final RoundRepository roundRepository;
 
     @Transactional
-    public Long createRound(Long studyId, AppointmentRequest dto) {
+    public long createRound(long studyId, AppointmentRequest dto) {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
         return roundRepository.save(dto.toEntity(study)).getRoundId();
     }
 
     @Transactional
     public void updateAppointment(long roundId, AppointmentRequest dto) {
-        Round round = roundRepository.findByRoundId(roundId)
+        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-
         round.updateAppointment(dto.toAppointment());
     }
 
     public RoundDto.RoundDetailResponse getDetail(long roundId) {
-        Round round = roundRepository.findByRoundId(roundId)
+        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
         return RoundDto.createRoundDetail(round);
     }
 
     @Transactional
     public void updateDetail(long roundId, String detail) {
-        Round round = roundRepository.findByRoundId(roundId)
+        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-
         round.updateDetail(detail);
     }
 
     // FIXME : N+1
     // TODO : 정렬 관련 테스트 코드 작성
-    public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId){
+    public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId) {
         Study study = studyRepository.findByStudyId(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundDto::createRoundInfo)
                 .collect(Collectors.toList());

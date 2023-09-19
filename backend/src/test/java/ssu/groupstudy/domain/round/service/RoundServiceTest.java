@@ -83,7 +83,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 회차의 경우 예외를 던진다")
         void fail_roundNotFound() {
             // given
-            doReturn(Optional.empty()).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.empty()).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> roundService.updateAppointment(-1L, 회차1AppointmentRequest))
@@ -95,7 +95,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차의 장소 약속을 수정한다")
         void success_updatePlace() {
             // given
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             roundService.updateAppointment(-1L, new AppointmentRequest(null, "장소변경"));
@@ -108,7 +108,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차의 시간 약속을 수정한다")
         void success_updateTime() {
             // given
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             roundService.updateAppointment(-1L, new AppointmentRequest(LocalDateTime.of(2024, 5, 17, 16, 0), null));
@@ -121,7 +121,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차의 장소, 시간 약속을 수정한다")
         void success_updatePlaceAndTime() {
             // given
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             roundService.updateAppointment(-1L, new AppointmentRequest(LocalDateTime.of(2050, 5, 17, 16, 0), "숭실대"));
@@ -140,7 +140,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차가 존재하지 않으면 예외를 던진다")
         void roundNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.empty()).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // then
             assertThatThrownBy(() -> roundService.getDetail(-1L))
@@ -152,7 +152,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차의 상세설명이 null인 경우 빈 string을 반환한다")
         void GetDetail(){
             // given
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
@@ -168,7 +168,7 @@ class RoundServiceTest extends ServiceTest {
             // given
             final String detailOf회차1 = "회차의 상세설명";
             회차1.updateDetail(detailOf회차1);
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
@@ -184,7 +184,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 회차의 경우 예외를 던진다")
         void fail_roundNotFound() {
             // given
-            doReturn(Optional.empty()).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.empty()).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> roundService.updateDetail(-1L, ""))
@@ -196,7 +196,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차 상세내용을 수정한다")
         void success(){
             // given
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundId(any(Long.class));
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // when
             roundService.updateDetail(-1L, "회차상세내용변경");
