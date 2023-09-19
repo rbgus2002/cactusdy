@@ -33,7 +33,7 @@ public class RoundService {
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         return roundRepository.save(dto.toEntity(study)).getRoundId();
     }
@@ -61,7 +61,7 @@ public class RoundService {
     // FIXME : N+1
     // TODO : 정렬 관련 테스트 코드 작성
     public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundDto::createRoundInfo)

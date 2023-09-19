@@ -22,7 +22,7 @@ public class RuleService {
 
     @Transactional
     public Long createRule(CreateRuleRequest dto) {
-        Study study = studyRepository.findByStudyId(dto.getStudyId())
+        Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Rule rule = dto.toEntity(study);
         return ruleRepository.save(rule).getRuleId();

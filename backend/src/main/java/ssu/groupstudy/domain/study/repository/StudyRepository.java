@@ -1,12 +1,7 @@
 package ssu.groupstudy.domain.study.repository;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 
-import java.util.Optional;
-
-public interface StudyRepository extends Repository<Study, Long> {
-    Study save(Study study);
-
-    Optional<Study> findByStudyId(Long studyId);
+public interface StudyRepository extends JpaRepository<Study, Long> {
 }

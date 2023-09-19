@@ -44,7 +44,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentRequest))
@@ -57,7 +57,7 @@ class RoundServiceTest extends ServiceTest {
         void success_emptyTimeAndPlace() {
             // given
             doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             Long roundId = roundService.createRound(-1L, 회차2AppointmentRequest_EmptyTimeAndPlace);
@@ -70,7 +70,7 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("성공")
         void success() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(회차1).when(roundRepository).save(any(Round.class));
 
             // when

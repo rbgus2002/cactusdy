@@ -33,7 +33,7 @@ class ParticipantsServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> participantsService.getParticipantsProfileImageList(-1L))

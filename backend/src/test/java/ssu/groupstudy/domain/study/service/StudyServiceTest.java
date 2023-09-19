@@ -65,7 +65,7 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디인 경우 예외를 던진다")
         void 실패_유저존재하지않음() {
             // given, when
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> studyService.getStudySummary(-1L))
@@ -77,7 +77,7 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("성공")
         void success(){
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L);

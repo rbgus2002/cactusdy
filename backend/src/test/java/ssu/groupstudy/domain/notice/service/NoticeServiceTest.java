@@ -60,7 +60,7 @@ class NoticeServiceTest extends ServiceTest {
         void fail_studyNotFound() {
             // given
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest))
@@ -73,7 +73,7 @@ class NoticeServiceTest extends ServiceTest {
         void fail_notInvitedUser(){
             // given
             doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest))
@@ -86,7 +86,7 @@ class NoticeServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeRepository).save(any(Notice.class));
 
             // when
@@ -148,7 +148,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
         void fail_studyNotFound(){
             // given
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> noticeService.getNoticeSummaryList(-1L))
@@ -159,7 +159,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
         void success(){
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
 
             // when
@@ -175,7 +175,7 @@ class NoticeServiceTest extends ServiceTest {
             @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
             void fail_studyNotFound() {
                 // given
-                doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+                doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
                 // when, then
                 assertThatThrownBy(() -> noticeService.getNoticeSummaryListLimit3(-1L))
@@ -187,7 +187,7 @@ class NoticeServiceTest extends ServiceTest {
             @DisplayName("스터디에 작성된 공지사항 목록을 최대 3개 불러온다")
             void success() {
                 // given
-                doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+                doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
                 doReturn(List.of(공지사항1, 공지사항2, 공지사항3)).when(noticeRepository).findTop3ByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
 
                 // when

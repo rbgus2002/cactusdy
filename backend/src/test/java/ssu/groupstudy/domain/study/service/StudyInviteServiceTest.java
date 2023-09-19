@@ -50,7 +50,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void fail_studyNotFound() {
             // given
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
@@ -63,7 +63,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             studyInviteService.inviteUser(-1L, -1L);
@@ -95,7 +95,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void fail_studyNotFound() {
             // given
             doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.leaveUser(-1L, -1L))
@@ -108,7 +108,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             알고리즘스터디.invite(장재우);

@@ -32,7 +32,7 @@ public class StudyService {
     }
 
     public StudySummaryResponse getStudySummary(long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         return StudySummaryResponse.from(study);

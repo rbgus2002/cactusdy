@@ -74,7 +74,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findByStudyId(1L).get();
+        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> noticeList = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
@@ -95,7 +95,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findByStudyId(1L).get();
+        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> noticeList = noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);

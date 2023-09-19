@@ -24,7 +24,7 @@ public class StudyInviteService {
     public void inviteUser(Long userId, Long studyId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         study.invite(user);
@@ -34,7 +34,7 @@ public class StudyInviteService {
     public void leaveUser(Long userId, Long studyId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         study.leave(user);

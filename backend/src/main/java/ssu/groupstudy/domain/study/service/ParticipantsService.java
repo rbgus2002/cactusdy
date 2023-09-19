@@ -29,7 +29,7 @@ public class ParticipantsService {
 
     // TODO : userId가 아닌 userStudyId를 보내주어야 하는 것이 아닌가?
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         List<Participant> participantList = getParticipantListOrderByCreateDateAsc(study);

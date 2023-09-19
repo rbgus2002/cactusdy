@@ -31,7 +31,7 @@ class RoundRepositoryTest{
     // Study 생성자에서 방장을 Participants에 추가함 => 해당 코드에서는 participants.size에 포함 안됨
     void getUserRound() {
         // given
-        Study 스터디 = studyRepository.findByStudyId(1L).get();
+        Study 스터디 = studyRepository.findById(1L).get();
         User 장재우 = userRepository.findByUserId(2L).get();
         스터디.invite(장재우);
 
