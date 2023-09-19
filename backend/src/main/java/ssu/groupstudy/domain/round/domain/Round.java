@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Participants;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
@@ -53,10 +52,10 @@ public class Round extends BaseEntity {
         this.deleteYn = 'N';
     }
 
-    private void addParticipants(Participants participants){
-        for(Participant participant : participants.getParticipants()){
-            roundParticipants.add(new RoundParticipant(participant.getUser(), this));
-        }
+    private void addParticipants(Set<Participant> participants){
+        participants.stream()
+                .map(participant -> new RoundParticipant(participant.getUser(), this))
+                .forEach(roundParticipants::add);
     }
 
     public void updateAppointment(Appointment appointment){

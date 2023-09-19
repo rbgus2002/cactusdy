@@ -24,7 +24,6 @@ public class ParticipantApi {
     @PostMapping("/invite")
     public ResponseDto inviteUser(@RequestParam Long userId, @RequestParam Long studyId){
         studyInviteService.inviteUser(userId, studyId);
-
         return ResponseDto.success();
     }
 
@@ -32,7 +31,6 @@ public class ParticipantApi {
     @DeleteMapping("/invite")
     public ResponseDto leaveUser(@RequestParam Long userId, @RequestParam Long studyId){
         studyInviteService.leaveUser(userId, studyId);
-
         return ResponseDto.success();
     }
 
@@ -40,7 +38,6 @@ public class ParticipantApi {
     @GetMapping("/summary")
     public ResponseDto getParticipantsProfileImageList(@RequestParam Long studyId){
         List<ParticipantSummaryResponse> participantSummaryResponseList = participantsService.getParticipantsProfileImageList(studyId);
-
         return DataResponseDto.of("participantSummaryList", participantSummaryResponseList);
     }
 

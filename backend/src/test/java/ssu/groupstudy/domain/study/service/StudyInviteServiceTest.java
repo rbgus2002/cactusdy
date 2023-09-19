@@ -70,8 +70,8 @@ class StudyInviteServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(2),
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2),
+                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
     }
@@ -116,8 +116,8 @@ class StudyInviteServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(1),
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(1),
+                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
     }

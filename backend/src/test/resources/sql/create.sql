@@ -89,7 +89,6 @@ create table if not exists rel_user_study
     color         varchar(127) not null,
     study_id      bigint       not null,
     user_id       bigint       not null,
-    id            bigint       not null,
     constraint FK7erm3ctgn7n8tfvst4auyd5fl
         foreign key (user_id) references `user` (user_id),
     constraint FKc74bwwaegphmtuefmi8sfhowv

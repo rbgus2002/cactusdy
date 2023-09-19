@@ -41,7 +41,6 @@ class ParticipantsServiceTest extends ServiceTest {
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
 
-        // TODO : 영속화 안된 엔티티의 칼럼 접근으로 인해 NPE 발생
 //        @Test
 //        @DisplayName("스터디에 소속된 사용자의 프로필 이미지를 모두 불러온다")
 //        void success() {
