@@ -31,7 +31,7 @@ public class Participants {
         this.hostUser = participant.getUser();
     }
 
-    public boolean existParticipant(Participant participant) {
+    protected boolean existParticipant(Participant participant) {
         return participants.contains(participant);
     }
 
@@ -41,5 +41,9 @@ public class Participants {
 
     protected void removeParticipant(Participant participant){
         participants.remove(participant);
+    }
+
+    protected boolean isHostUser(User user){
+        return hostUser.equals(user);
     }
 }

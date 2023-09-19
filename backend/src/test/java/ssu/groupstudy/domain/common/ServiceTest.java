@@ -1,5 +1,8 @@
 package ssu.groupstudy.domain.common;
 
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,7 +28,10 @@ import java.time.LocalDateTime;
  * 모든 엔티티는 id를 갖으며 영속화 되어있다고 생각한다.
  */
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(SoftAssertionsExtension.class)
 public class ServiceTest {
+    @InjectSoftAssertions
+    protected SoftAssertions softly;
     protected SignUpRequest 최규현SignUpRequest;
     protected SignUpRequest 장재우SignUpRequest;
     protected User 최규현;

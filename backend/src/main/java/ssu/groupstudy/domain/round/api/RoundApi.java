@@ -22,19 +22,17 @@ public class RoundApi {
     private final RoundService roundService;
 
     @Operation(summary = "회차 생성", description = "parameter에서 studyTime의 형식은 \"yyyy-MM-dd HH:mm\" 이다.")
-    @PostMapping("")
+    @PostMapping
     public ResponseDto createRound(@RequestParam Long studyId, @Valid @RequestBody AppointmentRequest dto){
         Long roundId = roundService.createRound(studyId, dto);
-
         return DataResponseDto.of("roundId", roundId);
     }
 
     @Operation(summary = "회차 약속 수정", description = "시간 혹은 장소 약속을 수정한다. (시간 혹은 장소가 비어있으면 null로 업데이트)" +
             " // studyTime 형식은 \"yyyy-MM-dd HH:mm\" 이다.")
-    @PatchMapping("")
+    @PatchMapping
     public ResponseDto updateAppointment(@RequestParam Long roundId, @Valid @RequestBody AppointmentRequest dto){
         roundService.updateAppointment(roundId, dto);
-
         return ResponseDto.success();
     }
 
@@ -49,7 +47,6 @@ public class RoundApi {
     @PatchMapping("/details")
     public ResponseDto updateDetail(@RequestParam Long roundId, @RequestBody DetailRequest dto){
         roundService.updateDetail(roundId, dto.getDetail());
-
         return ResponseDto.success();
     }
 
@@ -57,8 +54,13 @@ public class RoundApi {
     @GetMapping("/list")
     public ResponseDto getRoundInfoResponses(@RequestParam Long studyId){
         List<RoundDto.RoundInfoResponse> roundInfos = roundService.getRoundInfoResponses(studyId);
-
         return DataResponseDto.of("roundList", roundInfos);
     }
 
+    @Operation(summary = "회차 삭제하기", description = "오직 방장만 회차를 삭제할 수 있다")
+    @DeleteMapping
+    public ResponseDto deleteRound(@RequestParam Long roundId, @RequestParam Long userId){
+        roundService.deleteRound(roundId, userId);
+        return ResponseDto.success();
+    }
 }

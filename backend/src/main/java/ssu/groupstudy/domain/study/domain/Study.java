@@ -54,9 +54,9 @@ public class Study extends BaseEntity {
     }
 
     public void invite(User user) {
-        if (isParticipated(user))
+        if (isParticipated(user)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
-
+        }
         participants.addParticipant(new Participant(user, this));
     }
 
@@ -64,10 +64,13 @@ public class Study extends BaseEntity {
         if(!isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
-        if(participants.getHostUser().equals(user)){
+        if(isHostUser(user)){
             throw new CanNotLeaveStudyException(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY);
         }
-
         participants.removeParticipant(new Participant(user, this));
+    }
+
+    public boolean isHostUser(User user){
+        return participants.isHostUser(user);
     }
 }

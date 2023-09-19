@@ -12,10 +12,15 @@ import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ssu.groupstudy.global.ResultCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +29,7 @@ import java.util.stream.Collectors;
 public class RoundService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {
@@ -60,5 +66,14 @@ public class RoundService {
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundDto::createRoundInfo)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteRound(long roundId, long userId) {
+        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
+                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        round.deleteRound(user);
     }
 }

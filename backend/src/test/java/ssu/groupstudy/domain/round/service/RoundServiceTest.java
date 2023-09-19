@@ -10,9 +10,12 @@ import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
+import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -27,12 +30,13 @@ import static ssu.groupstudy.global.ResultCode.*;
 class RoundServiceTest extends ServiceTest {
     @InjectMocks
     private RoundService roundService;
-
     @Mock
     private RoundRepository roundRepository;
-
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private UserRepository userRepository;
+
 
     @Nested
     class CreateRound {
@@ -203,6 +207,64 @@ class RoundServiceTest extends ServiceTest {
 
             // then
             assertThat(회차1.getDetail()).isEqualTo("회차상세내용변경");
+        }
+    }
+
+    @Nested
+    class DeleteRound{
+        @Test
+        @DisplayName("존재하지 않는 회차는 예외를 던진다")
+        void roundNotFound(){
+            // given, when
+            doReturn(Optional.empty()).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
+                    .isInstanceOf(RoundNotFoundException.class)
+                    .hasMessage(ROUND_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 사용자면 예외를 던진다")
+        void userNotFound(){
+            // given
+            // when
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(USER_NOT_FOUND.getMessage());
+
+        }
+
+        @Test
+        @DisplayName("방장이 아닌 사용자가 회차를 삭제하면 예외를 던진다")
+        void userNotHost(){
+            // given
+            // when
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
+            doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
+                    .isInstanceOf(UnauthorizedDeletionException.class)
+                    .hasMessage(HOST_USER_ONLY_CAN_DELETE_ROUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("회차를 삭제한다")
+        void delete(){
+            // given
+            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
+
+            // when
+            roundService.deleteRound(-1L, -1L);
+
+            // then
+            softly.assertThat(회차1.getDeleteYn()).isEqualTo('Y');
         }
     }
 }
