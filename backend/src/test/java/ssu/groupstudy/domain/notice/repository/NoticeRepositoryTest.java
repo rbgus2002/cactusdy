@@ -24,14 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @CustomRepositoryTest
 class NoticeRepositoryTest{
     @InjectSoftAssertions
-    protected SoftAssertions softly;
-
+    private SoftAssertions softly;
     @Autowired
-    protected UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private StudyRepository studyRepository;
     @Autowired
-    protected NoticeRepository noticeRepository;
+    private NoticeRepository noticeRepository;
 
     @Nested
     class switchCheckNotice {
