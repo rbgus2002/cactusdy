@@ -13,14 +13,18 @@ INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, 
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (4, '2023-09-10 00:09:20.247088', '2023-09-10 00:10:34.784027', '상세내용4', 'N', 'N', '공지사항4', 1, 1);
 
 -- comment
-INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (1, '2023-09-04 21:08:38.757307', '2023-09-04 21:08:38.757307', '댓글1', 'N', 1, null, 1);
-INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (3, '2023-09-04 21:08:38.757307', '2023-09-04 21:08:38.757307', '대댓글1', 'N', 1, 1, 1);
-INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (4, '2023-09-04 21:08:38.757307', '2023-09-04 21:08:38.757307', '대댓글2', 'N', 1, 1, 1);
+INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (1, '2023-09-08 21:08:38.757307', '2023-09-08 21:08:38.757307', '댓글1', 'N', 1, null, 1);
+INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (3, '2023-09-02 21:08:38.757307', '2023-09-02 21:08:38.757307', '대댓글1', 'N', 1, 1, 1);
+INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (4, '2023-09-01 21:08:38.757307', '2023-09-01 21:08:38.757307', '대댓글2', 'N', 1, 1, 1);
 
 INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (2, '2023-09-04 21:08:38.757307', '2023-09-04 21:08:38.757307', '댓글2', 'N', 1, null, 1);
+INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (5, '2023-09-10 21:08:38.757307', '2023-09-04 21:08:38.757307', '댓글3(삭제처리)', 'Y', 1, null, 1);
 
 -- round
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (1, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 1);
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (2, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'Y', 'detail', 1);
--- INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (1, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, '2023-09-11 12:07:00', 'N', '오늘도 규현이와 예지누나가 숙제를 안해왔다. 뒤졌다 진짜.이제 앞으로는 안해온 사람이 밥사기로 결정하였다. 근데 벌써부터 다음주에 얻어먹을 것 같은 기분이다. 다음주부터는 시험기간', 1);
+
+-- user_round
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
+
 

@@ -37,7 +37,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 사용자이면 예외를 던진다")
         void fail_userNotFound() {
             // given
-            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
@@ -49,8 +49,8 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
@@ -62,16 +62,16 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             studyInviteService.inviteUser(-1L, -1L);
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(2),
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2),
+                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
     }
@@ -82,7 +82,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 사용자이면 예외를 던진다")
         void fail_userNotFound() {
             // given
-            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.leaveUser(-1L, -1L))
@@ -94,8 +94,8 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.empty()).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> studyInviteService.leaveUser(-1L, -1L))
@@ -107,8 +107,8 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByStudyId(any(Long.class));
+            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
             알고리즘스터디.invite(장재우);
@@ -116,8 +116,8 @@ class StudyInviteServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().size()).isEqualTo(1),
-                    () -> assertThat(알고리즘스터디.getParticipants().getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(1),
+                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
     }

@@ -34,7 +34,7 @@ public class CommentService {
 
     @Transactional
     public Long createComment(CreateCommentRequest dto) {
-        User writer = userRepository.findByUserId(dto.getUserId())
+        User writer = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())

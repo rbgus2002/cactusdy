@@ -39,9 +39,9 @@ public class NoticeService {
 
     @Transactional
     public Long createNotice(CreateNoticeRequest dto) {
-        User writer = userRepository.findByUserId(dto.getUserId())
+        User writer = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        Study study = studyRepository.findByStudyId(dto.getStudyId())
+        Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.save(dto.toEntity(writer, study)).getNoticeId();
@@ -51,23 +51,23 @@ public class NoticeService {
     public Character switchCheckNotice(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         return notice.switchCheckNotice(user);
     }
 
     public List<NoticeSummary> getNoticeSummaryList(Long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study).stream()
-                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNoticeAndDeleteYn(notice, 'N')))
+                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNotice(notice)))
                 .collect(Collectors.toList());
     }
 
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
@@ -95,9 +95,9 @@ public class NoticeService {
     public NoticeInfoResponse getNoticeById(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        Long commentCount = commentRepository.countCommentByNoticeAndDeleteYn(notice, 'N');
+        Long commentCount = commentRepository.countCommentByNotice(notice);
 
         return NoticeInfoResponse.of(notice, user, commentCount);
     }

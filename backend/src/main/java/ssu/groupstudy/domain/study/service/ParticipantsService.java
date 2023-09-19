@@ -12,12 +12,12 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.ResultCode.PARTICIPANT_NOT_FOUND;
+import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -29,33 +29,23 @@ public class ParticipantsService {
 
     // TODO : userId가 아닌 userStudyId를 보내주어야 하는 것이 아닌가?
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
-        Study study = studyRepository.findByStudyId(studyId)
+        Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         List<Participant> participantList = getParticipantListOrderByCreateDateAsc(study);
-
-        List<ParticipantSummaryResponse> participantSummaryResponseList = new ArrayList<>();
-        for(Participant participant : participantList){
-            participantSummaryResponseList.add(ParticipantSummaryResponse.from(participant));
-        }
-
-        return participantSummaryResponseList;
+        return participantList.stream()
+                .map(ParticipantSummaryResponse::from)
+                .collect(Collectors.toList());
     }
 
-    private List<Participant> getParticipantListOrderByCreateDateAsc(Study study){
-        List<Participant> participantList = new ArrayList<>(study.getParticipants().getParticipants());
-        Collections.sort(participantList, new Comparator<Participant>() {
-            @Override
-            public int compare(Participant o1, Participant o2) {
-                return o1.getCreateDate().compareTo(o2.getCreateDate());
-            }
-        });
-
-        return participantList;
+    private List<Participant> getParticipantListOrderByCreateDateAsc(Study study) {
+        return study.getParticipants().stream()
+                .sorted(Comparator.comparing(Participant::getCreateDate))
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public void modifyColor(Long participantId, String colorCode){
+    public void modifyColor(Long participantId, String colorCode) {
         Participant participant = participantRepository.findById(participantId)
                 .orElseThrow(() -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
         participant.setColor(colorCode);

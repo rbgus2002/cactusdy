@@ -38,7 +38,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항 읽음 상태로 전환한다")
         void read() {
             // given
-            User 최규현 = userRepository.findByUserId(1L).get();
+            User 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
 
             // when
@@ -52,7 +52,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항을 안읽음 상태로 전환한다")
         void unread(){
             // given
-            User 최규현 = userRepository.findByUserId(1L).get();
+            User 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
 
             // when
@@ -74,7 +74,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findByStudyId(1L).get();
+        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> noticeList = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
@@ -95,7 +95,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findByStudyId(1L).get();
+        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> noticeList = noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
@@ -144,7 +144,7 @@ class NoticeRepositoryTest{
         @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
         void read_true(){
             // given
-            User 최규현 = userRepository.findByUserId(1L).get();
+            User 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
             공지사항.switchCheckNotice(최규현);
 
@@ -158,7 +158,7 @@ class NoticeRepositoryTest{
         @Test
         @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
         void read_false(){
-            User 최규현 = userRepository.findByUserId(1L).get();
+            User 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
             공지사항.switchCheckNotice(최규현);
             공지사항.switchCheckNotice(최규현);

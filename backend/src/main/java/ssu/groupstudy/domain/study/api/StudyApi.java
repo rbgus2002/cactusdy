@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/studies")
 @RequiredArgsConstructor
-@Tag(name = "Studies", description = "스터디 API")
+@Tag(name = "Study", description = "스터디 API")
 public class StudyApi {
     private final StudyService studyService;
 
@@ -23,7 +23,6 @@ public class StudyApi {
     @PostMapping("")
     public ResponseDto register(@Valid @RequestBody CreateStudyRequest dto){
         Long studyId = studyService.createStudy(dto);
-
         return DataResponseDto.of("studyId", studyId);
     }
 
@@ -31,7 +30,6 @@ public class StudyApi {
     @GetMapping("")
     public ResponseDto getStudySummary(@RequestParam Long studyId){
         StudySummaryResponse studySummary = studyService.getStudySummary(studyId);
-
         return DataResponseDto.of("studySummary", studySummary);
     }
 }

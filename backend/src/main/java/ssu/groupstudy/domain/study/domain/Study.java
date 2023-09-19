@@ -12,8 +12,9 @@ import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
+import java.util.Set;
 
-import static ssu.groupstudy.domain.study.domain.InviteCode.*;
+import static ssu.groupstudy.domain.study.domain.InviteCode.generate;
 
 @Entity
 @Getter
@@ -72,5 +73,9 @@ public class Study extends BaseEntity {
 
     public boolean isHostUser(User user){
         return participants.isHostUser(user);
+    }
+
+    public Set<Participant> getParticipants(){
+        return this.participants.getParticipants();
     }
 }

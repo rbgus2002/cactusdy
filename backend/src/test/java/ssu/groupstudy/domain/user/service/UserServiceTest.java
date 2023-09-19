@@ -63,10 +63,10 @@ class UserServiceTest extends ServiceTest {
         @DisplayName("userId가 존재하지 않으면 예외를 던진다")
         void fail_invalidUserId() {
             // given
-            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> userService.getUserByUserId(-1L))
+            assertThatThrownBy(() -> userService.getUser(-1L))
                     .isInstanceOf(UserNotFoundException.class)
                     .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
@@ -75,10 +75,10 @@ class UserServiceTest extends ServiceTest {
         @DisplayName("성공")
         void success() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
-            final UserInfoResponse userInfoResponse = userService.getUserByUserId(1L);
+            final UserInfoResponse userInfoResponse = userService.getUser(1L);
 
             // then
             assertAll(
