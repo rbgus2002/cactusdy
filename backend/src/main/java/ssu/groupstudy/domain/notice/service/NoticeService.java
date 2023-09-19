@@ -62,7 +62,7 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         return noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study).stream()
-                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNoticeAndDeleteYn(notice, 'N')))
+                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNotice(notice)))
                 .collect(Collectors.toList());
     }
 
@@ -97,7 +97,7 @@ public class NoticeService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        Long commentCount = commentRepository.countCommentByNoticeAndDeleteYn(notice, 'N');
+        Long commentCount = commentRepository.countCommentByNotice(notice);
 
         return NoticeInfoResponse.of(notice, user, commentCount);
     }
