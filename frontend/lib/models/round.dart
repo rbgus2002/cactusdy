@@ -74,7 +74,19 @@ class Round {
       }
       return success;
     }
+  }
 
+  static Future<bool> deleteRound(int roundId, int userId) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}rounds?roundId=$roundId&userId=$userId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception(json.decode(utf8.decode(response.bodyBytes))['message']);
+    } else {
+      bool success = json.decode(response.body)['success'];
+      return success;
+    }
   }
 
   static Future<bool> updateAppointment(Round round, int studyId) async {

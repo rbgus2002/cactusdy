@@ -1,7 +1,8 @@
+import 'dart:convert';
 
-
-import 'package:flutter/cupertino.dart';
+import 'package:group_study_app/services/database_service.dart';
 import 'package:group_study_app/utilities/list_model.dart';
+import 'package:http/http.dart' as http;
 
 class Task {
   static const int nonAllocatedTaskId = -1;
@@ -17,6 +18,24 @@ class Task {
     this.text = "",
     this.isDone = false,
   });
+
+
+  /*
+  static Future<List<Round>> getTasks(int roundId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}tasks?roundId=$roundId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to get RoundInfos");
+    } else {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['roundList'];
+
+      return (responseJson as List).map((r) => Round.fromJson(r)).toList();
+    }
+  }
+   */
+
 
   //< FIXME : this is test module
   static Future<List<Task>> getGroupTasks(int studyId, int roundId, int userId) async {

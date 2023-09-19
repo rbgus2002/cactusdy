@@ -236,18 +236,19 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
       }
       else {
         Toast.showToast(msg: _writingFailMessage);
-      }
+      }// FIXME catch error
     });
   }
 
   void deleteComment(int commentId) {
     Comment.deleteComment(commentId).then((result) {
       if (result == false) {
-        futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
         Toast.showToast(msg: _deleteNoticeFailMessage);
       }
-      else { setState(() { }); }
-    },
+      else {
+        futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
+        setState(() { });
+      }}
     );
   }
 
