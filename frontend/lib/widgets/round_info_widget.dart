@@ -15,11 +15,13 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:intl/intl.dart';
 
 class RoundInfoWidget extends StatefulWidget {
+  final int studyId;
   final int roundNum;
   Round round;
 
   RoundInfoWidget({
     super.key,
+    required this.studyId,
     required this.roundNum,
     required this.round,
   });
@@ -151,7 +153,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
     if (_isEditable) {
       if (_isEdited) {
         widget.round.studyPlace = placeEditingController.text;
-        Round.updateAppointment(widget.round);
+        Round.updateAppointment(widget.round, widget.studyId);
         _isEdited = false;
       }
       _isEditable = false;
@@ -164,7 +166,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             (dateTime) {
               if (dateTime != null) {
                 widget.round.studyTime = dateTime;
-                Round.updateAppointment(widget.round);
+                Round.updateAppointment(widget.round, widget.studyId);
                 widget.round.isPlanned = (dateTime.compareTo(DateTime.now()) > 0);
                 setState(() { });
               }
