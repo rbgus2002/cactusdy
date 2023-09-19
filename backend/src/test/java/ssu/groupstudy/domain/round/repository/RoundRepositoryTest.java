@@ -5,36 +5,44 @@ import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import ssu.groupstudy.domain.common.RepositoryTest;
+import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-class RoundRepositoryTest extends RepositoryTest {
+@CustomRepositoryTest
+class RoundRepositoryTest{
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
     private RoundRepository roundRepository;
+    @Autowired
+    private StudyRepository studyRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Test
     @DisplayName("회차 생성 시에 회차 참여인원을 자동 생성한다.")
+    // Study 생성자에서 방장을 Participants에 추가함 => 해당 코드에서는 participants.size에 포함 안됨
     void getUserRound() {
         // given
-        userRepository.save(최규현);
-        studyRepository.save(알고리즘스터디);
+        Study 스터디 = studyRepository.findByStudyId(1L).get();
+        User 장재우 = userRepository.findByUserId(2L).get();
+        스터디.invite(장재우);
 
         // when
-        roundRepository.save(회차1);
+        Round 회차 = Round.builder()
+                .study(스터디)
+                .build();
+        roundRepository.save(회차);
 
         // then
-        assertAll(
-                () -> assertThat(회차1.getRoundParticipants().size()).isEqualTo(1),
-                () -> assertThat(회차1.getRoundParticipants()).contains(new RoundParticipant(최규현, 회차1))
-        );
+        softly.assertThat(회차.getRoundParticipants().size()).isEqualTo(1);
     }
 
     @Test
