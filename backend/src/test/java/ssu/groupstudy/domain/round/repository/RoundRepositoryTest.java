@@ -32,7 +32,7 @@ class RoundRepositoryTest{
     void getUserRound() {
         // given
         Study 스터디 = studyRepository.findById(1L).get();
-        User 장재우 = userRepository.findByUserId(2L).get();
+        User 장재우 = userRepository.findById(2L).get();
         스터디.invite(장재우);
 
         // when

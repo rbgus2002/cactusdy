@@ -25,7 +25,7 @@ public class StudyService {
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto) {
-        User hostUser = userRepository.findByUserId(dto.getHostUserId())
+        User hostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         return studyRepository.save(dto.toEntity(hostUser)).getStudyId();

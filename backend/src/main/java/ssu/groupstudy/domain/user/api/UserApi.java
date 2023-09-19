@@ -30,7 +30,7 @@ public class UserApi {
     @Operation(summary = "id를 통한 사용자 조회")
     @GetMapping("")
     public ResponseDto getUser(@RequestParam Long userId) {
-        UserInfoResponse user = userService.getUserByUserId(userId);
+        UserInfoResponse user = userService.getUser(userId);
         return DataResponseDto.of("user", user);
     }
 }

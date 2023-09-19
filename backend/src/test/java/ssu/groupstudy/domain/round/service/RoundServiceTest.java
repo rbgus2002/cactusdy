@@ -230,7 +230,7 @@ class RoundServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.empty()).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
@@ -245,7 +245,7 @@ class RoundServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.of(장재우)).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
@@ -258,7 +258,7 @@ class RoundServiceTest extends ServiceTest {
         void delete(){
             // given
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findByUserId(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
             roundService.deleteRound(-1L, -1L);

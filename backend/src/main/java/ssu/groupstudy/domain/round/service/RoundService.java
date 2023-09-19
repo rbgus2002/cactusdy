@@ -72,7 +72,7 @@ public class RoundService {
     public void deleteRound(long roundId, long userId) {
         Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         round.deleteRound(user);
     }

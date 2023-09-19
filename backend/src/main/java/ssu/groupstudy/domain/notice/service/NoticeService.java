@@ -39,7 +39,7 @@ public class NoticeService {
 
     @Transactional
     public Long createNotice(CreateNoticeRequest dto) {
-        User writer = userRepository.findByUserId(dto.getUserId())
+        User writer = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
@@ -51,7 +51,7 @@ public class NoticeService {
     public Character switchCheckNotice(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         return notice.switchCheckNotice(user);
@@ -95,7 +95,7 @@ public class NoticeService {
     public NoticeInfoResponse getNoticeById(Long noticeId, Long userId){
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         Long commentCount = commentRepository.countCommentByNotice(notice);
 
