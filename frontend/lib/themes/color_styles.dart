@@ -9,6 +9,7 @@ class ColorStyles {
   static const Color shadow = Color(0x80808080);
 
   static const Color taskTextColor = Colors.black87;
+  static const Color taskHintTextColor = Colors.black54;
 
   static const Color lightGrey = Color(0xfff4f4f4);
   static const Color grey = Color(0xffE8E8E8);

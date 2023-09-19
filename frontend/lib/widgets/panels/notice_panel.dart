@@ -72,7 +72,7 @@ class _NoticePanel extends State<NoticePanel> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(TimeUtility.timeToString(widget.noticeSummary.createDate)),
+                Text(TimeUtility.getElapsedTime(widget.noticeSummary.createDate)),
                 Text("작성자 : ${widget.noticeSummary.writerNickname ?? "익명"}"),
               ],
             )

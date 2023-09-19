@@ -70,6 +70,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
       child: SizeTransition(
         sizeFactor: animation,
         child: RoundInfoWidget(
+          studyId: widget.studyId,
           roundNum: _roundNum,
           round: _rounds[index],
         ),
@@ -87,8 +88,8 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
 
   void addNewRound() {
     if (_isInit) {
-      _rounds.insert(0, Round(roundId: 0,
-
+      _rounds.insert(0, Round(
+        roundId: Round.nonAllocatedRoundId,
       ));
     }
   }

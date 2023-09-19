@@ -10,6 +10,7 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
+import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/round_info_list_widget.dart';
@@ -95,7 +96,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<CircleButton> userImages = snapshot.data!.map((e) =>
-              CircleButton(child: null, onTap: (){},
+              CircleButton(child: null, onTap: () => UserProfileDialog.showProfileDialog(context, e.userId),
                   scale: 42),).toList();
 
           return CircleButtonList(circleButtons: userImages, paddingVertical: 5,);

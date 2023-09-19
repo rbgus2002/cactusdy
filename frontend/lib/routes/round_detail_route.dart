@@ -12,6 +12,7 @@ import 'package:group_study_app/widgets/title_widget.dart';
 class RoundDetailRoute extends StatefulWidget {
   int roundNum = 1;
   int roundId = 1;
+  final int studyId = 1; // FIXME
 
   RoundDetailRoute({
     super.key,
@@ -62,6 +63,7 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
                   Panel(
                     boxShadows: Design.basicShadows,
                     child: RoundInfoWidget(
+                      studyId: widget.studyId,
                       roundNum: widget.roundNum,
                       round: snapshot.data!,
                     ),
