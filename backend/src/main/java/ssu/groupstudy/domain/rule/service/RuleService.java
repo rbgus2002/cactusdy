@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -23,7 +24,7 @@ public class RuleService {
     public Long createRule(CreateRuleRequest dto) {
         Study study = studyRepository.findByStudyId(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
-        return ruleRepository.save(dto.toEntity(study)).getRuleId();
+        Rule rule = dto.toEntity(study);
+        return ruleRepository.save(rule).getRuleId();
     }
 }
