@@ -29,7 +29,8 @@ class StudyDetailRoute extends StatefulWidget {
 class _StudyDetailRoute extends State<StudyDetailRoute> {
   late Future<List<ParticipantSummary>> userList;
   late Future<Study> study;
-  int studyId = 1; //< FIXME
+  final int studyId = Test.testStudy.studyId; //< FIXME
+  final int userId = Test.testUser.userId;
 
 
   // is this right?
@@ -63,7 +64,7 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
             // Notice
             TitleWidget(title: "NOTICE", icon: AppIcons.chevronRight,
               onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute())),
-            NoticeSummaryPanel(noticeId: studyId,),
+            NoticeSummaryPanel(noticeId: studyId),
             Design.padding15,
 
             //

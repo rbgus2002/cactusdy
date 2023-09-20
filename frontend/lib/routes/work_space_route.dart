@@ -63,11 +63,14 @@ class _WorkSpaceRoute extends State<WorkSpaceRoute> {
                   child: NoticePanel(
                     noticeSummary: NoticeSummary(
                         noticeId: 1213,
+                        readCount: 0,
+                        read: false,
                         writerNickname: "Aaa",
                     title: "[공지] 내일까지 적당히 긴 제목 만들어 오기",
                     createDate: DateTime.now(),
                     pinYn: true,
-                    contents: "적당히 긴 내용 뭐가 있을까"),
+                    contents: "적당히 긴 내용 뭐가 있을까",
+                    commentCount: 3),
                   ),
                 )
               ],
