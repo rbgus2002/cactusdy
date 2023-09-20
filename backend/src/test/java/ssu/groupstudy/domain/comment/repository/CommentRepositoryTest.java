@@ -61,7 +61,7 @@ class CommentRepositoryTest{
         Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
 
         // when
-        Long 댓글개수 = commentRepository.countCommentByNotice(공지사항);
+        int 댓글개수 = commentRepository.countCommentByNotice(공지사항);
         
         // then
         softly.assertThat(댓글개수).isEqualTo(4);

@@ -112,4 +112,8 @@ public class Notice extends BaseEntity {
     public void deleteNotice(){
         this.deleteYn = 'Y';
     }
+
+    public int countReadNotices(){
+        return this.checkNotices.size();
+    }
 }

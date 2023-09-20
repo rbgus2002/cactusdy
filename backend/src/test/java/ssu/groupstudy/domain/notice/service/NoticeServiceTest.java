@@ -146,17 +146,32 @@ class NoticeServiceTest extends ServiceTest {
     }
 
     @Nested
-    class getNoticeList{
+    class getNoticeSummaryList{
         @Test
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
-        void fail_studyNotFound(){
+        void studyNotFound(){
             // given
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaryList(-1L))
+            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("사용자가 존재하지 않는 경우 예외를 던진다")
+        void userNotFound(){
+            // given
+            // when
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(USER_NOT_FOUND.getMessage());
+
         }
         @Test
         @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
@@ -167,7 +182,7 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(1L).when(commentRepository).countCommentByNotice(any(Notice.class));
 
             // when
-            List<NoticeSummary> noticeList = noticeService.getNoticeSummaryList(-1L);
+            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, -1L);
 
             // then
             assertThat(noticeList.size()).isEqualTo(4);

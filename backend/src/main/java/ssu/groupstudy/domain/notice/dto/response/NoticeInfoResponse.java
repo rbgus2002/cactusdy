@@ -16,14 +16,14 @@ public class NoticeInfoResponse {
     private String contents;
     private String writerNickname;
     private Long writerId;
-    private boolean isRead;
+    private boolean read;
 
     private int checkNoticeCount;
-    private Long commentCount;
+    private int commentCount;
 
     private LocalDateTime createDate;
 
-    private NoticeInfoResponse(Notice notice, User user, Long commentCount) {
+    private NoticeInfoResponse(Notice notice, User user, int commentCount) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -32,10 +32,10 @@ public class NoticeInfoResponse {
         this.writerNickname = notice.getWriter().getNickname();
         this.writerId = notice.getWriter().getUserId();
         this.commentCount = commentCount;
-        this.isRead = notice.isRead(user);
+        this.read = notice.isRead(user);
     }
 
-    public static NoticeInfoResponse of(Notice notice, User user, Long commentCount){
+    public static NoticeInfoResponse of(Notice notice, User user, int commentCount){
         return new NoticeInfoResponse(notice, user, commentCount);
     }
 }

@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     @Column
     private String statusMessage;
     
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)

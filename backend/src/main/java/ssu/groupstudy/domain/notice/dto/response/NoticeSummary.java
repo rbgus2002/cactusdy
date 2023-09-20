@@ -14,9 +14,11 @@ public class NoticeSummary {
     private String writerNickname;
     private char pinYn;
     private LocalDateTime createDate;
-    private Long commentCount;
+    private int commentCount;
+    private int readCount;
+    private boolean read;
 
-    private NoticeSummary(Notice notice, Long commentCount) {
+    private NoticeSummary(Notice notice, int commentCount, int readCount, boolean isRead) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -24,14 +26,25 @@ public class NoticeSummary {
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
         this.commentCount = commentCount;
+        this.readCount = readCount;
+        this.read = isRead;
+    }
+
+    private NoticeSummary(Notice notice) {
+        this.noticeId = notice.getNoticeId();
+        this.title = notice.getTitle();
+        this.contents = notice.getContents();
+        this.writerNickname = notice.getWriter().getNickname();
+        this.pinYn = notice.getPinYn();
+        this.createDate = notice.getCreateDate();;
     }
 
     public static NoticeSummary from(Notice notice){
-        return new NoticeSummary(notice, null);
+        return new NoticeSummary(notice);
     }
 
-    public static NoticeSummary of(Notice notice, Long commentCount){
-        return new NoticeSummary(notice, commentCount);
+    public static NoticeSummary of(Notice notice, int commentCount, int readCount, boolean isRead){
+        return new NoticeSummary(notice, commentCount, readCount, isRead);
     }
 }
 

@@ -20,6 +20,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class NoticeService {
     }
 
     @Transactional
-    public Character switchCheckNotice(Long noticeId, Long userId){
+    public Character switchCheckNotice(Long noticeId, Long userId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findById(userId)
@@ -57,13 +58,25 @@ public class NoticeService {
         return notice.switchCheckNotice(user);
     }
 
-    public List<NoticeSummary> getNoticeSummaryList(Long studyId) {
+    public List<NoticeSummary> getNoticeSummaries(Long studyId, Long userId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
-        return noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study).stream()
-                .map(notice -> NoticeSummary.of(notice, commentRepository.countCommentByNotice(notice)))
-                .collect(Collectors.toList());
+        return transformNoticeSummaries(study, user);
+    }
+
+    private List<NoticeSummary> transformNoticeSummaries(Study study, User user) {
+        List<Notice> notices = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study);
+        List<NoticeSummary> noticeSummaries = new ArrayList<>();
+        for (Notice notice : notices) {
+            int commentCount = commentRepository.countCommentByNotice(notice);
+            int readCount = notice.countReadNotices();
+            boolean isRead = notice.isRead(user);
+            noticeSummaries.add(NoticeSummary.of(notice, commentCount, readCount, isRead));
+        }
+        return noticeSummaries;
     }
 
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
@@ -82,7 +95,7 @@ public class NoticeService {
         return notice.switchPin();
     }
 
-    public List<String> getCheckUserImageList(Long noticeId){
+    public List<String> getCheckUserImageList(Long noticeId) {
         Set<CheckNotice> checkNotices = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 .getCheckNotices();
@@ -92,12 +105,12 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId){
+    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        Long commentCount = commentRepository.countCommentByNotice(notice);
+        int commentCount = commentRepository.countCommentByNotice(notice);
 
         return NoticeInfoResponse.of(notice, user, commentCount);
     }
