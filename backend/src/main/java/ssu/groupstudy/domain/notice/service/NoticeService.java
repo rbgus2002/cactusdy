@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
+import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
-import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -20,7 +20,6 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,14 +68,16 @@ public class NoticeService {
 
     private List<NoticeSummary> transformNoticeSummaries(Study study, User user) {
         List<Notice> notices = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study);
-        List<NoticeSummary> noticeSummaries = new ArrayList<>();
-        for (Notice notice : notices) {
-            int commentCount = commentRepository.countCommentByNotice(notice);
-            int readCount = notice.countReadNotices();
-            boolean isRead = notice.isRead(user);
-            noticeSummaries.add(NoticeSummary.of(notice, commentCount, readCount, isRead));
-        }
-        return noticeSummaries;
+        return notices.stream()
+                .map(notice -> createNoticeSummary(notice, user))
+                .collect(Collectors.toList());
+    }
+
+    private NoticeSummary createNoticeSummary(Notice notice, User user) {
+        int commentCount = commentRepository.countCommentByNotice(notice);
+        int readCount = notice.countReadNotices();
+        boolean isRead = notice.isRead(user);
+        return NoticeSummary.of(notice, commentCount, readCount, isRead);
     }
 
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
