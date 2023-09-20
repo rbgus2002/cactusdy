@@ -178,8 +178,9 @@ class NoticeServiceTest extends ServiceTest {
         void success(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
-            doReturn(1L).when(commentRepository).countCommentByNotice(any(Notice.class));
+            doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
 
             // when
             List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, -1L);
