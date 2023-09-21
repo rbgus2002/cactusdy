@@ -6,6 +6,8 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
@@ -89,6 +91,7 @@ public class ServiceTest {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
                 .email("rbgus200@naver.com")
+                .password("password")
                 .nickname("규규")
                 .phoneModel("")
                 .picture("")
@@ -96,6 +99,7 @@ public class ServiceTest {
         장재우SignUpRequest = SignUpRequest.builder()
                 .name("장재우")
                 .email("arkady@naver.com")
+                .password("password")
                 .nickname("킹적화")
                 .phoneModel("")
                 .picture("")
@@ -103,9 +107,10 @@ public class ServiceTest {
     }
 
     private void initUser() {
-        최규현 = 최규현SignUpRequest.toEntity();
+        final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        최규현 = 최규현SignUpRequest.toEntity(passwordEncoder);
         ReflectionTestUtils.setField(최규현, "userId", 1L);
-        장재우 = 장재우SignUpRequest.toEntity();
+        장재우 = 장재우SignUpRequest.toEntity(passwordEncoder);
         ReflectionTestUtils.setField(장재우, "userId", 2L);
     }
 

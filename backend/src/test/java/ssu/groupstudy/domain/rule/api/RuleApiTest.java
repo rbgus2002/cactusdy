@@ -2,37 +2,17 @@ package ssu.groupstudy.domain.rule.api;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.service.RuleService;
-import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.global.ResultCode;
-import ssu.groupstudy.global.dto.DataResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
-
-import java.nio.charset.StandardCharsets;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class RuleApiTest {
@@ -70,9 +50,9 @@ class RuleApiTest {
                 .build();
     }
 
-    private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser());
-    }
+//    private Study getStudy() {
+//        return getRegisterStudyRequest().toEntity(getUser());
+//    }
 
 
     private SignUpRequest getSignUpRequest() {
@@ -85,9 +65,9 @@ class RuleApiTest {
                 .build();
     }
 
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
+//    private User getUser() {
+//        return getSignUpRequest().toEntity();
+//    }
 
 
 //    @Nested
