@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.user.dto.request;
 
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.validation.constraints.Email;
@@ -21,19 +22,17 @@ public class SignUpRequest {
     @NotBlank(message = "이메일을 입력하세요")
     private String email;
 
-    public User toEntity(){
+    @NotBlank(message = "비밀번호를 입력하세요")
+    private String password;
+
+    public User toEntity(PasswordEncoder passwordEncoder){
         return User.builder()
                 .name(this.name)
                 .nickname(this.nickname)
                 .phoneModel(this.phoneModel)
                 .picture(this.picture)
                 .email(this.email)
+                .password(passwordEncoder.encode(this.password))
                 .build();
-    }
-
-    public SignUpRequest(String name, String nickname, String email) {
-        this.name = name;
-        this.nickname = nickname;
-        this.email = email;
     }
 }

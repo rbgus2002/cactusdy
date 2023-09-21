@@ -2,15 +2,20 @@ package ssu.groupstudy.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.security.JwtProvider;
 
 @Service
 @RequiredArgsConstructor
@@ -18,13 +23,18 @@ import ssu.groupstudy.global.ResultCode;
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Transactional
-    public Long signUp(SignUpRequest dto){
-        if(userRepository.existsByEmail(dto.getEmail())){
+    public Long signUp(SignUpRequest request){
+        if(userRepository.existsByEmail(request.getEmail())){
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
-        return userRepository.save(dto.toEntity()).getUserId();
+        User user = request.toEntity(passwordEncoder);
+        user.setAuthority("ROLE_USER");
+        
+        return userRepository.save(user).getUserId();
     }
 
     public UserInfoResponse getUser(long userId) {
@@ -32,5 +42,15 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         return UserInfoResponse.from(user);
+    }
+
+    public SignInResponse signIn(SignInRequest request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 이메일 입니다."));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("잘못된 비밀번호입니다.");
+        }
+
+        return SignInResponse.of(user, jwtProvider.createToken(user.getEmail(), user.getAuthority()));
     }
 }
