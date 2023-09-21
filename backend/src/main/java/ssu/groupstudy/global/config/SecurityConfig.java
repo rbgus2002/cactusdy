@@ -56,19 +56,16 @@ public class SecurityConfig {
                 // Spring Security 세션 정책 : 세션을 생성 및 사용하지 않음
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                // 조건별로 요청 허용/제한 설정
+
                 .authorizeRequests()
-                // 회원가입과 로그인은 모두 승인
-                .antMatchers("/auth/**", "/api-docs", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll() // FIXME
-                // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                .antMatchers("/notices/**").hasRole("USER")
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/api-docs", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
+                .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().denyAll()
                 .and()
-                // JWT 인증 필터 적용
+
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                // 에러 핸들링
+
                 .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler() {
                     @Override
@@ -90,7 +87,6 @@ public class SecurityConfig {
                         response.getWriter().write("인증되지 않은 사용자입니다.");
                     }
                 });
-
         return http.build();
     }
 
