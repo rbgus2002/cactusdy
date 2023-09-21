@@ -67,20 +67,17 @@ public class Notice extends BaseEntity {
     }
 
     public char switchPin(){
-        if(pinYn == 'N'){
-            pin();
-        }else{
-            unpin();
-        }
-        return this.pinYn;
+        return (pinYn == 'N') ? pin() : unpin();
     }
 
-    private void pin(){
+    private char pin(){
         pinYn = 'Y';
+        return pinYn;
     }
 
-    private void unpin(){
+    private char unpin(){
         pinYn = 'N';
+        return pinYn;
     }
 
     private void validateUserInStudy(Study study, User user) {
