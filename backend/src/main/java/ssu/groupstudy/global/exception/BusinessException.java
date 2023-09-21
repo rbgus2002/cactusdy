@@ -6,7 +6,6 @@ import ssu.groupstudy.global.ResultCode;
 
 @Getter
 public class BusinessException extends RuntimeException {
-
     private ResultCode resultCode;
 
     @Builder

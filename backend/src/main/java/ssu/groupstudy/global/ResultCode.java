@@ -18,15 +18,20 @@ public enum ResultCode {
     INVALID_TYPE(400, "잘못된 타입입니다."),
     INVALID_JSON(400, "request 정보를 읽을 수 없습니다."),
     INVALID_COLOR(400, "잘못된 색상 입력입니다."),
+    INVALID_LOGIN(400, "잘못된 아이디 혹은 비밀번호입니다."),
+    INVALID_EMAIL(400, "잘못된 아이디입니다."),
+    INVALID_PASSWORD(400, "잘못된 비밀번호입니다."),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "방장은 스터디에 탈퇴할 수 없습니다."),
     INVALID_TASK_ACCESS(400, "본인이 생성한 태스크만 접근이 가능합니다"),
     HOST_USER_ONLY_CAN_DELETE_ROUND(400, "방장만 회차를 삭제할 수 있습니다."),
 
+    // 401,
+    UNAUTHORIZED(401, "인증되지 않은 사용자입니다."),
 
-
-
+    // 403
+    FORBIDDEN(403, "권한이 없는 사용자입니다."),
 
     // 404
     USER_NOT_FOUND(404, "존재하지 않는 사용자입니다."),
