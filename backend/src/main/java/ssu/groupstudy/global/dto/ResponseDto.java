@@ -19,4 +19,13 @@ public class ResponseDto {
     public static ResponseDto success(){
         return new ResponseDto(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
     }
+
+    @Override
+    public String toString() {
+        return "{\n" +
+                "  \"success\": " + success +
+                ",\n  \"statusCode\": " + statusCode +
+                ",\n  \"message\": \"" + message + "\"" +
+                "\n}";
+    }
 }

@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import ssu.groupstudy.domain.auth.security.jwt.JwtAuthenticationFilter;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.dto.ErrorResponseDto;
+import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -70,21 +73,21 @@ public class SecurityConfig {
                 .accessDeniedHandler(new AccessDeniedHandler() {
                     @Override
                     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                        // 권한 문제가 발생했을 때 이 부분을 호출한다.
-                        response.setStatus(403);
+                        ResponseDto dto = ErrorResponseDto.of(ResultCode.FORBIDDEN);
+                        response.setStatus(dto.getStatusCode());
                         response.setCharacterEncoding("utf-8");
                         response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("권한이 없는 사용자입니다.");
+                        response.getWriter().write(dto.toString());
                     }
                 })
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
                     @Override
                     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                        // 인증문제가 발생했을 때 이 부분을 호출한다.
-                        response.setStatus(401);
+                        ResponseDto dto = ErrorResponseDto.of(ResultCode.UNAUTHORIZED);
+                        response.setStatus(dto.getStatusCode());
                         response.setCharacterEncoding("utf-8");
                         response.setContentType("text/html; charset=UTF-8");
-                        response.getWriter().write("인증되지 않은 사용자입니다.");
+                        response.getWriter().write(dto.toString());
                     }
                 });
         return http.build();
