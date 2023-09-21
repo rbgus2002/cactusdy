@@ -69,7 +69,7 @@ public class TaskService {
 
     private Long handlePersonalTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
         Task task = Task.of(detail, taskType, roundParticipant);
-        return taskRepository.save(task).getTaskId();
+        return taskRepository.save(task).getId();
     }
 
     @Transactional

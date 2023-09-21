@@ -19,7 +19,7 @@ public class TaskResponse {
         this.userId = roundParticipant.getUser().getUserId();
         this.tasks = roundParticipant.getTasks().stream()
                 .sorted(Comparator.comparing(Task::getTaskType)
-                        .thenComparing(Task::getTaskId))
+                        .thenComparing(Task::getId))
                 .map(TaskDto::from)
                 .collect(Collectors.toList());
     }

@@ -12,7 +12,7 @@ public class TaskDto {
     private String detail;
 
     private TaskDto(Task task) {
-        this.taskId = task.getTaskId();
+        this.taskId = task.getId();
         this.doneYn = task.getDoneYn();
         this.taskType = task.getTaskType();
         this.detail = task.getDetail();
