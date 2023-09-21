@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.login.service;
+package ssu.groupstudy.domain.auth.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,9 +16,9 @@ import ssu.groupstudy.global.ResultCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
-class LoginServiceTest extends ServiceTest {
+class AuthServiceTest extends ServiceTest {
     @InjectMocks
-    private LoginService loginService;
+    private AuthService authService;
     @Mock
     private UserRepository userRepository;
     @Spy
@@ -33,7 +33,7 @@ class LoginServiceTest extends ServiceTest {
             doReturn(true).when(userRepository).existsByEmail(any(String.class));
 
             // when, then
-            softly.assertThatThrownBy(() -> loginService.signUp(최규현SignUpRequest))
+            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest))
                     .isInstanceOf(EmailExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_EMAIL.getMessage());
         }
@@ -46,7 +46,7 @@ class LoginServiceTest extends ServiceTest {
             doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
-            final Long userId = loginService.signUp(최규현SignUpRequest);
+            final Long userId = authService.signUp(최규현SignUpRequest);
 
             // then
             softly.assertThat(userId).isNotNull();

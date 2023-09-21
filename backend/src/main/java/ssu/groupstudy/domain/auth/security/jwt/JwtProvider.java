@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.login.security.jwt;
+package ssu.groupstudy.domain.auth.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ssu.groupstudy.domain.login.service.CustomUserDetailService;
+import ssu.groupstudy.domain.auth.service.CustomUserDetailService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;

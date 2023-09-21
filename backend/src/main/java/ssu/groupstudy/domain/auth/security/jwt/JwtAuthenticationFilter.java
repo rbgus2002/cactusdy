@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.login.security.jwt;
+package ssu.groupstudy.domain.auth.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

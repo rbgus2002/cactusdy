@@ -16,8 +16,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import ssu.groupstudy.domain.login.security.jwt.JwtAuthenticationFilter;
-import ssu.groupstudy.domain.login.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.auth.security.jwt.JwtAuthenticationFilter;
+import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +59,7 @@ public class SecurityConfig {
                 // 조건별로 요청 허용/제한 설정
                 .authorizeRequests()
                 // 회원가입과 로그인은 모두 승인
-                .antMatchers("/register", "/login", "/api-docs", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll() // FIXME
+                .antMatchers("/auth/**", "/api-docs", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll() // FIXME
                 // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용

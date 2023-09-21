@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.login.api;
+package ssu.groupstudy.domain.auth.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ssu.groupstudy.domain.login.service.LoginService;
+import ssu.groupstudy.domain.auth.service.AuthService;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.SignInResponse;
@@ -17,23 +17,23 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping
+@RequestMapping("/auth")
 @RequiredArgsConstructor
-@Tag(name = "Login", description = "로그인 API")
-public class LoginApi {
-    private final LoginService loginService;
+@Tag(name = "Auth", description = "인증 API")
+public class AuthApi {
+    private final AuthService authService;
 
     @Operation(summary = "회원가입")
-    @PostMapping("/register")
-    public ResponseDto register(@Valid @RequestBody SignUpRequest dto) {
-        Long userId = loginService.signUp(dto);
+    @PostMapping("/signUp")
+    public ResponseDto signUp(@Valid @RequestBody SignUpRequest dto) {
+        Long userId = authService.signUp(dto);
         return DataResponseDto.of("userId", userId);
     }
 
-    @Operation(summary = "로그인")
-    @PostMapping("/login")
-    public ResponseDto login(@Valid @RequestBody SignInRequest request){
-        SignInResponse signInResponse = loginService.signIn(request);
+    @Operation(summary = "로그인", description = "로그인 시에 토큰을 발급한다.")
+    @PostMapping("/signIn")
+    public ResponseDto signIn(@Valid @RequestBody SignInRequest request){
+        SignInResponse signInResponse = authService.signIn(request);
         return DataResponseDto.of("loginUser", signInResponse);
     }
 }

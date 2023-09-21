@@ -1,11 +1,11 @@
-package ssu.groupstudy.domain.login.service;
+package ssu.groupstudy.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.login.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -17,7 +17,7 @@ import ssu.groupstudy.global.ResultCode;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class LoginService {
+public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
