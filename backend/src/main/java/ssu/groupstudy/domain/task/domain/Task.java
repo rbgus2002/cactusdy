@@ -59,4 +59,19 @@ public class Task{
     public void setDetail(String detail){
         this.detail = detail;
     }
+
+    public char switchDoneYn(){
+        return (doneYn == 'N') ? checkTask() : uncheckTask();
+    }
+
+    private char checkTask() {
+        doneYn = 'Y';
+        return doneYn;
+    }
+
+    private char uncheckTask() {
+        doneYn = 'N';
+        return doneYn;
+    }
+
 }

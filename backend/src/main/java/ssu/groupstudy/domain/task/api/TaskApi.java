@@ -48,4 +48,12 @@ public class TaskApi {
         taskService.updateTaskDetail(request);
         return ResponseDto.success();
     }
+
+    @Operation(summary = "태스크 수행 여부 변경", description = "태스크 수행 여부를 체크하거나 언체크한다")
+    @PatchMapping("/check")
+    public ResponseDto switchTask(@RequestParam Long taskId, @RequestParam Long roundParticipantId){
+        char doneYn = taskService.switchTask(taskId, roundParticipantId);
+        return DataResponseDto.of("doneYn", doneYn);
+    }
+
 }

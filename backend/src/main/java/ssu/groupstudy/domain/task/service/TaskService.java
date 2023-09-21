@@ -82,4 +82,15 @@ public class TaskService {
 
         task.setDetail(request.getDetail());
     }
+
+    @Transactional
+    public char switchTask(Long taskId, Long roundParticipantId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        task.validateAccess(roundParticipant);
+
+        return task.switchDoneYn();
+    }
 }
