@@ -63,9 +63,10 @@ public class RoundParticipant {
         this.statusTag = StatusTag.valueOf(statusTag);
     }
 
-    public void createTask(String detail, TaskType type){
+    public Task createTask(String detail, TaskType type){
         Task task = Task.of(detail, type, this);
         tasks.add(task);
+        return task;
     }
 }
 

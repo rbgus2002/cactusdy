@@ -11,5 +11,13 @@ public enum TaskType {
     ;
 
     private final String detail;
+
+    public boolean isGroup(){
+        return this == GROUP;
+    }
+
+    public boolean isPersonal(){
+        return this == PERSONAL;
+    }
 }
 

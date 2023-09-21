@@ -28,11 +28,11 @@ public class TaskApi {
         return DataResponseDto.of("tasks", tasks);
     }
 
-    @Operation(summary = "태스크 생성", description = "그룹 혹은 개인 태스크를 생성한다. 그룹 태스크 생성 시에 회차 참여자들 모두에게 태스크가 할당된다. (GROUP / PERSONAL)")
+    @Operation(summary = "태스크 생성", description = "groupType이 PERSONAL이면 taskId를 반환한다. groupType이 GROUP이면 taskId를 null로 반환하고 회차 참여자 모두에게 태스크를 할당한다")
     @PostMapping
     public ResponseDto createTask(@Valid @RequestBody CreateTaskRequest request){
-        taskService.createTask(request);
-        return ResponseDto.success();
+        Long taskId = taskService.createTask(request);
+        return DataResponseDto.of("taskId", taskId);
     }
 
     @Operation(summary = "태스크 삭제", description = "태스크를 완전히 삭제한다. (삭제 여부 플래그 존재X)")

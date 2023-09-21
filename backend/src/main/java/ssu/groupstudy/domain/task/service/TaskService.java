@@ -43,22 +43,33 @@ public class TaskService {
     }
 
     @Transactional
-    public void createTask(CreateTaskRequest request) {
+    public Long createTask(CreateTaskRequest request) {
         RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         String detail = request.getDetail();
         TaskType taskType = request.getTaskType();
 
-        handleTaskCreation(roundParticipant, detail, taskType);
+        return handleTaskCreation(roundParticipant, detail, taskType);
     }
 
-    private void handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        if(taskType == TaskType.GROUP){
-            Round round = roundParticipant.getRound();
-            round.createGroupTaskForAll(detail, taskType);
+    private Long handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Long taskId = null;
+        if(taskType.isGroup()){
+            handleGroupTaskCreation(roundParticipant, detail, taskType);
         }else{
-            roundParticipant.createTask(detail, taskType);
+            taskId = handlePersonalTaskCreation(roundParticipant, detail, taskType);
         }
+        return taskId;
+    }
+
+    private void handleGroupTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Round round = roundParticipant.getRound();
+        round.createGroupTaskForAll(detail, taskType);
+    }
+
+    private Long handlePersonalTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Task task = Task.of(detail, taskType, roundParticipant);
+        return taskRepository.save(task).getTaskId();
     }
 
     @Transactional

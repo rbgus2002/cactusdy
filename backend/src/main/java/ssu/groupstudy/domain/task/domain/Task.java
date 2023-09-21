@@ -18,6 +18,7 @@ import static ssu.groupstudy.global.ResultCode.INVALID_TASK_ACCESS;
 public class Task{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     private Long taskId;
 
     @Column(nullable = false, length = 200)
