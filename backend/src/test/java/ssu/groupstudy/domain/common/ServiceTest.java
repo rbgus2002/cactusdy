@@ -107,7 +107,7 @@ public class ServiceTest {
     }
 
     private void initUser() {
-        final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         최규현 = 최규현SignUpRequest.toEntity(passwordEncoder);
         ReflectionTestUtils.setField(최규현, "userId", 1L);
         장재우 = 장재우SignUpRequest.toEntity(passwordEncoder);
