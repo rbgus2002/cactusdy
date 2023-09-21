@@ -34,7 +34,6 @@ public class JwtProvider {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
-    // 토큰 생성
     public String createToken(String account, String role) {
         Claims claims = Jwts.claims().setSubject(account);
         claims.put("roles", Collections.singletonList(role));
@@ -47,24 +46,19 @@ public class JwtProvider {
                 .compact();
     }
 
-    // 권한정보 획득
-    // Spring Security 인증과정에서 권한확인을 위한 기능
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 토큰에 담겨있는 유저 account 획득
     public String getEmail(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Authorization Header를 통해 인증을 한다.
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
 
-    // 토큰 검증
     public boolean validateToken(String token) {
         try {
             // Bearer 검증
