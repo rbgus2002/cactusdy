@@ -8,6 +8,9 @@ class NoticeSummary {
   final String contents;
   final String writerNickname;
   final DateTime createDate;
+  final int commentCount;
+  int readCount;
+  bool read;
   bool pinYn;
 
   NoticeSummary({
@@ -16,6 +19,9 @@ class NoticeSummary {
     required this.contents,
     required this.writerNickname,
     required this.createDate,
+    required this.commentCount,
+    required this.readCount,
+    required this.read,
     required this.pinYn,
   });
 
@@ -26,6 +32,9 @@ class NoticeSummary {
       contents: json['contents'],
       writerNickname: json['writerNickname'],
       createDate: DateTime.parse(json['createDate']),
+      commentCount: json['commentCount']??0,
+      readCount: json['readCount'],
+      read: json['read'],
       pinYn: (json['pinYn'] == 'Y'),
     );
   }
@@ -52,15 +61,15 @@ class NoticeSummary {
     }
   }
 
-  static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId) async {
+  static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId, int userId) async {
     final response = await http.get(
-        Uri.parse('${DatabaseService.serverUrl}notices/list?studyId=$studyId')
+        Uri.parse('${DatabaseService.serverUrl}notices/list?studyId=$studyId&userId=$userId')
     );
 
     if (response.statusCode != DatabaseService.SUCCESS_CODE) {
       throw Exception("Failed to load data");
     } else {
-      print("Notices successfully");
+      print("successfully get Notice Summary List");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeList'];
 
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();

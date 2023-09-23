@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
-import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
-import ssu.groupstudy.domain.task.dto.TaskResponse;
+import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.service.TaskService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -28,11 +28,11 @@ public class TaskApi {
         return DataResponseDto.of("tasks", tasks);
     }
 
-    @Operation(summary = "태스크 생성", description = "그룹 혹은 개인 태스크를 생성한다. 그룹 태스크 생성 시에 회차 참여자들 모두에게 태스크가 할당된다. (GROUP / PERSONAL)")
+    @Operation(summary = "태스크 생성", description = "groupType이 PERSONAL이면 taskId를 반환한다. groupType이 GROUP이면 taskId를 null로 반환하고 회차 참여자 모두에게 태스크를 할당한다")
     @PostMapping
     public ResponseDto createTask(@Valid @RequestBody CreateTaskRequest request){
-        taskService.createTask(request);
-        return ResponseDto.success();
+        Long taskId = taskService.createTask(request);
+        return DataResponseDto.of("taskId", taskId);
     }
 
     @Operation(summary = "태스크 삭제", description = "태스크를 완전히 삭제한다. (삭제 여부 플래그 존재X)")
@@ -48,4 +48,12 @@ public class TaskApi {
         taskService.updateTaskDetail(request);
         return ResponseDto.success();
     }
+
+    @Operation(summary = "태스크 수행 여부 변경", description = "태스크 수행 여부를 체크하거나 언체크한다")
+    @PatchMapping("/check")
+    public ResponseDto switchTask(@RequestParam Long taskId, @RequestParam Long roundParticipantId){
+        char doneYn = taskService.switchTask(taskId, roundParticipantId);
+        return DataResponseDto.of("doneYn", doneYn);
+    }
+
 }

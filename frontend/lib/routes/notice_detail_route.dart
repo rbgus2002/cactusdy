@@ -294,15 +294,15 @@ class _NoticeBody extends StatelessWidget {
           style: TextStyles.titleMedium,
           textAlign: TextAlign.justify,
         ),
-        Design.padding5,
+        Design.padding3,
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(TimeUtility.getElapsedTime(notice.createDate),
-              style: TextStyles.bodySmall,),
+              style: TextStyles.bodyMedium,),
             Text('$_writerText : ${notice.writerNickname}',
-              style: TextStyles.bodySmall,),
+              style: TextStyles.bodyMedium,),
           ],
         ),
         Design.padding10,

@@ -220,12 +220,12 @@ public class ServiceTest {
                 .taskType(TaskType.GROUP)
                 .roundParticipant(회차1_최규현)
                 .build();
-        ReflectionTestUtils.setField(그룹태스크, "taskId", 19L);
+        ReflectionTestUtils.setField(그룹태스크, "id", 19L);
         개인태스크 = Task.builder()
                 .detail("개인태스크 detail")
                 .taskType(TaskType.PERSONAL)
                 .roundParticipant(회차1_최규현)
                 .build();
-        ReflectionTestUtils.setField(개인태스크, "taskId", 20L);
+        ReflectionTestUtils.setField(개인태스크, "id", 20L);
     }
 }

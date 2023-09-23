@@ -18,7 +18,8 @@ import static ssu.groupstudy.global.ResultCode.INVALID_TASK_ACCESS;
 public class Task{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long taskId;
+    @Column(name = "task_id")
+    private Long id;
 
     @Column(nullable = false, length = 200)
     private String detail;
@@ -58,5 +59,27 @@ public class Task{
 
     public void setDetail(String detail){
         this.detail = detail;
+    }
+
+    public char switchDoneYn(){
+        return (doneYn == 'N') ? checkTask() : uncheckTask();
+    }
+
+    private char checkTask() {
+        doneYn = 'Y';
+        return doneYn;
+    }
+
+    private char uncheckTask() {
+        doneYn = 'N';
+        return doneYn;
+    }
+
+    public boolean isGroupTask(){
+        return taskType.isGroupType();
+    }
+
+    public boolean isPersonalTask(){
+        return taskType.isPersonalType();
     }
 }

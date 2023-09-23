@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
@@ -32,7 +33,6 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const double _padding = 2;
   static const double _boarderRadius = _height + 2 * _padding;
   static const int _showCountMax = 5;
-  static const int _duration = 1;
 
   List<CircleButton> _checkerImages = [];
   double _width = 0;
@@ -65,7 +65,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
             AnimatedContainer(
               padding: const EdgeInsets.fromLTRB(_padding, 0, 0, 0),
               width: _width,
-              duration: Duration(seconds: _duration),
+              duration: AnimationSetting.animationDuration,
               curve: Curves.fastOutSlowIn,
 
               child: CircleButtonList(circleButtons: _checkerImages, paddingVertical: _padding * 2),
@@ -91,8 +91,10 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
     // Call API and Verify State
     Notice.switchCheckNotice(widget.noticeId, widget.user.userId).then((value) {
       if (value != widget.isChecked) {
-        (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
-        widget.isChecked = value;
+        setState(() {
+          (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
+          widget.isChecked = value;
+        });
       }
     });
 

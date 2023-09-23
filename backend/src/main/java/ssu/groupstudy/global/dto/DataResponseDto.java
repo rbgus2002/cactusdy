@@ -5,8 +5,6 @@ import ssu.groupstudy.global.ResultCode;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 public class DataResponseDto<T> extends ResponseDto {
@@ -22,7 +20,8 @@ public class DataResponseDto<T> extends ResponseDto {
     }
 
     private Map<String, T> stringToMap(String key, T data) {
-        return Stream.of(Map.entry(key, data))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<String, T> map = new HashMap<>();
+        map.put(key, data);
+        return map;
     }
 }

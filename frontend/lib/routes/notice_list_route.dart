@@ -10,6 +10,7 @@ import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
 class NoticeListRoute extends StatefulWidget {
   final int studyId = Test.testStudy.studyId;
+  final int userId = Test.testUser.userId;
 
   NoticeListRoute({super.key});
 
@@ -24,11 +25,11 @@ class _NoticeListRoute extends State<NoticeListRoute> {
   @override
   void initState() {
     super.initState();
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
   }
 
   Future<void> updateNotices() async {
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
   }
 
   @override

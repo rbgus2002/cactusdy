@@ -11,9 +11,9 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
-import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
-import ssu.groupstudy.domain.task.dto.TaskResponse;
+import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
 
@@ -43,22 +43,33 @@ public class TaskService {
     }
 
     @Transactional
-    public void createTask(CreateTaskRequest request) {
+    public Long createTask(CreateTaskRequest request) {
         RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         String detail = request.getDetail();
         TaskType taskType = request.getTaskType();
 
-        handleTaskCreation(roundParticipant, detail, taskType);
+        return handleTaskCreation(roundParticipant, detail, taskType);
     }
 
-    private void handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        if(taskType == TaskType.GROUP){
-            Round round = roundParticipant.getRound();
-            round.createGroupTaskForAll(detail, taskType);
+    private Long handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Long taskId = null;
+        if(taskType.isGroupType()){
+            handleGroupTaskCreation(roundParticipant, detail, taskType);
         }else{
-            roundParticipant.createTask(detail, taskType);
+            taskId = handlePersonalTaskCreation(roundParticipant, detail, taskType);
         }
+        return taskId;
+    }
+
+    private void handleGroupTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Round round = roundParticipant.getRound();
+        round.createGroupTaskForAll(detail, taskType);
+    }
+
+    private Long handlePersonalTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Task task = Task.of(detail, taskType, roundParticipant);
+        return taskRepository.save(task).getId();
     }
 
     @Transactional
@@ -81,5 +92,16 @@ public class TaskService {
         task.validateAccess(roundParticipant);
 
         task.setDetail(request.getDetail());
+    }
+
+    @Transactional
+    public char switchTask(Long taskId, Long roundParticipantId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
+        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
+        task.validateAccess(roundParticipant);
+
+        return task.switchDoneYn();
     }
 }
