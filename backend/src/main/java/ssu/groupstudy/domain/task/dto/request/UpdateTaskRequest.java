@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.task.dto;
+package ssu.groupstudy.domain.task.dto.request;
 
 import lombok.*;
 

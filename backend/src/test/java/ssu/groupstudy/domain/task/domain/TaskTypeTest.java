@@ -15,8 +15,8 @@ class TaskTypeTest {
     void isGroupTask(){
         // given
         // when
-        boolean 그룹 = groupTask.isGroup();
-        boolean 그룹_아님 = personalTask.isGroup();
+        boolean 그룹 = groupTask.isGroupType();
+        boolean 그룹_아님 = personalTask.isGroupType();
 
         // then
         assertTrue(그룹);
@@ -28,8 +28,8 @@ class TaskTypeTest {
     void isPersonalTask(){
         // given
         // when
-        boolean 개인 = personalTask.isPersonal();
-        boolean 개인_아님 = groupTask.isPersonal();
+        boolean 개인 = personalTask.isPersonalType();
+        boolean 개인_아님 = groupTask.isPersonalType();
 
         // then
         assertTrue(개인);

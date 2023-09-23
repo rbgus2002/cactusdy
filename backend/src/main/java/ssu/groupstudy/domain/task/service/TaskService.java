@@ -11,9 +11,9 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
-import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
-import ssu.groupstudy.domain.task.dto.TaskResponse;
+import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
 
@@ -54,7 +54,7 @@ public class TaskService {
 
     private Long handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
         Long taskId = null;
-        if(taskType.isGroup()){
+        if(taskType.isGroupType()){
             handleGroupTaskCreation(roundParticipant, detail, taskType);
         }else{
             taskId = handlePersonalTaskCreation(roundParticipant, detail, taskType);

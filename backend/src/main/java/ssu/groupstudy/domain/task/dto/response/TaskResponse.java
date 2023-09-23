@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.task.dto;
+package ssu.groupstudy.domain.task.dto.response;
 
 import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
@@ -17,7 +17,8 @@ public class TaskResponse {
     private Long userId;
     private String nickName;
     private Double taskProgress; // TODO : 태스크 진행율 구현 예정
-    private List<TaskDto> tasks;
+    private List<TaskInfo> groupTasks;
+    private List<TaskInfo> personalTasks;
 
     private TaskResponse(RoundParticipant roundParticipant) {
         this.roundParticipantId = roundParticipant.getId();
@@ -28,10 +29,17 @@ public class TaskResponse {
         this.nickName = user.getNickname();
 
         this.taskProgress = 0.7;
-        this.tasks = roundParticipant.getTasks().stream()
-                .sorted(Comparator.comparing(Task::getTaskType)
+        this.groupTasks = roundParticipant.getTasks().stream()
+                .filter(Task::isGroupTask)
+                .sorted(Comparator.comparing(Task::getDoneYn)
                         .thenComparing(Task::getId))
-                .map(TaskDto::from)
+                .map(TaskInfo::from)
+                .collect(Collectors.toList());
+        this.personalTasks = roundParticipant.getTasks().stream()
+                .filter(Task::isPersonalTask)
+                .sorted(Comparator.comparing(Task::getDoneYn)
+                        .thenComparing(Task::getId))
+                .map(TaskInfo::from)
                 .collect(Collectors.toList());
     }
 

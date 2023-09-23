@@ -11,8 +11,8 @@ import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.task.dto.CreateTaskRequest;
-import ssu.groupstudy.domain.task.dto.UpdateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
 
