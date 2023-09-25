@@ -9,6 +9,7 @@ import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/routes/work_space_route.dart';
+import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 void main() {
@@ -55,7 +56,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StudyDetailRoute()),
+                        builder: (context) => StudyDetailRoute(studyId: Test.testStudy.studyId,)),
                   );
                 }, child: const Text('Study Detail Screen')
                 , style: ElevatedButton.styleFrom(

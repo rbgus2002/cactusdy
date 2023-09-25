@@ -28,13 +28,13 @@ class _TaskWidget extends State<TaskWidget> {
 
   @override
   void initState() {
-    _textEditingController = TextEditingController(text: widget.task.text);
+    _textEditingController = TextEditingController(text: widget.task.detail);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.task.text??"";
+    _textEditingController.text = widget.task.detail??"";
     return SizeTransition(
       sizeFactor: widget.animation,
       child: SizedBox(

@@ -61,8 +61,9 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${widget.roundNum}", style: TextStyles.titleBig),
-                const Text(_roundText, style: TextStyles.titleSmall,)
+                Text("${widget.roundNum}", style: TextStyles.numberTextStyle),
+                const Text(_roundText, style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 2)),
               ]
             ),
             Design.padding10,
@@ -109,6 +110,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             children: [
               // Place
               TextField(
+                maxLength: Round.placeMaxLength,
                 maxLines: 1,
                 style: TextStyles.roundTextStyle,
 
@@ -120,6 +122,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                   enabled: _isEditable,
                   contentPadding: EdgeInsets.zero,
                   disabledBorder: InputBorder.none,
+                  counterText: "",
                 ),
                 onChanged: (value) { _isEdited = true; },
                 onTapOutside: (event) { updatePlace(); },

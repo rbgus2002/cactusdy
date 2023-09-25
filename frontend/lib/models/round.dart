@@ -10,12 +10,13 @@ import 'package:intl/intl.dart';
 class Round {
   // string length limits
   static const detailMaxLength = 100;
+  static const placeMaxLength = 30;
 
   // state code
   static const int nonAllocatedRoundId = -1;
 
   int roundId;
-  String? studyPlace;
+  String studyPlace;
   DateTime? studyTime;
   bool? isPlanned;
   String? detail;
@@ -24,7 +25,7 @@ class Round {
 
   Round({
     required this.roundId,
-    this.studyPlace,
+    this.studyPlace = "",
     this.studyTime,
     this.isPlanned,
     this.detail,

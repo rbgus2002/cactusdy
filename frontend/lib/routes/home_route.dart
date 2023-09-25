@@ -3,7 +3,6 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/panels/study_group_panel.dart';
-import 'package:group_study_app/widgets/line_profiles/user_line_profile.dart';
 import 'package:group_study_app/widgets/line_profiles/user_line_profile_widget.dart';
 
 class HomeRoute extends StatefulWidget {
@@ -51,9 +50,9 @@ class _HomeRoute extends State<HomeRoute> {
             ),
 
             Design.padding10,
-            StudyGroupPanel(),
-            StudyGroupPanel(),
-            StudyGroupPanel(),
+            StudyGroupPanel(studyId: 1,),
+            StudyGroupPanel(studyId: 1,),
+            //StudyGroupPanel(),
           ],
         ),
       ),

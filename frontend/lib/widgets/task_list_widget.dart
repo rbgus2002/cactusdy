@@ -74,12 +74,13 @@ class _TaskListWidget extends State<TaskListWidget> {
               if (_groupTaskListModel.length > 0) {
                 return AnimatedList(
                   key: _groupTaskListKey,
-                    shrinkWrap: true,
-                    primary: false,
-                    scrollDirection:  Axis.vertical,
+                  shrinkWrap: true,
+                  primary: false,
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
 
-                    initialItemCount: _groupTaskListModel.length,
-                    itemBuilder: _buildGroupTask,
+                  initialItemCount: _groupTaskListModel.length,
+                  itemBuilder: _buildGroupTask,
                 );
               }
             }
@@ -89,7 +90,7 @@ class _TaskListWidget extends State<TaskListWidget> {
         ),
         Design.padding10,
 
-        TitleWidget(title: _personalTitle, icon: AppIcons.add),
+        const TitleWidget(title: _personalTitle, icon: AppIcons.add),
         FutureBuilder(
           future: _personalTaskList,
           builder: (context, snapshot) {
@@ -101,6 +102,7 @@ class _TaskListWidget extends State<TaskListWidget> {
                   key: _personalTaskListKey,
                   shrinkWrap: true,
                   primary: false,
+                  padding: EdgeInsets.zero,
                   scrollDirection:  Axis.vertical,
 
                   initialItemCount: _personalTaskListModel.length,
@@ -116,17 +118,6 @@ class _TaskListWidget extends State<TaskListWidget> {
     );
   }
 
-  /*
-  Widget _buildRemovedItem(
-      int item, BuildContext context, Animation<double> animation) {
-    return TaskWidget(
-      index: item,
-      animation: animation,
-      task: _personalTaskListModel[item],
-      // No gesture detector here: we don't want removed items to be interactive.
-    );
-  }
-   */
 
   Widget _buildGroupTask(
       BuildContext context, int index, Animation<double> animation) {
