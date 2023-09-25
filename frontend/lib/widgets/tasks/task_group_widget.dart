@@ -28,7 +28,9 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
   @override
   void initState() {
     super.initState();
-    _taskListModel = ListModel(listKey: _taskListKey, initialItems: widget.taskGroup.tasks);
+    _taskListModel = ListModel<Task>(
+        listKey: _taskListKey,
+        initialItems: widget.taskGroup.tasks);
   }
 
   @override
@@ -40,19 +42,19 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
           TitleWidget(title: widget.taskGroup.taskType, icon: AppIcons.add,
             onTap: () {
               _taskListModel.add(Task());
+              setState(() { });
             },),
 
-          if (_taskListModel.length > 0)
-            AnimatedList(
-              key: _taskListKey,
-              shrinkWrap: true,
-              primary: false,
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
+          AnimatedList(
+            key: _taskListKey,
+            shrinkWrap: true,
+            primary: false,
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
 
-              initialItemCount: _taskListModel.length,
-              itemBuilder: _buildTask,
-            ),
+            initialItemCount: _taskListModel.length,
+            itemBuilder: _buildTask,
+          ),
 
           if (_taskListModel.length <= 0)
             const Text(_taskEmptyMessage),

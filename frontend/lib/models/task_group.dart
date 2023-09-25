@@ -9,7 +9,7 @@ class TaskGroup {
   TaskGroup({
     required this.roundParticipantId,
     required this.taskType,
-    required this.tasks,
+    this.tasks = const [],
   });
 
   factory TaskGroup.fromJson(Map<String, dynamic> json) {
