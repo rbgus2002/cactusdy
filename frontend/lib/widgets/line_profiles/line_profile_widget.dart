@@ -3,7 +3,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class LineProfileWidget extends StatelessWidget {
-  final CircleButton circleButton;
+  final Widget circleButton;
   final Widget topWidget;
   final Widget bottomWidget;
   final IconButton? iconButton;

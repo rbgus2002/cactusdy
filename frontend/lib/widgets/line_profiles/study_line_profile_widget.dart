@@ -10,7 +10,7 @@ import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
 
 class StudyLineProfileWidget extends StatelessWidget {
   static const double _scale = 50; //60
-  static const double _stroke = 3;
+  static const double _stroke = 4;
 
   final int studyId;
   final Widget? bottomWidget;

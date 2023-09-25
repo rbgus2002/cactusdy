@@ -37,6 +37,10 @@ class ParticipantInfo {
       tasks: (json['personalTasks'] as List).map((t) => Task.fromJson(t)).toList(),
     );
 
+    print(personalTasks.taskType);
+    print(personalTasks.tasks);
+    print(personalTasks);
+
     return ParticipantInfo(
       participant: participant,
       taskProgress: taskProgress,

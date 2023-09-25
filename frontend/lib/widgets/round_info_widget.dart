@@ -7,6 +7,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
@@ -82,23 +83,17 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
         CircleButtonList(
           circleButtons: widget.round.roundParticipantInfos.map((r) {
-            Color color = _getColor(r.taskProgress);
+            Color outlineColor = Util.progressToColor(r.taskProgress);
 
             return PercentCircleButton(
               image: null, //< FIXME
-              percentInfos: [ PercentInfo(percent: r.taskProgress, color: color)], scale: 42,
+              scale: 42,
+              percentInfos: [ PercentInfo(percent: r.taskProgress, color: outlineColor)],
               onTap: () => UserProfileDialog.showProfileDialog(context, r.userId),//< FIXME
           ); }).toList(),
         )
       ],
     );
-  }
-
-  Color _getColor(double taskProgress) {
-    Color color = (taskProgress > 0.8)? ColorStyles.green :
-    (taskProgress > 0.5)? ColorStyles.orange : ColorStyles.red;
-
-    return color;
   }
 
   Widget _studyTimeAndPlace() {
