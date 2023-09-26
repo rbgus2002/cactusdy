@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
@@ -64,11 +63,6 @@ public class Round extends BaseEntity {
 
     public void updateDetail(String detail){
         this.detail = detail;
-    }
-
-    public void createGroupTaskForAll(String detail, TaskType type){
-        roundParticipants.stream()
-                .forEach(roundParticipant -> roundParticipant.createTask(detail, type));
     }
 
     public void deleteRound(User user){
