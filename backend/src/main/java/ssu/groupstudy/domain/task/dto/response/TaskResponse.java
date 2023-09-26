@@ -16,6 +16,7 @@ public class TaskResponse {
     private StatusTag statusTag;
     private Long userId;
     private String nickName;
+    private String profileImage;
     private Double taskProgress; // TODO : 태스크 진행율 구현 예정
     private List<TaskInfo> groupTasks;
     private List<TaskInfo> personalTasks;
@@ -27,6 +28,7 @@ public class TaskResponse {
         User user = roundParticipant.getUser();
         this.userId = user.getUserId();
         this.nickName = user.getNickname();
+        this.profileImage = user.getPicture();
 
         this.taskProgress = 0.7;
         this.groupTasks = roundParticipant.getTasks().stream()
