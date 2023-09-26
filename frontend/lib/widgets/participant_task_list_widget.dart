@@ -25,15 +25,22 @@ class ParticipantTaskListWidget extends StatelessWidget {
         ),
         Design.padding10,
 
-        TaskGroupWidget(
-          taskGroup: participantInfo.groupTasks,
-        ),
-        Design.padding10,
-
-        TaskGroupWidget(
-          taskGroup: participantInfo.personalTasks,
-        ),
+        ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            padding: EdgeInsets.zero,
+            
+            itemCount: participantInfo.taskGroups.length,
+            itemBuilder: _buildTaskGroup,
+        )
       ],
+    );
+  }
+
+  Widget _buildTaskGroup(BuildContext context, int index) {
+    return Container(
+      padding: Design.bottom15,
+      child: TaskGroupWidget(taskGroup: participantInfo.taskGroups[index])
     );
   }
 }

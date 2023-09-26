@@ -12,11 +12,13 @@ class TaskGroup {
     this.tasks = const [],
   });
 
-  factory TaskGroup.fromJson(Map<String, dynamic> json) {
+  factory TaskGroup.fromJson(Map<String, dynamic> json, int roundParticipantId) {
+    print(json);
+
     return TaskGroup(
-        roundParticipantId: json['roundParticipantId'],
+        roundParticipantId: roundParticipantId,
         taskType: json['taskType'],
-        tasks: json['tasks']
+        tasks: (json['tasks'] as List).map((t) => Task.fromJson(t)).toList(),
     );
   }
 }

@@ -5,13 +5,11 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 
 class TaskWidget extends StatefulWidget {
-  //final int index;
   final Task task;
   final Animation<double> animation;
 
   TaskWidget({
     super.key,
-    //required this.index,
     required this.task,
     required this.animation,
   });
@@ -59,7 +57,7 @@ class _TaskWidget extends State<TaskWidget> {
 
                     //< FIXME
                     // Call API and Verify State
-                    Task.switchIsDone(widget.task.taskId, widget.task.isDone);
+                    //Task.switchIsDone(widget.task.taskId, widget.task.isDone);
                   },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
               ),

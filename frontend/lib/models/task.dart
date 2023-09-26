@@ -108,10 +108,19 @@ class Task {
     return personalTasks;
   }
 
-  //< FIXME : this is test module
-  static Future<bool> switchIsDone(int taskId, bool current) async {
+
+  static Future<bool> switchTask(int taskId, int roundParticipantId) async {
     if (taskId == nonAllocatedTaskId) { return false; }
 
-    return !current;
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}tasks/check?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception('Failed to switch check task');
+    } else {
+      String isChecked = json.decode(response.body)['data']['doneYn'];
+      return (isChecked == 'Y');
+    }
   }
 }
