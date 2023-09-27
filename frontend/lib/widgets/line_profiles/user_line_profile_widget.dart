@@ -30,7 +30,7 @@ class UserLineProfileWidget extends StatelessWidget {
       bottomWidget: Text(user.statusMessage, maxLines: 1, style: TextStyles.bodyMedium,
         textAlign: TextAlign.justify,),
 
-      iconButton: (user.userId != userId)? null : IconButton(
+      suffixWidget: (user.userId != userId)? null : IconButton(
         icon: AppIcons.edit,
         splashRadius: 16,
         padding: EdgeInsets.zero,

@@ -90,11 +90,8 @@ class Round {
     }
   }
 
-  static Future<bool> updateAppointment(Round round, int studyId) async {
-    // #Case : update new round -> create round
-    if (round.roundId == Round.nonAllocatedRoundId) {
-      return createRound(round, studyId);
-    }
+  static Future<bool> updateAppointment(Round round) async {
+    if (round.roundId == Round.nonAllocatedRoundId) return false;
 
     String? studyTime = (round.studyTime != null)?
       DateFormat('yyyy-MM-dd HH:mm').format(round.studyTime!) : null;
@@ -114,7 +111,7 @@ class Round {
       throw Exception("Failed to update round appointment");
     } else {
       bool success = json.decode(response.body)['success'];
-      if(success) print("SUCCESS!!"); //< FIXME
+      if(success) print("Success to update round appointment"); //< FIXME
       return success;
     }
   }

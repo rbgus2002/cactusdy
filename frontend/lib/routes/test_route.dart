@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
-import 'package:group_study_app/widgets/participant_task_list_widget.dart';
-import 'package:group_study_app/widgets/round_info_list_widget.dart';
-import 'package:group_study_app/widgets/task_list_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
 class TestRoute extends StatefulWidget {
   const TestRoute({super.key});

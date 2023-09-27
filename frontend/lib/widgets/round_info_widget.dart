@@ -13,17 +13,17 @@ import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
-import 'package:intl/intl.dart';
+
 
 class RoundInfoWidget extends StatefulWidget {
-  final int studyId;
   final int roundNum;
+  final Function onUpdateRound;
   Round round;
 
   RoundInfoWidget({
     super.key,
-    required this.studyId,
     required this.roundNum,
+    required this.onUpdateRound,
     required this.round,
   });
 
@@ -43,6 +43,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
   late final TextEditingController placeEditingController;
   bool _isEditable = false;
   bool _isEdited = false;
+
   @override
   void initState() {
     super.initState();
@@ -151,7 +152,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
     if (_isEditable) {
       if (_isEdited) {
         widget.round.studyPlace = placeEditingController.text;
-        Round.updateAppointment(widget.round, widget.studyId);
+        widget.onUpdateRound(widget.round);
         _isEdited = false;
       }
       _isEditable = false;
@@ -164,7 +165,8 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             (dateTime) {
               if (dateTime != null) {
                 widget.round.studyTime = dateTime;
-                Round.updateAppointment(widget.round, widget.studyId);
+                widget.onUpdateRound(widget.round);
+
                 widget.round.isPlanned = (dateTime.compareTo(DateTime.now()) > 0);
                 setState(() { });
               }

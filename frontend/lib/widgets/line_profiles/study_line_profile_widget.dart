@@ -38,7 +38,7 @@ class StudyLineProfileWidget extends StatelessWidget {
             bottomWidget: bottomWidget?? Text(snapshot.data!.detail,
               maxLines: 1, style: TextStyles.bodyMedium,),
 
-            iconButton: IconButton(
+            suffixWidget: IconButton(
               icon: AppIcons.edit,
               splashRadius: 16,
               padding: EdgeInsets.zero,

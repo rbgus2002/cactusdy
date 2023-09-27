@@ -12,7 +12,6 @@ import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
-import 'package:group_study_app/widgets/task_list_widget.dart';
 
 class StudyGroupPanel extends StatelessWidget {
   int studyId;
@@ -37,13 +36,13 @@ class StudyGroupPanel extends StatelessWidget {
                 bottomWidget: ParticipantProfileListWidget(studyId: studyId,
                   scale: 24, padding: 2,)),
             Design.padding10,
-            RoundInfoWidget(studyId: studyId, roundNum: 3, round: Test.testRound),
+            //RoundInfoWidget(roundNum: 3, round: Test.testRound),
             //ParticipantListWidget(studyId: studyId, scale: 26),
             Design.padding10,
             //RoundInformationWidget(round: Test.testRound),
 
-            TaskListWidget(
-                studyId: -1, roundId: -1, userId: -1),
+
+            // <FIXME : todo : add task List
           ],
         ),
         onTap: () { Util.pushRoute(context, (context) => StudyDetailRoute(studyId: studyId,)); },

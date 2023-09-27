@@ -78,9 +78,9 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
                             Panel(
                               boxShadows: Design.basicShadows,
                               child: RoundInfoWidget(
-                                studyId: widget.studyId,
                                 roundNum: widget.roundNum,
                                 round: snapshot.data!,
+                                onUpdateRound: Round.updateAppointment,
                               ),
                             ),
                             Design.padding15,
@@ -88,9 +88,8 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
                             // Detail Record
                             TitleWidget(
                               title: "Detail Record", icon: AppIcons.edit,
-                              onTap: () {
-                                _focusNode.requestFocus();
-                              },),
+                              onTap: () => _focusNode.requestFocus()
+                            ),
                             _detailRecord(),
                           ]
                       );

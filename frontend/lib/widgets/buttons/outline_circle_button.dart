@@ -19,8 +19,13 @@ class OutlineCircleButton extends CircleButton {
     super.onTap
   }) : super(
     key: key,
-    child: Stack(children: [
-      image ?? Image.asset(CircleButton.defaultImagePath),
-      Circle(color: color, scale: scale, stroke: stroke,),
-    ]),);
+    child: Stack(
+        alignment: Alignment.center,
+        children: [
+          image ?? Image.asset(CircleButton.defaultImagePath),
+          //Circle(color: Colors.grey, scale: scale, stroke: stroke,),
+          Circle(color: color, scale: scale, stroke: stroke,),
+        ]
+    ),
+  );
 }

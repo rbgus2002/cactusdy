@@ -42,7 +42,7 @@ class Task {
     }
   }
 
-  static Future<bool> createTask(int roundParticipantId, String taskType, Task task) async {
+  static Future<bool> createTask(Task task, String taskType, int roundParticipantId) async {
     Map<String, dynamic> data = {
       "roundParticipantId": roundParticipantId,
       "taskType": taskType,
@@ -64,6 +64,31 @@ class Task {
         task.taskId = responseJson['data']['taskId'];
         print("New Task is created successfully");
       }
+      return success;
+    }
+  }
+
+
+  static Future<bool> updateTaskDetail(Task task, int roundParticipantId) async {
+    if (task.taskId == Task.nonAllocatedTaskId) return false;
+
+    Map<String, dynamic> data = {
+      'taskId': task.taskId,
+      'roundParticipantId': roundParticipantId,
+      'detail': task.detail,
+    };
+
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}tasks?taskId=${task.taskId}&roundParticipantId=$roundParticipantId}'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception("Failed to update task detail");
+    } else {
+      bool success = json.decode(response.body)['success'];
+      if(success) print("Success to update task detail"); //< FIXME
       return success;
     }
   }
@@ -108,10 +133,19 @@ class Task {
     return personalTasks;
   }
 
-  //< FIXME : this is test module
-  static Future<bool> switchIsDone(int taskId, bool current) async {
+
+  static Future<bool> switchTask(int taskId, int roundParticipantId) async {
     if (taskId == nonAllocatedTaskId) { return false; }
 
-    return !current;
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}tasks/check?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+    );
+
+    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      throw Exception('Failed to switch check task');
+    } else {
+      String isChecked = json.decode(response.body)['data']['doneYn'];
+      return (isChecked == 'Y');
+    }
   }
 }
