@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rounds")
+@RequestMapping("/api/rounds")
 @RequiredArgsConstructor
 @Tag(name = "Round", description = "회차 API")
 public class RoundApi {

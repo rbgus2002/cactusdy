@@ -13,7 +13,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/studies")
+@RequestMapping("/api/studies")
 @RequiredArgsConstructor
 @Tag(name = "Study", description = "스터디 API")
 public class StudyApi {

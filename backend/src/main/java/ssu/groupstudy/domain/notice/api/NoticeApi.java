@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notices")
+@RequestMapping("/api/notices")
 @RequiredArgsConstructor
 @Tag(name = "Notice", description = "공지사항 API")
 public class NoticeApi {

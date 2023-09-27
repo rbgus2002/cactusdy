@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tasks")
+@RequestMapping("/api/tasks")
 @Tag(name = "Task", description = "할일 API")
 public class TaskApi {
     private final TaskService taskService;

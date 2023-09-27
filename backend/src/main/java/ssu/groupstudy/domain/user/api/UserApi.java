@@ -10,7 +10,7 @@ import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "사용자 API")
 @CrossOrigin(maxAge = 3600) // TODO : 삭제 여부 검토 (Flutter cors 에러 해결)

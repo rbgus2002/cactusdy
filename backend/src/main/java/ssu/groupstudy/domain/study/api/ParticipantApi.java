@@ -13,7 +13,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import java.util.List;
 
 @RestController
-@RequestMapping("/studies/participants")
+@RequestMapping("/api/studies/participants")
 @RequiredArgsConstructor
 @Tag(name = "Study Participants", description = "스터디 참여자 API")
 public class ParticipantApi {
