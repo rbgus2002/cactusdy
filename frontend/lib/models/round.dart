@@ -90,11 +90,8 @@ class Round {
     }
   }
 
-  static Future<bool> updateAppointment(Round round, int studyId) async {
-    // #Case : update new round -> create round
-    if (round.roundId == Round.nonAllocatedRoundId) {
-      return createRound(round, studyId);
-    }
+  static Future<bool> updateAppointment(Round round) async {
+    if (round.roundId == Round.nonAllocatedRoundId) return false;
 
     String? studyTime = (round.studyTime != null)?
       DateFormat('yyyy-MM-dd HH:mm').format(round.studyTime!) : null;

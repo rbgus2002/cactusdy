@@ -57,18 +57,36 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
     return Panel(
       boxShadows: Design.basicShadows,
       onTap: () {
-        Util.pushRoute(context, (context) =>
-            RoundDetailRoute(roundNum: roundNum, roundId: _roundListModel[index].roundId));
+        if (_roundListModel[index].roundId == Round.nonAllocatedRoundId) {
+          Round.createRound(_roundListModel[index], widget.studyId).then((value) =>
+              Util.pushRoute(context, (context) =>
+                  RoundDetailRoute(
+                      roundNum: roundNum, roundId: _roundListModel[index].roundId)));
+        }
+        else {
+          Util.pushRoute(context, (context) =>
+              RoundDetailRoute(
+                  roundNum: roundNum, roundId: _roundListModel[index].roundId));
+        }
       },
       child: SizeTransition(
         sizeFactor: animation,
         child: RoundInfoWidget(
-          studyId: widget.studyId,
           roundNum: roundNum,
           round: _roundListModel[index],
+          onUpdateRound: onUpdateRound,
         ),
       ),
     );
+  }
+
+  void onUpdateRound(Round round) {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      Round.createRound(round, widget.studyId);
+    }
+    else {
+      Round.updateAppointment(round);
+    }
   }
 
   Future<ListModel<Round>> getRound() async {

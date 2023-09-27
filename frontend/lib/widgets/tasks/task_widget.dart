@@ -7,13 +7,13 @@ import 'package:group_study_app/utilities/test.dart';
 class TaskWidget extends StatefulWidget {
   final Task task;
   final Animation<double> animation;
-  final Function updateTaskDetail;
+  final Function onUpdateTaskDetail;
 
   const TaskWidget({
     super.key,
     required this.task,
     required this.animation,
-    required this.updateTaskDetail,
+    required this.onUpdateTaskDetail,
   });
 
   @override
@@ -139,7 +139,7 @@ class _TaskWidget extends State<TaskWidget> {
     if (_isEditable) {
       if (_isEdited) {
         widget.task.detail = _textEditingController.text;
-        widget.updateTaskDetail(widget.task);
+        widget.onUpdateTaskDetail(widget.task);
         _isEdited = false;
       }
 

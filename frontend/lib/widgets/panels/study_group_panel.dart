@@ -36,7 +36,7 @@ class StudyGroupPanel extends StatelessWidget {
                 bottomWidget: ParticipantProfileListWidget(studyId: studyId,
                   scale: 24, padding: 2,)),
             Design.padding10,
-            RoundInfoWidget(studyId: studyId, roundNum: 3, round: Test.testRound),
+            //RoundInfoWidget(roundNum: 3, round: Test.testRound),
             //ParticipantListWidget(studyId: studyId, scale: 26),
             Design.padding10,
             //RoundInformationWidget(round: Test.testRound),

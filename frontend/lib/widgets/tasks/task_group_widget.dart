@@ -77,10 +77,10 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
     return TaskWidget(task: _taskListModel[index],
-      animation: animation, updateTaskDetail: updateTaskDetail,);
+      animation: animation, onUpdateTaskDetail: onUpdateTaskDetail,);
   }
 
-  void updateTaskDetail(Task task) {
+  void onUpdateTaskDetail(Task task) {
     if (task.taskId == Task.nonAllocatedTaskId) {
       Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
     }
