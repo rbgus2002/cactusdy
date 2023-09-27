@@ -60,6 +60,11 @@ public class TaskService {
         }
     }
 
+    private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+        Task task = Task.of(detail, taskType, roundParticipant);
+        return taskRepository.save(task).getId();
+    }
+
     private Long handleGroupTaskCreation(RoundParticipant taskCreator, String detail, TaskType taskType) {
         Round round = taskCreator.getRound();
 
@@ -67,22 +72,17 @@ public class TaskService {
         Long taskId = processTaskCreation(taskCreator, detail, taskType);
 
         // 다른 회차 참여자들 태스크 생성
-        processTasksCreationForOthers(taskCreator, detail, taskType, round);
+        processTaskCreationForOthers(taskCreator, detail, taskType, round);
 
         return taskId;
     }
 
-    private void processTasksCreationForOthers(RoundParticipant taskCreator, String detail, TaskType taskType, Round round) {
+    private void processTaskCreationForOthers(RoundParticipant taskCreator, String detail, TaskType taskType, Round round) {
         for (RoundParticipant roundParticipant : round.getRoundParticipants()) {
             if (!roundParticipant.equals(taskCreator)) {
                 roundParticipant.createTask(detail, taskType);
             }
         }
-    }
-
-    private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        Task task = Task.of(detail, taskType, roundParticipant);
-        return taskRepository.save(task).getId();
     }
 
     @Transactional
