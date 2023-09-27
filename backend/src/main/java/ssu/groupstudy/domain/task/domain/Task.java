@@ -78,4 +78,8 @@ public class Task{
     public boolean isSameTypeOf(TaskType type){
         return taskType.isSameTypeOf(type);
     }
+
+    public boolean isDone(){
+        return doneYn == 'Y';
+    }
 }

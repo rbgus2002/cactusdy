@@ -68,5 +68,12 @@ public class RoundParticipant {
         tasks.add(task);
         return task;
     }
+
+    public double calculateTaskProgress() {
+        long totalTaskCount = tasks.size();
+        long doneTaskCount = tasks.stream().filter(Task::isDone).count();
+        double progress = (double) doneTaskCount / totalTaskCount;
+        return Math.round(progress * 100.0) / 100.0;
+    }
 }
 

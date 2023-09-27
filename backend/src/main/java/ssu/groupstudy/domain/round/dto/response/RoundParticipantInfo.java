@@ -20,7 +20,7 @@ public class RoundParticipantInfo {
         this.userId = participant.getUser().getUserId();
         this.picture = participant.getUser().getPicture();
         this.statusTag = participant.getStatusTag();
-        this.taskProgress = 0.7;
+        this.taskProgress = participant.calculateTaskProgress();
     }
 
     public static RoundParticipantInfo from(RoundParticipant participant){

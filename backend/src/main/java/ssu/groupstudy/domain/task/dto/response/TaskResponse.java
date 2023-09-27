@@ -17,7 +17,7 @@ public class TaskResponse {
     private Long userId;
     private String nickname;
     private String profileImage;
-    private Double taskProgress; // TODO : 태스크 진행율 구현 예정
+    private Double taskProgress;
     private List<TaskGroups> taskGroups;
 
     private TaskResponse(RoundParticipant roundParticipant) {
@@ -29,7 +29,7 @@ public class TaskResponse {
         this.nickname = user.getNickname();
         this.profileImage = user.getPicture();
 
-        this.taskProgress = 0.7;
+        this.taskProgress = roundParticipant.calculateTaskProgress();
 
         taskGroups = Stream.of(TaskType.values())
                 .map(taskType -> TaskGroups.of(taskType, roundParticipant))
