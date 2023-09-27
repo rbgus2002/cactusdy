@@ -3,22 +3,22 @@ package ssu.groupstudy.domain.task.dto.response;
 import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
-import ssu.groupstudy.domain.task.domain.Task;
+import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class TaskResponse {
     private Long roundParticipantId;
     private StatusTag statusTag;
     private Long userId;
-    private String nickName;
-    private Double taskProgress; // TODO : 태스크 진행율 구현 예정
-    private List<TaskInfo> groupTasks;
-    private List<TaskInfo> personalTasks;
+    private String nickname;
+    private String profileImage;
+    private Double taskProgress;
+    private List<TaskGroups> taskGroups;
 
     private TaskResponse(RoundParticipant roundParticipant) {
         this.roundParticipantId = roundParticipant.getId();
@@ -26,20 +26,13 @@ public class TaskResponse {
 
         User user = roundParticipant.getUser();
         this.userId = user.getUserId();
-        this.nickName = user.getNickname();
+        this.nickname = user.getNickname();
+        this.profileImage = user.getPicture();
 
-        this.taskProgress = 0.7;
-        this.groupTasks = roundParticipant.getTasks().stream()
-                .filter(Task::isGroupTask)
-                .sorted(Comparator.comparing(Task::getDoneYn)
-                        .thenComparing(Task::getId))
-                .map(TaskInfo::from)
-                .collect(Collectors.toList());
-        this.personalTasks = roundParticipant.getTasks().stream()
-                .filter(Task::isPersonalTask)
-                .sorted(Comparator.comparing(Task::getDoneYn)
-                        .thenComparing(Task::getId))
-                .map(TaskInfo::from)
+        this.taskProgress = roundParticipant.calculateTaskProgress();
+
+        taskGroups = Stream.of(TaskType.values())
+                .map(taskType -> TaskGroups.of(taskType, roundParticipant))
                 .collect(Collectors.toList());
     }
 

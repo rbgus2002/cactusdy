@@ -75,11 +75,11 @@ public class Task{
         return doneYn;
     }
 
-    public boolean isGroupTask(){
-        return taskType.isGroupType();
+    public boolean isSameTypeOf(TaskType type){
+        return taskType.isSameTypeOf(type);
     }
 
-    public boolean isPersonalTask(){
-        return taskType.isPersonalType();
+    public boolean isDone(){
+        return doneYn == 'Y';
     }
 }

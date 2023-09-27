@@ -19,5 +19,9 @@ public enum TaskType {
     public boolean isPersonalType(){
         return this == PERSONAL;
     }
+
+    public boolean isSameTypeOf(TaskType type){
+        return this == type;
+    }
 }
 

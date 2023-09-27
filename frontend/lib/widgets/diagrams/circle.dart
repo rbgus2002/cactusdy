@@ -6,11 +6,11 @@ class Circle extends StatelessWidget {
   final double scale;
   final double stroke;
 
-  Circle({
+  const Circle({
     Key? key,
     required this.color,
     required this.scale,
-    this.stroke = 15,
+    this.stroke = 3,
   }) : super(key: key);
 
   @override

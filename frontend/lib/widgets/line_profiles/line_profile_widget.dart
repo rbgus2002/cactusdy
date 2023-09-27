@@ -3,17 +3,17 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class LineProfileWidget extends StatelessWidget {
-  final CircleButton circleButton;
+  final Widget circleButton;
   final Widget topWidget;
   final Widget bottomWidget;
-  final IconButton? iconButton;
+  final Widget? suffixWidget;
 
   const LineProfileWidget({
     super.key,
     required this.circleButton,
     required this.topWidget,
     required this.bottomWidget,
-    this.iconButton,
+    this.suffixWidget,
   });
 
   @override
@@ -39,8 +39,8 @@ class LineProfileWidget extends StatelessWidget {
           ),
         ),
 
-        if(iconButton != null)
-          iconButton!,
+        if(suffixWidget != null)
+          suffixWidget!,
       ],
     );
   }

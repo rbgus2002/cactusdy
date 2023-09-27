@@ -69,7 +69,7 @@ class CommentWidget extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(child: Text(comment.nickname, style: TextStyles.titleSmall)),
+                          Flexible(child: Text(comment.nickname, style: TextStyles.titleTiny)),
                           if (!comment.deleteYn)
                             SizedBox(
                               width: 18,

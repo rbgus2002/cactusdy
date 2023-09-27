@@ -7,22 +7,23 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
-import 'package:intl/intl.dart';
+
 
 class RoundInfoWidget extends StatefulWidget {
-  final int studyId;
   final int roundNum;
+  final Function onUpdateRound;
   Round round;
 
   RoundInfoWidget({
     super.key,
-    required this.studyId,
     required this.roundNum,
+    required this.onUpdateRound,
     required this.round,
   });
 
@@ -42,6 +43,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
   late final TextEditingController placeEditingController;
   bool _isEditable = false;
   bool _isEdited = false;
+
   @override
   void initState() {
     super.initState();
@@ -61,8 +63,9 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${widget.roundNum}", style: TextStyles.titleBig),
-                const Text(_roundText, style: TextStyles.titleSmall,)
+                Text("${widget.roundNum}", style: TextStyles.numberTextStyle),
+                const Text(_roundText, style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 2)),
               ]
             ),
             Design.padding10,
@@ -81,23 +84,17 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
         CircleButtonList(
           circleButtons: widget.round.roundParticipantInfos.map((r) {
-            Color color = _getColor(r.taskProgress);
+            Color outlineColor = Util.progressToColor(r.taskProgress);
 
             return PercentCircleButton(
               image: null, //< FIXME
-              percentInfos: [ PercentInfo(percent: r.taskProgress, color: color)], scale: 42,
+              scale: 42,
+              percentInfos: [ PercentInfo(percent: r.taskProgress, color: outlineColor)],
               onTap: () => UserProfileDialog.showProfileDialog(context, r.userId),//< FIXME
           ); }).toList(),
         )
       ],
     );
-  }
-
-  Color _getColor(double taskProgress) {
-    Color color = (taskProgress > 0.8)? ColorStyles.green :
-    (taskProgress > 0.5)? ColorStyles.orange : ColorStyles.red;
-
-    return color;
   }
 
   Widget _studyTimeAndPlace() {
@@ -109,6 +106,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             children: [
               // Place
               TextField(
+                maxLength: Round.placeMaxLength,
                 maxLines: 1,
                 style: TextStyles.roundTextStyle,
 
@@ -120,6 +118,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                   enabled: _isEditable,
                   contentPadding: EdgeInsets.zero,
                   disabledBorder: InputBorder.none,
+                  counterText: "",
                 ),
                 onChanged: (value) { _isEdited = true; },
                 onTapOutside: (event) { updatePlace(); },
@@ -153,7 +152,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
     if (_isEditable) {
       if (_isEdited) {
         widget.round.studyPlace = placeEditingController.text;
-        Round.updateAppointment(widget.round, widget.studyId);
+        widget.onUpdateRound(widget.round);
         _isEdited = false;
       }
       _isEditable = false;
@@ -166,7 +165,8 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             (dateTime) {
               if (dateTime != null) {
                 widget.round.studyTime = dateTime;
-                Round.updateAppointment(widget.round, widget.studyId);
+                widget.onUpdateRound(widget.round);
+
                 widget.round.isPlanned = (dateTime.compareTo(DateTime.now()) > 0);
                 setState(() { });
               }

@@ -46,7 +46,7 @@ class _NoticePanel extends State<NoticePanel> {
               children: [
                 Flexible(child:
                   Text(widget.noticeSummary.title,
-                    style: TextStyles.titleSmall,
+                    style: TextStyles.titleTiny,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

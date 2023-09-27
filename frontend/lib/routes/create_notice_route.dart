@@ -54,7 +54,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
               children: [
                 // [Title]
                 TextField(
-                  style: TextStyles.titleSmall,
+                  style: TextStyles.titleTiny,
                   maxLength: Notice.titleMaxLength,
                   decoration: const InputDecoration(
                     hintText: _titleHintMessage,

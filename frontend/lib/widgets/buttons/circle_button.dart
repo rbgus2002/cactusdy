@@ -24,7 +24,7 @@ class CircleButton extends StatelessWidget {
 
         child: Material(
           child: InkWell(
-            child: child ?? Image.asset(defaultImagePath),
+            child: child?? Image.asset(defaultImagePath), //< FIXME
             onTap: () {
               if (onTap != null) {
                 onTap!();

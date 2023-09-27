@@ -291,7 +291,7 @@ class _NoticeBody extends StatelessWidget {
       children: [
         // Title
         SelectableText(notice.title,
-          style: TextStyles.titleMedium,
+          style: TextStyles.titleSmall,
           textAlign: TextAlign.justify,
         ),
         Design.padding3,

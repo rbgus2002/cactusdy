@@ -10,12 +10,13 @@ import 'package:intl/intl.dart';
 class Round {
   // string length limits
   static const detailMaxLength = 100;
+  static const placeMaxLength = 30;
 
   // state code
   static const int nonAllocatedRoundId = -1;
 
   int roundId;
-  String? studyPlace;
+  String studyPlace;
   DateTime? studyTime;
   bool? isPlanned;
   String? detail;
@@ -24,7 +25,7 @@ class Round {
 
   Round({
     required this.roundId,
-    this.studyPlace,
+    this.studyPlace = "",
     this.studyTime,
     this.isPlanned,
     this.detail,
@@ -89,11 +90,8 @@ class Round {
     }
   }
 
-  static Future<bool> updateAppointment(Round round, int studyId) async {
-    // #Case : update new round -> create round
-    if (round.roundId == Round.nonAllocatedRoundId) {
-      return createRound(round, studyId);
-    }
+  static Future<bool> updateAppointment(Round round) async {
+    if (round.roundId == Round.nonAllocatedRoundId) return false;
 
     String? studyTime = (round.studyTime != null)?
       DateFormat('yyyy-MM-dd HH:mm').format(round.studyTime!) : null;
@@ -113,7 +111,7 @@ class Round {
       throw Exception("Failed to update round appointment");
     } else {
       bool success = json.decode(response.body)['success'];
-      if(success) print("SUCCESS!!"); //< FIXME
+      if(success) print("Success to update round appointment"); //< FIXME
       return success;
     }
   }

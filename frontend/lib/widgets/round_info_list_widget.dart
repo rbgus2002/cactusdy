@@ -23,23 +23,16 @@ class RoundInfoListWidget extends StatefulWidget {
 
 class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  late final Future<ListModel<Round>> _listModel;
-  late final ListModel<Round> _rounds;
+  late final ListModel<Round> _roundListModel;
   bool _isInit = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _listModel = getRound();
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _listModel,
+      future: getRound(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          _rounds = snapshot.data!;
+          _roundListModel = snapshot.data!;
           _isInit = true;
 
           return AnimatedList(
@@ -48,7 +41,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
             primary: false,
             scrollDirection: Axis.vertical,
 
-            initialItemCount: _rounds.length,
+            initialItemCount: _roundListModel.length,
             itemBuilder: _buildItem,
           );
         }
@@ -60,22 +53,40 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
 
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
-    int _roundNum = _rounds.length - index;
+    int roundNum = _roundListModel.length - index;
     return Panel(
       boxShadows: Design.basicShadows,
       onTap: () {
-        Util.pushRoute(context, (context) =>
-            RoundDetailRoute(roundNum: _roundNum, roundId: _rounds[index].roundId));
+        if (_roundListModel[index].roundId == Round.nonAllocatedRoundId) {
+          Round.createRound(_roundListModel[index], widget.studyId).then((value) =>
+              Util.pushRoute(context, (context) =>
+                  RoundDetailRoute(
+                      roundNum: roundNum, roundId: _roundListModel[index].roundId)));
+        }
+        else {
+          Util.pushRoute(context, (context) =>
+              RoundDetailRoute(
+                  roundNum: roundNum, roundId: _roundListModel[index].roundId));
+        }
       },
       child: SizeTransition(
         sizeFactor: animation,
         child: RoundInfoWidget(
-          studyId: widget.studyId,
-          roundNum: _roundNum,
-          round: _rounds[index],
+          roundNum: roundNum,
+          round: _roundListModel[index],
+          onUpdateRound: onUpdateRound,
         ),
       ),
     );
+  }
+
+  void onUpdateRound(Round round) {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      Round.createRound(round, widget.studyId);
+    }
+    else {
+      Round.updateAppointment(round);
+    }
   }
 
   Future<ListModel<Round>> getRound() async {
@@ -88,7 +99,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
 
   void addNewRound() {
     if (_isInit) {
-      _rounds.insert(0, Round(
+      _roundListModel.insert(0, Round(
         roundId: Round.nonAllocatedRoundId,
       ));
     }

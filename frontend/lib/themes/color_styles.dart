@@ -18,4 +18,6 @@ class ColorStyles {
   static const Color green = Colors.green;
   static const Color orange = Colors.orange;
   static const Color red = Colors.red;
+
+  static const Color deepPurpleAccent = Colors.deepPurpleAccent;
 }

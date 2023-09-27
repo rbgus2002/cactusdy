@@ -20,7 +20,7 @@ class TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Flexible(fit: FlexFit.tight,child: Text(title, style: TextStyles.titleMedium),),
+        Flexible(fit: FlexFit.tight,child: Text(title, style: TextStyles.titleSmall),),
         IconButton(
           icon: icon,
           splashRadius: 16,
