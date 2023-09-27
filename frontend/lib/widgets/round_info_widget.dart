@@ -43,6 +43,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
   late final TextEditingController placeEditingController;
   bool _isEditable = false;
   bool _isEdited = false;
+
   @override
   void initState() {
     super.initState();

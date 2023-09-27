@@ -114,7 +114,7 @@ class Round {
       throw Exception("Failed to update round appointment");
     } else {
       bool success = json.decode(response.body)['success'];
-      if(success) print("SUCCESS!!"); //< FIXME
+      if(success) print("Success to update round appointment"); //< FIXME
       return success;
     }
   }
