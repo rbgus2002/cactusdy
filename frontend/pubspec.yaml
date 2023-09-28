@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.6
 
   intl: ^0.17.0-1987
+  flutter_colorpicker: ^1.0.3
 
 
 dev_dependencies:

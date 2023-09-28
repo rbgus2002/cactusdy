@@ -5,6 +5,10 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Study {
+  // string length limits
+  static const int studyNameMaxLength = 30;
+  static const int studyDetailMaxLength = 40;
+
   final int studyId;
   final String studyName;
   final String detail;

@@ -68,7 +68,6 @@ class Task {
     }
   }
 
-
   static Future<bool> updateTaskDetail(Task task, int roundParticipantId) async {
     if (task.taskId == Task.nonAllocatedTaskId) return false;
 
@@ -92,6 +91,7 @@ class Task {
       return success;
     }
   }
+
 
 
   /*

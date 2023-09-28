@@ -92,8 +92,6 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           _writingCommentBox(),
         ],
       ),
-
-      bottomNavigationBar: BottomAppBar(),
     );
   }
 

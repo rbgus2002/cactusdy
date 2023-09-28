@@ -13,7 +13,7 @@ class ColorStyles {
 
   static const Color lightGrey = Color(0xfff4f4f4);
   static const Color grey = Color(0xffE8E8E8);
-  static const Color darkGrey = Color(0xff494949);
+  static const Color darkGrey = Color(0xff393939);
 
   static const Color green = Colors.green;
   static const Color orange = Colors.orange;

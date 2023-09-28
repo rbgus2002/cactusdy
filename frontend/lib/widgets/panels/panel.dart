@@ -9,8 +9,6 @@ class Panel extends StatelessWidget {
   final Function? onTap;
   final Widget? child;
 
-  final double? width;
-  final double? height;
   final double padding;
   final double marginBottom;
 
@@ -20,9 +18,6 @@ class Panel extends StatelessWidget {
     this.boxShadows,
     this.onTap,
     this.child,
-
-    this.width,
-    this.height,
     this.padding = Design.padding,
     this.marginBottom = 15,
   }) : super(key: key);
@@ -46,8 +41,6 @@ class Panel extends StatelessWidget {
       return Container(
         margin: EdgeInsets.only(bottom: marginBottom),
         child: Ink(
-          width: width,
-          height: height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Design.borderRadius),
             boxShadow: boxShadows,
