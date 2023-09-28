@@ -20,7 +20,6 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -34,8 +33,6 @@ import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
 @Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
-
-    private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final NoticeRepository noticeRepository;
     private final CommentRepository commentRepository;
