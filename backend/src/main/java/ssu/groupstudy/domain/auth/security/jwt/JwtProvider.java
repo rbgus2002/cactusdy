@@ -27,7 +27,7 @@ public class JwtProvider {
     @Value("${jwt.secret.key}")
     private String salt;
     private Key secretKey;
-    private final long exp = 1000L * 60 * 60;    // 만료시간 : 1 Hour
+    private final long exp = 1000L * 60 * 60 * 24;    // 만료시간 : 24 Hour
     private final CustomUserDetailService userDetailsService;
 
     @PostConstruct
