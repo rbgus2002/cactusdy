@@ -10,7 +10,18 @@ create table if not exists `user`
     nickname       varchar(255) not null,
     phone_model    varchar(255) null,
     picture        varchar(255) null,
-    status_message varchar(255) null
+    status_message varchar(255) null,
+    password       varchar(255) not null
+);
+
+create table if not exists authority
+(
+    authority_id bigint auto_increment
+        primary key,
+    role_name    varchar(255) null,
+    user_id      bigint       not null,
+    constraint FKr1wgeo077ok1nr1shx0t70tg8
+        foreign key (user_id) references `user` (user_id)
 );
 
 create table if not exists study
