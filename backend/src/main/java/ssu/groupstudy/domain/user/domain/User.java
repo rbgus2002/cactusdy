@@ -1,10 +1,18 @@
 package ssu.groupstudy.domain.user.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.EAGER;
 
 
 @Entity
@@ -30,8 +38,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String authority; // TODO : 추후 별도 테이블로 분리
+    @OneToMany(mappedBy = "user", fetch = EAGER, cascade = PERSIST)
+    private final List<Authority> roles = new ArrayList<>();
 
     @Column
     private String statusMessage;
@@ -58,8 +66,8 @@ public class User extends BaseEntity {
         this.statusMessage = "";
     }
 
-    public void setAuthority(String role){
-        this.authority = role;
+    public void addUserRole(){
+        roles.add(Authority.init(this));
     }
 }
 

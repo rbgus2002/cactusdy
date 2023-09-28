@@ -44,7 +44,7 @@ public class LoggingConfig {
         return retVal;
     }
 
-    @Around("execution(* ssu.groupstudy..*Service.*(..))")
+    @Around("execution(* ssu.groupstudy..*Service.*(..)) && !execution(* ssu.groupstudy..CustomUserDetailService.*(..))")
     public Object loggingInService(final ProceedingJoinPoint pjp) throws Throwable {
         Object retVal = null;
         final String formatClassMethod = MessageFormat.format(STR_CLASS_METHOD, pjp.getTarget().getClass().getSimpleName(), pjp.getSignature().getName(), this.getArgumentNames(pjp.getArgs()));

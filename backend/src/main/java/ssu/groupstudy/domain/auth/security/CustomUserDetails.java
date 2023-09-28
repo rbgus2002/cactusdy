@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ssu.groupstudy.domain.user.domain.User;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,7 +17,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getAuthority()));
+        return user.getRoles().stream()
+                .map(o -> new SimpleGrantedAuthority(o.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override

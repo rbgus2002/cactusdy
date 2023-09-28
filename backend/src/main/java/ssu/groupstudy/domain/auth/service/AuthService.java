@@ -28,7 +28,7 @@ public class AuthService {
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
         User user = request.toEntity(passwordEncoder);
-        user.setAuthority("ROLE_USER");
+        user.addUserRole();
 
         return userRepository.save(user).getUserId();
     }
@@ -40,6 +40,6 @@ public class AuthService {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
         }
 
-        return SignInResponse.of(user, jwtProvider.createToken(user.getEmail(), user.getAuthority()));
+        return SignInResponse.of(user, jwtProvider.createToken(user.getEmail(), user.getRoles()));
     }
 }
