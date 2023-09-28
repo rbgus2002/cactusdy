@@ -8,7 +8,6 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -28,12 +27,9 @@ public class StudyInviteService {
     }
 
     @Transactional
-    public void leaveUser(Long userId, Long studyId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+    public void leaveUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
         study.leave(user);
     }
 }

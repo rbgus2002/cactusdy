@@ -31,8 +31,8 @@ public class ParticipantApi {
 
     @Operation(summary = "스터디에서 회원 탈퇴")
     @DeleteMapping("/invite")
-    public ResponseDto leaveUser(@RequestParam Long userId, @RequestParam Long studyId){
-        studyInviteService.leaveUser(userId, studyId);
+    public ResponseDto leaveUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long studyId){
+        studyInviteService.leaveUser(userDetails.getUser(), studyId);
         return ResponseDto.success();
     }
 
