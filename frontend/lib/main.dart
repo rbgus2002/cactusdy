@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/login_route.dart';
+import 'package:group_study_app/routes/login_route_old.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
+import 'package:group_study_app/routes/signin_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/routes/work_space_route.dart';
@@ -142,7 +143,7 @@ class _MyApp extends State<MyApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => LoginTest()),
+                        builder: (context) => SignInRoute()),
                   );
                 }, style: ElevatedButton.styleFrom(
                     fixedSize: const Size(300, 50),

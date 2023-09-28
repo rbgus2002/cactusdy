@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
+@deprecated
 class LoginTest extends StatelessWidget {
   static const title = 'SnowDeer\'s Login Example';
   static const String defaultImageFile = 'assets/images/default_profile.png';

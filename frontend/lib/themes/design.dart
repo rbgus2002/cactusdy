@@ -16,6 +16,7 @@ class Design{
   static const SizedBox padding5 = SizedBox(width: 5, height: 5,);
   static const SizedBox padding10 = SizedBox(width: 10, height: 10,);
   static const SizedBox padding15 = SizedBox(width: 15, height: 15,);
+  static const SizedBox padding30 = SizedBox(width: 30, height: 30,);
 
   static const List<BoxShadow> basicShadows = [ BoxShadow(
       color: ColorStyles.shadow,
