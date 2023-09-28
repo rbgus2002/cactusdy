@@ -46,8 +46,8 @@ public class NoticeApi {
 
     @Operation(summary = "공지사항 목록 가져오기")
     @GetMapping("/list")
-    public ResponseDto getNoticeSummaryList(@RequestParam Long studyId, @RequestParam Long userId){
-        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaries(studyId, userId);
+    public ResponseDto getNoticeSummaryList(@RequestParam Long studyId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaries(studyId, userDetails.getUser());
         return DataResponseDto.of("noticeList", noticeSummaryList);
     }
 

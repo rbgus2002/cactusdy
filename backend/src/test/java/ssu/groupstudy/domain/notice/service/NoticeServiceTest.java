@@ -15,7 +15,6 @@ import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -28,7 +27,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
 
 
 class NoticeServiceTest extends ServiceTest {
@@ -124,36 +124,21 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
+            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, 최규현))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
-        @DisplayName("사용자가 존재하지 않는 경우 예외를 던진다")
-        void userNotFound(){
-            // given
-            // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(USER_NOT_FOUND.getMessage());
-
-        }
-        @Test
         @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
         void success(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
             doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
 
             // when
-            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, -1L);
+            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, 최규현);
 
             // then
             assertThat(noticeList.size()).isEqualTo(4);
