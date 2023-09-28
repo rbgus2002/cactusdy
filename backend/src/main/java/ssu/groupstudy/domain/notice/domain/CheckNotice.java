@@ -40,11 +40,11 @@ public class CheckNotice {
             return false;
 
         final CheckNotice that = (CheckNotice) o;
-        return Objects.equals(notice, that.notice) && Objects.equals(user, that.user);
+        return Objects.equals(notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(user.getUserId(), that.user.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(notice, user);
+        return Objects.hash(notice.getNoticeId(), user.getUserId());
     }
 }

@@ -64,6 +64,26 @@ public class Notice extends BaseEntity {
         return isRead(user) ? unreadNotice(user) : readNotice(user);
     }
 
+    public boolean isRead(User user){
+        return checkNotices.contains(new CheckNotice(this, user));
+    }
+
+    /**
+     * 공지사항을 읽은 사용자를 안읽음 처리한다
+     */
+    private Character unreadNotice(User user){
+        checkNotices.remove(new CheckNotice(this, user));
+        return 'N';
+    }
+
+    /**
+     * 공지사항을 읽지 않은 사용자를 읽음 처리한다
+     */
+    private Character readNotice(User user){
+        checkNotices.add(new CheckNotice(this, user));
+        return 'Y';
+    }
+
     public char switchPin(){
         return (pinYn == 'N') ? pin() : unpin();
     }
@@ -76,26 +96,6 @@ public class Notice extends BaseEntity {
     private char unpin(){
         pinYn = 'N';
         return pinYn;
-    }
-
-    public boolean isRead(User user){
-        return checkNotices.contains(new CheckNotice(this, user));
-    }
-
-    /**
-     * 공지사항을 읽지 않은 사용자를 읽음 처리한다
-     */
-    private Character readNotice(User user){
-        checkNotices.add(new CheckNotice(this, user));
-        return 'Y';
-    }
-
-    /**
-     * 공지사항을 읽은 사용자를 안읽음 처리한다
-     */
-    private Character unreadNotice(User user){
-        checkNotices.remove(new CheckNotice(this, user));
-        return 'N';
     }
 
     public void deleteNotice(){
