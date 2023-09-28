@@ -34,26 +34,13 @@ class StudyInviteServiceTest extends ServiceTest {
     @Nested
     class inviteUser {
         @Test
-        @DisplayName("존재하지 않는 사용자이면 예외를 던진다")
-        void fail_userNotFound() {
-            // given
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
-        }
-
-        @Test
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(-1L, -1L))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(null, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
@@ -62,11 +49,10 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
-            studyInviteService.inviteUser(-1L, -1L);
+            studyInviteService.inviteUser(null, -1L);
 
             // then
             assertAll(

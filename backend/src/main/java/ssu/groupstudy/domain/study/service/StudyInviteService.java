@@ -21,12 +21,9 @@ public class StudyInviteService {
     private final StudyRepository studyRepository;
 
     @Transactional
-    public void inviteUser(Long userId, Long studyId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+    public void inviteUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
         study.invite(user);
     }
 
