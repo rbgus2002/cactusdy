@@ -13,6 +13,9 @@ class SignInRoute extends StatelessWidget {
 
   static const String _signInText = "로그인";
 
+  String email = "";
+  String password = "";
+
   SignInRoute({
     Key? key,
   }) : super(key: key);
@@ -31,7 +34,6 @@ class SignInRoute extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
-              Design.padding5,
               TextFormField(
                 maxLength: Auth.emailMaxLength,
                 validator: (text) =>
@@ -41,11 +43,11 @@ class SignInRoute extends StatelessWidget {
                   hintText: _emailHintText,
                   counterText: "",
                 ),
+                onChanged: (value) => email = value,
               ),
-              Design.padding5,
+              Design.padding15,
 
               const Text("PASSWORD", style: TextStyles.titleSmall),
-              Design.padding15,
               TextFormField(
                 maxLength: Auth.passwordMaxLength,
                 validator: (text) =>
@@ -55,13 +57,15 @@ class SignInRoute extends StatelessWidget {
                   hintText: _passwordHintText,
                   counterText: "",
                 ),
+                onChanged: (value) => password = value,
               ),
               Design.padding30,
 
               ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate())
-                      print("AS");
+                    if (_formKey.currentState!.validate()) {
+                      Auth.signIn(email, password);
+                    }
                   },
                   child: Container(
                     alignment: Alignment.center,

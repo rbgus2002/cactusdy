@@ -8,6 +8,8 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/widgets/dialogs/color_picker_dialog.dart';
 
 class GenerateStudyRoute extends StatefulWidget {
+  const GenerateStudyRoute({ Key? key }) : super(key: key);
+
   @override
   State<GenerateStudyRoute> createState() {
     return _GenerateStudyRoute();
