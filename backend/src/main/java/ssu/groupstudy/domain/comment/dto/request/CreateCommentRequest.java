@@ -20,9 +20,6 @@ public class CreateCommentRequest {
 
     private Long parentCommentId;
 
-    public Comment toEntity(User writer, Notice notice){
-        return new Comment(contents, writer, notice);
-    }
     public Comment toEntity(User writer, Notice notice, Comment parentComment){
         return new Comment(contents, writer, notice, parentComment);
     }

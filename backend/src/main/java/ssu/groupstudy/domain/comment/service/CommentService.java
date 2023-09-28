@@ -15,7 +15,6 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +27,6 @@ import static ssu.groupstudy.global.ResultCode.*;
 @Slf4j
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
 
     @Transactional
@@ -37,7 +35,7 @@ public class CommentService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
 
-        Comment comment = getCommentIncludingParent(dto, writer, notice);
+        Comment comment = handleCommentCreationWithParent(dto, writer, notice);
         return commentRepository.save(comment).getCommentId();
     }
 
@@ -50,13 +48,12 @@ public class CommentService {
     /**
      * 부모 댓글이 존재하는 경우를 구분해서 생성할 Comment 객체를 생성한다
      */
-    private Comment getCommentIncludingParent(CreateCommentRequest dto, User writer, Notice notice) {
+    private Comment handleCommentCreationWithParent(CreateCommentRequest dto, User writer, Notice notice) {
+        Comment parent = null;
         if(dto.getParentCommentId() != null){
-            Comment parent = commentRepository.getReferenceById(dto.getParentCommentId());
-            return dto.toEntity(writer, notice, parent);
-        }else{
-            return dto.toEntity(writer, notice);
+            parent = commentRepository.getReferenceById(dto.getParentCommentId());
         }
+        return dto.toEntity(writer, notice, parent);
     }
 
     public List<CommentInfoResponse> getComments(Long noticeId) {
