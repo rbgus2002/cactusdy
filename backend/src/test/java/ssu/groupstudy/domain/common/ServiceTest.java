@@ -163,17 +163,14 @@ public class ServiceTest {
 
     private void initCreateCommentRequest(){
         댓글1CreateRequest = CreateCommentRequest.builder()
-                .userId(-1L)
                 .noticeId(-1L)
                 .contents("댓글 내용1")
                 .build();
         댓글2CreateRequest = CreateCommentRequest.builder()
-                .userId(-1L)
                 .noticeId(-1L)
                 .contents("댓글 내용2")
                 .build();
         대댓글1CreateRequest = CreateCommentRequest.builder()
-                .userId(-1L)
                 .noticeId(-1L)
                 .contents("대댓글 내용1")
                 .build();

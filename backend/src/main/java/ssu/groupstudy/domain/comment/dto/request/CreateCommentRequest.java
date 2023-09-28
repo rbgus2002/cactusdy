@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateCommentRequest {
     @NotNull
-    private Long userId;
-    @NotNull
     private Long noticeId;
     @NotBlank
     private String contents;
