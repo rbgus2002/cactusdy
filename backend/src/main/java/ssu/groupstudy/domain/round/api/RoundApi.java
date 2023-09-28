@@ -3,7 +3,9 @@ package ssu.groupstudy.domain.round.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.request.DetailRequest;
 import ssu.groupstudy.domain.round.dto.response.RoundDto;
@@ -15,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rounds")
+@RequestMapping("/api/rounds")
 @RequiredArgsConstructor
 @Tag(name = "Round", description = "회차 API")
 public class RoundApi {
@@ -59,8 +61,8 @@ public class RoundApi {
 
     @Operation(summary = "회차 삭제하기", description = "방장만 회차를 삭제할 수 있다")
     @DeleteMapping
-    public ResponseDto deleteRound(@RequestParam Long roundId, @RequestParam Long userId){
-        roundService.deleteRound(roundId, userId);
+    public ResponseDto deleteRound(@RequestParam Long roundId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        roundService.deleteRound(roundId, userDetails.getUser());
         return ResponseDto.success();
     }
 }

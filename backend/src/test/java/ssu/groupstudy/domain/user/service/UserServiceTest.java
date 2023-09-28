@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
-import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
@@ -17,7 +15,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -27,35 +25,6 @@ class UserServiceTest extends ServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Nested
-    class 회원가입{
-        @Test
-        @DisplayName("중복되는 이메일이 존재하면 회원가입이 불가능하다")
-        void fail_emailDuplicated() {
-            // given
-            doReturn(true).when(userRepository).existsByEmail(any(String.class));
-
-            // when, then
-            assertThatThrownBy(() -> userService.signUp(최규현SignUpRequest))
-                    .isInstanceOf(EmailExistsException.class)
-                    .hasMessage(ResultCode.DUPLICATE_EMAIL.getMessage());
-        }
-
-        @Test
-        @DisplayName("회원가입 성공")
-        void success() {
-            // given
-            doReturn(false).when(userRepository).existsByEmail(any(String.class));
-            doReturn(최규현).when(userRepository).save(any(User.class));
-
-            // when
-            final Long userId = userService.signUp(최규현SignUpRequest);
-
-            // then
-            assertThat(userId).isNotNull();
-        }
-    }
 
     @Nested
     class 사용자조회{

@@ -17,14 +17,14 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -38,31 +38,22 @@ public class NoticeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Long createNotice(CreateNoticeRequest dto) {
-        User writer = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    public Long createNotice(CreateNoticeRequest dto, User writer) {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-
         return noticeRepository.save(dto.toEntity(writer, study)).getNoticeId();
     }
 
     @Transactional
-    public Character switchCheckNotice(Long noticeId, Long userId) {
+    public Character switchCheckNotice(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-
         return notice.switchCheckNotice(user);
     }
 
-    public List<NoticeSummary> getNoticeSummaries(Long studyId, Long userId) {
+    public List<NoticeSummary> getNoticeSummaries(Long studyId, User user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-
         return transformNoticeSummaries(study, user);
     }
 
@@ -106,13 +97,10 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId) {
+    public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         int commentCount = commentRepository.countCommentByNotice(notice);
-
         return NoticeInfoResponse.of(notice, user, commentCount);
     }
 

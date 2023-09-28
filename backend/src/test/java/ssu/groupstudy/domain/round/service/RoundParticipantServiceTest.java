@@ -34,7 +34,7 @@ class RoundParticipantServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, ""))
+            assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, NONE))
                     .isInstanceOf(UserNotFoundException.class)
                     .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
         }
@@ -46,7 +46,7 @@ class RoundParticipantServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1_최규현)).when(roundParticipantRepository).findById(any(Long.class));
 
             // when
-            roundParticipantService.updateStatusTag(-1L, "ATTENDANCE_EXPECTED");
+            roundParticipantService.updateStatusTag(-1L, ATTENDANCE_EXPECTED);
 
             // then
             assertThat(회차1_최규현.getStatusTag()).isEqualTo(ATTENDANCE_EXPECTED);

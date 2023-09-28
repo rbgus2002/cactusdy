@@ -52,6 +52,7 @@ public class RoundParticipant {
         if (o == null || getClass() != o.getClass()) return false;
         RoundParticipant roundParticipant = (RoundParticipant) o;
         return Objects.equals(user, roundParticipant.user) && Objects.equals(round, roundParticipant.round);
+//        return Objects.equals(user.getUserId(), roundParticipant.user.getUserId()) && Objects.equals(round.getRoundId(), roundParticipant.round.getRoundId());
     }
 
     @Override
@@ -59,8 +60,8 @@ public class RoundParticipant {
         return Objects.hash(user, round);
     }
 
-    public void updateStatus(String statusTag){
-        this.statusTag = StatusTag.valueOf(statusTag);
+    public void updateStatus(StatusTag statusTag){
+        this.statusTag = statusTag;
     }
 
     public Task createTask(String detail, TaskType type){

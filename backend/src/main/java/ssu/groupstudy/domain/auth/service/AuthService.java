@@ -1,0 +1,51 @@
+package ssu.groupstudy.domain.auth.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
+import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.dto.request.SignInRequest;
+import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.user.dto.response.SignInResponse;
+import ssu.groupstudy.domain.user.exception.EmailExistsException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.global.ResultCode;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class AuthService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+
+    @Transactional
+    public Long signUp(SignUpRequest request){
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
+        }
+        User user = request.toEntity(passwordEncoder);
+        user.addUserRole();
+
+        return userRepository.save(user).getUserId();
+    }
+
+    @Transactional
+    public SignInResponse signIn(SignInRequest request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
+        validatePassword(request, user);
+        user.updateActivateDate();
+
+        return SignInResponse.of(user, jwtProvider.createToken(user.getEmail(), user.getRoles()));
+    }
+
+    private void validatePassword(SignInRequest request, User user) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
+        }
+    }
+}

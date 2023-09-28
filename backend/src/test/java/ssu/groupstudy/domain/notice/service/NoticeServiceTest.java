@@ -15,8 +15,6 @@ import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -24,12 +22,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.assertj.core.api.Assertions.assertThat;
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
 
 
 class NoticeServiceTest extends ServiceTest {
@@ -47,53 +46,26 @@ class NoticeServiceTest extends ServiceTest {
     @Nested
     class createNotice {
         @Test
-        @DisplayName("사용자가 존재하지 않는 경우 예외를 던진다")
-        void fail_notFoundUser() {
-            // given
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // when, then
-            assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(USER_NOT_FOUND.getMessage());
-        }
-
-        @Test
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest))
+            assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest, 최규현))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        @DisplayName("스터디에 참여중이지 않은 경우 예외를 던진다.")
-        void fail_notInvitedUser(){
-            // given
-            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-
-            // when
-            assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest))
-                    .isInstanceOf(UserNotParticipatedException.class)
-                    .hasMessage(USER_NOT_PARTICIPATED.getMessage());
         }
 
         @Test
         @DisplayName("성공")
         void success() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeRepository).save(any(Notice.class));
 
             // when
-            Long noticeId = noticeService.createNotice(공지사항1CreateRequest);
+            Long noticeId = noticeService.createNotice(공지사항1CreateRequest, 최규현);
 
             // then
             assertThat(noticeId).isNotNull();
@@ -120,10 +92,9 @@ class NoticeServiceTest extends ServiceTest {
         void read() {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
-            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, 최규현);
 
             // then
             assertThat(isChecked).isEqualTo('Y');
@@ -134,11 +105,10 @@ class NoticeServiceTest extends ServiceTest {
         void unread() {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
             공지사항1.switchCheckNotice(최규현);
-            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, 최규현);
 
             // then
             assertThat(isChecked).isEqualTo('N');
@@ -154,36 +124,21 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
+            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, 최규현))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
-        @DisplayName("사용자가 존재하지 않는 경우 예외를 던진다")
-        void userNotFound(){
-            // given
-            // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, -1L))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(USER_NOT_FOUND.getMessage());
-
-        }
-        @Test
         @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
         void success(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
             doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
 
             // when
-            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, -1L);
+            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, 최규현);
 
             // then
             assertThat(noticeList.size()).isEqualTo(4);

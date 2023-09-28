@@ -14,17 +14,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateCommentRequest {
     @NotNull
-    private Long userId;
-    @NotNull
     private Long noticeId;
     @NotBlank
     private String contents;
 
     private Long parentCommentId;
 
-    public Comment toEntity(User writer, Notice notice){
-        return new Comment(contents, writer, notice);
-    }
     public Comment toEntity(User writer, Notice notice, Comment parentComment){
         return new Comment(contents, writer, notice, parentComment);
     }

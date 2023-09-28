@@ -1,19 +1,20 @@
 package ssu.groupstudy.domain.notice.domain;
 
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
@@ -51,8 +52,6 @@ public class Notice extends BaseEntity {
 
     @Builder
     public Notice(String title, String contents, User writer, Study study) {
-        validateUserInStudy(study, writer);
-
         this.title = title;
         this.contents = contents;
         this.writer = writer;
@@ -62,8 +61,27 @@ public class Notice extends BaseEntity {
     }
 
     public Character switchCheckNotice(User user){
-//        validateUserInStudy(this.study, user); // FIXME : 로딩 관련 개념 학습 후 적용
         return isRead(user) ? unreadNotice(user) : readNotice(user);
+    }
+
+    public boolean isRead(User user){
+        return checkNotices.contains(new CheckNotice(this, user));
+    }
+
+    /**
+     * 공지사항을 읽은 사용자를 안읽음 처리한다
+     */
+    private Character unreadNotice(User user){
+        checkNotices.remove(new CheckNotice(this, user));
+        return 'N';
+    }
+
+    /**
+     * 공지사항을 읽지 않은 사용자를 읽음 처리한다
+     */
+    private Character readNotice(User user){
+        checkNotices.add(new CheckNotice(this, user));
+        return 'Y';
     }
 
     public char switchPin(){
@@ -78,32 +96,6 @@ public class Notice extends BaseEntity {
     private char unpin(){
         pinYn = 'N';
         return pinYn;
-    }
-
-    private void validateUserInStudy(Study study, User user) {
-        if(!study.isParticipated(user)){
-            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
-        }
-    }
-
-    public boolean isRead(User user){
-        return checkNotices.contains(new CheckNotice(this, user));
-    }
-
-    /**
-     * 공지사항을 읽지 않은 사용자를 읽음 처리한다
-     */
-    private Character readNotice(User user){
-        checkNotices.add(new CheckNotice(this, user));
-        return 'Y';
-    }
-
-    /**
-     * 공지사항을 읽은 사용자를 안읽음 처리한다
-     */
-    private Character unreadNotice(User user){
-        checkNotices.remove(new CheckNotice(this, user));
-        return 'N';
     }
 
     public void deleteNotice(){

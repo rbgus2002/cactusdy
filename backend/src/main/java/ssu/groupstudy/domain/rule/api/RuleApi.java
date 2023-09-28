@@ -15,17 +15,16 @@ import ssu.groupstudy.global.dto.ResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rules")
+@RequestMapping("/api/rules")
 @RequiredArgsConstructor
 @Tag(name = "Rule", description = "규칙 API")
 public class RuleApi {
     private final RuleService ruleService;
 
     @Operation(summary = "새로운 규칙 생성")
-    @PostMapping("")
+    @PostMapping
     public ResponseDto register(@Valid @RequestBody CreateRuleRequest dto){
         ruleService.createRule(dto);
-
         return ResponseDto.success();
     }
 }

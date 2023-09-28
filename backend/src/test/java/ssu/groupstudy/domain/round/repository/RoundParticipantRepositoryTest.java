@@ -20,18 +20,6 @@ class RoundParticipantRepositoryTest {
 
     @Nested
     class updateStatusTag {
-        @Test
-        @DisplayName("잘못된 statusTag 이름으로 변경하면 예외를 던진다.")
-        void fail_invalidStatusTagName() {
-            // given
-            // when
-            RoundParticipant 회차_최규현 = roundParticipantRepository.findById(1L).get();
-            final String wrongTagName = "WRONG_TAG_NAME";
-
-            // then
-            softly.assertThatThrownBy(() -> 회차_최규현.updateStatus(wrongTagName))
-                    .isInstanceOf(IllegalArgumentException.class);
-        }
 
         @Test
         @DisplayName("회차 참여자의 status tag를 변경한다")
@@ -40,7 +28,7 @@ class RoundParticipantRepositoryTest {
             RoundParticipant 회차_최규현 = roundParticipantRepository.findById(1L).get();
 
             // when
-            회차_최규현.updateStatus("ATTENDANCE_EXPECTED");
+            회차_최규현.updateStatus(ATTENDANCE_EXPECTED);
 
             // then
             softly.assertThat(회차_최규현.getStatusTag()).isEqualTo(ATTENDANCE_EXPECTED);

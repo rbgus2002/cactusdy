@@ -7,15 +7,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
-import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 
 class NoticeApiTest extends ApiTest {
     @InjectMocks
@@ -36,13 +30,12 @@ class NoticeApiTest extends ApiTest {
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
                 .picture("")
-                .hostUserId(0L)
                 .build();
     }
 
-    private Study getStudy() {
-        return getRegisterStudyRequest().toEntity(getUser());
-    }
+//    private Study getStudy() {
+//        return getRegisterStudyRequest().toEntity(getUser());
+//    }
 
 
     private SignUpRequest getSignUpRequest() {
@@ -55,13 +48,12 @@ class NoticeApiTest extends ApiTest {
                 .build();
     }
 
-    private User getUser() {
-        return getSignUpRequest().toEntity();
-    }
+//    private User getUser() {
+//        return getSignUpRequest().toEntity();
+//    }
 
     private CreateNoticeRequest getCreateNoticeRequest(){
         return CreateNoticeRequest.builder()
-                .userId(1L)
                 .studyId(1L)
                 .title("notice")
                 .contents("contents")

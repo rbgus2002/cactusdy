@@ -1,7 +1,11 @@
 -- user
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message) VALUES (1, '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.021249', 'N', 'rbgus2002@naver.com', '최규현', '규규', 'string', 'string', '');
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message) VALUES (2, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'arkady@naver.com', '장재우', 'arkady', 'string', 'string', '');
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message) VALUES (3, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'are_you_hungry@question.com', '홍예지', '찡찡이', 'string', 'string', '');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (1, '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.021249', 'N', 'rbgus2002@naver.com', '최규현', '규규', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (2, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'arkady@naver.com', '장재우', 'arkady', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (3, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'are_you_hungry@question.com', '홍예지', '찡찡이', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+
+-- authority
+INSERT INTO authority (authority_id, role_name, user_id) VALUES (1, 'ROLE_USER', 1);
+INSERT INTO authority (authority_id, role_name, user_id) VALUES (2, 'ROLE_USER', 2);
 
 -- study
 INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '알고리즘스터디', 1);

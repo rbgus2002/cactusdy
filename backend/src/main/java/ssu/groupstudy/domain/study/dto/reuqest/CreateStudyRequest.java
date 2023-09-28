@@ -5,7 +5,6 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
@@ -20,8 +19,6 @@ public class CreateStudyRequest {
 
     private String picture;
 
-    @NotNull
-    private Long hostUserId;
 
     public Study toEntity(User hostUser){
         return Study.builder()

@@ -10,7 +10,6 @@ import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -24,11 +23,8 @@ public class StudyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createStudy(CreateStudyRequest dto) {
-        User hostUser = userRepository.findById(dto.getHostUserId())
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-
-        return studyRepository.save(dto.toEntity(hostUser)).getStudyId();
+    public Long createStudy(CreateStudyRequest dto, User user) {
+        return studyRepository.save(dto.toEntity(user)).getStudyId();
     }
 
     public StudySummaryResponse getStudySummary(long studyId) {
