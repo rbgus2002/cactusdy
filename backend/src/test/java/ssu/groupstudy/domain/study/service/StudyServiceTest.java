@@ -10,13 +10,12 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -25,34 +24,19 @@ class StudyServiceTest extends ServiceTest {
     @InjectMocks
     private StudyService studyService;
     @Mock
-    private UserRepository userRepository;
-    @Mock
     private StudyRepository studyRepository;
 
 
     @Nested
     class 스터디생성{
         @Test
-        @DisplayName("존재하지 않는 사용자가 스터디를 생성하면 예외를 던진다")
-        void 실패_유저존재하지않음() {
-            // given, when
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> studyService.createStudy(알고리즘스터디CreateRequest))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
-        }
-
-        @Test
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
 
             // when
-            Long studyId = studyService.createStudy(알고리즘스터디CreateRequest);
+            Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, 최규현);
 
             // then
             assertThat(studyId).isNotNull();

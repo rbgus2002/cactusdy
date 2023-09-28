@@ -30,7 +30,6 @@ class NoticeApiTest extends ApiTest {
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
                 .picture("")
-                .hostUserId(0L)
                 .build();
     }
 

@@ -119,13 +119,11 @@ public class ServiceTest {
                 .studyName("알고리즘")
                 .detail("내용1")
                 .picture("")
-                .hostUserId(-1L)
                 .build();
         영어스터디CreateRequest = CreateStudyRequest.builder()
                 .studyName("영어")
                 .detail("내용2")
                 .picture("")
-                .hostUserId(-1L)
                 .build();
     }
 
