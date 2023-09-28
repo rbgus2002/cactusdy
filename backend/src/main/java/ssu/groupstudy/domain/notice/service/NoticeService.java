@@ -45,12 +45,9 @@ public class NoticeService {
     }
 
     @Transactional
-    public Character switchCheckNotice(Long noticeId, Long userId) {
+    public Character switchCheckNotice(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-
         return notice.switchCheckNotice(user);
     }
 
@@ -103,13 +100,10 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeById(Long noticeId, Long userId) {
+    public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         int commentCount = commentRepository.countCommentByNotice(notice);
-
         return NoticeInfoResponse.of(notice, user, commentCount);
     }
 

@@ -32,15 +32,15 @@ public class NoticeApi {
 
     @Operation(summary = "id를 통한 공지사항 조회")
     @GetMapping
-    public ResponseDto getNotice(@RequestParam Long noticeId, @RequestParam Long userId){
-        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userId);
+    public ResponseDto getNotice(@RequestParam Long noticeId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userDetails.getUser());
         return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
 
     @Operation(summary = "공지사항 읽음/안읽음 체크")
     @PatchMapping("/check")
-    public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
-        final Character isChecked = noticeService.switchCheckNotice(noticeId, userId);
+    public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        final Character isChecked = noticeService.switchCheckNotice(noticeId, userDetails.getUser());
         return DataResponseDto.of("isChecked", isChecked);
     }
 

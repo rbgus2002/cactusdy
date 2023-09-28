@@ -92,10 +92,9 @@ class NoticeServiceTest extends ServiceTest {
         void read() {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
-            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, 최규현);
 
             // then
             assertThat(isChecked).isEqualTo('Y');
@@ -106,11 +105,10 @@ class NoticeServiceTest extends ServiceTest {
         void unread() {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
             공지사항1.switchCheckNotice(최규현);
-            Character isChecked = noticeService.switchCheckNotice(-1L, -1L);
+            Character isChecked = noticeService.switchCheckNotice(-1L, 최규현);
 
             // then
             assertThat(isChecked).isEqualTo('N');
