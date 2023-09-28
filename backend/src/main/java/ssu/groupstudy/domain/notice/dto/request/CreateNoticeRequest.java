@@ -19,9 +19,6 @@ public class CreateNoticeRequest {
     private String contents;
 
     @NotNull
-    private Long userId;
-
-    @NotNull
     private Long studyId;
 
     public Notice toEntity(User writer, Study study){

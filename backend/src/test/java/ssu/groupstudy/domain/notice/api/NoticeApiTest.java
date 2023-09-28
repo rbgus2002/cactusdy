@@ -54,7 +54,6 @@ class NoticeApiTest extends ApiTest {
 
     private CreateNoticeRequest getCreateNoticeRequest(){
         return CreateNoticeRequest.builder()
-                .userId(1L)
                 .studyId(1L)
                 .title("notice")
                 .contents("contents")

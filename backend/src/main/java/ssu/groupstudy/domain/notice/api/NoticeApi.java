@@ -3,7 +3,9 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -22,18 +24,16 @@ public class NoticeApi {
     private final NoticeService noticeService;
 
     @Operation(summary = "새로운 공지사항 생성")
-    @PostMapping("")
-    public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto){
-        Long noticeId = noticeService.createNotice(dto);
-
+    @PostMapping
+    public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto, @AuthenticationPrincipal CustomUserDetails userDetails){
+        Long noticeId = noticeService.createNotice(dto, userDetails.getUser());
         return DataResponseDto.of("noticeId", noticeId);
     }
 
     @Operation(summary = "id를 통한 공지사항 조회")
-    @GetMapping("")
+    @GetMapping
     public ResponseDto getNotice(@RequestParam Long noticeId, @RequestParam Long userId){
         NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userId);
-
         return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
 
@@ -41,7 +41,6 @@ public class NoticeApi {
     @PatchMapping("/check")
     public ResponseDto switchCheckNotice(@RequestParam Long noticeId, @RequestParam Long userId){
         final Character isChecked = noticeService.switchCheckNotice(noticeId, userId);
-
         return DataResponseDto.of("isChecked", isChecked);
     }
 
@@ -56,7 +55,6 @@ public class NoticeApi {
     @GetMapping("/list/limited")
     public ResponseDto getNoticeSummaryListLimit3(@RequestParam Long studyId){
         final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaryListLimit3(studyId);
-
         return DataResponseDto.of("noticeList", noticeSummaryList);
     }
 
@@ -64,7 +62,6 @@ public class NoticeApi {
     @PatchMapping("/pin")
     public ResponseDto switchNoticePin(@RequestParam Long noticeId){
         final Character pinYn = noticeService.switchNoticePin(noticeId);
-
         return DataResponseDto.of("pinYn", pinYn);
     }
 
@@ -72,12 +69,11 @@ public class NoticeApi {
     @GetMapping("/users/images")
     public ResponseDto getCheckUserImageList(@RequestParam Long noticeId){
         final List<String> userImageList = noticeService.getCheckUserImageList(noticeId);
-
         return DataResponseDto.of("userImageList", userImageList);
     }
 
     @Operation(summary = "공지사항 삭제")
-    @DeleteMapping("")
+    @DeleteMapping
     public ResponseDto deleteNotice(@RequestParam Long noticeId){
         noticeService.delete(noticeId);
         return ResponseDto.success();

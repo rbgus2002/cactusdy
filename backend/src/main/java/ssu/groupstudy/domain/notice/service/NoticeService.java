@@ -38,12 +38,9 @@ public class NoticeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Long createNotice(CreateNoticeRequest dto) {
-        User writer = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    public Long createNotice(CreateNoticeRequest dto, User writer) {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-
         return noticeRepository.save(dto.toEntity(writer, study)).getNoticeId();
     }
 

@@ -137,7 +137,6 @@ public class ServiceTest {
 
     private void initCreateNoticeRequest() {
         공지사항1CreateRequest = CreateNoticeRequest.builder()
-                .userId(-1L)
                 .studyId(-1L)
                 .title("공지사항1")
                 .contents("내용1")
