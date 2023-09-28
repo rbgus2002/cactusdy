@@ -28,7 +28,7 @@ public class TaskApi {
         return DataResponseDto.of("tasks", tasks);
     }
 
-    @Operation(summary = "태스크 생성", description = "groupType이 PERSONAL이면 taskId를 반환한다. groupType이 GROUP이면 taskId를 null로 반환하고 회차 참여자 모두에게 태스크를 할당한다")
+    @Operation(summary = "태스크 생성", description = "groupType이 GROUP이면 회차 참여자 모두에게 태스크를 할당한다")
     @PostMapping
     public ResponseDto createTask(@Valid @RequestBody CreateTaskRequest request){
         Long taskId = taskService.createTask(request);
