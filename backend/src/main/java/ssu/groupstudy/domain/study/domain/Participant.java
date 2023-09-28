@@ -52,12 +52,12 @@ public class Participant extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Participant that = (Participant) o;
-        return Objects.equals(user, that.user) && Objects.equals(study, that.study);
+        return Objects.equals(user.getUserId(), that.user.getUserId()) && Objects.equals(study.getStudyId(), that.study.getStudyId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, study);
+        return Objects.hash(user.getUserId(), study.getStudyId());
     }
 
     // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
