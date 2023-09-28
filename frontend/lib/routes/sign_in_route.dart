@@ -69,8 +69,8 @@ class SignInRoute extends StatelessWidget {
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    child: const Text(_signInText, style: TextStyles.titleSmall,),
                     width: double.infinity,
+                    child: const Text(_signInText, style: TextStyles.titleSmall,),
                   )
               ),
             ]

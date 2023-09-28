@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
@@ -6,10 +7,11 @@ import 'package:group_study_app/routes/login_route_old.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
-import 'package:group_study_app/routes/signin_route.dart';
+import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/routes/work_space_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 
@@ -18,7 +20,7 @@ void main() {
     title: 'asd',
     home: MyApp(),
     theme: ThemeData(
-      primaryColor: Colors.black,
+      primaryColor: Colors.black87,
       buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),
       appBarTheme: const AppBarTheme(color: Colors.black87),
       elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
@@ -36,6 +38,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
+  SignInfo? signInfo;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Auth.tryGetSignInfo().then((value) {
+      signInfo = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
