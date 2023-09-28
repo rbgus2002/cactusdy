@@ -16,6 +16,12 @@ void main() {
   runApp(MaterialApp(
     title: 'asd',
     home: MyApp(),
+    theme: ThemeData(
+      primaryColor: Colors.black,
+      buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),
+      appBarTheme: const AppBarTheme(color: Colors.black87),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
+    ),
   ));
 }
 
