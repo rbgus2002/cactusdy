@@ -13,14 +13,11 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static ssu.groupstudy.global.ResultCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -69,11 +66,9 @@ public class RoundService {
     }
 
     @Transactional
-    public void deleteRound(long roundId, long userId) {
+    public void deleteRound(long roundId, User user) {
         Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         round.deleteRound(user);
     }
 }

@@ -14,7 +14,6 @@ import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -219,24 +218,9 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
+            assertThatThrownBy(() -> roundService.deleteRound(-1L, 최규현))
                     .isInstanceOf(RoundNotFoundException.class)
                     .hasMessage(ROUND_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 사용자면 예외를 던진다")
-        void userNotFound(){
-            // given
-            // when
-            doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(USER_NOT_FOUND.getMessage());
-
         }
 
         @Test
@@ -245,10 +229,9 @@ class RoundServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.of(장재우)).when(userRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> roundService.deleteRound(-1L, -1L))
+            assertThatThrownBy(() -> roundService.deleteRound(-1L, 장재우))
                     .isInstanceOf(UnauthorizedDeletionException.class)
                     .hasMessage(HOST_USER_ONLY_CAN_DELETE_ROUND.getMessage());
         }
@@ -258,10 +241,9 @@ class RoundServiceTest extends ServiceTest {
         void delete(){
             // given
             doReturn(Optional.of(회차1)).when(roundRepository).findByRoundIdAndDeleteYnIsN(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
 
             // when
-            roundService.deleteRound(-1L, -1L);
+            roundService.deleteRound(-1L, 최규현);
 
             // then
             softly.assertThat(회차1.getDeleteYn()).isEqualTo('Y');
