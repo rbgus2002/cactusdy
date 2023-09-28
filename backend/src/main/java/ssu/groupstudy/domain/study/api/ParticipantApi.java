@@ -23,14 +23,14 @@ public class ParticipantApi {
     private final ParticipantsService participantsService;
 
     @Operation(summary = "스터디에 회원 초대")
-    @PostMapping("/invite")
+    @PostMapping
     public ResponseDto inviteUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long studyId){
         studyInviteService.inviteUser(userDetails.getUser(), studyId);
         return ResponseDto.success();
     }
 
     @Operation(summary = "스터디에서 회원 탈퇴")
-    @DeleteMapping("/invite")
+    @DeleteMapping
     public ResponseDto leaveUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long studyId){
         studyInviteService.leaveUser(userDetails.getUser(), studyId);
         return ResponseDto.success();
