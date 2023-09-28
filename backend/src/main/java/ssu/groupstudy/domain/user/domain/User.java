@@ -69,5 +69,9 @@ public class User extends BaseEntity {
     public void addUserRole(){
         roles.add(Authority.init(this));
     }
+
+    public void updateActivateDate(){
+        this.activateDate = LocalDateTime.now();
+    }
 }
 
