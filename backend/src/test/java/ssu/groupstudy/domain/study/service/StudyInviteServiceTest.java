@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
@@ -43,6 +44,19 @@ class StudyInviteServiceTest extends ServiceTest {
             assertThatThrownBy(() -> studyInviteService.inviteUser(null, -1L))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("이미 초대된 사용자면 예외를 던진다")
+        void inviteAlreadyExist(){
+            // given
+            // when
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, -1L))
+                    .isInstanceOf(InviteAlreadyExistsException.class)
+                    .hasMessage(ResultCode.DUPLICATE_INVITE_USER.getMessage());
         }
 
         @Test
