@@ -3,11 +3,14 @@ package ssu.groupstudy.domain.notice.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
+import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -46,9 +49,11 @@ public class NoticeApi {
 
     @Operation(summary = "공지사항 목록 가져오기")
     @GetMapping("/list")
-    public ResponseDto getNoticeSummaryList(@RequestParam Long studyId, @AuthenticationPrincipal CustomUserDetails userDetails){
-        final List<NoticeSummary> noticeSummaryList = noticeService.getNoticeSummaries(studyId, userDetails.getUser());
-        return DataResponseDto.of("noticeList", noticeSummaryList);
+    public ResponseDto getNoticeSummaryList(@RequestParam Long studyId, @RequestParam int offset, @RequestParam int pageSize,
+                                            @AuthenticationPrincipal CustomUserDetails userDetails){
+        Pageable pageable = PageRequest.of(offset, pageSize);
+        NoticeSummaries notices = noticeService.getNoticeSummaries(studyId, pageable, userDetails.getUser());
+        return DataResponseDto.of("notices", notices);
     }
 
     @Operation(summary = "공지사항 목록 상위 3개 가져오기")

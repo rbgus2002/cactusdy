@@ -3,6 +3,8 @@ package ssu.groupstudy.domain.notice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
@@ -10,6 +12,7 @@ import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
+import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
@@ -51,17 +54,18 @@ public class NoticeService {
         return notice.switchCheckNotice(user);
     }
 
-    public List<NoticeSummary> getNoticeSummaries(Long studyId, User user) {
+    public NoticeSummaries getNoticeSummaries(Long studyId, Pageable pageable, User user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        return transformNoticeSummaries(study, user);
+        return transformNoticeSummaries(study, pageable, user);
     }
 
-    private List<NoticeSummary> transformNoticeSummaries(Study study, User user) {
-        List<Notice> notices = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study);
-        return notices.stream()
+    private NoticeSummaries transformNoticeSummaries(Study study, Pageable pageable, User user) {
+        Page<Notice> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study, pageable);
+        List<NoticeSummary> noticeSummaries = noticePage.getContent().stream()
                 .map(notice -> createNoticeSummary(notice, user))
                 .collect(Collectors.toList());
+        return NoticeSummaries.of(noticePage, noticeSummaries);
     }
 
     private NoticeSummary createNoticeSummary(Notice notice, User user) {
@@ -74,7 +78,6 @@ public class NoticeService {
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-
         return noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
                 .map(NoticeSummary::from)
                 .collect(Collectors.toList());

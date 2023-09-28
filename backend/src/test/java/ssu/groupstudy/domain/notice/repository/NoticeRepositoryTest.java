@@ -6,6 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -76,8 +79,11 @@ class NoticeRepositoryTest{
 
         Study 알고리즘_스터디 = studyRepository.findById(1L).get();
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         // when
-        List<Notice> noticeList = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
+        Page<Notice> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디, pageable);
+        List<Notice> noticeList = noticePage.getContent();
 
         // then
         softly.assertThat(noticeList.size()).isEqualTo(4);

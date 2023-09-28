@@ -177,9 +177,9 @@ public class ServiceTest {
     }
 
     private void initComment(){
-        댓글1 = 댓글1CreateRequest.toEntity(최규현, 공지사항1);
+        댓글1 = 댓글1CreateRequest.toEntity(최규현, 공지사항1, null);
         ReflectionTestUtils.setField(댓글1, "commentId", 7L);
-        댓글2 = 댓글2CreateRequest.toEntity(최규현, 공지사항1);
+        댓글2 = 댓글2CreateRequest.toEntity(최규현, 공지사항1, null);
         ReflectionTestUtils.setField(댓글2, "commentId", 9L);
         대댓글1 = 대댓글1CreateRequest.toEntity(최규현, 공지사항1, 댓글1);
         ReflectionTestUtils.setField(대댓글1, "commentId", 8L);

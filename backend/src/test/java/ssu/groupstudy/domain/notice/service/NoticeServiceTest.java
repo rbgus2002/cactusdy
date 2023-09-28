@@ -5,10 +5,15 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
@@ -42,7 +47,7 @@ class NoticeServiceTest extends ServiceTest {
     private NoticeRepository noticeRepository;
     @Mock
     private CommentRepository commentRepository;
-    
+
     @Nested
     class createNotice {
         @Test
@@ -116,32 +121,42 @@ class NoticeServiceTest extends ServiceTest {
     }
 
     @Nested
-    class getNoticeSummaryList{
+    class getNoticeSummaryList {
+        private Pageable pageable = PageRequest.of(0, 10);
+
         @Test
         @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
-        void studyNotFound(){
+        void studyNotFound() {
             // given
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, 최규현))
+            assertThatThrownBy(() -> noticeService.getNoticeSummaries(-1L, pageable, 최규현))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
         }
 
         @Test
         @DisplayName("스터디에 작성된 공지사항 목록을 불러온다")
-        void success(){
+        void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4)).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
+
+            Page<Notice> noticePage = generateNoticePage();
+            doReturn(noticePage).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class), any(Pageable.class));
+
             doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
 
             // when
-            List<NoticeSummary> noticeList = noticeService.getNoticeSummaries(-1L, 최규현);
+            NoticeSummaries noticeSummaries = noticeService.getNoticeSummaries(-1L, pageable, 최규현);
 
             // then
-            assertThat(noticeList.size()).isEqualTo(4);
+            assertThat(noticeSummaries.getNoticeList().size()).isEqualTo(4);
+        }
+
+        private Page<Notice> generateNoticePage() {
+            List<Notice> 공지사항_리스트 = List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4);
+            return new PageImpl<>(공지사항_리스트, pageable, 공지사항_리스트.size());
         }
 
         @Nested
@@ -175,10 +190,10 @@ class NoticeServiceTest extends ServiceTest {
 
 
         @Nested
-        class switchNoticePin{
+        class switchNoticePin {
             @Test
             @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
-            void fail_noticeNotFound(){
+            void fail_noticeNotFound() {
                 // given
                 doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
 
@@ -190,7 +205,7 @@ class NoticeServiceTest extends ServiceTest {
 
             @Test
             @DisplayName("공지사항을 상단고정하도록 상태를 변경한다")
-            void pin(){
+            void pin() {
                 // given, when
                 Character pinYn = 공지사항1.switchPin();
 
@@ -202,14 +217,14 @@ class NoticeServiceTest extends ServiceTest {
         // FIXME
         @Test
         @DisplayName("공지사항에 체크 표시를 한 사용자 프로필 사진 리스트를 불러온다")
-        void getCheckUserImageListByNoticeId(){
+        void getCheckUserImageListByNoticeId() {
             // given
 
             // when
             공지사항1.switchCheckNotice(최규현);
             Set<CheckNotice> checkNotices = 공지사항1.getCheckNotices();
             List<String> profileImageList = new ArrayList<>();
-            for(CheckNotice checkNotice : checkNotices){
+            for (CheckNotice checkNotice : checkNotices) {
                 profileImageList.add(checkNotice.getUser().getPicture());
             }
 
@@ -220,10 +235,10 @@ class NoticeServiceTest extends ServiceTest {
 
 
     @Nested
-    class deleteNotice{
+    class deleteNotice {
         @Test
         @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
-        void fail_noticeNotFound(){
+        void fail_noticeNotFound() {
             // given
             doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
 
@@ -235,13 +250,13 @@ class NoticeServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("공지사항을 삭제한다")
-        void success(){
+        void success() {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // when
             noticeService.delete(-1L);
-            
+
             // then
             assertEquals('Y', 공지사항1.getDeleteYn());
         }
