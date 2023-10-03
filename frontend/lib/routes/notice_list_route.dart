@@ -9,27 +9,28 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
 class NoticeListRoute extends StatefulWidget {
-  final int studyId = Test.testStudy.studyId;
-  final int userId = Test.testUser.userId;
+  final int studyId;
 
-  NoticeListRoute({super.key});
+  const NoticeListRoute({
+    Key? key,
+    required this.studyId,
+  }) : super(key: key);
 
   @override
-  State<NoticeListRoute> createState() {
-    return _NoticeListRoute();
-  }
+  State<NoticeListRoute> createState() => _NoticeListRouteState();
 }
 
-class _NoticeListRoute extends State<NoticeListRoute> {
+class _NoticeListRouteState extends State<NoticeListRoute> {
   late Future<List<NoticeSummary>> notices;
+
   @override
   void initState() {
     super.initState();
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
   }
 
   Future<void> updateNotices() async {
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
   }
 
   @override
@@ -41,7 +42,7 @@ class _NoticeListRoute extends State<NoticeListRoute> {
             icon: AppIcons.add,
             splashRadius: 16,
             onPressed: () {
-              Util.pushRoute(context, (context) => CreateNoticeRoute());
+              Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));
             },
 
           )

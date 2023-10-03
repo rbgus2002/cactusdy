@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
@@ -27,19 +29,20 @@ class StudyDetailRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StudyDetailRoute> createState() {
-    return _StudyDetailRoute();
-  }
+  State<StudyDetailRoute> createState() => _StudyDetailRouteState();
 }
 
-class _StudyDetailRoute extends State<StudyDetailRoute> {
-  final int userId = Test.testUser.userId;
-
-
+class _StudyDetailRouteState extends State<StudyDetailRoute> {
   // is this right?
   final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
 
   late ListModel<Round> _roundList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +62,8 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             // Notice
             TitleWidget(title: "NOTICE", icon: AppIcons.chevronRight,
-              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute())),
-            NoticeSummaryPanel(noticeId: widget.studyId),
+              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute(studyId: widget.studyId,))),
+            NoticeSummaryPanel(studyId: widget.studyId,),
             Design.padding15,
 
             //

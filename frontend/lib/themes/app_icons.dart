@@ -5,4 +5,7 @@ class AppIcons {
   static const chevronRight = Icon(Icons.chevron_right);
   static const add = Icon(Icons.add);
 
+  static const email = Icon(Icons.email);
+  static const password = Icon(Icons.key);
+
 }

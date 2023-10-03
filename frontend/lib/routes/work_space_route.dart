@@ -14,16 +14,16 @@ import 'package:group_study_app/widgets/panels/notice_panel.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
 
-class WorkSpaceRoute extends StatefulWidget {
-  const WorkSpaceRoute({super.key});
+class WorkSpaceRouteState extends StatefulWidget {
+  const WorkSpaceRouteState({
+    Key? key
+  }) : super(key: key);
 
   @override
-  State<WorkSpaceRoute> createState() {
-    return _WorkSpaceRoute();
-  }
+  State<WorkSpaceRouteState> createState() => _WorkSpaceRoute();
 }
 
-class _WorkSpaceRoute extends State<WorkSpaceRoute> {
+class _WorkSpaceRoute extends State<WorkSpaceRouteState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

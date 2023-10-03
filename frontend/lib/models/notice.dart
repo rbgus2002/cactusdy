@@ -47,35 +47,36 @@ class Notice {
     );
   }
 
-  static Future<Notice> getNotice(int noticeId, int userId) async {
+  static Future<Notice> getNotice(int noticeId) async {
       final response = await http.get(
-          Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId&userId=$userId'),
+        Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=$noticeId'),
+        headers: DatabaseService.getAuthHeader(),
       );
 
-      if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      if (response.statusCode != DatabaseService.successCode) {
         throw Exception("Failed to load notice");
       } else {
+        print(json.decode(utf8.decode(response.bodyBytes)));
         var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
         return Notice.fromJson(responseJson);
       }
   }
 
-  static Future<int> createNotice(String title, String contents, int userId, int studyId) async {
+  static Future<int> createNotice(String title, String contents, int studyId) async {
     try {
       Map<String, dynamic> data = {
         'title': title,
         'contents': contents,
-        'userId': userId,
         'studyId': studyId,
       };
 
       final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}notices'),
-        headers: DatabaseService.header,
+        Uri.parse('${DatabaseService.serverUrl}api/notices'),
+        headers: DatabaseService.getAuthHeader(),
         body: json.encode(data),
       );
 
-      if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      if (response.statusCode != DatabaseService.successCode) {
         throw Exception("Failed to create new notice");
       } else {
         int newStudyId = json.decode(response.body)['data']['noticeId'];
@@ -91,10 +92,11 @@ class Notice {
 
   static Future<bool> deleteNotice(int noticeId) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}notices?noticeId=$noticeId'),
+      Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=$noticeId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to delete notice");
     } else {
       print(response.body);
@@ -103,12 +105,13 @@ class Notice {
     }
   }
 
-  static Future<bool> switchCheckNotice(int noticeId, int userId) async {
+  static Future<bool> switchCheckNotice(int noticeId) async {
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}notices/check?noticeId=$noticeId&userId=$userId'),
+      Uri.parse('${DatabaseService.serverUrl}api/notices/check?noticeId=$noticeId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to switch check notice");
     } else {
       String isChecked = json.decode(response.body)['data']["isChecked"];
@@ -118,11 +121,11 @@ class Notice {
 
   static Future<List<String>> getCheckUserImageList(int noticeId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService
-          .serverUrl}notices/users/images?noticeId=$noticeId'),
+      Uri.parse('${DatabaseService.serverUrl}api/notices/users/images?noticeId=$noticeId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get Checked User Images");
     } else {
       var responseJson = json.decode(response.body)['data']['userImageList'];

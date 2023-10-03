@@ -1,177 +1,54 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/create_notice_route.dart';
-import 'package:group_study_app/routes/generate_study_route.dart';
-import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/login_route.dart';
-import 'package:group_study_app/routes/notice_detail_route.dart';
-import 'package:group_study_app/routes/notice_list_route.dart';
-import 'package:group_study_app/routes/round_detail_route.dart';
-import 'package:group_study_app/routes/study_detail_route.dart';
-import 'package:group_study_app/routes/test_route.dart';
-import 'package:group_study_app/routes/work_space_route.dart';
-import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/routes/backdoor_route.dart';
+import 'package:group_study_app/routes/start_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 void main() {
   runApp(MaterialApp(
     title: 'asd',
-    home: MyApp(),
+    home: const MyApp(),
+    theme: ThemeData(
+      primaryColor: Colors.black87,
+      buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),
+      appBarTheme: const AppBarTheme(color: Colors.black87),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
+    ),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _MyApp();
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MyApp extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
+  static const _splashDuration = Duration(seconds: 1);
+
+  @override
+  void initState() {
+    super.initState();
+    Auth.getSignInfo();
+    Timer(_splashDuration, () {
+      Navigator.of(context).pop();
+      if (Auth.signInfo == null) {
+        Util.pushRoute(context, (context) => const StartRoute());
+      }
+      else {
+        Util.pushRoute(context, (context) => const BackdoorRoute());
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: Center (
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(height: 15,),
-                ElevatedButton(onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeRoute()),
-                  );
-                }, child: const Text('HomeScreen')
-                  , style: ElevatedButton.styleFrom(
-                      fixedSize: Size(300, 50),
-                      backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StudyDetailRoute(studyId: Test.testStudy.studyId,)),
-                  );
-                }, child: const Text('Study Detail Screen')
-                , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NoticeListRoute()),
-                  );
-                }, child: const Text('Notice List Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Util.pushRoute(context, (context)=>NoticeDetailRoute(noticeId: 21), ); },
-                  child: const Text('Notice Detail Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GenerateStudyRoute()),
-                  );
-                }, child: const Text('Generate Study Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RoundDetailRoute(
-                            roundNum: -1, roundId: 1)),
-                  );
-                }, child: const Text('Round Detail Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => WorkSpaceRoute()),
-                  );
-                }, child: const Text('Work Space Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginTest()),
-                  );
-                }, style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ), child: const Text('Login Test Screen')
-                  ,
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Util.pushRoute(context, (context)=>CreateNoticeRoute());
-                }, style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(300, 50),
-                  backgroundColor: Colors.grey,
-                ), child: const Text('Create Notice Screen')
-                  ,
-                ),
-
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => TestRoute()),
-                  );
-                }, style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(300, 50),
-                  backgroundColor: Colors.grey,
-                ), child: const Text('Test Screen')
-                  ,
-                ),
-              ],
-
-            )
-        )
+    return Center(
+      //< FIXME : Add Splash
+      child: Text("SPLASH~"),
     );
   }
 }
-

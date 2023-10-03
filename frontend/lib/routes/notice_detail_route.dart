@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/user.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
@@ -12,19 +14,18 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
-  User user = Test.testUser;
   final int noticeId;
 
-  NoticeDetailRoute({
-    super.key,
+  const NoticeDetailRoute({
+    Key? key,
     required this.noticeId,
-  });
+  }) : super(key: key);
 
   @override
-  State<NoticeDetailRoute> createState() => _NoticeDetailRoute();
+  State<NoticeDetailRoute> createState() => _NoticeDetailRouteState();
 }
 
-class _NoticeDetailRoute extends State<NoticeDetailRoute> {
+class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
 
@@ -43,12 +44,12 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   late Future<Notice> futureNotice;
   late List<Comment> comments;
   int _replyTo = Comment.commentWithNoParent;
-  int _writerId = -1;
+  int _writerId = User.nonAllocatedUserId;
 
   @override
   void initState() {
     super.initState();
-    futureNotice = Notice.getNotice(widget.noticeId, widget.user.userId);
+    futureNotice = Notice.getNotice(widget.noticeId);
   }
 
   @override
@@ -92,8 +93,6 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           _writingCommentBox(),
         ],
       ),
-
-      bottomNavigationBar: BottomAppBar(),
     );
   }
 
@@ -108,9 +107,9 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
             onTap: () {
               Future.delayed(Duration.zero, ()=>
-                  UserProfileDialog.showProfileDialog(context, _writerId)); }//< FIXME : userId
+                  UserProfileDialog.showProfileDialog(context, _writerId)); }
         ),
-        if (widget.user.userId == _writerId)
+        if (Auth.signInfo!.userId == _writerId)
         PopupMenuItem(
           child: const Text(_deleteNoticeText, style: TextStyles.bodyMedium,),
           onTap: () => _showDeleteNoticeDialog(context),
@@ -220,7 +219,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   void _writeComment() {
     int? parentCommentId = (_replyTo != Comment.commentWithNoParent)? comments[_replyTo].commentId : null;
     Future<int> result = Comment.writeComment(
-        widget.user.userId, widget.noticeId, _commentEditor.text, parentCommentId);
+        widget.noticeId, _commentEditor.text, parentCommentId);
 
     result.then((newCommentId) {
       if (newCommentId != Comment.commentCreationError) {
@@ -276,9 +275,7 @@ class _NoticeBody extends StatelessWidget {
   final Notice notice;
   final FocusNode focusNode;
 
-  final User user = Test.testUser; //< FIXME
-
-  _NoticeBody({
+  const _NoticeBody({
     required this.notice,
     required this.focusNode,
   });

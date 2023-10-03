@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 
 class Round {
   // string length limits
-  static const detailMaxLength = 100;
-  static const placeMaxLength = 30;
+  static const int detailMaxLength = 100;
+  static const int placeMaxLength = 30;
 
   // state code
   static const int nonAllocatedRoundId = -1;
@@ -59,12 +59,12 @@ class Round {
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}rounds?studyId=$studyId'),
-      headers: DatabaseService.header,
+      Uri.parse('${DatabaseService.serverUrl}api/rounds?studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to create round");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -77,12 +77,13 @@ class Round {
     }
   }
 
-  static Future<bool> deleteRound(int roundId, int userId) async {
+  static Future<bool> deleteRound(int roundId) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}rounds?roundId=$roundId&userId=$userId'),
+      Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=$roundId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception(json.decode(utf8.decode(response.bodyBytes))['message']);
     } else {
       bool success = json.decode(response.body)['success'];
@@ -102,12 +103,12 @@ class Round {
     };
 
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}rounds?roundId=${round.roundId}'),
-      headers: DatabaseService.header,
+      Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=${round.roundId}'),
+      headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to update round appointment");
     } else {
       bool success = json.decode(response.body)['success'];
@@ -118,10 +119,11 @@ class Round {
 
   static Future<Round> getDetail(int roundId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}rounds/details?roundId=$roundId'),
+      Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get round detail");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['detail'];
@@ -137,12 +139,12 @@ class Round {
     };
 
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}rounds/details?roundId=$roundId'),
-      headers: DatabaseService.header,
+      Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
+      headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to update round detail");
     } else {
       bool success = json.decode(response.body)['success'];
@@ -153,10 +155,11 @@ class Round {
 
   static Future<List<Round>> getRoundInfoResponses(int studyId) async {
     final response = await http.get(
-        Uri.parse('${DatabaseService.serverUrl}rounds/list?studyId=$studyId'),
+      Uri.parse('${DatabaseService.serverUrl}api/rounds/list?studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get RoundInfos");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['roundList'];

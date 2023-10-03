@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/sign_info.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 
 class Util {
+  static const int _exceptionTextLength = "Exception: ".length;
+
   static void pushRoute(BuildContext context, WidgetBuilder builder) {
     Navigator.push(
       context,
@@ -30,5 +34,9 @@ class Util {
         if (onTap != null) { onTap!(); }
       }
     );
+  }
+
+  static String getExceptionMessage(Exception e) {
+    return e.toString().substring(_exceptionTextLength);
   }
 }

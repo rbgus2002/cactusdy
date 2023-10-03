@@ -11,8 +11,6 @@ import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/models/user.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  User user = Test.testUser; //< FIXME
-
   final int noticeId;
   int checkerNum;
   bool isChecked;
@@ -89,7 +87,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeId, widget.user.userId).then((value) {
+    Notice.switchCheckNotice(widget.noticeId).then((value) {
       if (value != widget.isChecked) {
         setState(() {
           (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;

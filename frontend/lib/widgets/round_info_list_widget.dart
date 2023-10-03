@@ -13,9 +13,9 @@ class RoundInfoListWidget extends StatefulWidget {
   final int studyId;
 
   const RoundInfoListWidget({
-    super.key,
+    Key? key,
     required this.studyId,
-  });
+  }) : super(key: key);
 
   @override
   State<RoundInfoListWidget> createState() => RoundInfoListWidgetState();
@@ -61,12 +61,12 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
           Round.createRound(_roundListModel[index], widget.studyId).then((value) =>
               Util.pushRoute(context, (context) =>
                   RoundDetailRoute(
-                      roundNum: roundNum, roundId: _roundListModel[index].roundId)));
+                      roundNum: roundNum, roundId: _roundListModel[index].roundId, studyId: widget.studyId,)));
         }
         else {
           Util.pushRoute(context, (context) =>
               RoundDetailRoute(
-                  roundNum: roundNum, roundId: _roundListModel[index].roundId));
+                  roundNum: roundNum, roundId: _roundListModel[index].roundId, studyId: widget.studyId,));
         }
       },
       child: SizeTransition(
