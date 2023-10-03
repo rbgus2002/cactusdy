@@ -3,7 +3,6 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/diagrams/circle.dart';
 
-
 class OutlineCircleButton extends CircleButton {
   final Widget? image;
   final Color color;

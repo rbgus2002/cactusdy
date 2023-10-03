@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -94,7 +95,10 @@ class _SignInRouteState extends State<SignInRoute> {
   void tryToSignIn() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Auth.signIn(_email, _password);
+        Auth.signIn(_email, _password).then((value) {
+          Util.pushRoute(context, (context) => const HomeRoute());
+        }
+        );
       }
       on Exception catch (e) {
         setState(() => _errorText = Util.getExceptionMessage(e));

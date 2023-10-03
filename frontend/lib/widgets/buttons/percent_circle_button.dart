@@ -3,7 +3,6 @@ import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/charts/donut_chart.dart';
 
-
 class PercentCircleButton extends CircleButton {
   List<PercentInfo> percentInfos;
 

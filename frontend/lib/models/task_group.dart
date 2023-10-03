@@ -13,8 +13,6 @@ class TaskGroup {
   });
 
   factory TaskGroup.fromJson(Map<String, dynamic> json, int roundParticipantId) {
-    print(json);
-
     return TaskGroup(
         roundParticipantId: roundParticipantId,
         taskType: json['taskType'],

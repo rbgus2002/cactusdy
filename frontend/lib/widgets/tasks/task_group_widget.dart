@@ -4,6 +4,7 @@ import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/utilities/list_model.dart';
+import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/tasks/task_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -30,7 +31,9 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
     super.initState();
     _taskListModel = ListModel<Task>(
         listKey: _taskListKey,
-        initialItems: widget.taskGroup.tasks);
+        initialItems: widget.taskGroup.tasks,
+        removedItemBuilder: _buildRemovedItem,
+    );
   }
 
   @override
@@ -40,10 +43,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TitleWidget(title: widget.taskGroup.taskType, icon: AppIcons.add,
-            onTap: () {
-              _taskListModel.add(Task());
-              setState(() { });
-            },),
+            onTap: addTask),
 
           AnimatedList(
             key: _taskListKey,
@@ -62,30 +62,47 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
       );
   }
 
-  /*
+  void addTask() {
+    _taskListModel.add(Task());
+    setState(() { });
+  }
+
   Widget _buildRemovedItem(
-      int item, BuildContext context, Animation<double> animation) {
+      Task task, BuildContext context, Animation<double> animation) {
     return TaskWidget(
-      index: item,
+      index: 0,
+      task: task,
       animation: animation,
-      task: _personalTaskListModel[item],
-      // No gesture detector here: we don't want removed items to be interactive.
+      onUpdateTaskDetail: updateTaskDetail,
+      onDeleteTask: deleteTask,
     );
   }
-   */
 
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
-    return TaskWidget(task: _taskListModel[index],
-      animation: animation, onUpdateTaskDetail: onUpdateTaskDetail,);
+    return TaskWidget(
+      index: index,
+      task: _taskListModel[index],
+      animation: animation,
+      onUpdateTaskDetail: updateTaskDetail,
+      onDeleteTask: deleteTask,
+    );
   }
 
-  void onUpdateTaskDetail(Task task) {
+  void updateTaskDetail(Task task) {
     if (task.taskId == Task.nonAllocatedTaskId) {
       Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
     }
     else {
       Task.updateTaskDetail(task, widget.taskGroup.roundParticipantId);
     }
+  }
+
+  void deleteTask(Task task, int index) {
+    if (task.taskId != Task.nonAllocatedTaskId) {
+      Task.deleteTask(task.taskId, widget.taskGroup.roundParticipantId);
+    }
+    _taskListModel.removeAt(index);
+    setState(() { });
   }
 }

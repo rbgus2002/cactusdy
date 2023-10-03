@@ -29,15 +29,12 @@ class ListModel<E> {
   }
 
   void removeAt(int index) {
-    if (removedItemBuilder != null) {
-      final E removedItem = _items.removeAt(index);
-      if (removedItem != null) {
-        _animatedList!.removeItem(index,
-              (BuildContext context, Animation<double> animation) {
-            return removedItemBuilder!(removedItem, context, animation);
-          },
-        );
-      }
+    final E removedItem = _items.removeAt(index);
+    if (removedItem != null) {
+      _animatedList!.removeItem(
+        index, (context, animation) =>
+          removedItemBuilder!(removedItem, context, animation)
+      );
     }
   }
 

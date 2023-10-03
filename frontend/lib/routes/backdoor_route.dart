@@ -8,6 +8,7 @@ import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
+import 'package:group_study_app/routes/sign_up_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/routes/work_space_route.dart';
@@ -119,20 +120,6 @@ class BackdoorRoute extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => WorkSpaceRouteState()),
-                  );
-                }, child: const Text('Work Space Screen')
-                  , style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-
-                Container(height: 15,),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
                         builder: (context) => SignInRoute()),
                   );
                 }, style: ElevatedButton.styleFrom(
@@ -150,6 +137,20 @@ class BackdoorRoute extends StatelessWidget {
                   backgroundColor: Colors.grey,
                 ), child: const Text('Create Notice Screen')
                   ,
+                ),
+
+                Container(height: 15,),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SignUpRoute()),
+                  );
+                }, child: const Text('Sign Up Screen')
+                  , style: ElevatedButton.styleFrom(
+                    fixedSize: Size(300, 50),
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
 
 

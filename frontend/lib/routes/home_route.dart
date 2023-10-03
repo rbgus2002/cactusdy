@@ -25,7 +25,7 @@ class _HomeRouteState extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent,),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(Design.padding),
         child: Column(

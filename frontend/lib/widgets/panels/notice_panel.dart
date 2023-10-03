@@ -126,6 +126,7 @@ class _NoticePanel extends State<NoticePanel> {
     );
   }
 
+  // deprecated for #26
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {

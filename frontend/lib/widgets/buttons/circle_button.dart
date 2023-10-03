@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CircleButton extends StatelessWidget {
   static const String defaultImagePath = 'assets/images/default_profile.png';
 

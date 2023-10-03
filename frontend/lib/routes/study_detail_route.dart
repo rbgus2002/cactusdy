@@ -39,12 +39,6 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   late ListModel<Round> _roundList;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),

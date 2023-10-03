@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Auth.getSignInfo();
+    //Auth.getSignInfo();
     Timer(_splashDuration, () {
       Navigator.of(context).pop();
       if (Auth.signInfo == null) {

@@ -7,16 +7,16 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/widgets/dialogs/color_picker_dialog.dart';
 
-class GenerateStudyRoute extends StatefulWidget {
-  const GenerateStudyRoute({ 
-    Key? key 
+class SignUpRoute extends StatefulWidget {
+  const SignUpRoute({
+    Key? key
   }) : super(key: key);
 
   @override
-  State<GenerateStudyRoute> createState() => _GenerateStudyRouteState();
+  State<SignUpRoute> createState() => _SignUpRouteState();
 }
 
-class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
+class _SignUpRouteState extends State<SignUpRoute> {
   final _formKey = GlobalKey<FormState>();
 
   static const String _studyNameHintText = "스터디 이름을 입력해 주세요";
@@ -126,7 +126,6 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                           child: null),
                     ],
                   ),
-                  Design.padding15,
                   Design.padding15,
 
                   ElevatedButton(

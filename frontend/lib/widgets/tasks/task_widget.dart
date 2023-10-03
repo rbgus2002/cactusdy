@@ -5,15 +5,19 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 
 class TaskWidget extends StatefulWidget {
+  final int index;
   final Task task;
   final Animation<double> animation;
   final Function onUpdateTaskDetail;
+  final Function(Task, int) onDeleteTask;
 
   const TaskWidget({
     super.key,
+    required this.index,
     required this.task,
     required this.animation,
     required this.onUpdateTaskDetail,
+    required this.onDeleteTask,
   });
 
   @override
@@ -53,9 +57,7 @@ class _TaskWidget extends State<TaskWidget> {
             children: [
               _taskCheckBox(),
               Design.padding5,
-
               _taskDetail(),
-
               _taskPopupMenu(),
             ],
           ),
@@ -74,9 +76,14 @@ class _TaskWidget extends State<TaskWidget> {
             // Fast Unsafe State Update
             setState(() => widget.task.isDone = value! );
 
-            //< FIXME
+            // FIXME : API WILL UPDATE
             // Call API and Verify State
-            //Task.switchIsDone(widget.task.taskId, widget.task.isDone);
+            /*
+            Task.switchTask(widget.task.taskId, roundParticipantId).then(
+              (success) {
+                if (success == false) widget.task.isDone = !value!;
+            });
+             */
           },
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
     );
@@ -128,7 +135,7 @@ class _TaskWidget extends State<TaskWidget> {
           ),
           PopupMenuItem(
             child: const Text(_deleteTaskText, style: TextStyles.bodyMedium,),
-            //onTap: ,
+            onTap: () => widget.onDeleteTask(widget.task, widget.index),
           )
         ],
       )

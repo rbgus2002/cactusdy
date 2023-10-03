@@ -13,7 +13,6 @@ class Task {
   String detail;
   bool isDone;
 
-  //< FIXME this is test
   Task({
     this.taskId = nonAllocatedTaskId,
     this.detail = "",
@@ -69,6 +68,21 @@ class Task {
     }
   }
 
+  static Future<bool> deleteTask(int taskId, int roundParticipantId) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/tasks?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Fail to delete task");
+    } else {
+      print(response.body);
+      bool result = json.decode(response.body)['success'];
+      return result;
+    }
+  }
+
   static Future<bool> updateTaskDetail(Task task, int roundParticipantId) async {
     if (task.taskId == Task.nonAllocatedTaskId) return false;
 
@@ -92,48 +106,6 @@ class Task {
       return success;
     }
   }
-
-
-
-  /*
-  static Future<List<TaskGroup>> getTasks(int roundId) async {
-    final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}tasks?roundId=$roundId'),
-    );
-
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
-      throw Exception("Failed to get task list");
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['tasks'];
-
-      return (responseJson as List).map((t) => Round.fromJson(r)).toList();
-    }
-
-
-  }
-   */
-
-
-  //< FIXME : this is test module
-  static Future<List<Task>> getGroupTasks(int studyId, int roundId, int userId) async {
-    List<Task> groupTasks = [];
-
-    groupTasks.add(Task(taskId: nonAllocatedTaskId, detail: "토익 문제 박살내기", isDone: false));
-    groupTasks.add(Task(taskId: nonAllocatedTaskId, detail: "TEPS한테 박살나기", isDone: true));
-
-    return groupTasks;
-  }
-
-  //< FIXME : this is test module
-  static Future<List<Task>> getPersonalTasks(int studyId, int roundId, int userId) async {
-    List<Task> personalTasks = [];
-
-    personalTasks.add(Task(taskId: nonAllocatedTaskId, detail: "백준 : 11324", isDone: false));
-    personalTasks.add(Task(taskId: nonAllocatedTaskId, detail: "프로그래머스 : 무지의 댄스 타임", isDone: true));
-
-    return personalTasks;
-  }
-
 
   static Future<bool> switchTask(int taskId, int roundParticipantId) async {
     if (taskId == nonAllocatedTaskId) { return false; }
