@@ -36,9 +36,9 @@ create table if not exists study
     invite_link    varchar(255) not null,
     picture        varchar(255) null,
     study_name     varchar(30)  not null,
-    user_id        bigint       not null,
+    host_user_id        bigint       not null,
     constraint FKkhcyngf15w120k4wx6pp21ijn
-        foreign key (user_id) references `user` (user_id)
+        foreign key (host_user_id) references `user` (user_id)
 );
 
 create table if not exists notice
