@@ -13,16 +13,15 @@ import 'package:group_study_app/widgets/line_profiles/line_profile_widget.dart';
 
 class ParticipantLineProfileWidget extends StatelessWidget {
   static const double _scale = 50;
-  final int userId = Test.testUser.userId;
 
   final User user;
   final double taskProgress;
 
-  ParticipantLineProfileWidget({
-    super.key,
+  const ParticipantLineProfileWidget({
+    Key? key,
     required this.user,
     required this.taskProgress,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

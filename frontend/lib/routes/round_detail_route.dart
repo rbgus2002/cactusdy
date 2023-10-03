@@ -13,16 +13,16 @@ import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class RoundDetailRoute extends StatefulWidget {
-  int roundNum = 1;
-  int roundId = 1;
-  final int studyId = Test.testStudy.studyId; // FIXME
-  final int userId = 1;
+  final int roundNum;
+  final int roundId;
+  final int studyId;
 
-  RoundDetailRoute({
-    super.key,
+  const RoundDetailRoute({
+    Key? key,
     required this.roundNum,
     required this.roundId,
-  });
+    required this.studyId,
+  }) : super(key: key);
 
   @override
   State<RoundDetailRoute> createState() {

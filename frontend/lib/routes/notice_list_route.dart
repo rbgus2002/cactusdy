@@ -9,10 +9,12 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
 class NoticeListRoute extends StatefulWidget {
-  final int studyId = Test.testStudy.studyId;
-  final int userId = Test.testUser.userId;
+  final int studyId;
 
-  NoticeListRoute({super.key});
+  const NoticeListRoute({
+    Key? key,
+    required this.studyId,
+  }) : super(key: key);
 
   @override
   State<NoticeListRoute> createState() {
@@ -41,7 +43,7 @@ class _NoticeListRoute extends State<NoticeListRoute> {
             icon: AppIcons.add,
             splashRadius: 16,
             onPressed: () {
-              Util.pushRoute(context, (context) => CreateNoticeRoute());
+              Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));
             },
 
           )

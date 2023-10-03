@@ -14,13 +14,12 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
-  User user = Test.testUser;
   final int noticeId;
 
-  NoticeDetailRoute({
-    super.key,
+  const NoticeDetailRoute({
+    Key? key,
     required this.noticeId,
-  });
+  }) : super(key: key);
 
   @override
   State<NoticeDetailRoute> createState() => _NoticeDetailRoute();
@@ -111,7 +110,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
               Future.delayed(Duration.zero, ()=>
                   UserProfileDialog.showProfileDialog(context, _writerId)); }//< FIXME : userId
         ),
-        if (widget.user.userId == _writerId)
+        if (Auth.signInfo!.userId == _writerId)
         PopupMenuItem(
           child: const Text(_deleteNoticeText, style: TextStyles.bodyMedium,),
           onTap: () => _showDeleteNoticeDialog(context),
@@ -277,9 +276,7 @@ class _NoticeBody extends StatelessWidget {
   final Notice notice;
   final FocusNode focusNode;
 
-  final User user = Test.testUser; //< FIXME
-
-  _NoticeBody({
+  const _NoticeBody({
     required this.notice,
     required this.focusNode,
   });

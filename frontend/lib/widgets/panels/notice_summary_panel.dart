@@ -12,14 +12,14 @@ class NoticeSummaryPanel extends StatelessWidget {
   static const int _length = 3;
 
   late Future<List<NoticeSummary>> noticeSummaries;
-  final int noticeId;
+  final int studyId;
 
   List<String> contents = List<String>.filled(_length, "");
 
   NoticeSummaryPanel({
-    super.key,
-    required this.noticeId,
-  });
+    Key? key,
+    required this.studyId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +32,10 @@ class NoticeSummaryPanel extends StatelessWidget {
 
       child: InkWell(
         onTap: () => Navigator.push( context,
-            MaterialPageRoute(builder: (context) => NoticeListRoute()),
+            MaterialPageRoute(builder: (context) => NoticeListRoute(studyId: studyId,)),
         ),
         child: FutureBuilder(
-          future: NoticeSummary.getNoticeSummaryListLimit3(noticeId),
+          future: NoticeSummary.getNoticeSummaryListLimit3(studyId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               for (int i = 0; i < snapshot.data!.length; ++i) {

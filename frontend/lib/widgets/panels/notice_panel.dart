@@ -17,12 +17,11 @@ import 'package:intl/intl.dart';
 
 class NoticePanel extends StatefulWidget {
   final NoticeSummary noticeSummary;
-  final int userId = Test.testUser.userId;
 
-  NoticePanel({
-    super.key,
+  const NoticePanel({
+    Key? key,
     required this.noticeSummary,
-  });
+  }) : super(key: key);
 
   @override
   State<NoticePanel> createState() => _NoticePanel();

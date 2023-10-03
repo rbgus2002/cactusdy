@@ -16,6 +16,8 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class BackdoorRoute extends StatelessWidget {
+  final int testStudyId = 1; //< FIXME Caution!
+
   const BackdoorRoute({
     Key? key,
   }) : super(key: key);
@@ -48,7 +50,7 @@ class BackdoorRoute extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            StudyDetailRoute(studyId: Test.testStudy.studyId,)),
+                            StudyDetailRoute(studyId: testStudyId,)),
                   );
                 }, child: const Text('Study Detail Screen')
                   , style: ElevatedButton.styleFrom(
@@ -62,7 +64,7 @@ class BackdoorRoute extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NoticeListRoute()),
+                        builder: (context) => NoticeListRoute(studyId: testStudyId,)),
                   );
                 }, child: const Text('Notice List Screen')
                   , style: ElevatedButton.styleFrom(
@@ -103,7 +105,7 @@ class BackdoorRoute extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             RoundDetailRoute(
-                                roundNum: -1, roundId: 1)),
+                                roundNum: -1, roundId: 1, studyId: testStudyId,)),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(
@@ -142,7 +144,7 @@ class BackdoorRoute extends StatelessWidget {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
-                  Util.pushRoute(context, (context) => CreateNoticeRoute());
+                  Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: testStudyId,));
                 }, style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 50),
                   backgroundColor: Colors.grey,

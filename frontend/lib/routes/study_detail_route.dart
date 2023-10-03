@@ -23,7 +23,7 @@ import 'package:group_study_app/widgets/title_widget.dart';
 class StudyDetailRoute extends StatefulWidget {
   final int studyId;
 
-  StudyDetailRoute({
+  const StudyDetailRoute({
     Key? key,
     required this.studyId,
   }) : super(key: key);
@@ -35,8 +35,6 @@ class StudyDetailRoute extends StatefulWidget {
 }
 
 class _StudyDetailRoute extends State<StudyDetailRoute> {
-  final int userId = Test.testUser.userId;
-
   // is this right?
   final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
 
@@ -66,8 +64,8 @@ class _StudyDetailRoute extends State<StudyDetailRoute> {
 
             // Notice
             TitleWidget(title: "NOTICE", icon: AppIcons.chevronRight,
-              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute())),
-            NoticeSummaryPanel(noticeId: widget.studyId,),
+              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute(studyId: widget.studyId,))),
+            NoticeSummaryPanel(studyId: widget.studyId,),
             Design.padding15,
 
             //

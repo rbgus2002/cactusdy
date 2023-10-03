@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -22,9 +23,6 @@ class CommentWidget extends StatelessWidget {
   static const String _writeReplyText = "답글 달기";
 
   static const double _replyLeftPadding = 18;
-
-  //< FIXME
-  final int userId = Test.testUser.userId;
 
   final Comment comment;
   final Function(int) setReplyTo;
@@ -126,7 +124,7 @@ class CommentWidget extends StatelessWidget {
               UserProfileDialog.showProfileDialog(context, comment.userId)); }
         ),
 
-        if (userId == comment.userId)
+        if (comment.userId == Auth.signInfo!.userId)
         PopupMenuItem(
           child: const Text(_deleteCommentText, style: TextStyles.bodyMedium,),
           onTap: () => _showDeleteCommentDialog(context),

@@ -11,8 +11,6 @@ import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/models/user.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  User user = Test.testUser; //< FIXME
-
   final int noticeId;
   int checkerNum;
   bool isChecked;

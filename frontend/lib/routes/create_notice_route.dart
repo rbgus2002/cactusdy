@@ -10,10 +10,11 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class CreateNoticeRoute extends StatefulWidget {
-  final User user = Test.testUser;  //< FIXME
-  final Study study = Test.testStudy; //< FIXME
-
-  CreateNoticeRoute({super.key});
+  final int studyId;
+  const CreateNoticeRoute({
+    required this.studyId,
+    Key? key
+  }) : super(key: key);
 
   @override
   State<CreateNoticeRoute> createState() {
@@ -83,7 +84,7 @@ class _CreateNoticeRoute extends State<CreateNoticeRoute> {
                   onPressed: () {
                     if (_checkValidation()) {
                       Future<int> result = Notice.createNotice(
-                        _title, _contents, widget.study.studyId);
+                        _title, _contents, widget.studyId);
 
                       result.then((newNoticeId) {
                         if (newNoticeId != Notice.noticeCreationError) {

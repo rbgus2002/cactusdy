@@ -13,9 +13,9 @@ import 'package:group_study_app/widgets/panels/study_group_panel.dart';
 import 'package:group_study_app/widgets/line_profiles/user_line_profile_widget.dart';
 
 class HomeRoute extends StatefulWidget {
-  final int userId = Test.testUser.userId;
-
-  HomeRoute({super.key});
+  const HomeRoute({
+    Key? key
+  }) : super(key: key);
 
   @override
   State<HomeRoute> createState() {
@@ -50,8 +50,9 @@ class _HomeRouteState extends State<HomeRoute> {
                 if (snapshot.hasData) {
                   return UserLineProfileWidget(user: snapshot.data!);
                 }
-                else
-                  return Container(child: Text("???"),);
+                else {
+                  return Container(); //< FIXME
+                }
               }
             ),
 
