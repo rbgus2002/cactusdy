@@ -17,13 +17,12 @@ class NoticeListRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<NoticeListRoute> createState() {
-    return _NoticeListRoute();
-  }
+  State<NoticeListRoute> createState() => _NoticeListRouteState();
 }
 
-class _NoticeListRoute extends State<NoticeListRoute> {
+class _NoticeListRouteState extends State<NoticeListRoute> {
   late Future<List<NoticeSummary>> notices;
+
   @override
   void initState() {
     super.initState();

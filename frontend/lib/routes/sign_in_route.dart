@@ -25,8 +25,8 @@ class _SignInRouteState extends State<SignInRoute> {
 
   String _errorText = "";
 
-  String email = "";
-  String password = "";
+  String _email = "";
+  String _password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _SignInRouteState extends State<SignInRoute> {
                     hintText: _emailHintText,
                     counterText: "",
                   ),
-                  onChanged: (value) => email = value,
+                  onChanged: (value) => _email = value,
                 ),
                 Design.padding15,
 
@@ -68,7 +68,7 @@ class _SignInRouteState extends State<SignInRoute> {
                     hintText: _passwordHintText,
                     counterText: "",
                   ),
-                  onChanged: (value) => password = value,
+                  onChanged: (value) => _password = value,
                 ),
               ],),
               Design.padding15,
@@ -94,10 +94,9 @@ class _SignInRouteState extends State<SignInRoute> {
   void tryToSignIn() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Auth.signIn(email, password);
+        await Auth.signIn(_email, _password);
       }
       on Exception catch (e) {
-        print(e);
         setState(() => _errorText = Util.getExceptionMessage(e));
       }
     }

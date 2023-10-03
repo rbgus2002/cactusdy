@@ -8,22 +8,22 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/widgets/dialogs/color_picker_dialog.dart';
 
 class GenerateStudyRoute extends StatefulWidget {
-  const GenerateStudyRoute({ Key? key }) : super(key: key);
+  const GenerateStudyRoute({ 
+    Key? key 
+  }) : super(key: key);
 
   @override
-  State<GenerateStudyRoute> createState() {
-    return _GenerateStudyRoute();
-  }
+  State<GenerateStudyRoute> createState() => _GenerateStudyRouteState();
 }
 
-class _GenerateStudyRoute extends State<GenerateStudyRoute> {
+class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
   final _formKey = GlobalKey<FormState>();
 
   static const String _studyNameHintText = "스터디 이름을 입력해 주세요";
   static const String _studyDetailHintText = "상세 설명을 입력해 주세요";
 
-  bool isAuthorized = true;
-  Color color = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+  bool isAuthorized = true; //< FIXME : id? -> auth
+  Color _color = Colors.primaries[Random().nextInt(Colors.primaries.length)]; //< FIXME : is this best?
 
   @override
   void initState() {
@@ -115,13 +115,13 @@ class _GenerateStudyRoute extends State<GenerateStudyRoute> {
                       Design.padding5,
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: color,
+                            backgroundColor: _color,
 
                           ),
                           onPressed: () =>
                               ColorPickerDialog.showColorPickerDialog(
                                   context: context,
-                                  color: color,
+                                  color: _color,
                                   onColorChange: changeColor),
                           child: null),
                     ],
@@ -148,6 +148,6 @@ class _GenerateStudyRoute extends State<GenerateStudyRoute> {
   }
 
   void changeColor(Color newColor) {
-    setState(() { color = newColor; });
+    setState(() { _color = newColor; });
   }
 }

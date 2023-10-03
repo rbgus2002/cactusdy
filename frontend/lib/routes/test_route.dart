@@ -5,21 +5,16 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 
-class TestRoute extends StatefulWidget {
-  const TestRoute({super.key});
+class TestRouteState extends StatefulWidget {
+  const TestRouteState({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<TestRoute> createState() => _TestRoute();
+  State<TestRouteState> createState() => _TestRoute();
 }
 
-class _TestRoute extends State<TestRoute> {
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class _TestRoute extends State<TestRouteState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

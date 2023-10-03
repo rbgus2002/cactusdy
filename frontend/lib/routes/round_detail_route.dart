@@ -25,12 +25,10 @@ class RoundDetailRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RoundDetailRoute> createState() {
-    return _RoundDetailRoute();
-  }
+  State<RoundDetailRoute> createState() => _RoundDetailRouteState();
 }
 
-class _RoundDetailRoute extends State<RoundDetailRoute> {
+class _RoundDetailRouteState extends State<RoundDetailRoute> {
   static const String _deleteRoundCautionMessage = "해당 회차를 삭제하시겠어요?";
 
   static const String _checkText = "확인";

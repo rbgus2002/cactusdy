@@ -18,22 +18,10 @@ class HomeRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<HomeRoute> createState() {
-
-    return _HomeRouteState();
-  }
+  State<HomeRoute> createState() => _HomeRouteState();
 }
 
 class _HomeRouteState extends State<HomeRoute> {
-  late Future<User> user;
-
-  @override
-  void initState() {
-    super.initState();
-
-    user = User.getUserProfileSummary();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +32,7 @@ class _HomeRouteState extends State<HomeRoute> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FutureBuilder(
-              future: user,
+              future: User.getUserProfileSummary(),
               builder: (context, snapshot) {
 
                 if (snapshot.hasData) {

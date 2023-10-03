@@ -22,10 +22,10 @@ class NoticeDetailRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<NoticeDetailRoute> createState() => _NoticeDetailRoute();
+  State<NoticeDetailRoute> createState() => _NoticeDetailRouteState();
 }
 
-class _NoticeDetailRoute extends State<NoticeDetailRoute> {
+class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?";
   static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
 
@@ -44,12 +44,11 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   late Future<Notice> futureNotice;
   late List<Comment> comments;
   int _replyTo = Comment.commentWithNoParent;
-  int _writerId = -1;
+  int _writerId = User.nonAllocatedUserId;
 
   @override
   void initState() {
     super.initState();
-    print(widget.noticeId);
     futureNotice = Notice.getNotice(widget.noticeId);
   }
 
@@ -108,7 +107,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
           child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
             onTap: () {
               Future.delayed(Duration.zero, ()=>
-                  UserProfileDialog.showProfileDialog(context, _writerId)); }//< FIXME : userId
+                  UserProfileDialog.showProfileDialog(context, _writerId)); }
         ),
         if (Auth.signInfo!.userId == _writerId)
         PopupMenuItem(

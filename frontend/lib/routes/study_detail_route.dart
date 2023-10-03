@@ -29,12 +29,10 @@ class StudyDetailRoute extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StudyDetailRoute> createState() {
-    return _StudyDetailRoute();
-  }
+  State<StudyDetailRoute> createState() => _StudyDetailRouteState();
 }
 
-class _StudyDetailRoute extends State<StudyDetailRoute> {
+class _StudyDetailRouteState extends State<StudyDetailRoute> {
   // is this right?
   final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
 

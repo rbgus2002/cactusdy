@@ -4,6 +4,8 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class User{
+  static const int nonAllocatedUserId = -1;
+
   final int userId;
   final String nickname;
   final String statusMessage;
