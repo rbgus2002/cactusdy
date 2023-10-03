@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Participants {
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "host_user_id", nullable = false)
     private User hostUser;
 
     @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
