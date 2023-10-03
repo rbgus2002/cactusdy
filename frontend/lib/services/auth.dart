@@ -24,11 +24,11 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      SignInfo signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      SignInfo.setSignInfo(signInfo);
+      signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
+      SignInfo.setSignInfo(signInfo!);
       print("success to sign in");
 
       return true;
@@ -37,9 +37,10 @@ class Auth {
 
   static void signOut() {
     SignInfo.removeSignInfo();
+    signInfo = null;
   }
 
-  static Future<SignInfo?> tryGetSignInfo() async {
-    return SignInfo.tryGetSignInInfo();
+  static void getSignInfo() async {
+    signInfo ??= await SignInfo.readSignInfo();
   }
 }

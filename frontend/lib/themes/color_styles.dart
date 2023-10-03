@@ -19,5 +19,7 @@ class ColorStyles {
   static const Color orange = Colors.orange;
   static const Color red = Colors.red;
 
+  static const Color errorColor = Color(0xffc23f38);
+
   static const Color deepPurpleAccent = Colors.deepPurpleAccent;
 }

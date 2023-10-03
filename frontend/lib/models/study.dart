@@ -39,10 +39,11 @@ class Study {
 
   static Future<Study> getStudySummary(int studyId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}studies?studyId=$studyId'),
+      Uri.parse('${DatabaseService.serverUrl}api/studies?studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get Study Summary");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studySummary'];

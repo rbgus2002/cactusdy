@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/user.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
@@ -48,7 +50,8 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   @override
   void initState() {
     super.initState();
-    futureNotice = Notice.getNotice(widget.noticeId, widget.user.userId);
+    print(widget.noticeId);
+    futureNotice = Notice.getNotice(widget.noticeId);
   }
 
   @override
@@ -218,7 +221,7 @@ class _NoticeDetailRoute extends State<NoticeDetailRoute> {
   void _writeComment() {
     int? parentCommentId = (_replyTo != Comment.commentWithNoParent)? comments[_replyTo].commentId : null;
     Future<int> result = Comment.writeComment(
-        widget.user.userId, widget.noticeId, _commentEditor.text, parentCommentId);
+        widget.noticeId, _commentEditor.text, parentCommentId);
 
     result.then((newCommentId) {
       if (newCommentId != Comment.commentCreationError) {

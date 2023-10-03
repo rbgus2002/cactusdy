@@ -30,10 +30,11 @@ class Task {
 
   static Future<List<ParticipantInfo>> getTasks(int roundId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}tasks?roundId=$roundId'),
+      Uri.parse('${DatabaseService.serverUrl}api/tasks?roundId=$roundId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get Tasks");
     } else {
       print("Success to get participants Task lists");
@@ -50,12 +51,12 @@ class Task {
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}tasks'),
-      headers: DatabaseService.header,
+      Uri.parse('${DatabaseService.serverUrl}api/tasks'),
+      headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to create task");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -78,12 +79,12 @@ class Task {
     };
 
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}tasks?taskId=${task.taskId}&roundParticipantId=$roundParticipantId}'),
-      headers: DatabaseService.header,
+      Uri.parse('${DatabaseService.serverUrl}api/tasks?taskId=${task.taskId}&roundParticipantId=$roundParticipantId}'),
+      headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to update task detail");
     } else {
       bool success = json.decode(response.body)['success'];
@@ -138,10 +139,11 @@ class Task {
     if (taskId == nonAllocatedTaskId) { return false; }
 
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}tasks/check?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+      Uri.parse('${DatabaseService.serverUrl}api/tasks/check?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception('Failed to switch check task');
     } else {
       String isChecked = json.decode(response.body)['data']['doneYn'];

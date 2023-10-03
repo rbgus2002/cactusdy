@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:group_study_app/models/sign_info.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,12 +54,12 @@ class Comment {
   }
 
   static Future<List<Comment>> getComments(int noticeId) async {
-    print("this is called"); // FIXME
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}comments?noticeId=$noticeId'),
+      Uri.parse('${DatabaseService.serverUrl}api/comments?noticeId=$noticeId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to load comment");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['comments'];
@@ -65,9 +67,8 @@ class Comment {
     }
   }
 
-  static Future<int> writeComment(int userId, int noticeId, String contents, int? parentCommentId) async {
+  static Future<int> writeComment(int noticeId, String contents, int? parentCommentId) async {
     Map<String, dynamic> data = {
-      'userId': userId,
       'noticeId': noticeId,
       'contents': contents,
       'parentCommentId': parentCommentId
@@ -75,12 +76,12 @@ class Comment {
 
     try {
       final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}comments'),
-        headers: DatabaseService.header,
+        Uri.parse('${DatabaseService.serverUrl}api/comments'),
+        headers: DatabaseService.getAuthHeader(),
         body: json.encode(data),
       );
 
-      if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+      if (response.statusCode != DatabaseService.successCode) {
         throw Exception("Failed to write new comment");
       } else {
         int newCommentId = json.decode(response.body)['data']['commentId'];
@@ -95,10 +96,11 @@ class Comment {
 
   static Future<bool> deleteComment(int commentId) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}comments?commentId=$commentId'),
+      Uri.parse('${DatabaseService.serverUrl}api.comments?commentId=$commentId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to delete comment");
     } else {
       print(response.body);

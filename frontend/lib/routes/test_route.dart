@@ -18,11 +18,6 @@ class _TestRoute extends State<TestRoute> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Auth.tryGetSignInfo().then((value) => {
-      if (value != null) {
-        print(value)
-      }
-    });
   }
 
   @override

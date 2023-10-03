@@ -25,11 +25,11 @@ class _NoticeListRoute extends State<NoticeListRoute> {
   @override
   void initState() {
     super.initState();
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
   }
 
   Future<void> updateNotices() async {
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, widget.userId);
+    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
   }
 
   @override

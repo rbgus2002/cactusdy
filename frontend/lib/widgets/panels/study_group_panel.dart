@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
@@ -20,7 +21,7 @@ class StudyGroupPanel extends StatelessWidget {
 
   StudyGroupPanel({
     super.key,
-    required this.studyId
+    required this.studyId,
   }) ;
 
   @override

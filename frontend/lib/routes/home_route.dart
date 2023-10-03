@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
+import 'package:group_study_app/routes/sign_in_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -17,17 +19,19 @@ class HomeRoute extends StatefulWidget {
 
   @override
   State<HomeRoute> createState() {
-    return _HomeRoute();
+
+    return _HomeRouteState();
   }
 }
 
-class _HomeRoute extends State<HomeRoute> {
+class _HomeRouteState extends State<HomeRoute> {
   late Future<User> user;
 
   @override
   void initState() {
     super.initState();
-    user = User.getUserProfileSummary(widget.userId);
+
+    user = User.getUserProfileSummary();
   }
 
   @override
@@ -47,7 +51,7 @@ class _HomeRoute extends State<HomeRoute> {
                   return UserLineProfileWidget(user: snapshot.data!);
                 }
                 else
-                  return Container();
+                  return Container(child: Text("???"),);
               }
             ),
 

@@ -21,19 +21,20 @@ class User{
         userId: json['userId'],
         nickname: json['nickname'],
         statusMessage: json['statusMessage'],
-        picture: json['picture'],
+        picture: "" //json['picture'],
     );
   }
 
-  static Future<User> getUserProfileSummary(int userId) async {
+  static Future<User> getUserProfileSummary() async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}users?userId=$userId'),
+      Uri.parse('${DatabaseService.serverUrl}api/users'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
-      throw Exception("Fail to get User Data (userId = $userId)");
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Fail to get User Data");
     } else {
-      print("successfully get User Profile Summary (userId = $userId)");
+      print("successfully get User Profile Summary");
 
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['user'];
 

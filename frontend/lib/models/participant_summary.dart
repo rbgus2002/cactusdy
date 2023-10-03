@@ -21,10 +21,11 @@ class ParticipantSummary {
 
   static Future<List<ParticipantSummary>> getParticipantsProfileImageList(int studyId) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}studies/participants/summary?studyId=$studyId'),
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants/summary?studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.SUCCESS_CODE) {
+    if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to get Participants data (studyId = $studyId)");
     } else {
       print("successfully get Participants data (studyId = $studyId)");

@@ -4,8 +4,18 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/util.dart';
 
-class SignInRoute extends StatelessWidget {
+class SignInRoute extends StatefulWidget {
+  const SignInRoute({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SignInRoute> createState() => _SignInRouteState();
+}
+
+class _SignInRouteState extends State<SignInRoute> {
   final _formKey = GlobalKey<FormState>();
 
   static const String _emailHintText = "이메일 주소(아이디)를 입력해 주세요";
@@ -13,12 +23,10 @@ class SignInRoute extends StatelessWidget {
 
   static const String _signInText = "로그인";
 
+  String _errorText = "";
+
   String email = "";
   String password = "";
-
-  SignInRoute({
-    Key? key,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,42 +39,45 @@ class SignInRoute extends StatelessWidget {
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
-              TextFormField(
-                maxLength: Auth.emailMaxLength,
-                validator: (text) =>
-                ((text!.isEmpty) ? _emailHintText : null),
-                decoration: const InputDecoration(
-                  prefixIcon: AppIcons.email,
-                  hintText: _emailHintText,
-                  counterText: "",
+              Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                TextFormField(
+                  maxLength: Auth.emailMaxLength,
+                  validator: (text) =>
+                  ((text!.isEmpty) ? _emailHintText : null),
+                  decoration: const InputDecoration(
+                    prefixIcon: AppIcons.email,
+                    hintText: _emailHintText,
+                    counterText: "",
+                  ),
+                  onChanged: (value) => email = value,
                 ),
-                onChanged: (value) => email = value,
-              ),
+                Design.padding15,
+
+                const Text("PASSWORD", style: TextStyles.titleSmall),
+                TextFormField(
+                  maxLength: Auth.passwordMaxLength,
+                  validator: (text) =>
+                  ((text!.isEmpty) ? _passwordHintText : null),
+                  decoration: const InputDecoration(
+                    prefixIcon: AppIcons.password,
+                    hintText: _passwordHintText,
+                    counterText: "",
+                  ),
+                  onChanged: (value) => password = value,
+                ),
+              ],),
               Design.padding15,
 
-              const Text("PASSWORD", style: TextStyles.titleSmall),
-              TextFormField(
-                maxLength: Auth.passwordMaxLength,
-                validator: (text) =>
-                ((text!.isEmpty) ? _passwordHintText : null),
-                decoration: const InputDecoration(
-                  prefixIcon: AppIcons.password,
-                  hintText: _passwordHintText,
-                  counterText: "",
-                ),
-                onChanged: (value) => password = value,
-              ),
-              Design.padding30,
+              Text(_errorText, style: TextStyles.errorTextStyle,),
+              Design.padding5,
 
               ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Auth.signIn(email, password);
-                    }
-                  },
+                  onPressed: tryToSignIn,
                   child: Container(
                     alignment: Alignment.center,
                     width: double.infinity,
@@ -80,4 +91,15 @@ class SignInRoute extends StatelessWidget {
     );
   }
 
+  void tryToSignIn() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await Auth.signIn(email, password);
+      }
+      on Exception catch (e) {
+        print(e);
+        setState(() => _errorText = Util.getExceptionMessage(e));
+      }
+    }
+  }
 }

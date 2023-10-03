@@ -17,7 +17,7 @@ class SignInfo {
 
   @override
   String toString() {
-    return "{ $userId, $token }";
+    return "{ userId : $userId, token : $token }";
   }
 
   factory SignInfo.fromJson(Map<String, dynamic> json) {
@@ -36,7 +36,7 @@ class SignInfo {
     return data;
   }
 
-  static Future<SignInfo?> tryGetSignInInfo() async {
+  static Future<SignInfo?> readSignInfo() async {
     String? signInfoJson = await _storage.read(key: _signInfoKey);
 
     if (signInfoJson != null) {

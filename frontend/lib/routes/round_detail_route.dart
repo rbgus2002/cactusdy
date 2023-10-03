@@ -201,7 +201,7 @@ class _RoundDetailRoute extends State<RoundDetailRoute> {
   }
 
   void _deleteRound() {
-    Round.deleteRound(round!.roundId, widget.userId).then(
+    Round.deleteRound(round!.roundId).then(
             (result) {
           if (result == true) Navigator.of(context).pop();
         }).catchError((e){

@@ -89,7 +89,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeId, widget.user.userId).then((value) {
+    Notice.switchCheckNotice(widget.noticeId).then((value) {
       if (value != widget.isChecked) {
         setState(() {
           (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;

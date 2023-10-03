@@ -31,7 +31,6 @@ class NoticePanel extends StatefulWidget {
 class _NoticePanel extends State<NoticePanel> {
   static const String _writerText = "작성자";
 
-
   @override
   Widget build(BuildContext context) {
     return Panel(
@@ -136,7 +135,7 @@ class _NoticePanel extends State<NoticePanel> {
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeSummary.noticeId, widget.userId).then((value) {
+    Notice.switchCheckNotice(widget.noticeSummary.noticeId).then((value) {
       if (value != widget.noticeSummary.read) {
         setState(() {
           (widget.noticeSummary.read)? --widget.noticeSummary.readCount: ++widget.noticeSummary.readCount;
