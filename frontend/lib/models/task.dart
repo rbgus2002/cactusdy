@@ -107,11 +107,11 @@ class Task {
     }
   }
 
-  static Future<bool> switchTask(int taskId, int roundParticipantId) async {
+  static Future<bool> switchTask(int taskId) async {
     if (taskId == nonAllocatedTaskId) { return false; }
 
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}api/tasks/check?taskId=$taskId&roundParticipantId=$roundParticipantId'),
+      Uri.parse('${DatabaseService.serverUrl}api/tasks/check?taskId=$taskId'),
       headers: DatabaseService.getAuthHeader(),
     );
 

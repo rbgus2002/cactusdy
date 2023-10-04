@@ -71,19 +71,15 @@ class _TaskWidget extends State<TaskWidget> {
       width: 18,
       height: 18,
       child: Checkbox(
+
           value: widget.task.isDone,
           onChanged: (value) {
             // Fast Unsafe State Update
             setState(() => widget.task.isDone = value! );
 
-            // FIXME : API WILL UPDATE
             // Call API and Verify State
-            /*
-            Task.switchTask(widget.task.taskId, roundParticipantId).then(
-              (success) {
-                if (success == false) widget.task.isDone = !value!;
-            });
-             */
+            Task.switchTask(widget.task.taskId).then((success) =>
+                widget.task.isDone = success);
           },
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
     );

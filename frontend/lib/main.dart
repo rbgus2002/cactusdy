@@ -8,13 +8,16 @@ import 'package:group_study_app/utilities/util.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'asd',
+    title: 'asd', //< FIXME
     home: const MyApp(),
     theme: ThemeData(
       primaryColor: Colors.black87,
       buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),
       appBarTheme: const AppBarTheme(color: Colors.black87),
-      elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
+      focusColor: Colors.black87,
+      indicatorColor: Colors.black87,
     ),
   ));
 }
