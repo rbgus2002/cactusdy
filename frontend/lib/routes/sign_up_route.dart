@@ -1,15 +1,17 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/sign_up_verify_route.dart';
+import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/widgets/dialogs/color_picker_dialog.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 class SignUpRoute extends StatefulWidget {
   const SignUpRoute({
-    Key? key
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -19,135 +21,64 @@ class SignUpRoute extends StatefulWidget {
 class _SignUpRouteState extends State<SignUpRoute> {
   final _formKey = GlobalKey<FormState>();
 
-  static const String _studyNameHintText = "스터디 이름을 입력해 주세요";
-  static const String _studyDetailHintText = "상세 설명을 입력해 주세요";
+  static const String _emailHintText = "이메일 주소(아이디)를 입력해주세요";
+  static const String _confirmText = "확인";
 
-  bool isAuthorized = true; //< FIXME : id? -> auth
-  Color _color = Colors.primaries[Random().nextInt(Colors.primaries.length)]; //< FIXME : is this best?
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  String _errorText = "";
+  String _email = "";
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = (isAuthorized) ?
-    ColorStyles.lightGrey : ColorStyles.grey;
-
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent,),
+      appBar: AppBar(),
       body: Container(
         padding: Design.edgePadding,
+        alignment: Alignment.center,
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.always,
-          child: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Design.padding10,
-                      if (!isAuthorized)
-                        Container(
-                          padding: Design.edgePadding,
-                          margin: Design.bottom15,
-                          color: ColorStyles.grey,
-                          child: const Text(
-                            "스터디 방장만이 '스터디 이름', '상세 설명', '스터디 프로필 이미지'를 변경할 수 있어요.",
-                            style: TextStyles.bodyMedium,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      Design.padding5,
-
-                      const Text("STUDY NAME", style: TextStyles.titleSmall),
-                      Design.padding5,
-                      TextFormField(
-                        enabled: isAuthorized,
-                        maxLength: Study.studyNameMaxLength,
-                        validator: (text) =>
-                        ((text!.isEmpty) ? _studyNameHintText : null),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: backgroundColor,
-                          hintText: _studyNameHintText,
-                        ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                    TextFormField(
+                      maxLength: Auth.emailMaxLength,
+                      validator: (text) =>
+                      ((text!.isEmpty) ? _emailHintText : null),
+                      decoration: const InputDecoration(
+                        prefixIcon: AppIcons.email,
+                        hintText: _emailHintText,
+                        counterText: "",
                       ),
-                      Design.padding15,
+                      onChanged: (value) => _email = value,
+                    ),
+                    Design.padding15,
+                  ],),
+                Design.padding15,
 
-                      const Text("DETAIL", style: TextStyles.titleSmall),
-                      Design.padding5,
-                      TextFormField(
-                        enabled: isAuthorized,
+                Text(_errorText, style: TextStyles.errorTextStyle,),
+                Design.padding5,
 
-                        maxLength: Study.studyDetailMaxLength,
-                        validator: (text) =>
-                        ((text!.isEmpty) ? _studyDetailHintText : null),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: backgroundColor,
-                          hintText: _studyDetailHintText,
-                        ),
-                      ),
-                      Design.padding15,
-
-                      const Text("IMAGE", style: TextStyles.titleSmall),
-                      Design.padding5,
-                      TextFormField(
-                        enabled: isAuthorized,
-                        maxLength: Study.studyNameMaxLength,
-                        validator: (text) =>
-                        ((text!.isEmpty) ? _studyNameHintText : null),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: backgroundColor,
-                          hintText: _studyDetailHintText,
-                        ),
-                      ),
-                      Design.padding15,
-
-                      const Text("STUDY COLOR", style: TextStyles.titleSmall),
-                      Text("스터디 색상은 개인별로 설정할 수 있어요",
-                        style: TextStyles.bodySmall,),
-                      Design.padding5,
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _color,
-
-                          ),
-                          onPressed: () =>
-                              ColorPickerDialog.showColorPickerDialog(
-                                  context: context,
-                                  color: _color,
-                                  onColorChange: changeColor),
-                          child: null),
-                    ],
-                  ),
-                  Design.padding15,
-
-                  ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate())
-                          print("에바!");
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text("완료"),
-                        width: double.infinity,
-                      )
-                  ),
-                ]
-            ),
+                ElevatedButton(
+                    onPressed: validateEmail,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      child: const Text(_confirmText, style: TextStyles.titleSmall,),
+                    )
+                ),
+              ]
           ),
         ),
       ),
     );
   }
 
-  void changeColor(Color newColor) {
-    setState(() { _color = newColor; });
+  void validateEmail() {
+    // verify
+    Util.pushRoute(context, (context) => SignUpVerifyRoute(email: _email,));
   }
 }

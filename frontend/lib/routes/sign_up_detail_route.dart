@@ -1,0 +1,169 @@
+
+import 'package:flutter/material.dart';
+import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/sign_up_verify_route.dart';
+import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/app_icons.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/buttons/circle_button.dart';
+
+class SignUpDetailRoute extends StatefulWidget {
+  final String email;
+
+  const SignUpDetailRoute({
+    Key? key,
+    required this.email,
+  }) : super(key: key);
+
+  @override
+  State<SignUpDetailRoute> createState() => _SignUpDetailRouteState();
+}
+
+class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
+  final _formKey = GlobalKey<FormState>();
+
+  static const String _hintSuffix1Text = "을 입력해주세요";
+  static const String _hintSuffix2Text = "를 입력해주세요";
+  static const String _passwordText = "비밀 번호";
+  static const String _passwordConfirmText = "비밀 번호(확인)";
+  static const String _nameText = "이름";
+  static const String _nicknameText = "닉네임";
+
+  static const String _passwordNotSameText = "입력한 비밀 번호가 달라요!";
+
+  static const String _confirmText = "확인";
+
+  String _errorText = "아무튼 에러임 !!";
+
+  String _email = "";
+  String _password = "";
+  String _name = "";
+  String _nickname = "";
+  String _picture = "";
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: Design.edgePadding,
+          alignment: Alignment.center,
+          child: Form(
+            key: _formKey,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Design.padding30,
+                  CircleButton(scale: 128,),
+                  Design.padding30,
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                      TextFormField(
+                        controller: TextEditingController(text: widget.email),
+                        decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: ColorStyles.grey,
+                          prefixIcon: AppIcons.email,
+                        ),
+                        enabled: false,
+                      ),
+                      Design.padding30,
+
+                      const Text("PASSWORD", style: TextStyles.titleSmall),
+                      TextFormField(
+                        maxLength: Auth.passwordMaxLength,
+                        validator: (text) =>
+                        ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
+                        decoration: const InputDecoration(
+                          prefixIcon: AppIcons.password,
+                          hintText: _passwordText,
+                          counterText: "",
+                        ),
+                        onChanged: (value) => _password = value,
+                      ),
+                      Design.padding15,
+
+                      TextFormField(
+                        maxLength: Auth.passwordMaxLength,
+                        validator: (text) =>
+                        ((text != _password) ? _passwordNotSameText : null),
+                        decoration: const InputDecoration(
+                          prefixIcon: AppIcons.password,
+                          hintText: _passwordConfirmText,
+                          counterText: "",
+                        ),
+                      ),
+                      Design.padding30,
+
+                      const Text("NAME", style: TextStyles.titleSmall),
+                      TextFormField(
+                        maxLength: Auth.passwordMaxLength,
+                        validator: (text) =>
+                        ((text!.isEmpty) ? _nameText + _hintSuffix1Text : null),
+                        decoration: const InputDecoration(
+                          prefixIcon: AppIcons.password,
+                          hintText: _nameText,
+                          counterText: "",
+                        ),
+                        onChanged: (value) => _name = value,
+                      ),
+                      Design.padding30,
+
+
+                      const Text("NICKNAME", style: TextStyles.titleSmall),
+                      TextFormField(
+                        maxLength: Auth.passwordMaxLength,
+                        validator: (text) =>
+                        ((text!.isEmpty) ? _nicknameText + _hintSuffix1Text : null),
+                        decoration: const InputDecoration(
+                          prefixIcon: AppIcons.password,
+                          hintText: _nicknameText,
+                          counterText: "",
+                        ),
+                        onChanged: (value) => _nickname = value,
+                      ),
+                    ],),
+                  Design.padding15,
+
+                  Text(_errorText, style: TextStyles.errorTextStyle,),
+                  Design.padding30,
+
+                  ElevatedButton(
+                      onPressed: signUp,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        child: const Text(_confirmText, style: TextStyles.titleSmall,),
+                      )
+                  ),
+                  Design.padding60,
+                ]
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void signUp() {
+    if (_formKey.currentState!.validate()) {
+
+    }
+    // verify
+  }
+}

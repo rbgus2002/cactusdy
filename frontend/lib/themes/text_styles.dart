@@ -29,5 +29,8 @@ class TextStyles {
   static const roundTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, height: 1, color: ColorStyles.taskTextColor);
   static const roundHintTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, height: 1, color: ColorStyles.taskHintTextColor);
 
+
+  static const wideTextStyle = TextStyle(fontSize: 16, fontWeight: semiBold, letterSpacing: 2);
+
   static const errorTextStyle = TextStyle(fontSize: 12, color: ColorStyles.errorColor);
 }
