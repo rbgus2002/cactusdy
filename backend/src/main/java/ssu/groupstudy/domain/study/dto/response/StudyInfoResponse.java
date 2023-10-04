@@ -24,6 +24,7 @@ public class StudyInfoResponse {
     private String color;
 
     private Long roundSeq;
+    private Long roundId;
     private String studyPlace;
     private LocalDateTime studyTime;
     private List<ParticipantProfileResponse> profiles;
@@ -39,6 +40,7 @@ public class StudyInfoResponse {
 
         this.roundSeq = roundSeq;
         if(latestRound != null){
+            this.roundId = latestRound.getRoundId();
             Appointment appointment = latestRound.getAppointment();
             this.studyPlace = appointment.getStudyPlace();
             this.studyTime = appointment.getStudyTime();
