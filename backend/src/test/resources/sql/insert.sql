@@ -9,6 +9,7 @@ INSERT INTO authority (authority_id, role_name, user_id) VALUES (2, 'ROLE_USER',
 
 -- study
 INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, host_user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '알고리즘스터디', 1);
+INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, host_user_id) VALUES (2, '2023-09-01 21:06:28.140570', '2023-09-01 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '영어스터디', 1);
 
 -- notice
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (1, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용1', 'N', 'N', '공지사항1', 1, 1);
@@ -27,8 +28,14 @@ INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn
 -- round
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (1, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 1);
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (2, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'Y', 'detail', 1);
+INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (3, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, '2023-09-29 12:02:00', 'N', 'detail', 1);
+INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (4, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, '2023-10-11 12:02:00', 'N', 'detail', 1);
+INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (5, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 1);
 
 -- user_round
 INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
+
+-- user_study
+
 
 

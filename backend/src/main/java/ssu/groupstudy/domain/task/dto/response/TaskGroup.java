@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class TaskGroups {
+public class TaskGroup {
     private TaskType taskType;
     private List<TaskInfo> tasks;
 
-    private TaskGroups(TaskType taskType, RoundParticipant roundParticipant) {
+    private TaskGroup(TaskType taskType, RoundParticipant roundParticipant) {
         this.taskType = taskType;
         this.tasks = roundParticipant.getTasks().stream()
                 .filter(task -> task.isSameTypeOf(taskType))
@@ -24,7 +24,7 @@ public class TaskGroups {
                 .collect(Collectors.toList());
     }
 
-    public static TaskGroups of(TaskType type, RoundParticipant roundParticipant){
-        return new TaskGroups(type, roundParticipant);
+    public static TaskGroup of(TaskType type, RoundParticipant roundParticipant){
+        return new TaskGroup(type, roundParticipant);
     }
 }

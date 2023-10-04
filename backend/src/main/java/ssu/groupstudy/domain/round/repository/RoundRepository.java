@@ -1,5 +1,7 @@
 package ssu.groupstudy.domain.round.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.round.domain.Round;
@@ -18,6 +20,9 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
      * 스터디의 회차 목록 가져오기
      * order by studyTime (null 값 우선)
      */
-    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC")
+    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC, r.roundId DESC")
     List<Round> findRoundsByStudyOrderByStudyTime(Study study);
+
+    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC, r.roundId DESC")
+    Page<Round> findRoundsByStudyOrderByStudyTime(Study study, Pageable pageable);
 }

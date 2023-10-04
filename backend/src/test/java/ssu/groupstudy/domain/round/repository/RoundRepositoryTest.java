@@ -3,15 +3,18 @@ package ssu.groupstudy.domain.round.repository;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
+import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @CustomRepositoryTest
@@ -56,4 +59,42 @@ class RoundRepositoryTest{
         softly.assertThat(회차).isNotEmpty();
         softly.assertThat(삭제된회차).isEmpty();
     }
+
+    @Nested
+    class FindRoundsByStudyOrderByStudyTime{
+        @Test
+        @DisplayName("스터디의 회차 목록을 null 값 우선, studyTime을 역순으로 정렬해서 가져온다")
+        void orderByStudyTimeDesc(){
+            // given
+            Study 스터디 = studyRepository.findById(1L).get();
+
+            // when
+            List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
+            Round 회차1_studyTime_null = rounds.get(0);
+            Appointment 회차2 = rounds.get(2).getAppointment();
+            Appointment 회차3 = rounds.get(3).getAppointment();
+
+            // then
+            softly.assertThatThrownBy(() -> 회차1_studyTime_null.getAppointment().getStudyTime())
+                            .isInstanceOf(NullPointerException.class);
+            softly.assertThat(회차2.getStudyTime()).isAfter(회차3.getStudyTime());
+        }
+
+        @Test
+        @DisplayName("studyTime이 null인 회차가 여러 개면 roundId 역순으로 정렬해서 가져온다")
+        void orderByStudyTimeDescAndRoundIdDesc(){
+            // given
+            Study 스터디 = studyRepository.findById(1L).get();
+
+            // when
+            List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
+            Round 회차1 = rounds.get(0);
+            Round 회차2 = rounds.get(1);
+
+            // then
+            softly.assertThat(회차1.getRoundId()).isGreaterThan(회차2.getRoundId());
+        }
+    }
+
+
 }

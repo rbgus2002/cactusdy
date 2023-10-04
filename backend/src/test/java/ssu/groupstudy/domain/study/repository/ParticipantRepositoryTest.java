@@ -72,7 +72,7 @@ class ParticipantRepositoryTest {
             스터디.invite(최규현);
 
             // when
-            Optional<Participant> 최규현_스터디 = participantRepository.findParticipantByUserAndStudy(최규현, 스터디);
+            Optional<Participant> 최규현_스터디 = participantRepository.findByUserAndStudy(최규현, 스터디);
 
             // then
             softly.assertThat(최규현_스터디).isNotEmpty();

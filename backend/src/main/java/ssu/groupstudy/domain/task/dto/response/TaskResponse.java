@@ -18,7 +18,7 @@ public class TaskResponse {
     private String nickname;
     private String profileImage;
     private Double taskProgress;
-    private List<TaskGroups> taskGroups;
+    private List<TaskGroup> taskGroups;
 
     private TaskResponse(RoundParticipant roundParticipant) {
         this.roundParticipantId = roundParticipant.getId();
@@ -31,8 +31,8 @@ public class TaskResponse {
 
         this.taskProgress = roundParticipant.calculateTaskProgress();
 
-        taskGroups = Stream.of(TaskType.values())
-                .map(taskType -> TaskGroups.of(taskType, roundParticipant))
+        this.taskGroups = Stream.of(TaskType.values())
+                .map(taskType -> TaskGroup.of(taskType, roundParticipant))
                 .collect(Collectors.toList());
     }
 
