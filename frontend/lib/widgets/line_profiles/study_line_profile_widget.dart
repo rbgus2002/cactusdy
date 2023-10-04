@@ -12,45 +12,37 @@ class StudyLineProfileWidget extends StatelessWidget {
   static const double _scale = 50; //60
   static const double _stroke = 4;
 
-  final int studyId;
+  final Study study;
   final Widget? bottomWidget;
 
   const StudyLineProfileWidget({
     super.key,
-    required this.studyId,
+    required this.study,
     this.bottomWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Study.getStudySummary(studyId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return LineProfileWidget(
-            circleButton: OutlineCircleButton(
-              color: ColorStyles.deepPurpleAccent,
-              scale: _scale,
-              stroke: _stroke,
-            ),
+    return LineProfileWidget(
+      circleButton: OutlineCircleButton(
+        color: ColorStyles.deepPurpleAccent,
+        scale: _scale,
+        stroke: _stroke,
+      ),
 
-            topWidget: Text(snapshot.data!.studyName, maxLines: 1, style: TextStyles.titleMedium,),
-            bottomWidget: bottomWidget?? Text(snapshot.data!.detail,
-              maxLines: 1, style: TextStyles.bodyMedium,),
+      topWidget: Text(
+        study.studyName, maxLines: 1, style: TextStyles.titleMedium,),
+      bottomWidget: bottomWidget ?? Text(study.detail,
+        maxLines: 1, style: TextStyles.bodyMedium,),
 
-            suffixWidget: IconButton(
-              icon: AppIcons.edit,
-              splashRadius: 16,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              iconSize: 18,
-              onPressed: (){}, //< FIXME
-            ),
-          );
-        }
-        else
-          return SizedBox(); //< FIXME;
-      }
+      suffixWidget: IconButton(
+        icon: AppIcons.edit,
+        splashRadius: 16,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        iconSize: 18,
+        onPressed: () {}, //< FIXME
+      ),
     );
   }
 }

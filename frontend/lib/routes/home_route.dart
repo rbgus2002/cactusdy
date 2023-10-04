@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
@@ -45,8 +47,24 @@ class _HomeRouteState extends State<HomeRoute> {
             ),
 
             Design.padding10,
-            StudyGroupPanel(studyId: 1,),
-            StudyGroupPanel(studyId: 1,),
+            FutureBuilder(
+              future: StudyInfo.getStudies(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<StudyInfo> studyInfos = snapshot.data!;
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: studyInfos.length,
+                      itemBuilder: (context, index) =>
+                        StudyGroupPanel(studyInfo: studyInfos[index]),
+                  );
+                }
+                return Design.loadingIndicator;
+              },
+            ),
+            //StudyGroupPanel(studyId: 1,),
+            //StudyGroupPanel(studyId: 1,),
             //StudyGroupPanel(),
 
             addStudyPanel(),

@@ -5,7 +5,7 @@ import 'package:group_study_app/widgets/Tags/tag_button.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class StudyGroupTag extends TagButton {
-  static const studyTagPadding = EdgeInsets.fromLTRB(3, 3, 10, 3);
+  static const studyTagPadding = EdgeInsets.fromLTRB(2, 2, 10, 2);
   Image? image;
   String name;
 
@@ -21,7 +21,7 @@ class StudyGroupTag extends TagButton {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-          const CircleButton(scale:20, onTap: null),
+          const CircleButton(scale:16, onTap: null),
           Design.padding5,
           Text(name, style: TextStyles.tagTextStyle, textAlign: TextAlign.center),
         ],)

@@ -16,16 +16,16 @@ import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 
 class RoundInfoWidget extends StatefulWidget {
-  final int roundNum;
-  final Function onUpdateRound;
-  Round round;
+  final int roundSeq;
+  final Round round;
+  final int studyId;
 
-  RoundInfoWidget({
-    super.key,
-    required this.roundNum,
-    required this.onUpdateRound,
+  const RoundInfoWidget({
+    Key? key,
+    required this.roundSeq,
     required this.round,
-  });
+    required this.studyId,
+  }) : super(key: key);
 
   @override
   State<RoundInfoWidget> createState() => _RoundInformationWidget();
@@ -38,7 +38,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
   static const String _roundText = "회차";
   static const String _placeText = "장소";
   static const String _timeText = "시간";
-  static const String _reserved = "예정됨";
+  static const String _reserved = "예  정";
 
   late final TextEditingController placeEditingController;
   bool _isEditable = false;
@@ -63,7 +63,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${widget.roundNum}", style: TextStyles.numberTextStyle),
+                Text("${widget.roundSeq}", style: TextStyles.numberTextStyle),
                 const Text(_roundText, style:
                   TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 2)),
               ]
@@ -77,7 +77,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             ),
             _studyTimeAndPlace(),
 
-            if (widget.round.isPlanned == true)
+            if (_isScheduled())
               UserStateTag(color: Colors.red, text: _reserved),
           ],
         ),
@@ -95,6 +95,11 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
         )
       ],
     );
+  }
+
+  bool _isScheduled() {
+    return (widget.round.studyTime != null
+        && widget.round.studyTime!.compareTo(DateTime.now()) > 0);
   }
 
   Widget _studyTimeAndPlace() {
@@ -152,7 +157,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
     if (_isEditable) {
       if (_isEdited) {
         widget.round.studyPlace = placeEditingController.text;
-        widget.onUpdateRound(widget.round);
+        updateRound(widget.round);
         _isEdited = false;
       }
       _isEditable = false;
@@ -165,12 +170,20 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
             (dateTime) {
               if (dateTime != null) {
                 widget.round.studyTime = dateTime;
-                widget.onUpdateRound(widget.round);
+                updateRound(widget.round);
 
-                widget.round.isPlanned = (dateTime.compareTo(DateTime.now()) > 0);
                 setState(() { });
               }
             });
+  }
+
+  void updateRound(Round round) {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      Round.createRound(round, widget.studyId);
+    }
+    else {
+      Round.updateAppointment(round);
+    }
   }
 
   @override

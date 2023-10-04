@@ -1,7 +1,9 @@
 
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:group_study_app/services/database_service.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:http/http.dart' as http;
 
 class Study {
@@ -13,20 +15,23 @@ class Study {
   final String studyName;
   final String detail;
   final String picture;
+  final Color color;
 
   const Study({
     required this.studyId,
     required this.studyName,
     required this.detail,
     required this.picture,
+    this.color = ColorStyles.deepPurpleAccent, //< FIXME
   });
 
   factory Study.fromJson(Map<String, dynamic> json) {
+    print(json);
     return Study(
       studyId: json['studyId'],
       studyName: json['studyName'],
-      detail: json['detail'],
-      picture: json['picture']
+      detail: json['detail']??"",
+      picture: json['picture'],
     );
   }
 
@@ -34,7 +39,8 @@ class Study {
     'studyId': studyId,
     'studyName': studyName,
     'detail': detail,
-    'picture': picture
+    'picture': picture,
+    'color': color,
   };
 
   static Future<Study> getStudySummary(int studyId) async {

@@ -13,13 +13,13 @@ import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class RoundDetailRoute extends StatefulWidget {
-  final int roundNum;
+  final int roundSeq;
   final int roundId;
   final int studyId;
 
   const RoundDetailRoute({
     Key? key,
-    required this.roundNum,
+    required this.roundSeq,
     required this.roundId,
     required this.studyId,
   }) : super(key: key);
@@ -76,9 +76,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                             Panel(
                               boxShadows: Design.basicShadows,
                               child: RoundInfoWidget(
-                                roundNum: widget.roundNum,
+                                roundSeq: widget.roundSeq,
                                 round: snapshot.data!,
-                                onUpdateRound: Round.updateAppointment,
+                                studyId: widget.studyId,
                               ),
                             ),
                             Design.padding15,

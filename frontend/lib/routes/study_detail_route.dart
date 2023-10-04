@@ -51,7 +51,14 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
             Design.padding15,
 
             // Study Head
-            StudyLineProfileWidget(studyId: widget.studyId),
+            FutureBuilder(
+                future: Study.getStudySummary(widget.studyId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return StudyLineProfileWidget(study: snapshot.data!);
+                  }
+                  return const SizedBox(); //< FIXME
+              },),
             Design.padding15,
 
             // Notice

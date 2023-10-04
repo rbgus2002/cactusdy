@@ -18,7 +18,6 @@ class Round {
   int roundId;
   String studyPlace;
   DateTime? studyTime;
-  bool? isPlanned;
   String? detail;
 
   final List<RoundParticipantInfo> roundParticipantInfos;
@@ -27,12 +26,12 @@ class Round {
     required this.roundId,
     this.studyPlace = "",
     this.studyTime,
-    this.isPlanned,
     this.detail,
     this.roundParticipantInfos = const[],
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
+    print(json);
     List<RoundParticipantInfo> roundParticipantInfos = [];
     if (json['roundParticipantInfos'] != null) {
       roundParticipantInfos = (json['roundParticipantInfos'] as List).map(
@@ -40,10 +39,9 @@ class Round {
     }
 
     return Round(
-      roundId: json['roundId'],
-      studyPlace: json['studyPlace'],
+      roundId: json['roundId']??nonAllocatedRoundId,
+      studyPlace: json['studyPlace']??"",
       studyTime: (json['studyTime'] != null)? DateTime.parse(json['studyTime']) : null,
-      isPlanned: json['isPlanned'],
       detail: json['detail'],
       roundParticipantInfos: roundParticipantInfos,
     );

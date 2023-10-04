@@ -22,7 +22,7 @@ class TextStyles {
   static const numberTextStyle = TextStyle(fontSize: 32, fontWeight: extraBold, height: 0);
 
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
-  static const tagTextStyle = TextStyle(fontSize: 14, leadingDistribution: TextLeadingDistribution.even, fontWeight: bold);
+  static const tagTextStyle = TextStyle(fontSize: 12, leadingDistribution: TextLeadingDistribution.even, fontWeight: bold, color: Colors.white);
 
   static const taskTextStyle = TextStyle(fontSize: 14, fontWeight: medium, height: 0, color: ColorStyles.taskTextColor);
 

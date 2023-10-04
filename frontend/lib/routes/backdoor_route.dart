@@ -106,7 +106,7 @@ class BackdoorRoute extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             RoundDetailRoute(
-                                roundNum: -1, roundId: 1, studyId: testStudyId,)),
+                                roundSeq: -1, roundId: 1, studyId: testStudyId,)),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(

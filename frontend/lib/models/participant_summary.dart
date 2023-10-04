@@ -1,21 +1,25 @@
 import 'dart:convert';
 
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class ParticipantSummary {
   final int userId;
   final String picture;
+  final String statusTag;
 
   ParticipantSummary({
     required this.userId,
     required this.picture,
+    required this.statusTag,
   });
   
   factory ParticipantSummary.fromJson(Map<String, dynamic> json) {
     return ParticipantSummary(
-        userId: json['userId'],
-        picture: json['picture']
+        userId: json['userId']??User.nonAllocatedUserId,
+        picture: json['picture'],
+        statusTag: json['statusTag']??"NONE",
     );
   }
 

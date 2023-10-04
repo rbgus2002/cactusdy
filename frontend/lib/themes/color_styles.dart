@@ -17,7 +17,7 @@ class ColorStyles {
 
   static const Color green = Colors.green;
   static const Color orange = Colors.orange;
-  static const Color red = Colors.red;
+  static const Color red = Colors.redAccent;
 
   static const Color errorColor = Color(0xffc23f38);
 

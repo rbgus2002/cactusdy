@@ -95,10 +95,9 @@ class _SignInRouteState extends State<SignInRoute> {
   void tryToSignIn() async {
     if (_formKey.currentState!.validate()) {
       try {
-        Auth.signIn(_email, _password).then((value) {
-          Util.pushRoute(context, (context) => const HomeRoute());
-        }
-        );
+         await Auth.signIn(_email, _password).then((value) {
+            Util.pushRoute(context, (context) => const HomeRoute());
+          });
       }
       on Exception catch (e) {
         setState(() => _errorText = Util.getExceptionMessage(e));
