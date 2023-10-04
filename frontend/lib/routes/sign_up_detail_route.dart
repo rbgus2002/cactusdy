@@ -1,6 +1,11 @@
 
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/sign_in_route.dart';
+import 'package:group_study_app/routes/sign_up_route.dart';
 import 'package:group_study_app/routes/sign_up_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
@@ -38,16 +43,16 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   String _errorText = "아무튼 에러임 !!";
 
-  String _email = "";
   String _password = "";
   String _name = "";
   String _nickname = "";
   String _picture = "";
-
+  String _phoneModel = "string";
 
   @override
   void initState() {
     super.initState();
+    getPhoneModel();
   }
 
   @override
@@ -160,9 +165,38 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
     );
   }
 
-  void signUp() {
-    if (_formKey.currentState!.validate()) {
+  void getPhoneModel() async {
+    final deviceInfo = await DeviceInfoPlugin();
+    //< FIXME : Not Works...
+    return;
+    if (Platform.isAndroid) {
+      deviceInfo.androidInfo.then((build) => _phoneModel = build.device,);
+    }
+    else if (Platform.isIOS) {
+      deviceInfo.iosInfo.then((build) => _phoneModel = build.model);
+    }
+    else if (Platform.isMacOS) {
+      deviceInfo.macOsInfo.then((build) => _phoneModel = build.model);
+    }
+    else {
+      _phoneModel = "OTHER";
+    }
+    //final deviceInfo = await deviceInfoPlugin.deviceInfo;
+    //_phoneModel = deviceInfo.data['name'];
+    print(_phoneModel);
+  }
 
+  void signUp() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, email: widget.email, password: _password).then((value) {
+        print(value);
+        if (value) Util.pushRoute(context, (context) => const SignInRoute());
+        });
+      }
+      on Exception catch (e) {
+        setState(() => _errorText = Util.getExceptionMessage(e));
+      }
     }
     // verify
   }

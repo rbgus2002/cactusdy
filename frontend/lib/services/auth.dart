@@ -11,6 +11,39 @@ class Auth {
 
   static SignInfo? signInfo;
 
+  static Future<bool> signUp({
+      required String name,
+      required String nickname,
+      required String phoneModel,
+      required String picture,
+      required String email,
+      required String password,
+    }) async {
+    Map<String, dynamic> data = {
+      'name': name,
+      'nickname': nickname,
+      'phoneModel': phoneModel,
+      'picture': picture,
+      'email': email,
+      'password': password,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/signUp'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool result = responseJson['success'];
+      if (result) print("success to sign up");
+      return result;
+    }
+  }
+
   static Future<bool> signIn(String email, String password) async {
     Map<String, dynamic> data = {
       'email': email,
