@@ -122,7 +122,6 @@ class TaskServiceTest extends ServiceTest {
     class updateTaskDetail{
         UpdateTaskRequest request = UpdateTaskRequest.builder()
                 .taskId(-1L)
-                .roundParticipantId(-1L)
                 .detail("수정내용")
                 .build();
 
@@ -137,32 +136,6 @@ class TaskServiceTest extends ServiceTest {
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
         }
-
-        @Test
-        @DisplayName("회차 참여자가 존재하지 않는 경우 예외를 던진다")
-        void RoundParticipantNotFound(){
-            // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> taskService.updateTaskDetail(request))
-                    .isInstanceOf(RoundParticipantNotFoundException.class)
-                    .hasMessage(ROUND_PARTICIPANT_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        @DisplayName("본인의 태스크가 아니라면 예외를 던진다")
-        void invalidUpdateTask(){
-            // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.of(회차1_장재우)).when(roundParticipantRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> taskService.updateTaskDetail(request))
-                    .isInstanceOf(InvalidRoundParticipantException.class)
-                    .hasMessage(INVALID_TASK_ACCESS.getMessage());
-        }
     }
 
     @Nested
@@ -174,35 +147,9 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L, -1L))
+            assertThatThrownBy(() -> taskService.switchTask(-1L))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        @DisplayName("회차 참여자가 존재하지 않는 경우 예외를 던진다")
-        void RoundParticipantNotFound(){
-            // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L, -1L))
-                    .isInstanceOf(RoundParticipantNotFoundException.class)
-                    .hasMessage(ROUND_PARTICIPANT_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        @DisplayName("본인의 태스크가 아니라면 예외를 던진다")
-        void invalidUpdateTask(){
-            // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.of(회차1_장재우)).when(roundParticipantRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L, -1L))
-                    .isInstanceOf(InvalidRoundParticipantException.class)
-                    .hasMessage(INVALID_TASK_ACCESS.getMessage());
         }
     }
 }

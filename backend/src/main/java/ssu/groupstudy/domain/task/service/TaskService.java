@@ -92,7 +92,6 @@ public class TaskService {
         RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         task.validateAccess(roundParticipant);
-
         taskRepository.delete(task);
     }
 
@@ -100,21 +99,13 @@ public class TaskService {
     public void updateTaskDetail(UpdateTaskRequest request) {
         Task task = taskRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
-                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
-        task.validateAccess(roundParticipant);
-
         task.setDetail(request.getDetail());
     }
 
     @Transactional
-    public char switchTask(Long taskId, Long roundParticipantId) {
+    public char switchTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
-                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
-        task.validateAccess(roundParticipant);
-
         return task.switchDoneYn();
     }
 }
