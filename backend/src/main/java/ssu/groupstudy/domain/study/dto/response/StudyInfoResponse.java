@@ -27,6 +27,7 @@ public class StudyInfoResponse {
     private String studyPlace;
     private LocalDateTime studyTime;
     private List<ParticipantProfileResponse> profiles;
+    private Long roundParticipantId;
     private List<TaskGroup> taskGroups;
 
     public StudyInfoResponse(Participant participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
@@ -45,6 +46,7 @@ public class StudyInfoResponse {
                     .sorted(Comparator.comparing(RoundParticipant::getId))
                     .map(ParticipantProfileResponse::from)
                     .collect(Collectors.toList());
+            this.roundParticipantId = roundParticipant.getId();
             this.taskGroups = Stream.of(TaskType.values())
                     .map(taskType -> TaskGroup.of(taskType, roundParticipant))
                     .collect(Collectors.toList());
