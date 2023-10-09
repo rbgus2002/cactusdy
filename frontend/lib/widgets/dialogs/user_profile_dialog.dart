@@ -55,6 +55,7 @@ class UserProfileDialog {
                   ),
                   Design.padding15,
 
+                  /*
                   const Text("HomeWork Rate", style: TextStyles.titleSmall, textAlign: TextAlign.start),
                   BarChart(percentInfos: [PercentInfo(percent: 0.89, color: Colors.blue)]),
                   Design.padding15,
@@ -65,7 +66,11 @@ class UserProfileDialog {
                     PercentInfo(percent: 0.12, color: ColorStyles.orange),
                     PercentInfo(percent: 0.05, color: ColorStyles.red),
                   ]),
+
+
                   Design.padding15,
+
+                   */
 
                   Row(
                     mainAxisSize: MainAxisSize.max,
