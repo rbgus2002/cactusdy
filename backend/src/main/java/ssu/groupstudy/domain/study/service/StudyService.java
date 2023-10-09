@@ -59,9 +59,17 @@ public class StudyService {
 
     private StudyInfoResponse createStudyInfo(Participant participant) {
         Page<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(participant.getStudy(), PageRequest.of(0, 1));
-        Long roundSeq = rounds.getTotalElements();
+        Long roundSeq = handleRoundSeq(rounds);
         Round latestRound = rounds.getContent().stream().findFirst().orElse(null);
         RoundParticipant roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
+    }
+
+    private long handleRoundSeq(Page<Round> rounds) {
+        long roundSeq = rounds.getTotalElements();
+        if (roundSeq == 0) {
+            roundSeq = 1;
+        }
+        return roundSeq;
     }
 }
