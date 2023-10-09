@@ -15,6 +15,7 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -40,11 +41,12 @@ public class StudyService {
         return studyRepository.save(dto.toEntity(user)).getStudyId();
     }
 
-    public StudySummaryResponse getStudySummary(long studyId) {
+    public StudySummaryResponse getStudySummary(long studyId, User user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-
-        return StudySummaryResponse.from(study);
+        Participant participant = participantRepository.findByUserAndStudy(user, study)
+                .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
+        return StudySummaryResponse.from(study, participant);
     }
 
     // TODO : Batch Size 설정 후 DB query 횟수 비교 (최적화 잘 되는지 확인)

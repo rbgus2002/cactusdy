@@ -33,8 +33,8 @@ public class StudyApi {
 
     @Operation(summary = "스터디 간단한 정보 가져오기")
     @GetMapping
-    public ResponseDto getStudySummary(@RequestParam Long studyId){
-        StudySummaryResponse studySummary = studyService.getStudySummary(studyId);
+    public ResponseDto getStudySummary(@RequestParam Long studyId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        StudySummaryResponse studySummary = studyService.getStudySummary(studyId, userDetails.getUser());
         return DataResponseDto.of("studySummary", studySummary);
     }
 

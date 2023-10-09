@@ -8,8 +8,11 @@ import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
+import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.ResultCode;
 
 import java.util.Optional;
@@ -25,6 +28,8 @@ class StudyServiceTest extends ServiceTest {
     private StudyService studyService;
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private ParticipantRepository participantRepository;
 
 
     @Nested
@@ -52,9 +57,23 @@ class StudyServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> studyService.getStudySummary(-1L))
+            assertThatThrownBy(() -> studyService.getStudySummary(-1L, null))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("스터디 참여자가 존재하지 않는 경우 예외를 던진다")
+        void participantNotFound(){
+            // given
+            // when
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(User.class), any(Study.class));
+
+            // then
+            assertThatThrownBy(() -> studyService.getStudySummary(-1L, 최규현))
+                    .isInstanceOf(ParticipantNotFoundException.class)
+                    .hasMessage(ResultCode.PARTICIPANT_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -62,9 +81,10 @@ class StudyServiceTest extends ServiceTest {
         void success(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(User.class), any(Study.class));
 
             // when
-            StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L);
+            StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L, 최규현);
 
             // then
             assertEquals("알고리즘", summaryResponse.getStudyName());
