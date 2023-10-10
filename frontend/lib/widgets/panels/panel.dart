@@ -48,11 +48,12 @@ class Panel extends StatelessWidget {
           ),
           child: InkWell(
             borderRadius: BorderRadius.circular(Design.borderRadius),
-            onTap:() {  onTap!(); },
+            onTap: () {  onTap!(); },
             child: Container(
               padding: Design.edge15,
               child: child,
-            )
+            ),
+            onLongPress: null,
           )
         ),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorStyles {
+  static const Color pointColor = Colors.blue;
   // EX)
   static const Color transparent = Colors.transparent;
   static const Color white = Colors.white;
@@ -22,4 +23,6 @@ class ColorStyles {
   static const Color errorColor = Color(0xffc23f38);
 
   static const Color deepPurpleAccent = Colors.deepPurpleAccent;
+
+  static const Color taskUnderlineColor = pointColor;
 }

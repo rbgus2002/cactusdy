@@ -42,10 +42,9 @@ class StudyGroupPanel extends StatelessWidget {
                   paddingVertical: 2,
                 )),
             Design.padding10,
+
             RoundInfoWidget(roundSeq: studyInfo.roundSeq, round: studyInfo.round, studyId: studyInfo.study.studyId,),
-            //ParticipantListWidget(studyId: studyId, scale: 26),
-            Design.padding10,
-            //RoundInformationWidget(round: Test.testRound),
+            Design.padding5,
 
             // task groups
             ListView.builder(
@@ -53,7 +52,10 @@ class StudyGroupPanel extends StatelessWidget {
               primary: false,
               itemCount: studyInfo.taskGroups.length,
               itemBuilder: (context, index) => 
-                TaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
+                Container(
+                  padding: Design.bottom10,
+                  child: TaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
+                ),
             )
           ],
         ),

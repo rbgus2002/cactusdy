@@ -16,8 +16,7 @@ void main() {
       appBarTheme: const AppBarTheme(color: Colors.black87),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
-      focusColor: Colors.black87,
-      indicatorColor: Colors.black87,
+      focusColor: Colors.transparent,
     ),
   ));
 }
@@ -35,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    //Auth.getSignInfo();
+    Auth.getSignInfo();
     Timer(_splashDuration, () {
       Navigator.of(context).pop();
       if (Auth.signInfo == null) {

@@ -7,6 +7,7 @@ import 'package:group_study_app/utilities/list_model.dart';
 import 'package:http/http.dart' as http;
 
 class Task {
+  static const int taskMaxLength = 200;
   static const int nonAllocatedTaskId = -1;
 
   int taskId;

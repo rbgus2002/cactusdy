@@ -110,7 +110,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         itemCount: participantInfos.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            padding: Design.bottom15,
+                            padding: Design.bottom10,
                             child: ParticipantTaskListWidget(
                               participantInfo: participantInfos[index]));
                         },);

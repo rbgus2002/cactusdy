@@ -24,10 +24,10 @@ class TextStyles {
   static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
   static const tagTextStyle = TextStyle(fontSize: 12, leadingDistribution: TextLeadingDistribution.even, fontWeight: bold, color: Colors.white);
 
-  static const taskTextStyle = TextStyle(fontSize: 14, fontWeight: medium, height: 0, color: ColorStyles.taskTextColor);
+  static const taskTextStyle = TextStyle(fontSize: 14, fontWeight: medium, height: 1, color: ColorStyles.taskTextColor);
 
   static const roundTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, height: 1, color: ColorStyles.taskTextColor);
-  static const roundHintTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, height: 1, color: ColorStyles.taskHintTextColor);
+  static const roundHintTextStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, height: 1, color: ColorStyles.taskHintTextColor);
 
 
   static const wideTextStyle = TextStyle(fontSize: 16, fontWeight: semiBold, letterSpacing: 2);

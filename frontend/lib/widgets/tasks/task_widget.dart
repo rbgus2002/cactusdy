@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 class TaskWidget extends StatefulWidget {
   final int index;
@@ -33,7 +35,6 @@ class _TaskWidget extends State<TaskWidget> {
   late final TextEditingController _textEditingController;
   late final FocusNode _focusNode;
 
-  bool _isEditable = false;
   bool _isEdited = false;
 
   @override
@@ -50,17 +51,14 @@ class _TaskWidget extends State<TaskWidget> {
       sizeFactor: widget.animation,
       child: SizedBox(
         height: 26,
-        child: GestureDetector(
-          onTap: () => setState(() => _isEditable = true),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _taskCheckBox(),
-              Design.padding5,
-              _taskDetail(),
-              _taskPopupMenu(),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _taskCheckBox(),
+            Design.padding5,
+            _taskDetail(),
+            _taskPopupMenu(),
+          ],
         ),
       ),
     );
@@ -89,16 +87,19 @@ class _TaskWidget extends State<TaskWidget> {
     return Flexible(
       fit: FlexFit.tight,
       child: TextField(
+        maxLength: Task.taskMaxLength,
         maxLines: 1,
         style: TextStyles.taskTextStyle,
+
         focusNode: _focusNode,
         controller: _textEditingController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: _taskHintMessage,
           isDense: true,
-          enabled: _isEditable,
           contentPadding: EdgeInsets.zero,
-          disabledBorder: InputBorder.none,
+          focusedBorder: UnderlineInputBorder(),
+          border:InputBorder.none,
+          counterText: "",
         ),
 
         onChanged: (value) => _isEdited = true,
@@ -122,12 +123,7 @@ class _TaskWidget extends State<TaskWidget> {
         itemBuilder: (context) => [
           PopupMenuItem(
             child: const Text(_modifyTaskText, style: TextStyles.bodyMedium,),
-            onTap: () {
-              _isEditable = true;
-              setState(() {
-                Future.delayed(const Duration(milliseconds: 10)).then((value) =>
-                  _focusNode.requestFocus());
-            }); },
+            onTap: () => _focusNode.requestFocus(),
           ),
           PopupMenuItem(
             child: const Text(_deleteTaskText, style: TextStyles.bodyMedium,),
@@ -139,17 +135,14 @@ class _TaskWidget extends State<TaskWidget> {
   }
 
   void _updateTask() {
-    if (_isEditable) {
-      if (_isEdited) {
-        widget.task.detail = _textEditingController.text;
-        widget.onUpdateTaskDetail(widget.task);
-        _isEdited = false;
-      }
-
-      _isEditable = false;
-      _focusNode.unfocus();
-      setState(() { });
+    if (_isEdited) {
+      widget.task.detail = _textEditingController.text;
+      widget.onUpdateTaskDetail(widget.task);
+      _isEdited = false;
     }
+
+    _focusNode.unfocus();
+    setState(() { });
   }
 
   @override

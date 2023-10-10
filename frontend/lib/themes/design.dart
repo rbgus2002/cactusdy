@@ -10,6 +10,7 @@ class Design{
   static const EdgeInsets edge15 = EdgeInsets.all(15.0);
   static const EdgeInsets edgePadding = edge15;
 
+  static const EdgeInsets bottom10 = EdgeInsets.only(bottom: 10.0);
   static const EdgeInsets bottom15 = EdgeInsets.only(bottom: 15.0);
 
   static const SizedBox padding3 = SizedBox(width: 3, height: 3,);

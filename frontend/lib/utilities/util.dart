@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 class Util {
   static const int _exceptionTextLength = "Exception: ".length;
+  static const Duration textEditingWaitingTime = Duration(milliseconds: 12);
 
   static void pushRoute(BuildContext context, WidgetBuilder builder) {
     Navigator.push(
