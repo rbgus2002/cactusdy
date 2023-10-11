@@ -1,9 +1,18 @@
 package ssu.groupstudy.domain.auth.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.auth.dto.MessageRequest;
+import ssu.groupstudy.domain.auth.dto.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.user.domain.User;
@@ -13,18 +22,34 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.EmailExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.util.RedisUtils;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final DefaultMessageService messageService;
+    private final RedisUtils redisUtils;
+    @Value("${coolsms.api.fromNum}")
+    private String fromNum;
+    private final Long THREE_MINUTES = 60 * 3L;
+    private final int VERIFICATION_CODE_LENGTH = 6;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider, RedisUtils redisUtils,
+                       @Value("${coolsms.api.key}") String apiKey, @Value("${coolsms.api.secret.key}") String apiSecretKey, @Value("${coolsms.api.domain}") String domain) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtProvider = jwtProvider;
+        this.redisUtils = redisUtils;
+        this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecretKey, domain);
+    }
 
     @Transactional
-    public Long signUp(SignUpRequest request){
-        if(userRepository.existsByEmail(request.getEmail())){
+    public Long signUp(SignUpRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
         }
         User user = request.toEntity(passwordEncoder);
@@ -33,8 +58,9 @@ public class AuthService {
         return userRepository.save(user).getUserId();
     }
 
+    // FIXME : email to phoneNum 수정
     @Transactional
-    public SignInResponse signIn(SignInRequest request){
+    public SignInResponse signIn(SignInRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
@@ -47,5 +73,61 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
         }
+    }
+
+    public void sendMessage(MessageRequest request) {
+        Message message = createMessage(request);
+        SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
+        log.info("message : {}", response);
+    }
+
+    // TODO : naver cloud sms로 변경
+    private Message createMessage(MessageRequest request) {
+        Message message = initMessage(request);
+        handleVerificationMessage(message);
+        return message;
+    }
+
+    private Message initMessage(MessageRequest request) {
+        Message message = new Message();
+        message.setFrom(fromNum);
+        message.setTo(request.getPhoneNumber());
+        return message;
+    }
+
+    private void handleVerificationMessage(Message message) {
+        String code = generateVerificationCode();
+        saveToRedis(code, message.getTo());
+        String verificationMessage = String.format("[GroupStudy] 인증번호 : %s", code);
+        message.setText(verificationMessage); // TODO : 대괄호 안 문구 앱 이름으로 변경
+    }
+
+    private String generateVerificationCode() {
+        return RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
+    }
+
+    private void saveToRedis(String code, String phoneNumber) {
+        redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNum
+    }
+
+    public boolean verifyCode(VerifyRequest request) {
+        String retrievedPhoneNumber = getPhoneNumberFromCode(request);
+        boolean isValidCode = comparePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
+        if(isValidCode){
+            processVerificationSuccess(request.getCode());
+        }
+        return isValidCode;
+    }
+
+    private void processVerificationSuccess(String key) {
+        redisUtils.deleteData(key);
+    }
+
+    private String getPhoneNumberFromCode(VerifyRequest request) {
+        return redisUtils.getData(request.getCode());
+    }
+
+    private boolean comparePhoneNumber(String requestPhoneNum, String redisPhoneNumber) {
+        return requestPhoneNum.equals(redisPhoneNumber);
     }
 }
