@@ -7,29 +7,29 @@ typedef RemovedItemBuilder<T> = Widget Function(
 class ListModel<E> {
   final GlobalKey<AnimatedListState> listKey;
   final RemovedItemBuilder<E>? removedItemBuilder;
-  final List<E> _items;
+  final List<E> items;
 
   AnimatedListState? get _animatedList => listKey.currentState;
 
   ListModel({
     required this.listKey,
     this.removedItemBuilder,
-    Iterable<E>? initialItems,
-  }) : _items = List<E>.from(initialItems ?? <E>[]);
+    this.items = const [],
+  });
 
   void insert(int index, E item) {
-    _items.insert(index, item);
+    items.insert(index, item);
     _animatedList!.insertItem(index);
   }
 
   void add(E item) {
-    int index = _items.length;
-    _items.insert(index, item);
+    int index = items.length;
+    items.insert(index, item);
     _animatedList!.insertItem(index);
   }
 
   void removeAt(int index) {
-    final E removedItem = _items.removeAt(index);
+    final E removedItem = items.removeAt(index);
     if (removedItem != null) {
       _animatedList!.removeItem(
         index, (context, animation) =>
@@ -38,9 +38,9 @@ class ListModel<E> {
     }
   }
 
-  int get length => _items.length;
+  int get length => items.length;
 
-  E operator [](int index) => _items[index];
+  E operator [](int index) => items[index];
 
-  int indexOf(E item) => _items.indexOf(item);
+  int indexOf(E item) => items.indexOf(item);
 }

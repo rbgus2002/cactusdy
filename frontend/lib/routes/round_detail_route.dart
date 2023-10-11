@@ -8,7 +8,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/participant_task_list_widget.dart';
+import 'package:group_study_app/widgets/participant_info_widget.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -111,7 +111,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         itemBuilder: (context, index) {
                           return Container(
                             padding: Design.bottom10,
-                            child: ParticipantTaskListWidget(
+                            child: ParticipantInfoWidget(
                               participantInfo: participantInfos[index]));
                         },);
                     }

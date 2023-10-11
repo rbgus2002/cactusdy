@@ -10,10 +10,12 @@ import 'package:group_study_app/widgets/title_widget.dart';
 
 class TaskGroupWidget extends StatefulWidget {
   final TaskGroup taskGroup;
+  final Function? updateProgress;
 
   const TaskGroupWidget({
     Key? key,
     required this.taskGroup,
+    this.updateProgress,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
     super.initState();
     _taskListModel = ListModel<Task>(
         listKey: _taskListKey,
-        initialItems: widget.taskGroup.tasks,
+        items: widget.taskGroup.tasks,
         removedItemBuilder: _buildRemovedItem,
     );
   }
@@ -65,6 +67,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
   void addTask() {
     _taskListModel.add(Task());
     setState(() { });
+    if (widget.updateProgress != null) widget.updateProgress!();
   }
 
   Widget _buildRemovedItem(
@@ -75,6 +78,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
       animation: animation,
       onUpdateTaskDetail: updateTaskDetail,
       onDeleteTask: deleteTask,
+      onCheckTask: widget.updateProgress,
     );
   }
 
@@ -86,6 +90,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
       animation: animation,
       onUpdateTaskDetail: updateTaskDetail,
       onDeleteTask: deleteTask,
+      onCheckTask: widget.updateProgress,
     );
   }
 
@@ -104,5 +109,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
     }
     _taskListModel.removeAt(index);
     setState(() { });
+
+    if (widget.updateProgress != null) widget.updateProgress!();
   }
 }

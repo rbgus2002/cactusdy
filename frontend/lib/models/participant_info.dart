@@ -2,16 +2,13 @@
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/utilities/test.dart';
 
 class ParticipantInfo {
   final User participant;
-  final double taskProgress;
   final List<TaskGroup> taskGroups;
 
   ParticipantInfo({
     required this.participant,
-    required this.taskProgress,
     required this.taskGroups,
   });
 
@@ -24,9 +21,24 @@ class ParticipantInfo {
 
     return ParticipantInfo(
       participant: participant,
-      taskProgress: json['taskProgress'],
       taskGroups: (json['taskGroups'] as List).map((t)
         => TaskGroup.fromJson(t, json['roundParticipantId'])).toList(),
     );
+  }
+
+  double getTaskProgress() {
+    int taskCount = 0;
+    int doneCount = 0;
+
+    for (TaskGroup taskGroup in taskGroups) {
+      taskCount += taskGroup.tasks.length;
+      for (Task task in taskGroup.tasks) {
+        if (task.isDone) ++doneCount;
+      }
+    }
+
+    if (taskCount == 0) return 1;
+
+    return (doneCount / taskCount);
   }
 }

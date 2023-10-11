@@ -12,6 +12,7 @@ class TaskWidget extends StatefulWidget {
   final Animation<double> animation;
   final Function onUpdateTaskDetail;
   final Function(Task, int) onDeleteTask;
+  final Function? onCheckTask;
 
   const TaskWidget({
     super.key,
@@ -20,6 +21,7 @@ class TaskWidget extends StatefulWidget {
     required this.animation,
     required this.onUpdateTaskDetail,
     required this.onDeleteTask,
+    this.onCheckTask,
   });
 
   @override
@@ -69,15 +71,18 @@ class _TaskWidget extends State<TaskWidget> {
       width: 18,
       height: 18,
       child: Checkbox(
-
           value: widget.task.isDone,
           onChanged: (value) {
             // Fast Unsafe State Update
             setState(() => widget.task.isDone = value! );
 
             // Call API and Verify State
-            Task.switchTask(widget.task.taskId).then((success) =>
-                widget.task.isDone = success);
+            Task.switchTask(widget.task.taskId).then((result) =>
+                widget.task.isDone = result);
+
+            if (widget.onCheckTask != null) {
+              widget.onCheckTask!();
+            }
           },
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
     );
