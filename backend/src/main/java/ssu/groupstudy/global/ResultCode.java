@@ -19,7 +19,7 @@ public enum ResultCode {
     INVALID_JSON(400, "request 정보를 읽을 수 없습니다."),
     INVALID_COLOR(400, "잘못된 색상 입력입니다."),
     INVALID_LOGIN(400, "잘못된 아이디 혹은 비밀번호입니다."),
-    INVALID_EMAIL(400, "잘못된 아이디입니다."),
+    INVALID_PHONE_NUMBER(400, "잘못된 아이디입니다."),
     INVALID_PASSWORD(400, "잘못된 비밀번호입니다."),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
