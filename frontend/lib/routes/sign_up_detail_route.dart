@@ -189,7 +189,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   void signUp() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, email: widget.email, password: _password).then((value) {
+        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, phoneNumber: widget.email, password: _password).then((value) {
         print(value);
         if (value) Util.pushRoute(context, (context) => const SignInRoute());
         });

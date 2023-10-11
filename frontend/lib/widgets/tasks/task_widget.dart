@@ -102,7 +102,7 @@ class _TaskWidget extends State<TaskWidget> {
           hintText: _taskHintMessage,
           isDense: true,
           contentPadding: EdgeInsets.zero,
-          focusedBorder: UnderlineInputBorder(),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskHintTextColor,)),
           border:InputBorder.none,
           counterText: "",
         ),
