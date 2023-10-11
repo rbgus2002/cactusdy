@@ -96,6 +96,7 @@ class _TaskWidget extends State<TaskWidget> {
         maxLines: 1,
         style: TextStyles.taskTextStyle,
 
+
         focusNode: _focusNode,
         controller: _textEditingController,
         decoration: const InputDecoration(

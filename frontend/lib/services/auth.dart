@@ -77,7 +77,6 @@ class Auth {
     signInfo ??= await SignInfo.readSignInfo();
   }
 
-
   static Future<bool> requestVerifyMessage(String phoneNumber) async {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
@@ -93,12 +92,27 @@ class Auth {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      SignInfo.setSignInfo(signInfo!);
-      print("success to sign in");
-
-      return true;
+      return responseJson['success'];
     }
   }
 
+  static Future<bool> verifyCode(String phoneNumber, String code) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+      'code': code,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/messages/verify'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['data']['isSuccess'];
+    }
+  }
 }
