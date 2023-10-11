@@ -81,7 +81,6 @@ public class AuthService {
         log.info("message : {}", response);
     }
 
-    // TODO : naver cloud sms로 변경
     private Message createMessage(MessageRequest request) {
         Message message = initMessage(request);
         handleVerificationMessage(message);
@@ -107,7 +106,7 @@ public class AuthService {
     }
 
     private void saveToRedis(String code, String phoneNumber) {
-        redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNum
+        redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNumber
     }
 
     public boolean verifyCode(VerifyRequest request) {
