@@ -8,4 +8,5 @@ class AppIcons {
   static const email = Icon(Icons.email);
   static const password = Icon(Icons.key);
 
+  static const more_vert = Icon(Icons.more_vert);
 }
