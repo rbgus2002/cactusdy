@@ -41,7 +41,7 @@ class NoticeApiTest extends ApiTest {
     private SignUpRequest getSignUpRequest() {
         return SignUpRequest.builder()
                 .name("최규현")
-                .email("rbgus200@@naver.com")
+                .phoneNumber("rbgus200@@naver.com")
                 .nickname("규규")
                 .phoneModel("")
                 .picture("")

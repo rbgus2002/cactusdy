@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     private String picture;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String password;
@@ -55,11 +55,11 @@ public class User extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public User(String name, String nickname, String picture, String phoneModel, String email, String password) {
+    public User(String name, String nickname, String picture, String phoneModel, String phoneNumber, String password) {
         this.name = name;
         this.nickname = nickname;
         this.picture = picture;
-        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.activateDate = LocalDateTime.now();
         this.phoneModel = phoneModel;

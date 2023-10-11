@@ -90,7 +90,7 @@ public class ServiceTest {
     private void initSignUpRequest() {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
-                .email("rbgus200@naver.com")
+                .phoneNumber("rbgus200@naver.com")
                 .password("password")
                 .nickname("규규")
                 .phoneModel("")
@@ -98,7 +98,7 @@ public class ServiceTest {
                 .build();
         장재우SignUpRequest = SignUpRequest.builder()
                 .name("장재우")
-                .email("arkady@naver.com")
+                .phoneNumber("arkady@naver.com")
                 .password("password")
                 .nickname("킹적화")
                 .phoneModel("")

@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.SignInResponse;
-import ssu.groupstudy.domain.user.exception.EmailExistsException;
+import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 import ssu.groupstudy.global.util.RedisUtils;
@@ -49,8 +49,8 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailExistsException(ResultCode.DUPLICATE_EMAIL);
+        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
         }
         User user = request.toEntity(passwordEncoder);
         user.addUserRole();
@@ -58,15 +58,14 @@ public class AuthService {
         return userRepository.save(user).getUserId();
     }
 
-    // FIXME : email to phoneNum 수정
     @Transactional
     public SignInResponse signIn(SignInRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
         user.updateActivateDate();
 
-        return SignInResponse.of(user, jwtProvider.createToken(user.getEmail(), user.getRoles()));
+        return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
 
     private void validatePassword(SignInRequest request, User user) {

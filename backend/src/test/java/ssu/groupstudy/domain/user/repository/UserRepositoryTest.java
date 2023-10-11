@@ -21,7 +21,7 @@ class UserRepositoryTest {
         final String 최규현_email = "rbgus2002@naver.com";
 
         // when
-        boolean exist = userRepository.existsByEmail(최규현_email);
+        boolean exist = userRepository.existsByPhoneNumber(최규현_email);
 
         // then
         softly.assertThat(exist).isTrue();

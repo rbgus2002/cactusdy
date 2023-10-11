@@ -48,7 +48,7 @@ class StudyApiTest {
     private SignUpRequest getSignUpRequest() {
         return SignUpRequest.builder()
                 .name("최규현")
-                .email("rbgus2002@naver.com")
+                .phoneNumber("rbgus2002@naver.com")
                 .nickname("규규")
                 .phoneModel("")
                 .picture("")

@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.user.domain.User;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
@@ -18,9 +17,8 @@ public class SignUpRequest {
     private String nickname;
     private String phoneModel;
     private String picture;
-    @Email(message = "이메일 형식이 아닙니다")
-    @NotBlank(message = "이메일을 입력하세요")
-    private String email;
+    @NotBlank(message = "휴대폰번호를 입력하세요")
+    private String phoneNumber;
 
     @NotBlank(message = "비밀번호를 입력하세요")
     private String password;
@@ -31,7 +29,7 @@ public class SignUpRequest {
                 .nickname(this.nickname)
                 .phoneModel(this.phoneModel)
                 .picture(this.picture)
-                .email(this.email)
+                .phoneNumber(this.phoneNumber)
                 .password(passwordEncoder.encode(this.password))
                 .build();
     }

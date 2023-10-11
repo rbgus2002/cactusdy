@@ -9,7 +9,7 @@ import org.mockito.Spy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.exception.EmailExistsException;
+import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
@@ -27,22 +27,22 @@ class AuthServiceTest extends ServiceTest {
     @Nested
     class 회원가입 {
         @Test
-        @DisplayName("중복되는 이메일이 존재하면 회원가입이 불가능하다")
+        @DisplayName("중복되는 핸드폰번호가 존재하면 예외를 던진다")
         void fail_emailDuplicated() {
             // given
-            doReturn(true).when(userRepository).existsByEmail(any(String.class));
+            doReturn(true).when(userRepository).existsByPhoneNumber(any(String.class));
 
             // when, then
             softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest))
-                    .isInstanceOf(EmailExistsException.class)
-                    .hasMessage(ResultCode.DUPLICATE_EMAIL.getMessage());
+                    .isInstanceOf(PhoneNumberExistsException.class)
+                    .hasMessage(ResultCode.DUPLICATE_PHONE_NUMBER.getMessage());
         }
 
         @Test
         @DisplayName("회원가입 성공")
         void success() {
             // given
-            doReturn(false).when(userRepository).existsByEmail(any(String.class));
+            doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
             doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
