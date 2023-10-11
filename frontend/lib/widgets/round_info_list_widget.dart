@@ -84,7 +84,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
     List<Round> rounds = await Round.getRoundInfoResponses(widget.studyId);
     return ListModel(
       listKey: _listKey,
-      initialItems: rounds,
+      items: rounds,
     );
   }
 
