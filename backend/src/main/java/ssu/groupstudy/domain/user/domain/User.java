@@ -87,5 +87,9 @@ public class User extends BaseEntity {
     public void updateActivateDate(){
         this.activateDate = LocalDateTime.now();
     }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
 }
 

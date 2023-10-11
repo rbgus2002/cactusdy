@@ -5,10 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +15,9 @@ import ssu.groupstudy.global.ResultCode;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserInfoResponse getUser(long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-
-        return UserInfoResponse.from(user);
+    @Transactional
+    public void updateStatusMessage(User user, StatusMessageRequest request) {
+        user.setStatusMessage(request.getStatusMessage());
+        userRepository.save(user);
     }
 }
