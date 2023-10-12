@@ -5,6 +5,7 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 
@@ -32,7 +33,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   static const String _fillAllCodeText = "인증 번호를 전부 입력해 주세요";
   static const String _discordCodeText = "인증 번호가 일치하지 않습니다!";
 
-  String _errorText = "";
+  String _errorText = " ";
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
               margin: Design.bottom15,
               color: ColorStyles.grey,
               child: Text(
-                "인증 번호를 \"${widget.phoneNumber}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요. 인증 번호는 3분 뒤 만료됩니다.", //< FIXME is this BEST?
+                "인증 번호를 \"${FormatterUtility.phoneNumberFormatter(widget.phoneNumber)}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요. 인증 번호는 3분 뒤 만료됩니다.", //< FIXME is this BEST?
                 style: TextStyles.bodyMedium,
                 textAlign: TextAlign.justify,
               ),

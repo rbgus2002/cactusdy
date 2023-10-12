@@ -78,6 +78,8 @@ class Auth {
   }
 
   static Future<bool> requestVerifyMessage(String phoneNumber) async {
+    return true; // FIXME : BACKDOOR
+
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
     };
@@ -97,6 +99,8 @@ class Auth {
   }
 
   static Future<bool> verifyCode(String phoneNumber, String code) async {
+    return true; // FIXME : BACKDOOR
+    
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'code': code,

@@ -41,7 +41,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   static const String _confirmText = "확인";
 
-  String _errorText = "";
+  String _errorText = " ";
 
   String _password = "";
   String _name = "";
