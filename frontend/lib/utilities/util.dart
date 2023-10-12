@@ -16,12 +16,16 @@ class Util {
     );
   }
 
-  static void pushAndPopUtil(BuildContext context, WidgetBuilder builder) {
+  static void pushRouteAndPopUtil(BuildContext context, WidgetBuilder builder) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: builder),
         (route) => false
     );
+  }
+
+  static void popRoute(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   static Color progressToColor(double taskProgress) {

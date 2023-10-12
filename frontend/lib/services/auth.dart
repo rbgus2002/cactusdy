@@ -6,7 +6,7 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Auth {
-  static const int emailMaxLength = 255;
+  static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
   static SignInfo? signInfo;

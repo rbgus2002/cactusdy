@@ -7,11 +7,11 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class SignUpVerifyRoute extends StatefulWidget {
-  final String email;
+  final String phoneNumber;
 
   const SignUpVerifyRoute({
     Key? key,
-    required this.email,
+    required this.phoneNumber,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   String verificationCode = "000000";
   List<int> inputCode = List<int>.filled(_verifyNumberLength, -1);
 
-  static const String _titleText = "이메일 인증";
+  static const String _titleText = "핸드폰 번호 인증";
   static const String _confirmText = "확인";
   static const String _resendText = "다시 보내기";
   static const String _fillAllCodeText = "인증 번호를 전부 입력해 주세요";
@@ -49,7 +49,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
               margin: Design.bottom15,
               color: ColorStyles.grey,
               child: Text(
-                "인증 번호를 \"${widget.email}\"주소로 보내드렸어요. 메일에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요.", //< FIXME is this BEST?
+                "인증 번호를 \"${widget.phoneNumber}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요.", //< FIXME is this BEST?
                 style: TextStyles.bodyMedium,
                 textAlign: TextAlign.justify,
               ),
@@ -128,7 +128,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
     if (_formKey.currentState!.validate()) {
       String inputCodeStr = inputCode.join();
       if (inputCodeStr.compareTo(verificationCode) == 0) {
-        Util.pushRoute(context, (context) => SignUpDetailRoute(email: widget.email));
+        Util.pushRoute(context, (context) => SignUpDetailRoute(phoneNumber: widget.phoneNumber));
       }
       _errorText = _discordCodeText;
     }
