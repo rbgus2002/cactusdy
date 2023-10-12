@@ -112,6 +112,7 @@ class Auth {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
+      print(responseJson);
       return responseJson['data']['isSuccess'];
     }
   }
