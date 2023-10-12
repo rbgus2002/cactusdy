@@ -49,13 +49,17 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
-        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-            throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
-        }
+        validatePhoneNumber(request.getPhoneNumber());
         User user = request.toEntity(passwordEncoder);
         user.addUserRole();
 
         return userRepository.save(user).getUserId();
+    }
+
+    private void validatePhoneNumber(String phoneNumber) {
+        if (userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
+        }
     }
 
     @Transactional
@@ -75,6 +79,7 @@ public class AuthService {
     }
 
     public void sendMessage(MessageRequest request) {
+        validatePhoneNumber(request.getPhoneNumber());
         Message message = createMessage(request);
         SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
         log.info("message : {}", response);
@@ -94,14 +99,10 @@ public class AuthService {
     }
 
     private void handleVerificationMessage(Message message) {
-        String code = generateVerificationCode();
+        String code = RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
         saveToRedis(code, message.getTo());
         String verificationMessage = String.format("[GroupStudy] 인증번호 : %s", code);
         message.setText(verificationMessage); // TODO : 대괄호 안 문구 앱 이름으로 변경
-    }
-
-    private String generateVerificationCode() {
-        return RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
     }
 
     private void saveToRedis(String code, String phoneNumber) {
