@@ -14,6 +14,7 @@ import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,5 +97,32 @@ class RoundRepositoryTest{
         }
     }
 
+    @Test
+    @DisplayName("스터디가 가지는 회차의 개수를 가져온다")
+    void countRoundByStudy(){
+        // given
+        Study 스터디 = studyRepository.findById(2L).get();
 
+        // when
+        Long roundCount = roundRepository.countRoundByStudy(스터디);
+
+        // then
+        softly.assertThat(roundCount).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("스터디가 보여줄 가장 최신의 회차를 하나 가져온다")
+    void findLatestRound(){
+        // given
+        Study 스터디 = studyRepository.findById(1L).get();
+        Round 회차 = roundRepository.findById(1L).get();
+        Appointment appointment = Appointment.of(null, LocalDateTime.now().plusDays(1L));
+
+        // when
+        회차.updateAppointment(appointment);
+        Round 최신_회차 = roundRepository.findLatestRound(스터디.getStudyId()).get();
+
+        // then
+        softly.assertThat(회차.getRoundId()).isEqualTo(최신_회차.getRoundId());
+    }
 }

@@ -17,4 +17,8 @@ public class Appointment {
     private String studyPlace;
     @Column
     private LocalDateTime studyTime;
+
+    public static Appointment of(String studyPlace, LocalDateTime studyTime){
+        return new Appointment(studyPlace, studyTime);
+    }
 }

@@ -49,7 +49,7 @@ class StudyServiceTest extends ServiceTest {
     }
 
     @Nested
-    class getStudySummaryResponse {
+    class getStudySummary {
         @Test
         @DisplayName("존재하지 않는 스터디인 경우 예외를 던진다")
         void 실패_유저존재하지않음() {

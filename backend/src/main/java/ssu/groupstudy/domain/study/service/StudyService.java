@@ -2,8 +2,6 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.Round;
@@ -58,15 +56,17 @@ public class StudyService {
     }
 
     private StudyInfoResponse createStudyInfo(Participant participant) {
-        Page<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(participant.getStudy(), PageRequest.of(0, 1));
-        Long roundSeq = handleRoundSeq(rounds);
-        Round latestRound = rounds.getContent().stream().findFirst().orElse(null);
+        Study study = participant.getStudy();
+
+        Long roundSeq = handleRoundSeq(study);
+        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         RoundParticipant roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
+
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
-    private long handleRoundSeq(Page<Round> rounds) {
-        long roundSeq = rounds.getTotalElements();
+    private long handleRoundSeq(Study study) {
+        long roundSeq = roundRepository.countRoundByStudy(study);
         if (roundSeq == 0) {
             roundSeq = 1;
         }

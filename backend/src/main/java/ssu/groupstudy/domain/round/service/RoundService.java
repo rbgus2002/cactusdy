@@ -13,7 +13,6 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.ResultCode;
 
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 public class RoundService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {

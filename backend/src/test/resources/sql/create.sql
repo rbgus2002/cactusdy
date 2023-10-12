@@ -5,7 +5,7 @@ create table if not exists `user`
     modified_date  datetime(6)  not null,
     activate_date  datetime(6)  not null,
     delete_yn      char         not null,
-    email          varchar(255) not null,
+    phone_number   varchar(255) not null,
     name           varchar(255) not null,
     nickname       varchar(255) not null,
     phone_model    varchar(255) null,

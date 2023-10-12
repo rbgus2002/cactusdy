@@ -51,6 +51,7 @@ class StudyInviteServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            알고리즘스터디.invite(최규현);
 
             // then
             assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, -1L))
@@ -65,7 +66,7 @@ class StudyInviteServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
-            studyInviteService.inviteUser(null, -1L);
+            studyInviteService.inviteUser(최규현, -1L);
 
             // then
             assertAll(

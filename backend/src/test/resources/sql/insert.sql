@@ -1,7 +1,7 @@
 -- user
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (1, '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.021249', 'N', 'rbgus2002@naver.com', '최규현', '규규', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (2, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'arkady@naver.com', '장재우', 'arkady', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
-INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, email, name, nickname, phone_model, picture, status_message, password) VALUES (3, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', 'are_you_hungry@question.com', '홍예지', '찡찡이', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, phone_number, name, nickname, phone_model, picture, status_message, password) VALUES (1, '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.061086', '2023-09-04 21:05:34.021249', 'N', '01044992038', '최규현', '규규', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, phone_number, name, nickname, phone_model, picture, status_message, password) VALUES (2, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', '01011112222', '장재우', 'arkady', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
+INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, phone_number, name, nickname, phone_model, picture, status_message, password) VALUES (3, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', '01022223333', '홍예지', '찡찡이', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
 
 -- authority
 INSERT INTO authority (authority_id, role_name, user_id) VALUES (1, 'ROLE_USER', 1);
@@ -31,6 +31,7 @@ INSERT INTO round (round_id, create_date, modified_date, study_place, study_time
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (3, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, '2023-09-29 12:02:00', 'N', 'detail', 1);
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (4, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, '2023-10-11 12:02:00', 'N', 'detail', 1);
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (5, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 1);
+INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (6, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 2);
 
 -- user_round
 INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
