@@ -57,10 +57,10 @@ class _SignUpRouteState extends State<SignUpRoute> {
                     ),
                     Design.padding15,
                   ],),
-                Design.padding15,
+                Design.padding10,
 
                 Text(_errorText, style: TextStyles.errorTextStyle,),
-                Design.padding5,
+                Design.padding15,
 
                 ElevatedButton(
                     onPressed: verifyPhoneNumber,
@@ -77,8 +77,14 @@ class _SignUpRouteState extends State<SignUpRoute> {
     );
   }
 
-  void verifyPhoneNumber() {
-    // verify
-    Util.pushRoute(context, (context) => SignUpVerifyRoute(phoneNumber: _phoneNumber,));
+  void verifyPhoneNumber() async {
+    try {
+      await Auth.requestVerifyMessage(_phoneNumber).then((result) =>
+          Util.pushRoute(context, (context) =>
+              SignUpVerifyRoute(phoneNumber: _phoneNumber,)));
+    }
+    on Exception catch (e) {
+      setState(() => _errorText = Util.getExceptionMessage(e));
+    }
   }
 }

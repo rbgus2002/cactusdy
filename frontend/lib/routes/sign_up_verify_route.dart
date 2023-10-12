@@ -35,12 +35,6 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   String _errorText = "";
 
   @override
-  void initState() {
-    super.initState();
-    Auth.requestVerifyMessage(widget.phoneNumber);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(_titleText, style: TextStyles.titleSmall,),),
