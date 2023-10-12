@@ -16,11 +16,11 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class SignUpDetailRoute extends StatefulWidget {
-  final String email;
+  final String phoneNumber;
 
   const SignUpDetailRoute({
     Key? key,
-    required this.email,
+    required this.phoneNumber,
   }) : super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   static const String _confirmText = "확인";
 
-  String _errorText = "아무튼 에러임 !!";
+  String _errorText = "";
 
   String _password = "";
   String _name = "";
@@ -77,13 +77,13 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                      const Text("PHONE NUMBER", style: TextStyles.titleSmall),
                       TextFormField(
-                        controller: TextEditingController(text: widget.email),
+                        controller: TextEditingController(text: widget.phoneNumber),
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: ColorStyles.grey,
-                          prefixIcon: AppIcons.email,
+                          prefixIcon: AppIcons.phone,
                         ),
                         enabled: false,
                       ),
@@ -189,15 +189,15 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   void signUp() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, email: widget.email, password: _password).then((value) {
-        print(value);
-        if (value) Util.pushRoute(context, (context) => const SignInRoute());
+        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, phoneNumber: widget.phoneNumber, password: _password).then((value) {
+          if (value) {
+            Util.pushRouteAndPopUtil(context, (context) => const SignInRoute());
+          }
         });
       }
       on Exception catch (e) {
         setState(() => _errorText = Util.getExceptionMessage(e));
       }
     }
-    // verify
   }
 }

@@ -52,7 +52,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            shadowColor: Colors.transparent,
             actions: [
               _roundPopupMenu(),
             ]
@@ -163,7 +162,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Widget _roundPopupMenu() {
     return PopupMenuButton(
-      icon: const Icon(Icons.more_vert),
+      icon: AppIcons.more_vert,
       splashRadius: 16,
       offset: const Offset(0, 42),
 
@@ -183,9 +182,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
           content: const Text(_deleteRoundCautionMessage),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: const Text(_cancelText),),
             TextButton(
               onPressed: () {
@@ -199,10 +196,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   void _deleteRound() {
-    Round.deleteRound(round!.roundId).then(
-            (result) {
+    Round.deleteRound(round!.roundId).then((result) {
           if (result == true) Navigator.of(context).pop();
-        }).catchError((e){
+        }).catchError((e) {
       Toast.showToast(msg: e.toString().substring(10));
     });
   }

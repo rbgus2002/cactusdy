@@ -20,23 +20,16 @@ import 'package:group_study_app/widgets/round_info_list_widget.dart';
 import 'package:group_study_app/widgets/rule_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
-class StudyDetailRoute extends StatefulWidget {
+class StudyDetailRoute extends StatelessWidget {
+  final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
+  late ListModel<Round> _roundList;
+
   final int studyId;
 
-  const StudyDetailRoute({
+  StudyDetailRoute({
     Key? key,
     required this.studyId,
   }) : super(key: key);
-
-  @override
-  State<StudyDetailRoute> createState() => _StudyDetailRouteState();
-}
-
-class _StudyDetailRouteState extends State<StudyDetailRoute> {
-  // is this right?
-  final GlobalKey<RoundInfoListWidgetState> _roundInformationListKey = GlobalKey<RoundInfoListWidgetState>();
-
-  late ListModel<Round> _roundList;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +45,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
             // Study Head
             FutureBuilder(
-                future: Study.getStudySummary(widget.studyId),
+                future: Study.getStudySummary(studyId),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return StudyLineProfileWidget(study: snapshot.data!);
@@ -63,24 +56,24 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
             // Notice
             TitleWidget(title: "NOTICE", icon: AppIcons.chevronRight,
-              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute(studyId: widget.studyId,))),
-            NoticeSummaryPanel(studyId: widget.studyId,),
+              onTap: () => Util.pushRoute(context, (context)=>NoticeListRoute(studyId: studyId,))),
+            NoticeSummaryPanel(studyId: studyId,),
             Design.padding15,
 
             //
             TitleWidget(title: "MEMBER", icon: AppIcons.add,
               onTap: () => null,),
-            ParticipantProfileListWidget(studyId: widget.studyId),
+            ParticipantProfileListWidget(studyId: studyId),
             Design.padding15,
 
             //
             TitleWidget(title: "RULE", icon: AppIcons.edit,
                 onTap: ()=> null,),
-            RuleWidget(studyId: widget.studyId),
+            RuleWidget(studyId: studyId),
             Design.padding15,
 
             TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _addRound),
-            RoundInfoListWidget(key: _roundInformationListKey, studyId: widget.studyId),
+            RoundInfoListWidget(key: _roundInformationListKey, studyId: studyId),
           ],
         )
       )

@@ -96,13 +96,14 @@ class _TaskWidget extends State<TaskWidget> {
         maxLines: 1,
         style: TextStyles.taskTextStyle,
 
+
         focusNode: _focusNode,
         controller: _textEditingController,
         decoration: const InputDecoration(
           hintText: _taskHintMessage,
           isDense: true,
           contentPadding: EdgeInsets.zero,
-          focusedBorder: UnderlineInputBorder(),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskHintTextColor,)),
           border:InputBorder.none,
           counterText: "",
         ),

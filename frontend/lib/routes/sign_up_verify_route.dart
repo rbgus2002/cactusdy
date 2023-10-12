@@ -1,17 +1,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/sign_up_detail_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class SignUpVerifyRoute extends StatefulWidget {
-  final String email;
+  final String phoneNumber;
 
   const SignUpVerifyRoute({
     Key? key,
-    required this.email,
+    required this.phoneNumber,
   }) : super(key: key);
 
   @override
@@ -22,16 +24,21 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   static const int _verifyNumberLength = 6;
 
-  String verificationCode = "000000";
-  List<int> inputCode = List<int>.filled(_verifyNumberLength, -1);
+  final List<int> inputCode = List<int>.filled(_verifyNumberLength, -1);
 
-  static const String _titleText = "이메일 인증";
+  static const String _titleText = "핸드폰 번호 인증";
   static const String _confirmText = "확인";
   static const String _resendText = "다시 보내기";
   static const String _fillAllCodeText = "인증 번호를 전부 입력해 주세요";
   static const String _discordCodeText = "인증 번호가 일치하지 않습니다!";
 
   String _errorText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    Auth.requestVerifyMessage(widget.phoneNumber);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +56,13 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
               margin: Design.bottom15,
               color: ColorStyles.grey,
               child: Text(
-                "인증 번호를 \"${widget.email}\"주소로 보내드렸어요. 메일에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요.", //< FIXME is this BEST?
+                "인증 번호를 \"${widget.phoneNumber}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요. 인증 번호는 3분 뒤 만료됩니다.", //< FIXME is this BEST?
                 style: TextStyles.bodyMedium,
                 textAlign: TextAlign.justify,
               ),
             ),
             Design.padding10,
-            Text("인증 번호", style: TextStyles.wideTextStyle),
+            const Text("인증 번호", style: TextStyles.wideTextStyle),
             Design.padding5,
 
             Form(
@@ -127,17 +134,20 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   void checkValidate(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       String inputCodeStr = inputCode.join();
-      if (inputCodeStr.compareTo(verificationCode) == 0) {
-        Util.pushRoute(context, (context) => SignUpDetailRoute(email: widget.email));
-      }
-      _errorText = _discordCodeText;
+      Auth.verifyCode(widget.phoneNumber, inputCodeStr).then((result) {
+        if (result == true) {
+          Util.pushRoute(context, (context) =>
+              SignUpDetailRoute(phoneNumber: widget.phoneNumber));
+        }
+        else {
+          _errorText = _discordCodeText;
+          setState(() { });
+        }
+      });
     }
-
-    setState(() { });
   }
 
   void _resend() {
-    //< FIXME :
-    print("resend is called");
+    Auth.requestVerifyMessage(widget.phoneNumber);
   }
 }

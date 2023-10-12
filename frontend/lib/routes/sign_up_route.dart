@@ -21,11 +21,11 @@ class SignUpRoute extends StatefulWidget {
 class _SignUpRouteState extends State<SignUpRoute> {
   final _formKey = GlobalKey<FormState>();
 
-  static const String _emailHintText = "이메일 주소(아이디)를 입력해주세요";
+  static const String _phoneNumberHintText = "핸드폰 번호를 입력해주세요";
   static const String _confirmText = "확인";
 
   String _errorText = "";
-  String _email = "";
+  String _phoneNumber = "";
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +43,17 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                    const Text("PHONE NUMBER", style: TextStyles.titleSmall),
                     TextFormField(
-                      maxLength: Auth.emailMaxLength,
+                      maxLength: Auth.phoneNumberMaxLength,
                       validator: (text) =>
-                      ((text!.isEmpty) ? _emailHintText : null),
+                      ((text!.isEmpty) ? _phoneNumberHintText : null),
                       decoration: const InputDecoration(
-                        prefixIcon: AppIcons.email,
-                        hintText: _emailHintText,
+                        prefixIcon: AppIcons.phone,
+                        hintText: _phoneNumberHintText,
                         counterText: "",
                       ),
-                      onChanged: (value) => _email = value,
+                      onChanged: (value) => _phoneNumber = value,
                     ),
                     Design.padding15,
                   ],),
@@ -63,7 +63,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 Design.padding5,
 
                 ElevatedButton(
-                    onPressed: validateEmail,
+                    onPressed: verifyPhoneNumber,
                     child: Container(
                       alignment: Alignment.center,
                       width: double.infinity,
@@ -77,8 +77,8 @@ class _SignUpRouteState extends State<SignUpRoute> {
     );
   }
 
-  void validateEmail() {
+  void verifyPhoneNumber() {
     // verify
-    Util.pushRoute(context, (context) => SignUpVerifyRoute(email: _email,));
+    Util.pushRoute(context, (context) => SignUpVerifyRoute(phoneNumber: _phoneNumber,));
   }
 }

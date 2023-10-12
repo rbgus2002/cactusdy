@@ -34,7 +34,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
     _animation = CurvedAnimation(parent: _progressController, curve: Curves.easeInOut);
     _progressController.addListener(() {
       setState(() {
-        _progress = lerpDouble(_progress, _nextProgress, _animation.value)!
+        _progress = lerpDouble(_progress, _nextProgress, _animation.value)!;
       });
     });
 

@@ -6,7 +6,7 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Auth {
-  static const int emailMaxLength = 255;
+  static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
   static SignInfo? signInfo;
@@ -16,7 +16,7 @@ class Auth {
       required String nickname,
       required String phoneModel,
       required String picture,
-      required String email,
+      required String phoneNumber,
       required String password,
     }) async {
     Map<String, dynamic> data = {
@@ -24,7 +24,7 @@ class Auth {
       'nickname': nickname,
       'phoneModel': phoneModel,
       'picture': picture,
-      'email': email,
+      'phoneNumber': phoneNumber,
       'password': password,
     };
 
@@ -44,9 +44,9 @@ class Auth {
     }
   }
 
-  static Future<bool> signIn(String email, String password) async {
+  static Future<bool> signIn(String phoneNumber, String password) async {
     Map<String, dynamic> data = {
-      'email': email,
+      'phoneNumber': phoneNumber,
       'password': password,
     };
 
@@ -75,5 +75,45 @@ class Auth {
 
   static void getSignInfo() async {
     signInfo ??= await SignInfo.readSignInfo();
+  }
+
+  static Future<bool> requestVerifyMessage(String phoneNumber) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/messages/send'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
+  static Future<bool> verifyCode(String phoneNumber, String code) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+      'code': code,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/messages/verify'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      print(responseJson);
+      return responseJson['data']['isSuccess'];
+    }
   }
 }

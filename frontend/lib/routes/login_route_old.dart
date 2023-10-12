@@ -10,13 +10,13 @@ class LoginTest extends StatelessWidget {
   static const String domain = 'http://localhost:8080/user';
   final _formKey = GlobalKey<FormState>();
 
-  String _email = '';
+  String _phoneNumber = '';
   String _password = '';
 
   void _callLogin() async {
     var url = Uri.parse('$domain/test');
 
-    Map data = {"email": _email, "password": _password};
+    Map data = {"phoneNumber": _phoneNumber, "password": _password};
     var response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -53,13 +53,13 @@ class LoginTest extends StatelessWidget {
                     Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: TextFormField(
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Input email',
+                            hintText: 'Input phoneNumber',
                           ),
                           onSaved: (value) {
-                            _email = value as String;
+                            _phoneNumber = value as String;
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -67,7 +67,7 @@ class LoginTest extends StatelessWidget {
                             } else if (value
                                 .toString()
                                 .length < 8) {
-                              return 'Please enter email more than size 8';
+                              return 'Please enter phoneNumber more than size 8';
                             }
                             return null;
                           },
@@ -99,7 +99,7 @@ class LoginTest extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-                              print('$_email/$_password');
+                              print('$_phoneNumber/$_password');
                               _callLogin();
                             }
                           },

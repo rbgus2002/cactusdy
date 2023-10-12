@@ -22,9 +22,9 @@ class Design{
 
   static const List<BoxShadow> basicShadows = [ BoxShadow(
       color: ColorStyles.shadow,
-      spreadRadius: 2,
-      blurRadius: 3,
-      offset: Offset(4, 4),
+      spreadRadius: 1,
+      blurRadius: 2,
+      offset: Offset(2, 2),
     )];
 
   static const Widget loadingIndicator = SizedBox(

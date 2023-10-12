@@ -19,14 +19,14 @@ class SignInRoute extends StatefulWidget {
 class _SignInRouteState extends State<SignInRoute> {
   final _formKey = GlobalKey<FormState>();
 
-  static const String _emailHintText = "이메일 주소(아이디)를 입력해 주세요";
+  static const String _phoneNumberHintText = "핸드폰 번호(아이디)를 입력해 주세요";
   static const String _passwordHintText = "비밀 번호를 입력해 주세요";
 
   static const String _signInText = "로그인";
 
   String _errorText = "";
 
-  String _email = "";
+  String _phoneNumber = "";
   String _password = "";
 
   @override
@@ -45,17 +45,17 @@ class _SignInRouteState extends State<SignInRoute> {
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("EMAIL ADDRESS", style: TextStyles.titleSmall),
+                const Text("PHONE NUMBER", style: TextStyles.titleSmall),
                 TextFormField(
-                  maxLength: Auth.emailMaxLength,
+                  maxLength: Auth.phoneNumberMaxLength,
                   validator: (text) =>
-                  ((text!.isEmpty) ? _emailHintText : null),
+                  ((text!.isEmpty) ? _phoneNumberHintText : null),
                   decoration: const InputDecoration(
-                    prefixIcon: AppIcons.email,
-                    hintText: _emailHintText,
+                    prefixIcon: AppIcons.phone,
+                    hintText: _phoneNumberHintText,
                     counterText: "",
                   ),
-                  onChanged: (value) => _email = value,
+                  onChanged: (value) => _phoneNumber = value,
                 ),
                 Design.padding15,
 
@@ -95,9 +95,9 @@ class _SignInRouteState extends State<SignInRoute> {
   void tryToSignIn() async {
     if (_formKey.currentState!.validate()) {
       try {
-         await Auth.signIn(_email, _password).then((value) {
-            Util.pushRoute(context, (context) => const HomeRoute());
-          });
+         await Auth.signIn(_phoneNumber, _password).then((value) {
+           Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
+         });
       }
       on Exception catch (e) {
         setState(() => _errorText = Util.getExceptionMessage(e));
