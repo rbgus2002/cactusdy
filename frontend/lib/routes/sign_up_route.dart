@@ -83,6 +83,12 @@ class _SignUpRouteState extends State<SignUpRoute> {
     );
   }
 
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
+  }
+
   void verifyPhoneNumber() async {
     if (_formKey.currentState!.validate()) {
       try {

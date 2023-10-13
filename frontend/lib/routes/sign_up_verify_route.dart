@@ -43,56 +43,58 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(_titleText, style: TextStyles.titleSmall,),),
-      body: Container(
-        alignment: Alignment.center,
-        padding: Design.edgePadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Design.padding30,
-            Container(
-              padding: Design.edgePadding,
-              margin: Design.bottom15,
-              color: ColorStyles.grey,
-              child: Text(
-                "인증 번호를 \"${FormatterUtility.phoneNumberFormatter(widget.phoneNumber)}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요. 인증 번호는 3분 뒤 만료됩니다.", //< FIXME is this BEST?
-                style: TextStyles.bodyMedium,
-                textAlign: TextAlign.justify,
+      body: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          padding: Design.edgePadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Design.padding30,
+              Container(
+                padding: Design.edgePadding,
+                margin: Design.bottom15,
+                color: ColorStyles.grey,
+                child: Text(
+                  "인증 번호를 \"${FormatterUtility.phoneNumberFormatter(widget.phoneNumber)}\"에 문자로 보내드렸어요. 문자에 적혀있는 인증 번호를 아래 빈칸에 입력해 주세요. 인증 번호는 3분 뒤 만료됩니다.", //< FIXME is this BEST?
+                  style: TextStyles.bodyMedium,
+                  textAlign: TextAlign.justify,
+                ),
               ),
-            ),
-            Design.padding10,
-            const Text("인증 번호", style: TextStyles.wideTextStyle),
-            Design.padding5,
+              Design.padding10,
+              const Text("인증 번호", style: TextStyles.wideTextStyle),
+              Design.padding5,
 
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.always,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < _verifyNumberLength; ++i)
-                    _cell(context, i),
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.always,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < _verifyNumberLength; ++i)
+                      _cell(context, i),
 
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            Design.padding15,
-            Text(_errorText, style: TextStyles.errorTextStyle,),
-            Design.padding30,
+              Design.padding10,
+              Text(_errorText, style: TextStyles.errorTextStyle,),
+              Design.padding15,
 
-            ElevatedButton(
-              autofocus: true,
-                onPressed: () => checkValidate(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  child: const Text(_confirmText, style: TextStyles.titleSmall,),
-                )
-            ),
-            TextButton(onPressed: _resend, child: const Text(_resendText)),
-          ],
-        )
+              ElevatedButton(
+                autofocus: true,
+                  onPressed: () => checkValidate(context),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    child: const Text(_confirmText, style: TextStyles.titleSmall,),
+                  )
+              ),
+              TextButton(onPressed: _resend, child: const Text(_resendText)),
+            ],
+          )
+        ),
       ),
     );
   }
@@ -103,9 +105,9 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
       padding: Design.edge5,
       child: TextFormField(
         controller: _controllers[idx],
+        keyboardType: TextInputType.number,
         autofocus: true,
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
         //maxLength: _isLast(idx)? 1 : null,
         style: TextStyles.numberTextStyle,
         showCursor: false,
@@ -150,7 +152,6 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
 
     else {
       int length = min(_verifyNumberLength, idx + value.length);
-      print(length);
       for (int cur = idx; cur < length; ++cur) {
         if (cur >= idx + value.length) return;
 

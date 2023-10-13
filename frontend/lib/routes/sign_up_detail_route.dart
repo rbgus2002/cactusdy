@@ -31,7 +31,7 @@ class SignUpDetailRoute extends StatefulWidget {
 class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   final _formKey = GlobalKey<FormState>();
 
-  static const String _hintSuffix1Text = "을 입력해주세요";
+  static const String _hintSuffix1Text = "을 입력해주세요";  //< FIXME
   static const String _hintSuffix2Text = "를 입력해주세요";
   static const String _passwordText = "비밀 번호";
   static const String _passwordConfirmText = "비밀 번호(확인)";
@@ -92,9 +92,10 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
                       const Text("PASSWORD", style: TextStyles.titleSmall),
                       TextFormField(
+                        obscureText: true,
                         maxLength: Auth.passwordMaxLength,
                         validator: (text) =>
-                        ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
+                          ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
                         decoration: const InputDecoration(
                           prefixIcon: AppIcons.password,
                           hintText: _passwordText,
@@ -105,6 +106,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                       Design.padding15,
 
                       TextFormField(
+                        obscureText: true,
                         maxLength: Auth.passwordMaxLength,
                         validator: (text) =>
                         ((text != _password) ? _passwordNotSameText : null),
@@ -122,7 +124,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                         validator: (text) =>
                         ((text!.isEmpty) ? _nameText + _hintSuffix1Text : null),
                         decoration: const InputDecoration(
-                          prefixIcon: AppIcons.password,
+                          prefixIcon: AppIcons.person,
                           hintText: _nameText,
                           counterText: "",
                         ),
@@ -137,7 +139,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                         validator: (text) =>
                         ((text!.isEmpty) ? _nicknameText + _hintSuffix1Text : null),
                         decoration: const InputDecoration(
-                          prefixIcon: AppIcons.password,
+                          prefixIcon: AppIcons.edit,
                           hintText: _nicknameText,
                           counterText: "",
                         ),
