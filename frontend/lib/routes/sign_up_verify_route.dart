@@ -1,5 +1,8 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/routes/sign_up_detail_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
@@ -26,6 +29,7 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   static const int _verifyNumberLength = 6;
 
   final List<int> inputCode = List<int>.filled(_verifyNumberLength, -1);
+  final List<TextEditingController> _controllers = List.generate(_verifyNumberLength, (index) => TextEditingController());
 
   static const String _titleText = "핸드폰 번호 인증";
   static const String _confirmText = "확인";
@@ -98,10 +102,11 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
       width: 55,
       padding: Design.edge5,
       child: TextFormField(
+        controller: _controllers[idx],
         autofocus: true,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        maxLength: 1,
+        //maxLength: _isLast(idx)? 1 : null,
         style: TextStyles.numberTextStyle,
         showCursor: false,
         decoration: const InputDecoration(
@@ -118,12 +123,47 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
           _errorText = "";
           return null;
         },
-        onChanged: (value) {
-          inputCode[idx] = int.parse(value);
-          FocusScope.of(context).nextFocus();
-        }
+        onChanged: (value) => _setNumber(value, idx),
       ),
     );
+  }
+
+  void _setNumber(String value, int idx) {
+    value = FormatterUtility.getNumberOnly(value);
+
+    if (value.isEmpty) {
+      inputCode[idx] = -1;
+      if (idx > 0) {
+        _controllers[idx].text = "";
+        FocusScope.of(context).previousFocus();
+      }
+    }
+    else if (inputCode[idx] != -1) {
+      String newNum = _controllers[idx].text[_controllers[idx].selection.extentOffset - 1];
+
+      _controllers[idx].text = newNum;
+      inputCode[idx] = int.parse(newNum);
+
+      if (!_isLast(idx)) FocusScope.of(context).nextFocus();
+
+    }
+
+    else {
+      int length = min(_verifyNumberLength, idx + value.length);
+      print(length);
+      for (int cur = idx; cur < length; ++cur) {
+        if (cur >= idx + value.length) return;
+
+        inputCode[cur] = int.parse(value[cur - idx]);
+        _controllers[cur].text = value[cur - idx];
+
+        if (!_isLast(cur)) FocusScope.of(context).nextFocus();
+      }
+    }
+  }
+
+  bool _isLast(int idx) {
+    return (idx >= _verifyNumberLength - 1);
   }
 
   void checkValidate(BuildContext context) {
@@ -139,6 +179,10 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
           setState(() { });
         }
       });
+    }
+    else {
+      _errorText = _fillAllCodeText;
+      setState(() { });
     }
   }
 

@@ -13,12 +13,12 @@ class FormatterUtility {
       return numberOnly;
     }
 
-    // #Case 010-1234-5678 (Local Format):
+    // #Case Local Format (010-1234-5678):
     if (numberOnly[0] == "0") {
       return _phoneNumberLocalFormatter(numberOnly, numberSeparator);
     }
 
-    // #Case +82 10-1234-5678 (Global Format):
+    // #Case Global Format (+82 10-1234-5678):
     else {
       return _phoneNumberGlobalFormatter(numberOnly, numberSeparator);
     }

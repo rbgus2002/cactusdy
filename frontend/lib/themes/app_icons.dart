@@ -5,8 +5,8 @@ class AppIcons {
   static const chevronRight = Icon(Icons.chevron_right);
   static const add = Icon(Icons.add);
 
-  static const phone = Icon(Icons.phone_iphone_sharp);
+  static const phone = Icon(Icons.phone_android_sharp, size: 13,);
   static const password = Icon(Icons.key);
 
-  static const more_vert = Icon(Icons.more_vert);
+  static const moreVert = Icon(Icons.more_vert);
 }

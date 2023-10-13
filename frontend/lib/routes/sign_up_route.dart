@@ -51,8 +51,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                       controller: _editingController,
                       keyboardType: TextInputType.number,
                       maxLength: Auth.phoneNumberMaxLength,
-                      validator: (text) =>
-                      ((text!.isEmpty) ? _phoneNumberHintText : null),
+                      validator: (number) => ((number!.isEmpty)? _phoneNumberHintText : null),
                       decoration: const InputDecoration(
                         prefixIcon: AppIcons.phone,
                         hintText: _phoneNumberHintText,
@@ -85,12 +84,15 @@ class _SignUpRouteState extends State<SignUpRoute> {
   }
 
   void verifyPhoneNumber() async {
-    try {
-      await Auth.requestVerifyMessage(_phoneNumber).then((result) =>
-          Util.pushRoute(context, (context) => SignUpVerifyRoute(phoneNumber: _phoneNumber,)));
-    }
-    on Exception catch (e) {
-      setState(() => _errorText = Util.getExceptionMessage(e));
+    if (_formKey.currentState!.validate()) {
+      try {
+        await Auth.requestVerifyMessage(_phoneNumber).then((result) =>
+            Util.pushRoute(context, (context) =>
+                SignUpVerifyRoute(phoneNumber: _phoneNumber,)));
+      }
+      on Exception catch (e) {
+        setState(() => _errorText = Util.getExceptionMessage(e));
+      }
     }
   }
 }
