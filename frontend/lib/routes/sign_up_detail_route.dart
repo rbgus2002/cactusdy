@@ -12,6 +12,7 @@ import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
@@ -30,7 +31,7 @@ class SignUpDetailRoute extends StatefulWidget {
 class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   final _formKey = GlobalKey<FormState>();
 
-  static const String _hintSuffix1Text = "을 입력해주세요";
+  static const String _hintSuffix1Text = "을 입력해주세요";  //< FIXME
   static const String _hintSuffix2Text = "를 입력해주세요";
   static const String _passwordText = "비밀 번호";
   static const String _passwordConfirmText = "비밀 번호(확인)";
@@ -41,7 +42,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   static const String _confirmText = "확인";
 
-  String _errorText = "";
+  String _errorText = " ";
 
   String _password = "";
   String _name = "";
@@ -79,7 +80,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
                       const Text("PHONE NUMBER", style: TextStyles.titleSmall),
                       TextFormField(
-                        controller: TextEditingController(text: widget.phoneNumber),
+                        controller: TextEditingController(text: FormatterUtility.phoneNumberFormatter(widget.phoneNumber)),
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: ColorStyles.grey,
@@ -91,9 +92,10 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
                       const Text("PASSWORD", style: TextStyles.titleSmall),
                       TextFormField(
+                        obscureText: true,
                         maxLength: Auth.passwordMaxLength,
                         validator: (text) =>
-                        ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
+                          ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
                         decoration: const InputDecoration(
                           prefixIcon: AppIcons.password,
                           hintText: _passwordText,
@@ -104,6 +106,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                       Design.padding15,
 
                       TextFormField(
+                        obscureText: true,
                         maxLength: Auth.passwordMaxLength,
                         validator: (text) =>
                         ((text != _password) ? _passwordNotSameText : null),
@@ -121,7 +124,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                         validator: (text) =>
                         ((text!.isEmpty) ? _nameText + _hintSuffix1Text : null),
                         decoration: const InputDecoration(
-                          prefixIcon: AppIcons.password,
+                          prefixIcon: AppIcons.person,
                           hintText: _nameText,
                           counterText: "",
                         ),
@@ -136,7 +139,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                         validator: (text) =>
                         ((text!.isEmpty) ? _nicknameText + _hintSuffix1Text : null),
                         decoration: const InputDecoration(
-                          prefixIcon: AppIcons.password,
+                          prefixIcon: AppIcons.edit,
                           hintText: _nicknameText,
                           counterText: "",
                         ),

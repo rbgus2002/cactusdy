@@ -99,7 +99,7 @@ class _HomeRouteState extends State<HomeRoute> {
   // FIXME : this is temporary
   Widget _homePopupMenu() {
     return PopupMenuButton(
-        icon: AppIcons.more_vert,
+        icon: AppIcons.moreVert,
         splashRadius: 16,
         offset: const Offset(0, 42),
 

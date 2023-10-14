@@ -162,7 +162,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Widget _roundPopupMenu() {
     return PopupMenuButton(
-      icon: AppIcons.more_vert,
+      icon: AppIcons.moreVert,
       splashRadius: 16,
       offset: const Offset(0, 42),
 

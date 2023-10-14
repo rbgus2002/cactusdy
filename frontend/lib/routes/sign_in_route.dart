@@ -5,6 +5,7 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class SignInRoute extends StatefulWidget {
@@ -17,6 +18,7 @@ class SignInRoute extends StatefulWidget {
 }
 
 class _SignInRouteState extends State<SignInRoute> {
+  final TextEditingController _editingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   static const String _phoneNumberHintText = "핸드폰 번호(아이디)를 입력해 주세요";
@@ -47,6 +49,8 @@ class _SignInRouteState extends State<SignInRoute> {
               children: [
                 const Text("PHONE NUMBER", style: TextStyles.titleSmall),
                 TextFormField(
+                  controller: _editingController,
+                  keyboardType: TextInputType.number,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: (text) =>
                   ((text!.isEmpty) ? _phoneNumberHintText : null),
@@ -55,12 +59,16 @@ class _SignInRouteState extends State<SignInRoute> {
                     hintText: _phoneNumberHintText,
                     counterText: "",
                   ),
-                  onChanged: (value) => _phoneNumber = value,
+                  onChanged: (value) {
+                    _phoneNumber = FormatterUtility.getNumberOnly(value);
+                    setState(() => _editingController.text = FormatterUtility.phoneNumberFormatter(_phoneNumber));
+                  },
                 ),
                 Design.padding15,
 
                 const Text("PASSWORD", style: TextStyles.titleSmall),
                 TextFormField(
+                  obscureText: true,
                   maxLength: Auth.passwordMaxLength,
                   validator: (text) =>
                   ((text!.isEmpty) ? _passwordHintText : null),
@@ -90,6 +98,12 @@ class _SignInRouteState extends State<SignInRoute> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
   }
 
   void tryToSignIn() async {
