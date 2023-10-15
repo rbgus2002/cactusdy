@@ -25,7 +25,7 @@ class StudyLineProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineProfileWidget(
       circleButton: OutlineCircleButton(
-        color: ColorStyles.deepPurpleAccent,
+        color: study.color,
         scale: _scale,
         stroke: _stroke,
       ),
