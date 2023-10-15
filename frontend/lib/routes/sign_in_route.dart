@@ -31,6 +31,8 @@ class _SignInRouteState extends State<SignInRoute> {
   String _phoneNumber = "";
   String _password = "";
 
+  bool _isProcessing = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +65,7 @@ class _SignInRouteState extends State<SignInRoute> {
                     _phoneNumber = FormatterUtility.getNumberOnly(value);
                     setState(() => _editingController.text = FormatterUtility.phoneNumberFormatter(_phoneNumber));
                   },
+                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 ),
                 Design.padding15,
 
@@ -78,6 +81,7 @@ class _SignInRouteState extends State<SignInRoute> {
                     counterText: "",
                   ),
                   onChanged: (value) => _password = value,
+                  onEditingComplete: () => tryToSignIn(),
                 ),
               ],),
               Design.padding15,
@@ -107,15 +111,21 @@ class _SignInRouteState extends State<SignInRoute> {
   }
 
   void tryToSignIn() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-         await Auth.signIn(_phoneNumber, _password).then((value) {
-           Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
-         });
-      }
-      on Exception catch (e) {
-        setState(() => _errorText = Util.getExceptionMessage(e));
+    if (!_isProcessing) {
+      _isProcessing = true;
+
+      if (_formKey.currentState!.validate()) {
+        try {
+          await Auth.signIn(_phoneNumber, _password).then((value) {
+            Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
+          });
+        }
+        on Exception catch (e) {
+          setState(() => _errorText = Util.getExceptionMessage(e));
+        }
       }
     }
+
+    _isProcessing = false;
   }
 }
