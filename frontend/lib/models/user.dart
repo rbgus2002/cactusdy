@@ -27,7 +27,7 @@ class User{
         userId: json['userId'],
         nickname: json['nickname'],
         statusMessage: json['statusMessage'],
-        picture: "" //json['picture'],
+        picture: json['picture'],
     );
   }
 
