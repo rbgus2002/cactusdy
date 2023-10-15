@@ -61,6 +61,7 @@ class Auth {
       throw Exception(responseJson['message']);
     } else {
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
+      print(signInfo!.token);
       SignInfo.setSignInfo(signInfo!);
       print("success to sign in");
 

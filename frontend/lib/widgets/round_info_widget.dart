@@ -32,8 +32,8 @@ class RoundInfoWidget extends StatefulWidget {
 }
 
 class _RoundInformationWidget extends State<RoundInfoWidget> {
-  static const String _placeHintMessage = "장소를 입력해 주세요";
-  static const String _timeHintMessage = "시간을 입력해 주세요";
+  static const String _placeHintText = "장소를 입력해 주세요";
+  static const String _timeHintText = "시간을 입력해 주세요";
 
   static const String _roundText = "회차";
   static const String _placeText = "장소";
@@ -116,7 +116,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
                 controller: _placeEditingController,
                 decoration: const InputDecoration(
-                  hintText: _placeHintMessage,
+                  hintText: _placeHintText,
                   hintStyle: TextStyles.roundHintTextStyle,
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
@@ -135,7 +135,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               InkWell(
                 onTap: updateDateAndTime,
                 child: Text((widget.round.studyTime != null)?
-                  TimeUtility.timeToString(widget.round.studyTime!):_timeHintMessage,
+                  TimeUtility.timeToString(widget.round.studyTime!):_timeHintText,
                   maxLines: 1,
                   style: (widget.round.studyTime != null)? TextStyles.roundTextStyle:
                   TextStyles.roundHintTextStyle,
