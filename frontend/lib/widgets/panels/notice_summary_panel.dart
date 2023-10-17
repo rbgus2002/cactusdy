@@ -28,7 +28,7 @@ class NoticeSummaryPanel extends StatelessWidget {
       onTap: () => Util.pushRoute(context, (context) => NoticeListRoute(studyId: studyId)),
       child: Container(
         alignment: Alignment.centerLeft,
-        height: 105,
+        height: 106,
 
         color: ColorStyles.lightGrey,
         padding: Design.edge15,

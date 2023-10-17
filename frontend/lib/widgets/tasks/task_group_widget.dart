@@ -12,20 +12,26 @@ class TaskGroupWidget extends StatefulWidget {
   final TaskGroup taskGroup;
   final Function? updateProgress;
 
+  final Function(String, int, Function(Task))? subscribe;
+  final Function(String, int, Task)? notify;
+
   const TaskGroupWidget({
     Key? key,
     required this.taskGroup,
     this.updateProgress,
+
+    this.subscribe,
+    this.notify,
   }) : super(key: key);
 
   @override
-  State<TaskGroupWidget> createState() => _TaskGroupWidget();
+  State<TaskGroupWidget> createState() => TaskGroupWidgetState();
 }
 
-class _TaskGroupWidget extends State<TaskGroupWidget> {
+class TaskGroupWidgetState extends State<TaskGroupWidget> {
   static const String _taskEmptyMessage = "Nothing to do...";
-  final GlobalKey<AnimatedListState> _taskListKey = GlobalKey<AnimatedListState>();
 
+  final GlobalKey<AnimatedListState> _taskListKey = GlobalKey<AnimatedListState>();
   late final ListModel<Task> _taskListModel;
 
   @override
@@ -36,6 +42,13 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
         items: widget.taskGroup.tasks,
         removedItemBuilder: _buildRemovedItem,
     );
+
+    if (widget.subscribe != null && widget.taskGroup.isShared) {
+      widget!.subscribe!(
+          widget.taskGroup.taskType,
+          widget.taskGroup.roundParticipantId,
+          addTask);
+    }
   }
 
   @override
@@ -45,7 +58,7 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TitleWidget(title: widget.taskGroup.taskType, icon: AppIcons.add,
-            onTap: addTask),
+            onTap: () => addTask(Task())),
 
           AnimatedList(
             key: _taskListKey,
@@ -64,9 +77,10 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
       );
   }
 
-  void addTask() {
-    _taskListModel.add(Task());
+  void addTask(Task task) {
+    _taskListModel.add(task);
     setState(() { });
+
     if (widget.updateProgress != null) widget.updateProgress!();
   }
 
@@ -95,9 +109,23 @@ class _TaskGroupWidget extends State<TaskGroupWidget> {
   }
 
   void updateTaskDetail(Task task) {
+    // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
       Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
+
+      // notify to other task groups
+      if (widget.notify != null && widget.taskGroup.isShared) {
+        widget.notify!(
+          widget.taskGroup.taskType,
+          widget.taskGroup.roundParticipantId,
+          Task(taskId: Task.nonAllocatedTaskId,
+            detail: task.detail,
+            isDone: task.isDone,
+          ),
+        );
+      }
     }
+    // #Case : modified the task
     else {
       Task.updateTaskDetail(task, widget.taskGroup.roundParticipantId);
     }
