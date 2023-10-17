@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
-import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/study_group_panel.dart';
@@ -32,6 +29,14 @@ class _HomeRouteState extends State<HomeRoute> {
   static const String _checkText = "확인";
   static const String _cancelText = "취소";
 
+  late final Future<User> _futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureUser = User.getUserProfileSummary();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,47 +44,46 @@ class _HomeRouteState extends State<HomeRoute> {
           actions: [
             _homePopupMenu(),
           ]),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(Design.padding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder(
-              future: User.getUserProfileSummary(),
-              builder: (context, snapshot) {
-
-                if (snapshot.hasData) {
-                  return UserLineProfileWidget(user: snapshot.data!);
+      body: RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(Design.padding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FutureBuilder(
+                future: _futureUser,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return UserLineProfileWidget(user: snapshot.data!);
+                  }
+                  else {
+                    return Container(); //< FIXME
+                  }
                 }
-                else {
-                  return Container(); //< FIXME
-                }
-              }
-            ),
+              ),
 
-            Design.padding10,
-            FutureBuilder(
-              future: StudyInfo.getStudies(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<StudyInfo> studyInfos = snapshot.data!;
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: studyInfos.length,
-                      itemBuilder: (context, index) =>
-                        StudyGroupPanel(studyInfo: studyInfos[index]),
-                  );
-                }
-                return Design.loadingIndicator;
-              },
-            ),
-            //StudyGroupPanel(studyId: 1,),
-            //StudyGroupPanel(studyId: 1,),
-            //StudyGroupPanel(),
+              Design.padding10,
+              FutureBuilder(
+                future: StudyInfo.getStudies(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) =>
+                          StudyGroupPanel(studyInfo: snapshot.data![index]),
+                    );
+                  }
+                  return Design.loadingIndicator;
+                },
+              ),
 
-            addStudyPanel(),
-          ],
+              addStudyPanel(),
+            ],
+          ),
         ),
       ),
     );
@@ -89,7 +93,7 @@ class _HomeRouteState extends State<HomeRoute> {
     return Panel(
       backgroundColor: ColorStyles.lightGrey,
       boxShadows: Design.basicShadows,
-      onTap: () => Util.pushRoute(context, (context) => GenerateStudyRoute()),
+      onTap: () => Util.pushRoute(context, (context) => const GenerateStudyRoute()),
       child: const Center(
         child: AppIcons.add,
       ),

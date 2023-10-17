@@ -53,6 +53,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // refreshed from parents
+    if (_taskListModel.items != widget.taskGroup.tasks) {
+      _taskListModel.setItems(widget.taskGroup.tasks);
+    }
+
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

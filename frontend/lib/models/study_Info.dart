@@ -45,6 +45,7 @@ class StudyInfo {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get Studies");
     } else {
+      print("Success to get Study Information");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studyInfos'];
       return (responseJson as List).map((s) => StudyInfo.fromJson(s)).toList();
     }
