@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
@@ -21,17 +20,6 @@ class NoticeListRoute extends StatefulWidget {
 }
 
 class _NoticeListRouteState extends State<NoticeListRoute> {
-  late Future<List<NoticeSummary>> notices;
-
-  @override
-  void initState() {
-    super.initState();
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
-  }
-
-  Future<void> updateNotices() async {
-    notices = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,34 +32,35 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
             onPressed: () {
               Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));
             },
-
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: notices,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                padding: Design.edge15,
-                child: RefreshIndicator(
-                    onRefresh: updateNotices,
-                    child: Column(
-                      children: [
-                        for (NoticeSummary notice in snapshot.data!)
-                          NoticePanel(noticeSummary: notice),
-                      ]
-                    )
-                ),
-              );
-            }
+      body: RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: FutureBuilder(
+            future: NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  padding: Design.edge15,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) =>
+                      NoticePanel(noticeSummary: snapshot.data![index],),
+                  )
+                );
+              }
 
-            return Design.loadingIndicator;
-              //return Text("공지가 없어용");
-          }
-        ,)
-        )
+              return Design.loadingIndicator;
+                //return Text("공지가 없어용");
+            }
+          ,)
+          ),
+      )
     );
   }
 }

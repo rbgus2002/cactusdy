@@ -7,7 +7,7 @@ typedef RemovedItemBuilder<T> = Widget Function(
 class ListModel<E> {
   final GlobalKey<AnimatedListState> listKey;
   final RemovedItemBuilder<E>? removedItemBuilder;
-  final List<E> items;
+  List<E> items;
 
   AnimatedListState? get _animatedList => listKey.currentState;
 
@@ -16,6 +16,10 @@ class ListModel<E> {
     this.removedItemBuilder,
     this.items = const [],
   });
+
+  void setItems(List<E> newItems) {
+    items = newItems;
+  }
 
   void insert(int index, E item) {
     items.insert(index, item);

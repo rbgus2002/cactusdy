@@ -57,7 +57,7 @@ class NoticeSummary {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to load data");
     } else {
-      print("successfully get Notice Summary List");
+      print("successfully get Notice Summary List ($offset ~ ${offset + pageSize})");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['notices']['noticeList'];
 
       return (responseJson as List).map((p) => NoticeSummary.fromJson(p)).toList();
