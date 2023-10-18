@@ -10,7 +10,23 @@ import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
-class RoundDetailRoute extends StatelessWidget {
+class RoundDetailRoute extends StatefulWidget {
+  final int roundSeq;
+  final int roundId;
+  final int studyId;
+
+  const RoundDetailRoute({
+    Key? key,
+    required this.roundSeq,
+    required this.roundId,
+    required this.studyId,
+  }) : super(key: key);
+
+  @override
+  State<RoundDetailRoute> createState() => _RoundDetailRouteState();
+}
+
+class _RoundDetailRouteState extends State<RoundDetailRoute> {
   static const String _deleteRoundCautionMessage = "해당 회차를 삭제하시겠어요?";
 
   static const String _checkText = "확인";
@@ -21,17 +37,6 @@ class RoundDetailRoute extends StatelessWidget {
 
   final _detailRecordEditingController = TextEditingController();
   final _focusNode = FocusNode();
-
-  final int roundSeq;
-  final int roundId;
-  final int studyId;
-
-  RoundDetailRoute({
-    Key? key,
-    required this.roundSeq,
-    required this.roundId,
-    required this.studyId,
-  }) : super(key: key);
 
   Round? round;
   bool _isEdited = false;
@@ -44,9 +49,11 @@ class RoundDetailRoute extends StatelessWidget {
           _roundPopupMenu(),
         ]
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: Design.edge15,
+      body: RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(Design.padding),
           child: Column(
             children: [
               FutureBuilder(
@@ -63,9 +70,9 @@ class RoundDetailRoute extends StatelessWidget {
                         Panel(
                           boxShadows: Design.basicShadows,
                           child: RoundInfoWidget(
-                            roundSeq: roundSeq,
+                            roundSeq: widget.roundSeq,
                             round: snapshot.data!,
-                            studyId: studyId,
+                            studyId: widget.studyId,
                           ),
                         ),
                         Design.padding15,
@@ -85,10 +92,11 @@ class RoundDetailRoute extends StatelessWidget {
               ),
               Design.padding15,
 
-              ParticipantInfoListWidget(roundId: roundId),
-            ],),
+              ParticipantInfoListWidget(roundId: widget.roundId),
+            ],
+          ),
         ),
-      )
+      ),
     );
   }
 
@@ -96,16 +104,17 @@ class RoundDetailRoute extends StatelessWidget {
   void dispose() {
     _detailRecordEditingController.dispose();
     _focusNode.dispose();
+    super.dispose();
   }
 
   Future<Round> getRoundDetail() async {
-    if (roundId == Round.nonAllocatedRoundId) {
+    if (widget.roundId == Round.nonAllocatedRoundId) {
       round = Round(roundId: Round.nonAllocatedRoundId);
-      await Round.createRound(round!, studyId);
+      await Round.createRound(round!, widget.studyId);
       return round!;
     }
 
-    return Round.getDetail(roundId);
+    return Round.getDetail(widget.roundId);
   }
 
   Widget _detailRecord() {
@@ -124,7 +133,7 @@ class RoundDetailRoute extends StatelessWidget {
       onChanged: (value) { _isEdited = true; },
       onTapOutside: (event) {
         if (_isEdited) {
-          Round.updateDetail(roundId, _detailRecordEditingController.text);
+          Round.updateDetail(widget.roundId, _detailRecordEditingController.text);
           _isEdited = false;
         }
 
