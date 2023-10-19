@@ -125,4 +125,31 @@ class RoundRepositoryTest{
         // then
         softly.assertThat(회차.getRoundId()).isEqualTo(최신_회차.getRoundId());
     }
+
+    @Test
+    @DisplayName("회차 약속시간이 더 이른 회차의 개수를 가져온다")
+    void countByStudyTimeLessThanEqual(){
+        // given
+        Study 스터디 = studyRepository.findById(1L).get();
+
+        // when
+        Long count = roundRepository.countByStudyTimeLessThanEqual(스터디, LocalDateTime.now());
+
+        // then
+        softly.assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("회차 약속시간이 정해진 회차의 개수를 가져온다")
+    void countByStudyTimeIsNotNull(){
+        // given
+        Study 스터디 = studyRepository.findById(1L).get();
+
+        // when
+        Long count = roundRepository.countByStudyTimeIsNotNull(스터디);
+
+        // then
+        softly.assertThat(count).isEqualTo(2);
+
+    }
 }

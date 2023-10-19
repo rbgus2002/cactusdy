@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,4 +50,10 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N'")
     Long countRoundByStudy(Study study);
+
+    @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime <= :studyTime")
+    Long countByStudyTimeLessThanEqual(Study study, LocalDateTime studyTime);
+
+    @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime IS NOT NULL")
+    Long countByStudyTimeIsNotNull(Study study);
 }
