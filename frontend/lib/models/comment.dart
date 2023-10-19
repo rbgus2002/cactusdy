@@ -96,7 +96,7 @@ class Comment {
 
   static Future<bool> deleteComment(int commentId) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}api.comments?commentId=$commentId'),
+      Uri.parse('${DatabaseService.serverUrl}api/comments?commentId=$commentId'),
       headers: DatabaseService.getAuthHeader(),
     );
 
