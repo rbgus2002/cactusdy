@@ -32,28 +32,27 @@ class RoundInfoWidget extends StatefulWidget {
 }
 
 class _RoundInformationWidget extends State<RoundInfoWidget> {
-  static const String _placeHintMessage = "장소를 입력해 주세요";
-  static const String _timeHintMessage = "시간을 입력해 주세요";
+  static const String _placeHintText = "장소를 입력해 주세요";
+  static const String _timeHintText = "시간을 입력해 주세요";
 
   static const String _roundText = "회차";
   static const String _placeText = "장소";
   static const String _timeText = "시간";
   static const String _reserved = "예  정";
 
-  late final TextEditingController placeEditingController;
-  bool _isEditable = false;
+  late final TextEditingController _placeEditingController;
   bool _isEdited = false;
 
   @override
   void initState() {
     super.initState();
-    placeEditingController =
+    _placeEditingController =
         TextEditingController(text: widget.round.studyPlace);
   }
 
   @override
   Widget build(BuildContext context) {
-    placeEditingController.text = widget.round.studyPlace??"";
+    _placeEditingController.text = widget.round.studyPlace??"";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -115,27 +114,28 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                 maxLines: 1,
                 style: TextStyles.roundTextStyle,
 
-                controller: placeEditingController,
-                decoration: InputDecoration(
-                  hintText: _placeHintMessage,
+                controller: _placeEditingController,
+                decoration: const InputDecoration(
+                  hintText: _placeHintText,
                   hintStyle: TextStyles.roundHintTextStyle,
                   isDense: true,
-                  enabled: _isEditable,
                   contentPadding: EdgeInsets.zero,
-                  disabledBorder: InputBorder.none,
+
+                  border: InputBorder.none,
+                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskTextColor)),
                   counterText: "",
                 ),
-                onChanged: (value) { _isEdited = true; },
-                onTapOutside: (event) { updatePlace(); },
-                onSubmitted: (value) { updatePlace(); },
+
+                onChanged: (value) => _isEdited = true,
+                onTapOutside: (event) => updatePlace(),
+                onSubmitted: (value) => updatePlace(),
               ),
 
               // Time
               InkWell(
-                enableFeedback: _isEditable,
                 onTap: updateDateAndTime,
                 child: Text((widget.round.studyTime != null)?
-                  TimeUtility.timeToString(widget.round.studyTime!):_timeHintMessage,
+                  TimeUtility.timeToString(widget.round.studyTime!):_timeHintText,
                   maxLines: 1,
                   style: (widget.round.studyTime != null)? TextStyles.roundTextStyle:
                   TextStyles.roundHintTextStyle,
@@ -143,26 +143,17 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               )
             ],
           ),
-
-          onTap: () {
-            if (!_isEditable) {
-              setState(() { _isEditable = true; });
-            }
-          },
         ),
       );
   }
 
   void updatePlace() {
-    if (_isEditable) {
-      if (_isEdited) {
-        widget.round.studyPlace = placeEditingController.text;
-        updateRound(widget.round);
-        _isEdited = false;
-      }
-      _isEditable = false;
-      setState(() {});
+    if (_isEdited) {
+      widget.round.studyPlace = _placeEditingController.text;
+      updateRound(widget.round);
+      _isEdited = false;
     }
+    setState(() {});
   }
 
   void updateDateAndTime() async {
@@ -188,7 +179,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
   @override
   void dispose() {
-    placeEditingController.dispose();
+    _placeEditingController.dispose();
     super.dispose();
   }
 }

@@ -31,7 +31,6 @@ class Round {
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
-    print(json);
     List<RoundParticipantInfo> roundParticipantInfos = [];
     if (json['roundParticipantInfos'] != null) {
       roundParticipantInfos = (json['roundParticipantInfos'] as List).map(

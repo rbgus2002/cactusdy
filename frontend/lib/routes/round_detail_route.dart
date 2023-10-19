@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/participant_info_widget.dart';
+import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -37,91 +35,76 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   static const String _detailHintText = "상세 활동 내용을 입력해 주세요!";
   static const String _deleteRoundText = "삭제하기";
 
-  late final _detailRecordEditingController = TextEditingController();
-  late final _focusNode = FocusNode();
+  final _detailRecordEditingController = TextEditingController();
+  final _focusNode = FocusNode();
 
   Round? round;
   bool _isEdited = false;
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          _roundPopupMenu(),
+        ]
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(Design.padding),
+          child: Column(
+            children: [
+              FutureBuilder(
+                future: getRoundDetail(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    round = snapshot.data;
+                    _detailRecordEditingController.text = round!.detail ?? "";
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Round Info
+                        Panel(
+                          boxShadows: Design.basicShadows,
+                          child: RoundInfoWidget(
+                            roundSeq: widget.roundSeq,
+                            round: snapshot.data!,
+                            studyId: widget.studyId,
+                          ),
+                        ),
+                        Design.padding15,
+
+                        // Detail Record
+                        TitleWidget(
+                          title: "Detail Record", icon: AppIcons.edit,
+                          onTap: () => _focusNode.requestFocus()
+                        ),
+                        _detailRecord(),
+                      ]
+                    );
+                  }
+
+                  return Design.loadingIndicator;
+                },
+              ),
+              Design.padding15,
+
+              ParticipantInfoListWidget(roundId: widget.roundId),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            actions: [
-              _roundPopupMenu(),
-            ]
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: Design.edge15,
-            child: Column(
-              children: [
-                FutureBuilder(
-                  future: getRoundDetail(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      round = snapshot.data;
-                      _detailRecordEditingController.text = round!.detail ?? "";
-
-                      return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Round Info
-                            Panel(
-                              boxShadows: Design.basicShadows,
-                              child: RoundInfoWidget(
-                                roundSeq: widget.roundSeq,
-                                round: snapshot.data!,
-                                studyId: widget.studyId,
-                              ),
-                            ),
-                            Design.padding15,
-
-                            // Detail Record
-                            TitleWidget(
-                              title: "Detail Record", icon: AppIcons.edit,
-                              onTap: () => _focusNode.requestFocus()
-                            ),
-                            _detailRecord(),
-                          ]
-                      );
-                    }
-
-                    return Design.loadingIndicator;
-                  },
-                ),
-                Design.padding15,
-
-                FutureBuilder(
-                  future: Task.getTasks(widget.roundId),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List participantInfos = snapshot.data!;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-
-                        itemCount: participantInfos.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: Design.bottom10,
-                            child: ParticipantInfoWidget(
-                              participantInfo: participantInfos[index]));
-                        },);
-                    }
-
-                    return Design.loadingIndicator;
-                  },
-                ),
-              ],),
-          ),
-        )
-    );
+  void dispose() {
+    _detailRecordEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Future<Round> getRoundDetail() async {
@@ -162,7 +145,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Widget _roundPopupMenu() {
     return PopupMenuButton(
-      icon: AppIcons.more_vert,
+      icon: AppIcons.moreVert,
       splashRadius: 16,
       offset: const Offset(0, 42),
 
@@ -187,7 +170,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                if (round != null) _deleteRound();
+                if (round != null) _deleteRound(context);
               },
               child: const Text(_checkText),),
           ],
@@ -195,17 +178,11 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     ));
   }
 
-  void _deleteRound() {
+  void _deleteRound(BuildContext context) {
     Round.deleteRound(round!.roundId).then((result) {
           if (result == true) Navigator.of(context).pop();
         }).catchError((e) {
       Toast.showToast(msg: e.toString().substring(10));
     });
-  }
-
-  @override
-  void dispose() {
-    _detailRecordEditingController.dispose();
-    super.dispose();
   }
 }

@@ -22,16 +22,16 @@ class Study {
     required this.studyName,
     required this.detail,
     required this.picture,
-    this.color = ColorStyles.deepPurpleAccent, //< FIXME
+    required this.color
   });
 
   factory Study.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Study(
       studyId: json['studyId'],
       studyName: json['studyName'],
       detail: json['detail']??"",
       picture: json['picture'],
+      color : Color(int.parse((json['color'] as String).substring(2), radix: 16)),
     );
   }
 
@@ -40,7 +40,7 @@ class Study {
     'studyName': studyName,
     'detail': detail,
     'picture': picture,
-    'color': color,
+    'color': '0x${color.value}',
   };
 
   static Future<Study> getStudySummary(int studyId) async {

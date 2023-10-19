@@ -73,6 +73,8 @@ class _TaskWidget extends State<TaskWidget> {
       child: Checkbox(
           value: widget.task.isDone,
           onChanged: (value) {
+            if (widget.task.taskId == Task.nonAllocatedTaskId) return;
+
             // Fast Unsafe State Update
             setState(() => widget.task.isDone = value! );
 
@@ -95,7 +97,6 @@ class _TaskWidget extends State<TaskWidget> {
         maxLength: Task.taskMaxLength,
         maxLines: 1,
         style: TextStyles.taskTextStyle,
-
 
         focusNode: _focusNode,
         controller: _textEditingController,

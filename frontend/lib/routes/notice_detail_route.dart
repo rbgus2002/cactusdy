@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
@@ -56,42 +54,30 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shadowColor: Colors.transparent,
-        actions: [
-          _noticePopupMenu(),
-        ]
+          shadowColor: Colors.transparent,
+          actions: [
+            _noticePopupMenu(),
+          ]
       ),
+      bottomNavigationBar: _writingCommentBox(),
 
-      body: Column (
-        children: [
-          Flexible(
-            fit: FlexFit.tight,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(Design.padding),
-              child: Column(
-                  children: [
-                    // Notice Body
-                    FutureBuilder(
-                        future: futureNotice,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            _writerId = snapshot.data!.writerId;
-                            return _NoticeBody(notice: snapshot.data!, focusNode: focusNode);
-                          }
-                          else {
-                            return Design.loadingIndicator; }
-                        }
-                    ),
-                    Design.padding15,
+      body: RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: SizedBox(
+          height: double.maxFinite,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(Design.padding),
+            child: Column(
+                children: [
+                  _NoticeBody(futureNotice: futureNotice, focusNode: focusNode),
+                  Design.padding15,
 
-                    // Comments
-                    _commentList(),
-                  ]
-              ),
+                  _commentList(),
+                ]
             ),
           ),
-          _writingCommentBox(),
-        ],
+        ),
       ),
     );
   }
@@ -125,12 +111,13 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         if (snapshot.hasData) {
           comments = snapshot.data!;
 
-          return Column(
-            children: [
-              for (int i = 0; i < comments.length; ++i)
-                CommentWidget(comment: comments[i], index: i,
-                    isSelected: (_replyTo == i), setReplyTo: setReplyTo, onDelete: deleteComment),
-            ]
+          return ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) =>
+              CommentWidget(comment: comments[index], index: index,
+                isSelected: (_replyTo == index), setReplyTo: setReplyTo, onDelete: deleteComment),
           );
         }
 
@@ -272,67 +259,77 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 class _NoticeBody extends StatelessWidget {
   static const String _writerText = "작성자";
 
-  final Notice notice;
+  final Future<Notice> futureNotice;
   final FocusNode focusNode;
 
   const _NoticeBody({
-    required this.notice,
+    required this.futureNotice,
     required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-
-      children: [
-        // Title
-        SelectableText(notice.title,
-          style: TextStyles.titleSmall,
-          textAlign: TextAlign.justify,
-        ),
-        Design.padding3,
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(TimeUtility.getElapsedTime(notice.createDate),
-              style: TextStyles.bodyMedium,),
-            Text('$_writerText : ${notice.writerNickname}',
-              style: TextStyles.bodyMedium,),
-          ],
-        ),
-        Design.padding10,
-
-        // Body
-        SelectableText(notice.contents,
-          style: TextStyles.bodyLarge,
-          textAlign: TextAlign.justify,),
-        Design.padding15,
-
-        // Reaction Tag
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return FutureBuilder(
+      future: futureNotice,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+  
             children: [
-              NoticeReactionTag(noticeId: notice.noticeId,
-                  isChecked: notice.read,
-                  checkerNum: notice.checkNoticeCount),
-
-              InkWell(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  onTap: focusNode.requestFocus,
-                  child: Row(
-                      children: [
-                        const Icon(Icons.comment, size: 18,),
-                        Design.padding5,
-                        Text('${notice.commentCount}'),
-                        Design.padding5
-                      ]
-                  )
-              )
-            ]
-        ),
-      ],
+              // Title
+              SelectableText(snapshot.data!.title,
+                style: TextStyles.titleSmall,
+                textAlign: TextAlign.justify,
+              ),
+              Design.padding3,
+  
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(TimeUtility.getElapsedTime(snapshot.data!.createDate),
+                    style: TextStyles.bodyMedium,),
+                  Text('$_writerText : ${snapshot.data!.writerNickname}',
+                    style: TextStyles.bodyMedium,),
+                ],
+              ),
+              Design.padding10,
+  
+              // Body
+              SelectableText(snapshot.data!.contents,
+                style: TextStyles.bodyLarge,
+                textAlign: TextAlign.justify,),
+              Design.padding15,
+  
+              // Reaction Tag
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    NoticeReactionTag(noticeId: snapshot.data!.noticeId,
+                        isChecked: snapshot.data!.read,
+                        checkerNum: snapshot.data!.checkNoticeCount),
+  
+                    InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        onTap: focusNode.requestFocus,
+                        child: Row(
+                            children: [
+                              const Icon(Icons.comment, size: 18,),
+                              Design.padding5,
+                              Text('${snapshot.data!.commentCount}'),
+                              Design.padding5
+                            ]
+                        )
+                    )
+                  ]
+              ),
+            ],
+          );
+        }
+        else {
+          return Design.loadingIndicator;
+        }
+      }
     );
   }
 }

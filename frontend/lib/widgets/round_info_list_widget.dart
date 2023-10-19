@@ -4,10 +4,10 @@ import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
+import 'package:group_study_app/widgets/title_widget.dart';
 
 class RoundInfoListWidget extends StatefulWidget {
   final int studyId;
@@ -22,33 +22,44 @@ class RoundInfoListWidget extends StatefulWidget {
 }
 
 class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  late final GlobalKey<AnimatedListState> _roundListKey = GlobalKey<AnimatedListState>();
   late final ListModel<Round> _roundListModel;
-  bool _isInit = false;
+  @override
+  void initState() {
+    super.initState();
+    _roundListModel = ListModel<Round>(
+      listKey: _roundListKey,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getRound(),
+      future: Round.getRoundInfoResponses(widget.studyId),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          _roundListModel = snapshot.data!;
-          _isInit = true;
+          if (snapshot.data != _roundListModel.items) {
+            _roundListModel.setItems(snapshot.data!);
+          }
 
-          return AnimatedList(
-            key: _listKey,
-            shrinkWrap: true,
-            primary: false,
-            scrollDirection: Axis.vertical,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _addNewRound),
+              AnimatedList(
+                key: _roundListKey,
+                shrinkWrap: true,
+                primary: false,
+                scrollDirection: Axis.vertical,
 
-            initialItemCount: _roundListModel.length,
-            itemBuilder: _buildItem,
+                initialItemCount: _roundListModel.length,
+                itemBuilder: _buildItem,
+              ),
+            ]
           );
         }
-
         return Design.loadingIndicator;
-      }
-    );
+      });
   }
 
   Widget _buildItem(
@@ -56,19 +67,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
     int roundSeq = _roundListModel.length - index;
     return Panel(
       boxShadows: Design.basicShadows,
-      onTap: () {
-        if (_roundListModel[index].roundId == Round.nonAllocatedRoundId) {
-          Round.createRound(_roundListModel[index], widget.studyId).then((value) =>
-              Util.pushRoute(context, (context) =>
-                  RoundDetailRoute(
-                      roundSeq: roundSeq, roundId: _roundListModel[index].roundId, studyId: widget.studyId,)));
-        }
-        else {
-          Util.pushRoute(context, (context) =>
-              RoundDetailRoute(
-                  roundSeq: roundSeq, roundId: _roundListModel[index].roundId, studyId: widget.studyId,));
-        }
-      },
+      onTap: () => _viewRound(roundSeq, index),
       child: SizeTransition(
         sizeFactor: animation,
         child: RoundInfoWidget(
@@ -83,16 +82,28 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   Future<ListModel<Round>> getRound() async {
     List<Round> rounds = await Round.getRoundInfoResponses(widget.studyId);
     return ListModel(
-      listKey: _listKey,
+      listKey: _roundListKey,
       items: rounds,
     );
   }
 
-  void addNewRound() {
-    if (_isInit) {
-      _roundListModel.insert(0, Round(
-        roundId: Round.nonAllocatedRoundId,
-      ));
+  void _viewRound(int roundSeq, int index) async {
+    if (_roundListModel[index].roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(_roundListModel[index], widget.studyId);
     }
+
+    if (mounted) {
+      Util.pushRoute(context, (context) =>
+          RoundDetailRoute(
+            roundSeq: roundSeq,
+            roundId: _roundListModel[index].roundId,
+            studyId: widget.studyId,));
+    }
+  }
+
+  void _addNewRound() {
+    _roundListModel.insert(0, Round(
+      roundId: Round.nonAllocatedRoundId,
+    ));
   }
 }
