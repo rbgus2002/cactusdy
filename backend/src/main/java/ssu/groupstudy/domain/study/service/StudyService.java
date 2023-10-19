@@ -58,18 +58,22 @@ public class StudyService {
     private StudyInfoResponse createStudyInfo(Participant participant) {
         Study study = participant.getStudy();
 
-        Long roundSeq = handleRoundSeq(study);
-        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
+        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null); // FIXME : 정상적으로 가져와지는데 LIMIT 1만 걸면 이상하게 studyTime이 null인 회차는 createDate 순으로 안가져옴
+        Long roundSeq = handleRoundSeq(study, latestRound);
         RoundParticipant roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
-    private long handleRoundSeq(Study study) {
-        long roundSeq = roundRepository.countRoundByStudy(study);
-        if (roundSeq == 0) {
-            roundSeq = 1;
+    private Long handleRoundSeq(Study study, Round round){
+        if(round == null){
+            return 1L;
         }
-        return roundSeq;
+        if(round.isStudyTimeNull()){
+            // 스터디 약속 시간이 정해진 회차 + 1
+            return roundRepository.countByStudyTimeIsNotNull(study) + 1;
+        }else{
+            return roundRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
+        }
     }
 }
