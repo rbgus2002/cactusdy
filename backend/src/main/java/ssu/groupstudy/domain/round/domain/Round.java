@@ -51,6 +51,10 @@ public class Round extends BaseEntity {
         this.deleteYn = 'N';
     }
 
+    protected Round(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
     private void addParticipants(Set<Participant> participants){
         participants.stream()
                 .map(participant -> new RoundParticipant(participant.getUser(), this))
@@ -74,5 +78,13 @@ public class Round extends BaseEntity {
         if(!study.isHostUser(user)){
             throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
         }
+    }
+
+    public LocalDateTime getStudyTime(){
+        return this.appointment.getStudyTime();
+    }
+
+    public boolean isStudyTimeNull(){
+        return this.appointment.getStudyTime() == null;
     }
 }
