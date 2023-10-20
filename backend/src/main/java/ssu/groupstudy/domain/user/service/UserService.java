@@ -33,10 +33,11 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProfileImage(User user, MultipartFile requestFile) throws IOException {
+    public String updateProfileImage(User user, MultipartFile requestFile) throws IOException {
         String imageUrl = uploadFileToS3(requestFile, createFileName(user));
         user.setPicture(imageUrl);
         userRepository.save(user);
+        return imageUrl;
     }
 
     private String uploadFileToS3(MultipartFile file, String fileName) throws IOException {

@@ -40,7 +40,7 @@ public class UserApi {
     @Operation(summary = "프로필 사진 업로드")
     @PatchMapping("/profile/images")
     public ResponseDto updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody MultipartFile profileImage) throws IOException {
-        userService.updateProfileImage(userDetails.getUser(), profileImage);
-        return ResponseDto.success();
+        String image = userService.updateProfileImage(userDetails.getUser(), profileImage);
+        return DataResponseDto.of("image", image);
     }
 }
