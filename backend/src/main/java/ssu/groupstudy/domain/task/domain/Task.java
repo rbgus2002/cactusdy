@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.EAGER;
-import static ssu.groupstudy.global.ResultCode.INVALID_TASK_ACCESS;
+import static ssu.groupstudy.global.constant.ResultCode.INVALID_TASK_ACCESS;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

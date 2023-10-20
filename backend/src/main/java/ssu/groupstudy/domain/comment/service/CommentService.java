@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.constant.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor

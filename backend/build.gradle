@@ -26,18 +26,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-    // JPA
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // MySQL
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
-    runtimeOnly 'mysql:mysql-connector-java'
-
-    // Swagger
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
 
     // Junit
     testImplementation('org.springframework.boot:spring-boot-starter-test')
@@ -48,6 +38,16 @@ dependencies {
     testImplementation('org.hamcrest:hamcrest')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
     testImplementation 'com.h2database:h2'
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MySQL
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    // Swagger
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -63,6 +63,9 @@ dependencies {
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 test {

@@ -1,37 +1,8 @@
 package ssu.groupstudy.domain.user.api;
 
-import com.google.gson.Gson;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ssu.groupstudy.domain.common.ApiTest;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
-import ssu.groupstudy.domain.user.service.UserService;
-import ssu.groupstudy.global.ResultCode;
-import ssu.groupstudy.global.dto.DataResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
-import ssu.groupstudy.global.handler.GlobalExceptionHandler;
-
-import java.nio.charset.StandardCharsets;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //class UserApiTest extends ApiTest {
 //    @InjectMocks

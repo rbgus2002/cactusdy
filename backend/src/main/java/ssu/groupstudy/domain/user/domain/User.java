@@ -91,5 +91,9 @@ public class User extends BaseEntity {
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 }
 

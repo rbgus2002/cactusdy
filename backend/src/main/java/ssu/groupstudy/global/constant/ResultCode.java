@@ -1,4 +1,4 @@
-package ssu.groupstudy.global;
+package ssu.groupstudy.global.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
