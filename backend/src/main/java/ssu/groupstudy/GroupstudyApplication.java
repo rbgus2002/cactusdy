@@ -11,11 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableAspectJAutoProxy
 @Slf4j
 public class GroupstudyApplication {
-    static {
-        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
-    }
-
-
     public static void main(String[] args) {
         SpringApplication.run(GroupstudyApplication.class, args);
     }

@@ -7,6 +7,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -17,6 +19,7 @@ import java.util.List;
 @Aspect
 @Component
 @Slf4j
+@EnableAutoConfiguration(exclude = {ContextInstanceDataAutoConfiguration.class})
 public class LoggingConfig {
     private static final Gson GSON = new Gson();
     private static final String STR_CLASS_METHOD = "{0}.{1}({2})";
