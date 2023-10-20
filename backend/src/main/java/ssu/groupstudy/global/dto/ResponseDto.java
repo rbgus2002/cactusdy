@@ -3,7 +3,7 @@ package ssu.groupstudy.global.dto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

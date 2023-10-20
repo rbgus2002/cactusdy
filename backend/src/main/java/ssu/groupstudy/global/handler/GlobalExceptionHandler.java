@@ -9,7 +9,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.dto.ErrorResponseDto;
 import ssu.groupstudy.global.exception.BusinessException;
 

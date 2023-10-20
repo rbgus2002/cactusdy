@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.ResultCode.NOTICE_NOT_FOUND;
-import static ssu.groupstudy.global.ResultCode.STUDY_NOT_FOUND;
+import static ssu.groupstudy.global.constant.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor

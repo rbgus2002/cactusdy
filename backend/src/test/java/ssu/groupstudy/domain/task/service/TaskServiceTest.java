@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static ssu.groupstudy.domain.task.domain.TaskType.GROUP;
 import static ssu.groupstudy.domain.task.domain.TaskType.PERSONAL;
-import static ssu.groupstudy.global.ResultCode.*;
+import static ssu.groupstudy.global.constant.ResultCode.*;
 
 class TaskServiceTest extends ServiceTest {
     @InjectMocks

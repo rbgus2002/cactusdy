@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 
 @Service
 @RequiredArgsConstructor

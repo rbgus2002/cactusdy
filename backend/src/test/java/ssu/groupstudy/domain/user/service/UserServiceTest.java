@@ -28,4 +28,17 @@ class UserServiceTest extends ServiceTest {
         // then
         softly.assertThat(최규현.getStatusMessage()).isEqualTo(newMessage);
     }
+
+//    @Test
+//    @DisplayName("프로필 이미지를 업데이트한다")
+//    void updateProfileImage(){
+//        // given
+//        String newPicture = "updated";
+//
+//        // when
+//        userService.updateProfileImage(최규현, null);
+//
+//        // then
+//        softly.assertThat(최규현.getPicture()).isEqualTo(newPicture);
+//    }
 }

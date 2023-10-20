@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import ssu.groupstudy.domain.auth.security.jwt.JwtAuthenticationFilter;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.dto.ErrorResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 

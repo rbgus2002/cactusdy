@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 
 @Service
 @RequiredArgsConstructor

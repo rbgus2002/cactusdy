@@ -1,7 +1,7 @@
 package ssu.groupstudy.global.dto;
 
 import lombok.Getter;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.HashMap;
 import java.util.Map;

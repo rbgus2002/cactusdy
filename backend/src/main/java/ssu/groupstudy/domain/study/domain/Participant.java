@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;

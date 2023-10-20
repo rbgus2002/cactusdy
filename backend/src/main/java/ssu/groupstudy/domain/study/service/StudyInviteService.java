@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 
 @Service
 @RequiredArgsConstructor

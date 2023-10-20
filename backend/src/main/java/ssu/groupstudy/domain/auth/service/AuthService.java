@@ -21,7 +21,7 @@ import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.ResultCode;
+import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.RedisUtils;
 
 @Service
