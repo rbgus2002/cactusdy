@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.global.constant.S3Code;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class UserService {
     }
 
     private String createFileName(User user) {
-        return "groupstudy-user-profile-" + user.getUserId();
+        return S3Code.USER_IMAGE.getPrefix() + user.getUserId();
     }
 
     private ObjectMetadata createMetadataForFile(MultipartFile file) {
