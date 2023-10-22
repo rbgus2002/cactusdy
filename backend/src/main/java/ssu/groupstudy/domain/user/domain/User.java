@@ -1,9 +1,6 @@
 package ssu.groupstudy.domain.user.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -78,6 +75,14 @@ public class User extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(userId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public void addUserRole(){
