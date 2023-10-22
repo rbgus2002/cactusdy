@@ -21,6 +21,7 @@ public class LoggingConfig {
     private static final Gson GSON = new Gson();
     private static final String STR_CLASS_METHOD = "{0}.{1}({2})";
     private static final String STR_END_EXECUTE_TIME = "[{}] [{}] // Return({}) : {} // FINISH : {} ms";
+    private static final String STR_END = "[{}] [{}] // Return({}) : {}";
 
     @Around("execution(* ssu.groupstudy..*Service.*(..)) && !execution(* ssu.groupstudy..CustomUserDetailService.*(..))")
     public Object loggingInService(final ProceedingJoinPoint pjp) throws Throwable {
@@ -33,9 +34,10 @@ public class LoggingConfig {
             stopWatch.start();
             retVal = pjp.proceed();
             stopWatch.stop();
+
             log.info(STR_END_EXECUTE_TIME, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"), stopWatch.getTotalTimeMillis());
         }catch (Throwable e){
-            log.warn("[{}]\n", formatClassMethod);
+            log.warn(STR_END, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"));
             throw e;
         }
 
