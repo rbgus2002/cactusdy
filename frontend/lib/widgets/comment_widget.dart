@@ -57,7 +57,7 @@ class CommentWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                const CircleButton(scale: 36,), //<< FIXME
+                CircleButton(url: comment.picture, scale: 36,),
                 Design.padding5,
                 Flexible(
                   child: Column(

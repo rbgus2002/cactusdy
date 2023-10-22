@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice_summary.dart';
-import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/bar_chart.dart';
@@ -32,7 +30,7 @@ class _WorkSpaceRoute extends State<WorkSpaceRouteState> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                PercentCircleButton(scale: 60.0, image: null, percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context, 1); }),
+                PercentCircleButton(scale: 60.0, url: "", percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context, 1); }),
                 //const UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
                 const SizedBox(
                   height: 5,
@@ -41,8 +39,9 @@ class _WorkSpaceRoute extends State<WorkSpaceRouteState> {
                 //RoundInfo(roundIdx: 3, tag: "TAG"),
 
                 UserStateTag(text: "USE", color: Colors.red,),
-                BarChart(percentInfos: [ PercentInfo(percent: 0.4, color: ColorStyles.red)
-                , PercentInfo(percent: 0.1, color: ColorStyles.orange), PercentInfo(percent: 0.2, color: ColorStyles.green) ], stroke: 30,),
+                BarChart(percentInfos: [
+                  PercentInfo(percent: 0.4, color: ColorStyles.red),
+                  PercentInfo(percent: 0.1, color: ColorStyles.orange), PercentInfo(percent: 0.2, color: ColorStyles.green) ], stroke: 30,),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -52,7 +51,6 @@ class _WorkSpaceRoute extends State<WorkSpaceRouteState> {
 
                       StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
                       StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
-
                     ],
                   ),
                 ),

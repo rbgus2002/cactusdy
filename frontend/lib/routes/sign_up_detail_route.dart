@@ -71,7 +71,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Design.padding30,
-                  CircleButton(scale: 128,),
+                  //CircleButton(url: '', scale: 128,), << FIXME : IMAGE PICKER
                   Design.padding30,
 
                   Column(

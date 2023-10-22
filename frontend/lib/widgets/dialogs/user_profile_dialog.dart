@@ -27,7 +27,7 @@ class UserProfileDialog {
                 children: [
                   Row(
                     children: [
-                      CircleButton(child: null, onTap: null, scale: 70),
+                      CircleButton(url: "", onTap: null, scale: 70), //< FIXME
                       Design.padding15,
                       Flexible(child:
                       Column(
@@ -41,10 +41,10 @@ class UserProfileDialog {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                StudyGroupTag(color: ColorStyles.red, name: "Algorithm",),
-                                StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
+                                //StudyGroupTag(color: ColorStyles.red, name: "Algorithm",),
+                                //StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
 
-                                StudyGroupTag(color: ColorStyles.green, name: "Love"),
+                                //StudyGroupTag(color: ColorStyles.green, name: "Love"),
                               ],
                             ),
                           )
