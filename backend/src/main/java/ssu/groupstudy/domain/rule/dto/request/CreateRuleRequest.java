@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@ToString
 public class CreateRuleRequest {
     @NotNull
     private Long studyId;

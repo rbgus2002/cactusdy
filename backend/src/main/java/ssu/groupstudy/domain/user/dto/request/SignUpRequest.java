@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class SignUpRequest {
     @NotBlank(message = "이름을 입력하세요")
     private String name;

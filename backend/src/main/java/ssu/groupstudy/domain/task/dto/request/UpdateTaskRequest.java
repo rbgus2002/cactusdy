@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class UpdateTaskRequest {
     @NotNull
     private Long taskId;
