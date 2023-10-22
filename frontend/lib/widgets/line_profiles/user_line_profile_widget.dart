@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/auth.dart';
@@ -37,9 +38,10 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return LineProfileWidget(
-      circleButton: const CircleButton(
+      circleButton: CircleButton(
         scale: _scale,
-        child: null, //< FIXME
+        url: widget.user.picture,
+        onTap: () => Test.onTabTest(),
       ),
 
       topWidget: Text(widget.user.nickname, maxLines: 1, style: TextStyles.titleMedium,),

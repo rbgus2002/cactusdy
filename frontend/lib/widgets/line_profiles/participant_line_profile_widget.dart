@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
@@ -29,7 +26,7 @@ class ParticipantLineProfileWidget extends StatelessWidget {
 
     return LineProfileWidget(
       circleButton: PercentCircleButton(
-        image: null,
+        url: user.picture,
         scale: _scale,
         percentInfos: [ PercentInfo(percent: taskProgress, color: progressColor)],
         onTap: () => UserProfileDialog.showProfileDialog(context, user.userId),
