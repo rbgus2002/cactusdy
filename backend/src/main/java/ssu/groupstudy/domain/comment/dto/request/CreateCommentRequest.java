@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class CreateCommentRequest {
     @NotNull
     private Long noticeId;

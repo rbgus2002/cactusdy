@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.task.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import ssu.groupstudy.domain.task.domain.TaskType;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class CreateTaskRequest {
     @NotNull
     private Long roundParticipantId;
