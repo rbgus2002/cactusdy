@@ -8,6 +8,7 @@ import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';
 import 'package:group_study_app/widgets/charts/bar_chart.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
+import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/tags/study_group_tag.dart';
@@ -30,45 +31,7 @@ class _WorkSpaceRoute extends State<WorkSpaceRouteState> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                PercentCircleButton(scale: 60.0, url: "", percentInfos: [ PercentInfo(percent: 0.6, color: ColorStyles.red)], onTap: () { UserProfileDialog.showProfileDialog(context, 1); }),
-                //const UserLineProfile(scale: 50.0, image: null, onTap: Test.onTabTest, nickName: "NickName", comment: "Comment!",),
-                const SizedBox(
-                  height: 5,
-                ),
-                //RoundInfoPanel(roundIdx: 3, place: "숭실대학교 정보과학관", date: DateTime.now(), userList: List<User>.generate(30, (index) => User(index, "d", "d"))),
-                //RoundInfo(roundIdx: 3, tag: "TAG"),
-
-                UserStateTag(text: "USE", color: Colors.red,),
-                BarChart(percentInfos: [
-                  PercentInfo(percent: 0.4, color: ColorStyles.red),
-                  PercentInfo(percent: 0.1, color: ColorStyles.orange), PercentInfo(percent: 0.2, color: ColorStyles.green) ], stroke: 30,),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      StudyGroupTag(color: ColorStyles.red, name: "Algorithm",),
-                      StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
-
-                      StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
-                      StudyGroupTag(color: ColorStyles.orange, name: "TOEIC"),
-                    ],
-                  ),
-                ),
-                Panel(
-                  boxShadows: Design.basicShadows,
-                  child: NoticePanel(
-                    noticeSummary: NoticeSummary(
-                        noticeId: 1213,
-                        readCount: 0,
-                        read: false,
-                        writerNickname: "Aaa",
-                    title: "[공지] 내일까지 적당히 긴 제목 만들어 오기",
-                    createDate: DateTime.now(),
-                    pinYn: true,
-                    contents: "적당히 긴 내용 뭐가 있을까",
-                    commentCount: 3),
-                  ),
-                )
+                ImagePickerWidget(),
               ],
             )
           )

@@ -1,10 +1,19 @@
 
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWidget extends StatefulWidget {
+  final double scale;
+  final double? borderRadius;
+
   const ImagePickerWidget({
-    Key? key
+    Key? key,
+    this.scale = 150.0,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -12,10 +21,36 @@ class ImagePickerWidget extends StatefulWidget {
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
-
+  XFile? imageFile;
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("ASD"), );
+    BorderRadius borderRadius = BorderRadius.circular(widget.borderRadius??(widget.scale/2));
+    return Container(
+      width: widget.scale,
+      height: widget.scale,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration: BoxDecoration(borderRadius: borderRadius),
+      child: InkWell(
+        borderRadius: borderRadius,
+        child: (imageFile == null)?
+            Image.asset(Design.defaultImagePath) :
+            Image.file(
+              File(imageFile!.path),
+              fit: BoxFit.cover,
+            ),
+        onTap: () => loadImage(),
+      ),
+    );
+  }
+
+  void loadImage() async {
+    final ImagePicker imagePicker = ImagePicker();
+    final XFile? loadedImageFile = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (loadedImageFile != null) {
+      imageFile = loadedImageFile;
+      setState(() { });
+    }
   }
 }
