@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 
 class Design{
+  static const String defaultImagePath = 'assets/images/default_profile.png';
+
   static const double padding = 15;
   static const double borderRadius = 10;
 
