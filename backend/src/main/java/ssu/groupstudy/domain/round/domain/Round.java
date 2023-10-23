@@ -22,6 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "round")
 public class Round extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
