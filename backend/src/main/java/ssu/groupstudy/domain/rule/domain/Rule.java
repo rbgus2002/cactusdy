@@ -13,6 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "rule")
 public class Rule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

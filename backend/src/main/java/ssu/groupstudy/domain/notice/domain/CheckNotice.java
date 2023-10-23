@@ -14,6 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "check_notice")
 public class CheckNotice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

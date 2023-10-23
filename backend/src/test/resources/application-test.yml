@@ -46,3 +46,8 @@ coolsms:
       key: test-secret-key
     domain: https://api.coolsms.co.kr
     fromNum: 01011112222
+
+
+jwt:
+  secret:
+    key: forTest!@#!%@#$@!#!#!@
