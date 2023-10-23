@@ -14,7 +14,7 @@ create table if not exists `user`
     password       varchar(255) not null
 );
 
-create table if not exists `authority`
+create table if not exists authority
 (
     authority_id bigint auto_increment
     primary key,

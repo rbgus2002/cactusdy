@@ -20,12 +20,10 @@ spring:
     generate-ddl: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
     database: h2
-    defer-datasource-initialization: true
 
   h2:
     console:
       enabled: true
-
 
   sql:
     init:
@@ -46,3 +44,7 @@ coolsms:
       key: test-secret-key
     domain: https://api.coolsms.co.kr
     fromNum: 01011112222
+
+jwt:
+  secret:
+    key: forTest!@#!%@#$@!#!#!@
