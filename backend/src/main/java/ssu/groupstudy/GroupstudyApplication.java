@@ -15,6 +15,7 @@ public class GroupstudyApplication {
         // ci test
         // ci test
         // ci test
+        // ci test
 
 
         SpringApplication.run(GroupstudyApplication.class, args);
