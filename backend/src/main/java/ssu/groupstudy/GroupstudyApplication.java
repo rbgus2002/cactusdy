@@ -12,6 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Slf4j
 public class GroupstudyApplication {
     public static void main(String[] args) {
+        // ci test
+
         SpringApplication.run(GroupstudyApplication.class, args);
     }
 }
