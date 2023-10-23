@@ -14,6 +14,7 @@ import static ssu.groupstudy.global.constant.ResultCode.INVALID_TASK_ACCESS;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "task")
 @Getter
 public class Task{
     @Id

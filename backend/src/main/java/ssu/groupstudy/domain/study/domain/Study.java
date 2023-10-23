@@ -19,6 +19,7 @@ import static ssu.groupstudy.domain.study.domain.InviteCode.generate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "study")
 public class Study extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
