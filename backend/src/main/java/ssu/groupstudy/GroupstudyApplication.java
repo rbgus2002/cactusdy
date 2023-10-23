@@ -13,10 +13,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class GroupstudyApplication {
     public static void main(String[] args) {
         // ci test
-        // ci test
-        // ci test
-        // ci test
-        // ci test
 
 
         SpringApplication.run(GroupstudyApplication.class, args);
