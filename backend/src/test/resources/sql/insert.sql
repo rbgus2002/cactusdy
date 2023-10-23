@@ -4,8 +4,8 @@ INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_y
 INSERT INTO `user` (user_id, create_date, modified_date, activate_date, delete_yn, phone_number, name, nickname, phone_model, picture, status_message, password) VALUES (3, '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.310402', '2023-09-04 21:05:51.309612', 'N', '01022223333', '홍예지', '찡찡이', 'string', 'string', '', '{bcrypt}$2a$10$XTVyjZqAHKJDnSuywC898.lpZK1l9T9XAmYiH./jT6nlChGkYQvne');
 
 -- authority
-INSERT INTO authority (authority_id, role_name, user_id) VALUES (1, 'ROLE_USER', 1);
-INSERT INTO authority (authority_id, role_name, user_id) VALUES (2, 'ROLE_USER', 2);
+INSERT INTO `authority` (authority_id, role_name, user_id) VALUES (1, 'ROLE_USER', 1);
+INSERT INTO `authority` (authority_id, role_name, user_id) VALUES (2, 'ROLE_USER', 2);
 
 -- study
 INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, host_user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '알고리즘스터디', 1);
