@@ -17,7 +17,7 @@ create table if not exists `user`
 create table if not exists authority
 (
     authority_id bigint auto_increment
-        primary key,
+    primary key,
     role_name    varchar(255) not null,
     user_id      bigint       not null,
     constraint FKr1wgeo077ok1nr1shx0t70tg8
