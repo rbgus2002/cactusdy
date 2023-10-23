@@ -1,0 +1,48 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate:
+        format_sql: true
+        globally_quoted_identifiers: true
+    show-sql: false
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: h2
+    defer-datasource-initialization: true
+
+  h2:
+    console:
+      enabled: true
+
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/create.sql
+      data-locations: classpath:sql/insert.sql
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: off
+
+coolsms:
+  api:
+    key: test-key
+    secret:
+      key: test-secret-key
+    domain: https://api.coolsms.co.kr
+    fromNum: 01011112222

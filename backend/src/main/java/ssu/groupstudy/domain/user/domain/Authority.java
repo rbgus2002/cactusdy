@@ -12,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "authority")
 public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Authority {
     private String name;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="userId", nullable = false)
+    @JoinColumn(name="user_id", nullable = false)
     @JsonIgnore
     private User user;
 
