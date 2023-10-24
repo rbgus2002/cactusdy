@@ -1,4 +1,4 @@
-name: groupstudy CI test
+name: groupstudy CI
 
 on:
   pull_request:
