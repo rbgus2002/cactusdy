@@ -4,20 +4,23 @@ import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/charts/donut_chart.dart';
 
 class PercentCircleButton extends CircleButton {
-  List<PercentInfo> percentInfos;
+  final List<PercentInfo> percentInfos;
 
-  final Widget? image;
-
-  PercentCircleButton({
+  const PercentCircleButton({
     Key? key,
-    this.image,
     required this.percentInfos,
+
+    required super.url,
     super.scale,
     super.onTap
-  }) : super(
-    key: key,
-    child: Stack(children: [
-      image ?? Image.asset(CircleButton.defaultImagePath),
-      DonutChart(percentInfos: percentInfos, scale: scale),
-    ]),);
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+        super.build(context),
+        DonutChart(percentInfos: percentInfos, scale: scale),
+      ]
+    );
+  }
 }

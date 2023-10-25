@@ -82,14 +82,14 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
         ),
 
         CircleButtonList(
-          circleButtons: widget.round.roundParticipantInfos.map((r) {
-            Color outlineColor = Util.progressToColor(r.taskProgress);
+          circleButtons: widget.round.roundParticipantInfos.map((round) {
+            Color outlineColor = Util.progressToColor(round.taskProgress);
 
             return PercentCircleButton(
-              image: null, //< FIXME
+              url: round.picture,
               scale: 42,
-              percentInfos: [ PercentInfo(percent: r.taskProgress, color: outlineColor)],
-              onTap: () => UserProfileDialog.showProfileDialog(context, r.userId),//< FIXME
+              percentInfos: [ PercentInfo(percent: round.taskProgress, color: outlineColor)],
+              onTap: () => UserProfileDialog.showProfileDialog(context, round.userId),//< FIXME
           ); }).toList(),
         )
       ],

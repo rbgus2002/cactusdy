@@ -27,8 +27,8 @@ class StudyGroupPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CircleButton> userImages = studyInfo.participantSummaries.map((e) =>
-        OutlineCircleButton(scale: 24, image: null, stroke: 2,),).toList();
+    List<CircleButton> userImages = studyInfo.participantSummaries.map((participant) =>
+        OutlineCircleButton(scale: 24, url: participant.picture, stroke: 2,),).toList();
     return Panel(
         boxShadows: Design.basicShadows,
         child: Column(

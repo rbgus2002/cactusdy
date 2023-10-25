@@ -22,10 +22,10 @@ class ParticipantProfileListWidget extends StatelessWidget {
         future: ParticipantSummary.getParticipantsProfileImageList(studyId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<CircleButton> userImages = snapshot.data!.map((e) =>
-                CircleButton(child: null,
+            List<CircleButton> userImages = snapshot.data!.map((userImage) =>
+                CircleButton(url: userImage.picture,
                     onTap: () =>
-                        UserProfileDialog.showProfileDialog(context, e.userId),
+                        UserProfileDialog.showProfileDialog(context, userImage.userId),
                     scale: scale),).toList();
 
             return CircleButtonList(

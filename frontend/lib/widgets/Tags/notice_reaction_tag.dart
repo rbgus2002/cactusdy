@@ -119,7 +119,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
         setState(() {
           _checkerImages = List.generate(profileURIs.length, //< FIXME
-                  (index) => const CircleButton(child: null)).toList();
+                  (index) => CircleButton(url: profileURIs[index])).toList();
         });
       },);
     }

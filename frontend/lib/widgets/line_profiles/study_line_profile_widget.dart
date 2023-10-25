@@ -9,7 +9,7 @@ import 'package:group_study_app/widgets/line_profiles/line_profile_widget.dart';
 import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
 
 class StudyLineProfileWidget extends StatelessWidget {
-  static const double _scale = 50; //60
+  static const double _scale = 50;
   static const double _stroke = 4;
 
   final Study study;
@@ -25,9 +25,11 @@ class StudyLineProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineProfileWidget(
       circleButton: OutlineCircleButton(
+        url: study.picture,
         color: study.color,
         scale: _scale,
         stroke: _stroke,
+        borderRadius: _scale / 2,
       ),
 
       topWidget: Text(

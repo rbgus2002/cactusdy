@@ -3,6 +3,7 @@ import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 
 class TestRouteState extends StatefulWidget {
@@ -21,13 +22,7 @@ class _TestRoute extends State<TestRouteState> {
         appBar: AppBar(title: Text("ASD")),
         body: Container(
             padding: Design.edge15,
-            child: Panel(
-              boxShadows: Design.basicShadows,
-              child:
-              Column(
-                children: []
-            ),
-            )
+            child: const ImagePickerWidget(),
         )
     );
   }

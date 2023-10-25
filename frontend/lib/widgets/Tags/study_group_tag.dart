@@ -21,7 +21,7 @@ class StudyGroupTag extends TagButton {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-          const CircleButton(scale:16, onTap: null),
+          const CircleButton(scale:16, onTap: null, url: '',), //< FIXME
           Design.padding5,
           Text(name, style: TextStyles.tagTextStyle, textAlign: TextAlign.center),
         ],)

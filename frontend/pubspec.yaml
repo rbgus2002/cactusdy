@@ -41,6 +41,8 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   flutter_secure_storage: ^9.0.0
   device_info_plus: ^9.0.3
+  cached_network_image: ^3.3.0
+  image_picker: ^1.0.4
 
 
 dev_dependencies:
