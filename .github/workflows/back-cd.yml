@@ -38,7 +38,8 @@ jobs:
       - name: Copy application.yml
         working-directory: ${{ env.wd }}
         run: |
-          mkdir ./src/main/resources
+          if [ ! -d "./src/main/resources" ]; then
+            mkdir -p "./src/main/resources"
           touch ./src/main/resources/application.yml
           echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
 
