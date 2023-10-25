@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDto> handleException(Exception e) {
-        log.error("handleException", e.getMessage());
+        log.error("handleException : {}", e.getMessage());
         final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
