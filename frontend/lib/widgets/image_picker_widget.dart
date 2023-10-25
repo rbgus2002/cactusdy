@@ -10,11 +10,13 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerWidget extends StatefulWidget {
   final double scale;
   final double? borderRadius;
+  final Function(XFile)? onPicked;
 
   const ImagePickerWidget({
     Key? key,
     this.scale = 150.0,
     this.borderRadius,
+    required this.onPicked,
   }) : super(key: key);
 
   @override
@@ -40,12 +42,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               File(imageFile!.path),
               fit: BoxFit.cover,
             ),
-        onTap: () => loadImage(),
+        onTap: () => pickImage(),
       ),
     );
   }
 
-  void loadImage() async {
+  void pickImage() async {
     final ImagePicker imagePicker = ImagePicker();
     final XFile? loadedImageFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
@@ -55,8 +57,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
     if (loadedImageFile != null) {
       imageFile = loadedImageFile;
-      User.updateProfileImage(imageFile!);
       setState(() { });
+
+      if (widget.onPicked != null) {
+        widget.onPicked!(imageFile!);
+      }
     }
   }
 }
