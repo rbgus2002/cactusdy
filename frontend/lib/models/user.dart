@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class User{
   // string length limits
@@ -64,6 +66,24 @@ class User{
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       print('${responseJson['message']} to update user status Message');
+      return responseJson['success'];
+    }
+  }
+
+  static Future<bool> updateProfileImage(XFile profileImage) async {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('${DatabaseService.serverUrl}api/users/profile/images'),
+    );
+    request.headers.addAll(DatabaseService.getAuthHeader());
+    request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
+
+    final response = await request.send();
+    final responseJson = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
       return responseJson['success'];
     }
   }

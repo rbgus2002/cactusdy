@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -46,10 +47,15 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   void loadImage() async {
     final ImagePicker imagePicker = ImagePicker();
-    final XFile? loadedImageFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? loadedImageFile = await imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 640,
+        maxHeight: 640,
+    );
 
     if (loadedImageFile != null) {
       imageFile = loadedImageFile;
+      User.updateProfileImage(imageFile!);
       setState(() { });
     }
   }
