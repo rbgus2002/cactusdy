@@ -9,7 +9,6 @@ TIME_NOW=$(date +%c)
 CURRENT_PID=$(pgrep -f $JAR_FILE)
 
 # 프로세스가 켜져 있으면 종료
-if [ -z $CURRENT_PID ]; then
-else
+if [ ! -z $CURRENT_PID ]; then
   kill -15 $CURRENT_PID
 fi
