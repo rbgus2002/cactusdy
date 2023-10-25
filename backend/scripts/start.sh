@@ -9,4 +9,4 @@ TIME_NOW=$(date +%c)
 cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
 # jar 파일 실행
-nohup java --illegal-access=warn -Dcom.amazonaws.sdk.disableEc2Metadata=true -jar $JAR_FILE &
+nohup java --illegal-access=warn -Dcom.amazonaws.sdk.disableEc2Metadata=true -jar -Dspring.profiles.active=dev $JAR_FILE &
