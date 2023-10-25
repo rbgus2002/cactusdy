@@ -53,7 +53,6 @@ public class CommentInfoResponse {
     }
 
     // TODO : 테스트 추가
-    // TODO : 해당 로직을 어디다 두어야 할까? dto가 아닌 service 로직에서 처리해야 한다고 생각함
     public boolean requireRemoved(){
         return this.isDeleted() && !this.existReplies();
     }
