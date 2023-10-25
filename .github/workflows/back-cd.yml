@@ -43,6 +43,8 @@ jobs:
           fi
           touch ./src/main/resources/application.yml
           echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+          touch ./src/main/resources/application-dev.yml
+          echo "${{ secrets.APPLICATION_DEV }}" > ./src/main/resources/application-dev.yml
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
