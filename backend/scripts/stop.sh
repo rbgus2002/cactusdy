@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ubuntu/groupstudy"
-JAR_FILE="$PROJECT_ROOT/groupstudy-webapp.jar"
+JAR_FILE="$PROJECT_ROOT/groupstudy-app.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
