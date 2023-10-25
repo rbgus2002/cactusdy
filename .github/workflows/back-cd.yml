@@ -20,7 +20,6 @@ env:
   wd: ./backend
 
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -59,6 +58,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload to AWS S3
+        working-directory: ${{ env.wd }}
         run: |
           aws deploy push \
             --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
