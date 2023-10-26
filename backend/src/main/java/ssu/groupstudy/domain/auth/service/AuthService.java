@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.auth.dto.request.MessageRequest;
+import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
@@ -142,5 +143,13 @@ public class AuthService {
 
     private void processVerificationSuccess(String key) {
         redisUtils.deleteData(key);
+    }
+
+    @Transactional
+    public void resetPassword(PasswordResetRequest request) {
+        User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
+                .orElseThrow(() -> new InvalidLoginException(ResultCode.USER_NOT_FOUND));
+        String password = passwordEncoder.encode(request.getNewPassword());
+        user.setPassword(password);
     }
 }
