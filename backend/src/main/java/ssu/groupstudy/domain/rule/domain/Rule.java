@@ -17,7 +17,8 @@ import static javax.persistence.FetchType.LAZY;
 public class Rule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ruleId;
+    @Column(name = "rule_id")
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String detail;
@@ -33,6 +34,14 @@ public class Rule extends BaseEntity {
         this.detail = detail;
         this.study = study;
         this.deleteYn = 'N';
+    }
+
+    public void delete() {
+        this.deleteYn = 'Y';
+    }
+
+    public void updateDetail(String detail){
+        this.detail = detail;
     }
 }
 

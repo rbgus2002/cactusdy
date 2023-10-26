@@ -37,7 +37,7 @@ class RuleServiceTest extends ServiceTest {
     @BeforeEach
     void init(){
         규칙 = new CreateRuleRequest(-1L, "detail").toEntity(알고리즘스터디);
-        ReflectionTestUtils.setField(규칙, "ruleId", 5L);
+        ReflectionTestUtils.setField(규칙, "id", 5L);
     }
 
     @Nested
