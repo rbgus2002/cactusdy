@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
+import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -26,5 +27,12 @@ public class RuleService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Rule rule = dto.toEntity(study);
         return ruleRepository.save(rule).getId();
+    }
+
+    @Transactional
+    public void deleteRule(Long ruleId){
+        Rule rule = ruleRepository.findById(ruleId)
+                .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
+        rule.delete();
     }
 }

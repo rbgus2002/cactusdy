@@ -43,6 +43,7 @@ public enum ResultCode {
     TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다."),
     PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다."),
     PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호입니다."),
+    RULE_NOT_FOUND(404, "존재하지 않는 규칙입니다."),
 
 
     // 405
@@ -51,7 +52,6 @@ public enum ResultCode {
 
     // 500
     INTERNAL_SERVER_ERROR(500, "서버에서 문제가 발생했습니다."),
-
     ;
 
     private final int statusCode; // TODO : HttpStatus 타입으로 리팩토링
