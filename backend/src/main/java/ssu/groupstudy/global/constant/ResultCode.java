@@ -42,6 +42,7 @@ public enum ResultCode {
     COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
     TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다."),
     PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다."),
+    PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호입니다."),
 
 
     // 405

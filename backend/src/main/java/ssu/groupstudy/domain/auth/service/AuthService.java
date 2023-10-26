@@ -48,21 +48,6 @@ public class AuthService {
     }
 
     @Transactional
-    public Long signUp(SignUpRequest request) {
-        validatePhoneNumber(request.getPhoneNumber());
-        User user = request.toEntity(passwordEncoder);
-        user.addUserRole();
-
-        return userRepository.save(user).getUserId();
-    }
-
-    private void validatePhoneNumber(String phoneNumber) {
-        if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
-        }
-    }
-
-    @Transactional
     public SignInResponse signIn(SignInRequest request) {
         User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
@@ -78,8 +63,37 @@ public class AuthService {
         }
     }
 
-    public void sendMessage(MessageRequest request) {
-        validatePhoneNumber(request.getPhoneNumber());
+    @Transactional
+    public Long signUp(SignUpRequest request) {
+        assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
+        User user = request.toEntity(passwordEncoder);
+        user.addUserRole();
+        return userRepository.save(user).getUserId();
+    }
+
+    private void assertPhoneNumberDoesNotExistOrThrow(String phoneNumber) {
+        if (userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
+        }
+    }
+
+    public void sendMessageToSignUp(MessageRequest request) {
+        assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
+        sendMessage(request);
+    }
+
+    public void sendMessageToResetPassword(MessageRequest request){
+        assertPhoneNumberDoesExistOrThrow(request.getPhoneNumber());
+        sendMessage(request);
+    }
+
+    private void assertPhoneNumberDoesExistOrThrow(String phoneNumber) {
+        if (!userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PhoneNumberExistsException(ResultCode.PHONE_NUMBER_NOT_FOUND);
+        }
+    }
+
+    private void sendMessage(MessageRequest request) {
         Message message = createMessage(request);
         SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
         log.info("message : {}", response);
@@ -100,33 +114,33 @@ public class AuthService {
 
     private void handleVerificationMessage(Message message) {
         String code = RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
-        saveToRedis(code, message.getTo());
-        String verificationMessage = String.format("[GroupStudy] 인증번호 : %s", code);
-        message.setText(verificationMessage); // TODO : 대괄호 안 문구 앱 이름으로 변경
+        saveCodeToRedis(code, message.getTo());
+        String verificationMessage = String.format("[GroupStudy] 인증번호 : %s", code); // TODO : 대괄호 안 문구 앱 이름으로 변경
+        message.setText(verificationMessage);
     }
 
-    private void saveToRedis(String code, String phoneNumber) {
+    private void saveCodeToRedis(String code, String phoneNumber) {
         redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNumber
     }
 
     public boolean verifyCode(VerifyRequest request) {
         String retrievedPhoneNumber = getPhoneNumberFromCode(request);
-        boolean isValidCode = comparePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
+        boolean isValidCode = isSamePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
         if(isValidCode){
             processVerificationSuccess(request.getCode());
         }
         return isValidCode;
     }
 
-    private void processVerificationSuccess(String key) {
-        redisUtils.deleteData(key);
-    }
-
     private String getPhoneNumberFromCode(VerifyRequest request) {
         return redisUtils.getData(request.getCode());
     }
 
-    private boolean comparePhoneNumber(String requestPhoneNum, String redisPhoneNumber) {
+    private boolean isSamePhoneNumber(String requestPhoneNum, String redisPhoneNumber) {
         return requestPhoneNum.equals(redisPhoneNumber);
+    }
+
+    private void processVerificationSuccess(String key) {
+        redisUtils.deleteData(key);
     }
 }
