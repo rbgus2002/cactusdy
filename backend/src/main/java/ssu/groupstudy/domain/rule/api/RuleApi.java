@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.service.RuleService;
+import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
@@ -24,7 +25,7 @@ public class RuleApi {
     @Operation(summary = "규칙 생성")
     @PostMapping
     public ResponseDto register(@Valid @RequestBody CreateRuleRequest dto){
-        ruleService.createRule(dto);
-        return ResponseDto.success();
+        Long ruleId = ruleService.createRule(dto);
+        return DataResponseDto.of("ruleId", ruleId);
     }
 }
