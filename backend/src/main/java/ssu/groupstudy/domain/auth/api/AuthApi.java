@@ -20,6 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "인증 API")
+// TODO : AuthAPI는 인증가 필터 안타도록 처리 필요함 (불필요한 query 제거)
 public class AuthApi {
     private final AuthService authService;
 
