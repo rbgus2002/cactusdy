@@ -25,6 +25,6 @@ public class RuleService {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Rule rule = dto.toEntity(study);
-        return ruleRepository.save(rule).getRuleId();
+        return ruleRepository.save(rule).getId();
     }
 }

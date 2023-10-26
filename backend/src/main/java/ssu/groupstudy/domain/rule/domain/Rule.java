@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Rule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ruleId;
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String detail;
