@@ -37,7 +37,6 @@ public class AuthApi {
         Long userId = authService.signUp(dto);
         return DataResponseDto.of("userId", userId);
     }
-    // TODO : api uri 경로 변경 전달
 
     @Operation(summary = "회원가입 인증코드 문자 전송", description = "문자 메세지로 회원가입 인증코드를 전송한다. (발신번호 : 01044992038)")
     @PostMapping("/signUp/send")
@@ -45,7 +44,6 @@ public class AuthApi {
         authService.sendMessageToSignUp(request);
         return DataResponseDto.success();
     }
-    // TODO : api uri 경로 변경 전달
 
     @Operation(summary = "인증코드 검증", description = "발급받은 인증번호가 올바른지 검사한다.")
     @PostMapping("/verify")
