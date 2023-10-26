@@ -36,7 +36,7 @@ class RuleRepositoryTest {
     void findRulesByStudy(){
         // given
         // when
-        List<Rule> rules = ruleRepository.findRulesByStudy(1L);
+        List<Rule> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(1L);
         Rule 삭제된_규칙 = ruleRepository.findById(3L).get(); // 삭제된 규칙 가져오기 위해 기본 jpa data 메소드 사용
 
         // then

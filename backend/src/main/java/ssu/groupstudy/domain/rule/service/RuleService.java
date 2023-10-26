@@ -7,12 +7,16 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
+import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
 import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.global.constant.ResultCode;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +35,7 @@ public class RuleService {
     }
 
     @Transactional
-    public void deleteRule(Long ruleId){
+    public void deleteRule(Long ruleId) {
         Rule rule = ruleRepository.findRuleById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.delete();
@@ -42,5 +46,12 @@ public class RuleService {
         Rule rule = ruleRepository.findRuleById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.updateDetail(request.getDetail());
+    }
+
+    public List<RuleResponse> getRules(Long studyId) {
+        List<Rule> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(studyId);
+        return rules.stream()
+                .map(RuleResponse::of)
+                .collect(Collectors.toList());
     }
 }

@@ -36,7 +36,11 @@ INSERT INTO round (round_id, create_date, modified_date, study_place, study_time
 -- user_round
 INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
 
--- user_study
+-- rule
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (1, '2023-10-22 21:34:31.260542', '2023-10-22 21:34:31.260542', 'N', '규칙1', 1);
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (2, '2023-10-22 21:47:42.022930', '2023-10-22 21:47:42.022930', 'N', '규칙2', 1);
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (3, '2023-10-22 21:49:03.605070', '2023-10-22 21:49:03.605070', 'Y', '삭제된 규칙3', 1);
+
 
 
 

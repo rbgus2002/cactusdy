@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
+import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
 import ssu.groupstudy.domain.rule.service.RuleService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rules")
@@ -41,4 +43,10 @@ public class RuleApi {
         return ResponseDto.success();
     }
 
+    @Operation(summary = "규칙 조회", description = "특정 스터디의 규칙을 모두 조회한다.")
+    @GetMapping("{studyId}")
+    public ResponseDto getRules(@PathVariable Long studyId){
+        List<RuleResponse> rules = ruleService.getRules(studyId);
+        return DataResponseDto.of("rules", rules);
+    }
 }
