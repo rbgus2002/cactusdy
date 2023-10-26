@@ -39,5 +39,9 @@ public class Rule extends BaseEntity {
     public void delete() {
         this.deleteYn = 'Y';
     }
+
+    public void updateDetail(String detail){
+        this.detail = detail;
+    }
 }
 

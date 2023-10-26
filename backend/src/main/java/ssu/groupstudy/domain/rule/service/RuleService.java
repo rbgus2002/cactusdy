@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
+import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
 import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -31,8 +32,15 @@ public class RuleService {
 
     @Transactional
     public void deleteRule(Long ruleId){
-        Rule rule = ruleRepository.findById(ruleId)
+        Rule rule = ruleRepository.findRuleById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.delete();
+    }
+
+    @Transactional
+    public void updateRule(Long ruleId, UpdateRuleRequest request) {
+        Rule rule = ruleRepository.findRuleById(ruleId)
+                .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
+        rule.updateDetail(request.getDetail());
     }
 }

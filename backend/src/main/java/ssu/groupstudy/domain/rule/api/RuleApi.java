@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
+import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
 import ssu.groupstudy.domain.rule.service.RuleService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
@@ -33,5 +34,11 @@ public class RuleApi {
         return ResponseDto.success();
     }
 
+    @Operation(summary = "규칙 수정")
+    @PutMapping("/{ruleId}")
+    public ResponseDto updateRule(@PathVariable Long ruleId, @Valid @RequestBody UpdateRuleRequest request){
+        ruleService.updateRule(ruleId, request);
+        return ResponseDto.success();
+    }
 
 }
