@@ -36,6 +36,10 @@ logging:
     org:
       hibernate:
         SQL: off
+  file:
+    path: /home/ubuntu/groupstudy/log
+    name: groupstudy-%d{yyyy-MM-dd}.%i.log
+
 
 coolsms:
   api:
