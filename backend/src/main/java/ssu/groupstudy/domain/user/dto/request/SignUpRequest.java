@@ -20,7 +20,6 @@ public class SignUpRequest {
     private String picture;
     @NotBlank(message = "휴대폰번호를 입력하세요")
     private String phoneNumber;
-
     @NotBlank(message = "비밀번호를 입력하세요")
     private String password;
 

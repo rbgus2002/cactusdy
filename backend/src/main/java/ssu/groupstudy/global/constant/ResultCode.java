@@ -19,7 +19,7 @@ public enum ResultCode {
     INVALID_JSON(400, "request 정보를 읽을 수 없습니다."),
     INVALID_COLOR(400, "잘못된 색상 입력입니다."),
     INVALID_LOGIN(400, "잘못된 아이디 혹은 비밀번호입니다."),
-    INVALID_PHONE_NUMBER(400, "잘못된 아이디입니다."),
+    INVALID_PHONE_NUMBER(400, "잘못된 휴대폰 번호입니다."),
     INVALID_PASSWORD(400, "잘못된 비밀번호입니다."),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
@@ -42,6 +42,7 @@ public enum ResultCode {
     COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
     TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다."),
     PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다."),
+    PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호입니다."),
 
 
     // 405

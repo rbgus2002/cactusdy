@@ -101,5 +101,9 @@ public class User extends BaseEntity {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
 
