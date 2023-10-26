@@ -67,16 +67,16 @@ public class AuthService {
 
     public void sendMessageToSignUp(MessageRequest request) {
         String phoneNumber = request.getPhoneNumber();
-
         assertPhoneNumberDoesNotExistOrThrow(phoneNumber);
+
         String verificationMessage = generateVerificationMessage(phoneNumber);
         messageUtils.sendMessage(phoneNumber, verificationMessage);
     }
 
     public void sendMessageToResetPassword(MessageRequest request){
         String phoneNumber = request.getPhoneNumber();
-
         assertPhoneNumberDoesExistOrThrow(phoneNumber);
+
         String verificationMessage = generateVerificationMessage(phoneNumber);
         messageUtils.sendMessage(phoneNumber, verificationMessage);
     }
