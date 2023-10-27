@@ -34,6 +34,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
 
   static const int _expireTime = 60 * 3; // 3 min
   int _restTime = 0;
+  bool _isTimerOn = false;
 
   String _phoneNumber = "";
   String _inputCode = "";
@@ -164,14 +165,18 @@ class _SignUpRouteState extends State<SignUpRoute> {
 
   void _startTimer() {
     _restTime = _expireTime;
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() => --_restTime);
 
-      // stop timer
-      if (_restTime <= 0) {
-        _restTime = 0;
-        timer.cancel();
-      }
-    });
+    if (!_isTimerOn) {
+      _isTimerOn = true;
+      Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() => --_restTime);
+
+        // stop timer
+        if (_restTime <= 0) {
+          _restTime = 0;
+          timer.cancel();
+        }
+      });
+    }
   }
 }
