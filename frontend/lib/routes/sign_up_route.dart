@@ -92,7 +92,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
   void verifyPhoneNumber() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Auth.requestVerifyMessage(_phoneNumber).then((result) =>
+        await Auth.requestSingUpVerifyMessage(_phoneNumber).then((result) =>
             Util.pushRoute(context, (context) =>
                 SignUpVerifyRoute(phoneNumber: _phoneNumber,)));
       }

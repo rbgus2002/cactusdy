@@ -78,7 +78,7 @@ class Auth {
     signInfo ??= await SignInfo.readSignInfo();
   }
 
-  static Future<bool> requestVerifyMessage(String phoneNumber) async {
+  static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {
     //return true; // FIXME : BACKDOOR
 
     Map<String, dynamic> data = {
@@ -86,7 +86,7 @@ class Auth {
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/messages/send'),
+      Uri.parse('${DatabaseService.serverUrl}auth/signUp/send'),
       headers: DatabaseService.header,
       body: json.encode(data),
     );
@@ -108,7 +108,7 @@ class Auth {
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/messages/verify'),
+      Uri.parse('${DatabaseService.serverUrl}auth/verify'),
       headers: DatabaseService.header,
       body: json.encode(data),
     );

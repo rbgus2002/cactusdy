@@ -188,6 +188,6 @@ class _SignUpVerifyRouteState extends State<SignUpVerifyRoute> {
   }
 
   void _resend() {
-    Auth.requestVerifyMessage(widget.phoneNumber);
+    Auth.requestSingUpVerifyMessage(widget.phoneNumber);
   }
 }
