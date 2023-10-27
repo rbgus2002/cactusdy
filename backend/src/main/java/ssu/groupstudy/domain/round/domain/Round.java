@@ -13,8 +13,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -35,7 +35,7 @@ public class Round extends BaseEntity {
     private Appointment appointment;
 
     @OneToMany(mappedBy = "round", cascade = PERSIST)
-    private Set<RoundParticipant> roundParticipants = new HashSet<>();
+    private List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
@@ -87,5 +87,11 @@ public class Round extends BaseEntity {
 
     public boolean isStudyTimeNull(){
         return this.appointment.getStudyTime() == null;
+    }
+
+    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite(){
+        return this.roundParticipants.stream()
+                .sorted(Comparator.comparing(RoundParticipant::getId))
+                .collect(Collectors.toList());
     }
 }
