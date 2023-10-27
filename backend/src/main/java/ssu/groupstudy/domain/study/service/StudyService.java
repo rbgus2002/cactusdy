@@ -36,7 +36,8 @@ public class StudyService {
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto, User user) {
-        return studyRepository.save(dto.toEntity(user)).getStudyId();
+        Study study = dto.toEntity(user);
+        return studyRepository.save(study).getStudyId();
     }
 
     public StudySummaryResponse getStudySummary(long studyId, User user) {
