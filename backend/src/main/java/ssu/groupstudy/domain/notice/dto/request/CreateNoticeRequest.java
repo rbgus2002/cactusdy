@@ -15,10 +15,8 @@ import javax.validation.constraints.NotNull;
 public class CreateNoticeRequest {
     @NotBlank
     private String title;
-
     @NotBlank
     private String contents;
-
     @NotNull
     private Long studyId;
 
