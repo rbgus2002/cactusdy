@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_up_route.dart';
-import 'package:group_study_app/routes/sign_up_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/color_styles.dart';
