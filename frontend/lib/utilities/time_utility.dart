@@ -43,6 +43,23 @@ class TimeUtility {
     return DateFormat("yy/MM/dd HH:mm").format(dateTime);
   }
 
+  static String secondToString(int sec) {
+    int min = sec ~/ 60;
+    sec %= 60;
+
+    if (sec >= 3600) { // 1hour = 60min * 60sec
+      int hour = min ~/ 60;
+      min %= 60;
+      return '$hour시간 ${min.toString().padLeft(2, '0')}분 ${sec.toString().padLeft(2, '0')}초';
+    }
+
+    else if (min > 0) {
+      return '$min분 ${sec.toString().padLeft(2, '0')}초';
+    }
+
+    return '$sec초';
+  }
+
   static Future<DateTime?> showDateTimePicker(BuildContext context) async {
     final date = await showDatePicker(
       context: context,

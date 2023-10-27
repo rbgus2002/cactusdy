@@ -7,6 +7,7 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
+import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class SignUpRoute extends StatefulWidget {
@@ -81,7 +82,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                         alignment: Alignment.center,
                         width: double.infinity,
                         child: Text((_isVerificationCodeSend)?
-                            '$_sendMessageAgainText($_restTime)' : _sendMessageText,
+                            '$_sendMessageAgainText (${TimeUtility.secondToString(_restTime)})' : _sendMessageText,
                           style: TextStyles.titleSmall,),
                       )
                     ),
