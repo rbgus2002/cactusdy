@@ -2,10 +2,8 @@ package ssu.groupstudy.domain.round.dto.response;
 
 import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,12 +41,7 @@ public class RoundDto {
             this.studyPlace = round.getAppointment().getStudyPlace();
             this.studyTime = round.getAppointment().getStudyTime();
             this.isPlanned = isStudyTimeAfterCurrent(studyTime);
-            this.roundParticipantInfos = createRoundParticipantInfos(round);
-        }
-
-        private List<RoundParticipantInfo> createRoundParticipantInfos(Round round) {
-            return round.getRoundParticipants().stream()
-                    .sorted(Comparator.comparing(RoundParticipant::getId))
+            this.roundParticipantInfos = round.getRoundParticipantsWithSelfFirstOrderByInvite().stream()
                     .map(RoundParticipantInfo::from)
                     .collect(Collectors.toList());
         }
