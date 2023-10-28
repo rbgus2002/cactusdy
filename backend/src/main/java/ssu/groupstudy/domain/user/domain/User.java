@@ -1,6 +1,9 @@
 package ssu.groupstudy.domain.user.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -10,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static javax.persistence.CascadeType.PERSIST;
-import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 
 @Entity
@@ -37,7 +40,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = EAGER, cascade = PERSIST)
+    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
     private final List<Authority> roles = new ArrayList<>();
 
     @Column
