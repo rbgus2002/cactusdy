@@ -37,9 +37,9 @@ public class CheckNotice {
     public boolean equals(final Object o) {
         if (this == o)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if(!(o instanceof CheckNotice)){
             return false;
-
+        }
         final CheckNotice that = (CheckNotice) o;
         return Objects.equals(notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(user.getUserId(), that.user.getUserId());
     }
