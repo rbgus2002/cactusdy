@@ -54,7 +54,6 @@ public class RoundParticipant {
         if (!(o instanceof RoundParticipant)) {
             return false;
         }
-
         RoundParticipant that = (RoundParticipant) o;
         return Objects.equals(this.user.getUserId(), that.user.getUserId()) && Objects.equals(this.round.getRoundId(), that.round.getRoundId());
     }
