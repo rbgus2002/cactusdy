@@ -34,14 +34,15 @@ public class CheckNotice {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o)
+    public boolean equals(Object o) {
+        if (this == o){
             return true;
-        if(!(o instanceof CheckNotice)){
+        }
+        if (!(o instanceof CheckNotice)) {
             return false;
         }
-        final CheckNotice that = (CheckNotice) o;
-        return Objects.equals(notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(user.getUserId(), that.user.getUserId());
+        CheckNotice that = (CheckNotice) o;
+        return Objects.equals(this.notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(this.user.getUserId(), that.user.getUserId());
     }
 
     @Override
