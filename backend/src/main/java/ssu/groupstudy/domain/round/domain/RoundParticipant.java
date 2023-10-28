@@ -38,7 +38,7 @@ public class RoundParticipant {
     private StatusTag statusTag;
 
     @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
-    private Set<Task> tasks = new HashSet<>();
+    private final Set<Task> tasks = new HashSet<>();
 
     public RoundParticipant(User user, Round round) {
         this.user = user;

@@ -49,7 +49,7 @@ public class Notice extends BaseEntity {
     private Study study;
 
     @OneToMany(mappedBy = "notice", cascade = ALL, orphanRemoval = true)
-    private Set<CheckNotice> checkNotices = new HashSet<>();
+    private final Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder
     public Notice(String title, String contents, User writer, Study study) {

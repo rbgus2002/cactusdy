@@ -35,7 +35,7 @@ public class Round extends BaseEntity {
     private Appointment appointment;
 
     @OneToMany(mappedBy = "round", cascade = PERSIST)
-    private List<RoundParticipant> roundParticipants = new ArrayList<>();
+    private final List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
@@ -56,7 +56,7 @@ public class Round extends BaseEntity {
         this.appointment = appointment;
     }
 
-    private void addParticipants(Set<Participant> participants){
+    private void addParticipants(List<Participant> participants){
         participants.stream()
                 .map(participant -> new RoundParticipant(participant.getUser(), this))
                 .forEach(roundParticipants::add);
