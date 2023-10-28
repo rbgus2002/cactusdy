@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/routes/reset_password_route.dart';
+import 'package:group_study_app/routes/reset_password_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/app_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -97,6 +99,11 @@ class _SignInRouteState extends State<SignInRoute> {
                     child: const Text(_signInText, style: TextStyles.titleSmall,),
                   )
               ),
+
+              TextButton(
+                child: const Text("비밀번호 찾기"),
+                onPressed: () => Util.pushRoute(context, (context) => const ResetPasswordVerifyRoute()),
+              )
             ]
           ),
         ),

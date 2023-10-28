@@ -79,8 +79,6 @@ class Auth {
   }
 
   static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {
-    //return true; // FIXME : BACKDOOR
-
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
     };
@@ -99,9 +97,26 @@ class Auth {
     }
   }
 
-  static Future<bool> verifyCode(String phoneNumber, String code) async {
-    //return true; // FIXME : BACKDOOR
+  static Future<bool> requestResetPasswordVerifyMessage(String phoneNumber) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+    };
 
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/passwords/send'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
+  static Future<bool> verifyCode(String phoneNumber, String code) async {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'code': code,
@@ -117,8 +132,31 @@ class Auth {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print(responseJson);
+      if (responseJson['data']['isSuccess']) {
+        print("verified the code");
+      }
       return responseJson['data']['isSuccess'];
+    }
+  }
+
+  static Future<bool> resetPassword(String phoneNumber, String newPassword) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+      'newPassword': newPassword
+    };
+
+    final response = await http.put(
+      Uri.parse('${DatabaseService.serverUrl}auth/passwords'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      print("success to reset password");
+      return responseJson['success'];
     }
   }
 }
