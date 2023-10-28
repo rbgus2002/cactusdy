@@ -55,7 +55,6 @@ class CommentServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
             doReturn(댓글1).when(commentRepository).save(any(Comment.class));
-            알고리즘스터디.invite(최규현);
 
             // when
             Long commentId = commentService.createComment(댓글1CreateRequest, 최규현);
