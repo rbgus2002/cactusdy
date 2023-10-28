@@ -51,7 +51,7 @@ class StudyInviteServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            알고리즘스터디.invite(최규현);
+            알고리즘스터디.invite(장재우);
 
             // then
             assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, -1L))
@@ -66,13 +66,12 @@ class StudyInviteServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             // when
-            studyInviteService.inviteUser(최규현, -1L);
+            studyInviteService.inviteUser(장재우, -1L);
 
             // then
-            assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2),
-                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
-            );
+            softly.assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2);
+            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(최규현, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)));
         }
     }
 

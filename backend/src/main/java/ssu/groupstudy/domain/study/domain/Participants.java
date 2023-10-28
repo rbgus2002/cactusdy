@@ -4,12 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.user.domain.User;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.*;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.FetchType.LAZY;
 
 @Embeddable
 @NoArgsConstructor
@@ -20,7 +23,7 @@ public class Participants {
     private User hostUser;
 
     @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
-    private Set<Participant> participants = new HashSet<>();
+    private final List<Participant> participants = new ArrayList<>();
 
     public static Participants empty(Participant participant) {
         return new Participants(participant);

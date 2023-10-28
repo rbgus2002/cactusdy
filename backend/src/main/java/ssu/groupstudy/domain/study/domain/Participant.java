@@ -50,9 +50,11 @@ public class Participant extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Participant)) {
+            return false;
+        }
         Participant that = (Participant) o;
-        return Objects.equals(user.getUserId(), that.user.getUserId()) && Objects.equals(study.getStudyId(), that.study.getStudyId());
+        return Objects.equals(this.user.getUserId(), that.user.getUserId()) && Objects.equals(this.study.getStudyId(), that.study.getStudyId());
     }
 
     @Override
@@ -65,14 +67,14 @@ public class Participant extends BaseEntity {
         return "0x00";
     }
 
-    public void setColor(String color){
+    public void setColor(String color) {
         validateHex(color);
         this.color = color;
     }
 
     private void validateHex(String color) {
         boolean isHex = color.matches("^(0[xX])?[0-9a-fA-F]+$");
-        if(!isHex){
+        if (!isHex) {
             throw new InvalidColorException(ResultCode.INVALID_COLOR);
         }
     }
