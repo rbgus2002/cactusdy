@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
+import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.global.constant.ResultCode;
+
+import static ssu.groupstudy.global.constant.ResultCode.ROUND_PARTICIPANT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class RoundParticipantService {
     @Transactional
     public void updateStatusTag(Long id, StatusTag statusTag) {
         RoundParticipant roundParticipant = roundParticipantRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         roundParticipant.updateStatus(statusTag);
     }
 }
