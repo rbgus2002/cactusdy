@@ -105,7 +105,7 @@ public class User extends BaseEntity {
         this.statusMessage = statusMessage;
     }
 
-    public void setPicture(String picture) {
+    public void updatePicture(String picture) {
         this.picture = picture;
     }
 

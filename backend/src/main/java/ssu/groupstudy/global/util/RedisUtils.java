@@ -19,7 +19,7 @@ public class RedisUtils {
     }
 
     // (key, value) 저장
-    public void setData(String key, String value, Long duration){
+    public void setData(String key, String value){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(key, value);
     }
