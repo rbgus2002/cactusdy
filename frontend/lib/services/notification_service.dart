@@ -24,6 +24,12 @@ class MessageService {
   static Future<void> _initFCM() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
     NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
       alert: true,
       badge: true,
@@ -72,9 +78,9 @@ class MessageService {
 
     DarwinInitializationSettings initSettingsIOS =
       const DarwinInitializationSettings(
-        requestSoundPermission: false,
-        requestBadgePermission: false,
-        requestAlertPermission: false,
+        requestSoundPermission: true,
+        requestBadgePermission: true,
+        requestAlertPermission: true,
       );
 
     InitializationSettings initSettings = InitializationSettings(
@@ -89,7 +95,6 @@ class MessageService {
 
   static Future<void> _showNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
-
     if (notification == null) return;
 
     String title = notification!.title??"";
