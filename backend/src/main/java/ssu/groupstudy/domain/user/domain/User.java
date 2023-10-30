@@ -8,9 +8,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -43,6 +42,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
     private final List<Authority> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
+    private final Set<FcmToken> fcmTokens = new HashSet<>();
+
     @Column
     private String statusMessage;
 
@@ -70,10 +72,10 @@ public class User extends BaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if(!(o instanceof User)){
+        if (!(o instanceof User)) {
             return false;
         }
         User that = (User) o;
@@ -93,11 +95,11 @@ public class User extends BaseEntity {
                 '}';
     }
 
-    public void addUserRole(){
+    public void addUserRole() {
         roles.add(Authority.init(this));
     }
 
-    public void updateActivateDate(){
+    public void updateActivateDate() {
         this.activateDate = LocalDateTime.now();
     }
 
@@ -111,6 +113,21 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addFcmToken(String token) {
+        FcmToken newToken = FcmToken.from(this, token);
+        fcmTokens.stream()
+                .filter(fcmToken -> fcmToken.equals(newToken))
+                .findFirst()
+                .ifPresent(FcmToken::updateActivateDate);
+        fcmTokens.add(newToken);
+    }
+
+    public List<String> getFcmTokenList(){
+        return fcmTokens.stream()
+                .map(FcmToken::getToken)
+                .collect(Collectors.toList());
     }
 }
 

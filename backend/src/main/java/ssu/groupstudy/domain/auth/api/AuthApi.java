@@ -24,7 +24,7 @@ import javax.validation.Valid;
 public class AuthApi {
     private final AuthService authService;
 
-    @Operation(summary = "로그인", description = "로그인 시에 토큰을 발급한다.")
+    @Operation(summary = "로그인", description = "로그인에 성공하면 JWT를 발급한다.")
     @PostMapping("/signIn")
     public ResponseDto signIn(@Valid @RequestBody SignInRequest request) {
         SignInResponse signInResponse = authService.signIn(request);

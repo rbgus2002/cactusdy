@@ -41,6 +41,7 @@ public class AuthService {
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
         user.updateActivateDate();
+        user.addFcmToken(request.getFcmToken());
 
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
