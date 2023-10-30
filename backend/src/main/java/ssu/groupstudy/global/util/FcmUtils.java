@@ -5,8 +5,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,19 +14,11 @@ import java.util.List;
 @Component
 @Slf4j
 public class FcmUtils {
-    @Value("${fcm.key.path}")
-    private String FCM_PRIVATE_KEY_PATH;
-
-    @Value("${fcm.key.scope}")
-    private String FCM_SCOPE;
-
     @PostConstruct
     void initialize() {
         try {
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials
-                            .fromStream(new ClassPathResource(FCM_PRIVATE_KEY_PATH).getInputStream())
-                            .createScoped(List.of(FCM_SCOPE)))
+                    .setCredentials(GoogleCredentials.getApplicationDefault())
                     .build();
             processFirebaseInitialization(options);
         } catch (IOException e) {
