@@ -1,0 +1,41 @@
+
+import 'package:flutter/material.dart';
+
+class NewTextStyles {
+  static const String mainFont = 'Pretendard';
+
+  static const regular    = FontWeight.w400;
+  static const medium     = FontWeight.w500;
+  static const semiBold   = FontWeight.w600;
+  static const bold       = FontWeight.w700;
+  static const extraBold  = FontWeight.w800;
+  static const black      = FontWeight.w900;
+
+  static const TextStyle head1 = TextStyle(fontSize: 32, fontWeight: bold);
+  static const TextStyle head2 = TextStyle(fontSize: 24, fontWeight: bold);
+  static const TextStyle head3 = TextStyle(fontSize: 21, fontWeight: bold);
+  static const TextStyle head4 = TextStyle(fontSize: 18, fontWeight: semiBold);
+  static const TextStyle head5 = TextStyle(fontSize: 16, fontWeight: semiBold);
+  static const TextStyle head6 = TextStyle(fontSize: 14, fontWeight: bold);
+
+  static const TextStyle body1 = TextStyle(fontSize: 16, fontWeight: medium);
+  static const TextStyle body2 = TextStyle(fontSize: 14, fontWeight: regular);
+  static const TextStyle body3 = TextStyle(fontSize: 13, fontWeight: regular);
+  static const TextStyle body4 = TextStyle(fontSize: 12, fontWeight: regular);
+
+  static const TextStyle caption1 = TextStyle(fontSize: 14, fontWeight: semiBold);
+  static const TextStyle caption2 = TextStyle(fontSize: 11, fontWeight: medium);
+
+  static const TextTheme textTheme = TextTheme(
+    displayLarge: head1,
+    displayMedium: head2,
+    displaySmall: head3,
+    headlineLarge: head4,
+    headlineMedium: head5,
+    headlineSmall: head6,
+
+    bodyLarge: body1,
+    bodyMedium: body2,
+    bodySmall: body3,
+  );
+}
