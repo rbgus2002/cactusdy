@@ -91,7 +91,7 @@ public class ServiceTest {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
                 .phoneNumber("rbgus200@naver.com")
-                .password("password")
+                .password("valid")
                 .nickname("규규")
                 .phoneModel("")
                 .picture("")

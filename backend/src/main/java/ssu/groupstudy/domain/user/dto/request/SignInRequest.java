@@ -1,14 +1,13 @@
 package ssu.groupstudy.domain.user.dto.request;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @ToString
 public class SignInRequest {
     @NotBlank(message = "휴대폰번호를 입력하세요")
