@@ -115,11 +115,11 @@ public class User extends BaseEntity {
     }
 
     public void addFcmToken(String token){
-        fcmTokens.add(FcmToken.from(token));
+        fcmTokens.add(FcmToken.from(this, token));
     }
 
     public void addFcmTokenDefaultTest(){ // TODO : 테스트 끝나면 삭제
-        fcmTokens.add(FcmToken.from("default"));
+        fcmTokens.add(FcmToken.from(this, "default"));
     }
 }
 

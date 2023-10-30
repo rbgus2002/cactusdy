@@ -33,13 +33,14 @@ public class FcmToken {
     private LocalDateTime activateDate;
 
 
-    private FcmToken(String token) {
+    private FcmToken(User user, String token) {
+        this.user = user;
         this.token = token;
         this.activateDate = LocalDateTime.now();
     }
 
-    public static FcmToken from(String token){
-        return new FcmToken(token);
+    public static FcmToken from(User user, String token){
+        return new FcmToken(user, token);
     }
 
     @Override
