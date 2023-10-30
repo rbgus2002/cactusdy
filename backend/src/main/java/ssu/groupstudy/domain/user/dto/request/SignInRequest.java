@@ -16,4 +16,7 @@ public class SignInRequest {
 
     @NotBlank(message = "비밀번호를 입력하세요")
     private String password;
+
+    @NotBlank(message = "FCM 토큰을 입력하세요")
+    private String fcmToken;
 }

@@ -115,17 +115,8 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-//    public void addFcmToken(String token) {
-//        FcmToken newToken = FcmToken.from(this, token);
-//        fcmTokens.stream()
-//                .filter(fcmToken -> fcmToken.equals(newToken))
-//                .findFirst()
-//                .ifPresent(FcmToken::updateActivateDate);
-//        fcmTokens.add(newToken);
-//    }
-
-    public void addFcmTokenDefaultTest(String token) { // TODO : 테스트 끝나면 삭제
-        FcmToken newToken = FcmToken.from(this, "default");
+    public void addFcmToken(String token) {
+        FcmToken newToken = FcmToken.from(this, token);
         fcmTokens.stream()
                 .filter(fcmToken -> fcmToken.equals(newToken))
                 .findFirst()

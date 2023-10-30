@@ -41,7 +41,7 @@ public class AuthService {
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
         user.updateActivateDate();
-        user.addFcmTokenDefaultTest(""); // TODO : 추후 테스트 메소드 삭제 후 변경 (인자에 fcmToken 추가)
+        user.addFcmToken(request.getFcmToken());
 
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
