@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -47,7 +46,6 @@ public class FcmUtils {
 
     public void sendNotificationByTokens(List<String> tokens, String title, String body) {
         MulticastMessage message = MulticastMessage.builder()
-                .putData("time", LocalDateTime.now().toString())
                 .setNotification(Notification.builder()
                         .setTitle(title)
                         .setBody((body))
