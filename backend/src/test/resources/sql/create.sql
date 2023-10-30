@@ -24,6 +24,17 @@ create table if not exists authority
         foreign key (user_id) references `user` (user_id)
 );
 
+create table if not exists fcm_token
+(
+    fcm_token_id  bigint auto_increment
+        primary key,
+    activate_date datetime(6)  not null,
+    token         varchar(255) not null,
+    user_id       bigint       not null,
+    constraint FK8u9xsmd3agc2nn80tb16ouph4
+        foreign key (user_id) references `user` (user_id)
+);
+
 create table if not exists study
 (
     study_id       bigint auto_increment
