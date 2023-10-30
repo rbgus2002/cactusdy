@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/Tags/tag_button.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
@@ -22,8 +22,8 @@ class StudyGroupTag extends TagButton {
 
         children: [
           const CircleButton(scale:16, onTap: null, url: '',), //< FIXME
-          Design.padding5,
-          Text(name, style: TextStyles.tagTextStyle, textAlign: TextAlign.center),
+          OldDesign.padding5,
+          Text(name, style: OldTextStyles.tagTextStyle, textAlign: TextAlign.center),
         ],)
   );
 }

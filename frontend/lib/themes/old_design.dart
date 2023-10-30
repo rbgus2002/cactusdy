@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 
-class Design{
+class OldDesign{
   static const String defaultImagePath = 'assets/images/default_profile.png';
 
   static const double padding = 15;
@@ -23,7 +23,7 @@ class Design{
   static const SizedBox padding60 = SizedBox(width: 60, height: 60,);
 
   static const List<BoxShadow> basicShadows = [ BoxShadow(
-      color: ColorStyles.shadow,
+      color: OldColorStyles.shadow,
       spreadRadius: 1,
       blurRadius: 2,
       offset: Offset(2, 2),

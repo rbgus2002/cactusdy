@@ -4,8 +4,8 @@ import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
@@ -30,7 +30,7 @@ class StudyGroupPanel extends StatelessWidget {
     List<CircleButton> userImages = studyInfo.participantSummaries.map((participant) =>
         OutlineCircleButton(scale: 24, url: participant.picture, stroke: 2,),).toList();
     return Panel(
-        boxShadows: Design.basicShadows,
+        boxShadows: OldDesign.basicShadows,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,10 +41,10 @@ class StudyGroupPanel extends StatelessWidget {
                   circleButtons: userImages,
                   paddingVertical: 2,
                 )),
-            Design.padding10,
+            OldDesign.padding10,
 
             RoundInfoWidget(roundSeq: studyInfo.roundSeq, round: studyInfo.round, studyId: studyInfo.study.studyId,),
-            Design.padding5,
+            OldDesign.padding5,
 
             // task groups
             ListView.builder(
@@ -53,7 +53,7 @@ class StudyGroupPanel extends StatelessWidget {
               itemCount: studyInfo.taskGroups.length,
               itemBuilder: (context, index) => 
                 Container(
-                  padding: Design.bottom10,
+                  padding: OldDesign.bottom10,
                   child: TaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
                 ),
             )

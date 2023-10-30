@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 
 class Circle extends StatelessWidget {
   final Color color;
@@ -34,7 +34,7 @@ class _CirclePaint extends CustomPainter {
   final double stroke;
 
   _CirclePaint({
-    this.color = ColorStyles.grey,
+    this.color = OldColorStyles.grey,
     this.stroke = 15,
   });
 

@@ -1,36 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 
+import 'package:flutter/material.dart';
 
 class TextStyles {
-  static const regular   = FontWeight.w400;
-  static const medium    = FontWeight.w500;
-  static const semiBold  = FontWeight.w600;
-  static const bold      = FontWeight.w700;
-  static const extraBold = FontWeight.w800;
+  static const String mainFont = 'Pretendard';
 
-  static const titleBig = TextStyle(fontSize: 28, fontWeight: extraBold);
-  static const titleLarge = TextStyle(fontSize: 24, fontWeight: extraBold);
-  static const titleMedium = TextStyle(fontSize: 20, fontWeight: extraBold);
-  static const titleSmall = TextStyle(fontSize: 18, fontWeight: extraBold);
-  static const titleTiny = TextStyle(fontSize: 16, fontWeight: bold);
+  static const regular    = FontWeight.w400;
+  static const medium     = FontWeight.w500;
+  static const semiBold   = FontWeight.w600;
+  static const bold       = FontWeight.w700;
+  static const extraBold  = FontWeight.w800;
+  static const black      = FontWeight.w900;
 
-  static const bodyLarge = TextStyle(fontSize: 16, height: 1.5);
-  static const bodyMedium = TextStyle(fontSize: 14, height: 1.5);
-  static const bodySmall = TextStyle(fontSize: 12, height: 1.5);
+  static const TextStyle head1 = TextStyle(fontSize: 32, fontWeight: bold);
+  static const TextStyle head2 = TextStyle(fontSize: 24, fontWeight: bold);
+  static const TextStyle head3 = TextStyle(fontSize: 21, fontWeight: bold);
+  static const TextStyle head4 = TextStyle(fontSize: 18, fontWeight: semiBold);
+  static const TextStyle head5 = TextStyle(fontSize: 16, fontWeight: semiBold);
+  static const TextStyle head6 = TextStyle(fontSize: 14, fontWeight: bold);
 
-  static const numberTextStyle = TextStyle(fontSize: 32, fontWeight: extraBold, height: 0);
+  static const TextStyle body1 = TextStyle(fontSize: 16, fontWeight: medium);
+  static const TextStyle body2 = TextStyle(fontSize: 14, fontWeight: regular);
+  static const TextStyle body3 = TextStyle(fontSize: 13, fontWeight: regular);
+  static const TextStyle body4 = TextStyle(fontSize: 12, fontWeight: regular);
 
-  static const hintTextStyle = TextStyle(fontSize: 12, color: ColorStyles.lightGrey);
-  static const tagTextStyle = TextStyle(fontSize: 12, leadingDistribution: TextLeadingDistribution.even, fontWeight: bold, color: Colors.white);
+  static const TextStyle caption1 = TextStyle(fontSize: 14, fontWeight: semiBold);
+  static const TextStyle caption2 = TextStyle(fontSize: 11, fontWeight: medium);
 
-  static const taskTextStyle = TextStyle(fontSize: 14, fontWeight: medium, height: 1, color: ColorStyles.taskTextColor);
+  static const TextTheme textTheme = TextTheme(
+    displayLarge: head1,
+    displayMedium: head2,
+    displaySmall: head3,
+    headlineLarge: head4,
+    headlineMedium: head5,
+    headlineSmall: head6,
 
-  static const roundTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, height: 1, color: ColorStyles.taskTextColor);
-  static const roundHintTextStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, height: 1, color: ColorStyles.taskHintTextColor);
-
-
-  static const wideTextStyle = TextStyle(fontSize: 16, fontWeight: semiBold, letterSpacing: 2);
-
-  static const errorTextStyle = TextStyle(fontSize: 12, color: ColorStyles.errorColor);
+    bodyLarge: body1,
+    bodyMedium: body2,
+    bodySmall: body3,
+  );
 }

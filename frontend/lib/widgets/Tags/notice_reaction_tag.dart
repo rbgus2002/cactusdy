@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
@@ -47,7 +47,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(_boarderRadius),
-          color: ColorStyles.grey,
+          color: OldColorStyles.grey,
         ),
         padding: const EdgeInsets.all(_padding),
 
@@ -57,7 +57,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
 
           children: [
             // Check Icon
-            Icon(Icons.check_circle, color: (widget.isChecked)? ColorStyles.green : ColorStyles.darkGrey),
+            Icon(Icons.check_circle, color: (widget.isChecked)? OldColorStyles.green : OldColorStyles.darkGrey),
 
             // User List
             AnimatedContainer(
@@ -70,9 +70,9 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
             ),
 
             // checker Num
-            Design.padding5,
+            OldDesign.padding5,
             Text("${widget.checkerNum}"),
-            Design.padding5,
+            OldDesign.padding5,
           ]
         ),
       ),

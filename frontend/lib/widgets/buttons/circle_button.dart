@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_design.dart';
 
 class CircleButton extends StatelessWidget {
   final double scale;
@@ -31,7 +31,7 @@ class CircleButton extends StatelessWidget {
             imageUrl: url,
             fit: BoxFit.cover) :
           Image.asset(
-            Design.defaultImagePath,
+            OldDesign.defaultImagePath,
             fit: BoxFit.cover),
         onTap: () {
           if (onTap != null) onTap!();

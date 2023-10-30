@@ -1,28 +1,17 @@
+
 import 'package:flutter/material.dart';
 
 class ColorStyles {
-  static const Color pointColor = Colors.blue;
-  // EX)
-  static const Color transparent = Colors.transparent;
-  static const Color white = Colors.white;
+  static const Color mainColor = Color(0xFF5676FF);
+  static const Color secondColor = Color(0xFF202B42);
 
-  static const Color panelBackgroundColor = Colors.white;
-  static const Color shadow = Color(0x80808080);
+  static const Color background = Color(0xFFF3F7FF);
 
-  static const Color taskTextColor = Colors.black87;
-  static const Color taskHintTextColor = Colors.black54;
+  static const Color blue = Color(0xFFE3F1FF);
+  static const Color mint = Color(0xFFDEF3F3);
+  static const Color green = Color(0xFFEAF6E5);
+  static const Color purple = Color(0xFFF3E8FD);
+  static const Color pink = Color(0xFFFFE5F7);
 
-  static const Color lightGrey = Color(0xfff4f4f4);
-  static const Color grey = Color(0xffE8E8E8);
-  static const Color darkGrey = Color(0xff393939);
 
-  static const Color green = Colors.green;
-  static const Color orange = Colors.orange;
-  static const Color red = Colors.red;
-
-  static const Color errorColor = Color(0xffc23f38);
-
-  static const Color deepPurpleAccent = Colors.deepPurpleAccent;
-
-  static const Color taskUnderlineColor = pointColor;
 }

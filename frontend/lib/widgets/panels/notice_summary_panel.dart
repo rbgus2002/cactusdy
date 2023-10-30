@@ -4,9 +4,9 @@ import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class NoticeSummaryPanel extends StatelessWidget {
@@ -30,8 +30,8 @@ class NoticeSummaryPanel extends StatelessWidget {
         alignment: Alignment.centerLeft,
         height: 106,
 
-        color: ColorStyles.lightGrey,
-        padding: Design.edge15,
+        color: OldColorStyles.lightGrey,
+        padding: OldDesign.edge15,
         child: FutureBuilder(
           future: NoticeSummary.getNoticeSummaryList(studyId, 0, 3),
           builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class NoticeSummaryPanel extends StatelessWidget {
 
                 children: [
                   for (var content in contents)
-                    Text('• $content', style: TextStyles.bodyLarge,
+                    Text('• $content', style: OldTextStyles.bodyLarge,
                       maxLines: 1, overflow: TextOverflow.ellipsis,),
                 ]
               );

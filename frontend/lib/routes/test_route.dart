@@ -3,7 +3,7 @@ import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +24,7 @@ class _TestRoute extends State<TestRouteState> {
         appBar: AppBar(title: Text("ASD")),
         body: Container(
           child: ImagePickerWidget(onPicked: uploadProfileImage),
-            padding: Design.edge15,
+            padding: OldDesign.edge15,
         )
     );
   }

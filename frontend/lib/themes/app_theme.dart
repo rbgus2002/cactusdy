@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 
 class AppTheme {
   //< FIXME : not completed
@@ -16,7 +16,7 @@ class AppTheme {
   );
 */
   static const TextTheme _textTheme = TextTheme(
-    titleLarge: TextStyles.hintTextStyle,
+    titleLarge: OldTextStyles.hintTextStyle,
 
   );
 }

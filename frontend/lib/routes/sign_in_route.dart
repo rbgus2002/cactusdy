@@ -4,9 +4,9 @@ import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/reset_password_route.dart';
 import 'package:group_study_app/routes/reset_password_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 
@@ -40,7 +40,7 @@ class _SignInRouteState extends State<SignInRoute> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        padding: Design.edgePadding,
+        padding: OldDesign.edgePadding,
         alignment: Alignment.center,
         child: Form(
           key: _formKey,
@@ -51,7 +51,7 @@ class _SignInRouteState extends State<SignInRoute> {
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("PHONE NUMBER", style: TextStyles.titleSmall),
+                const Text("PHONE NUMBER", style: OldTextStyles.titleSmall),
                 TextFormField(
                   controller: _editingController,
                   keyboardType: TextInputType.number,
@@ -59,7 +59,7 @@ class _SignInRouteState extends State<SignInRoute> {
                   validator: (text) =>
                   ((text!.isEmpty) ? _phoneNumberHintText : null),
                   decoration: const InputDecoration(
-                    prefixIcon: AppIcons.phone,
+                    prefixIcon: OldAppIcons.phone,
                     hintText: _phoneNumberHintText,
                     counterText: "",
                   ),
@@ -69,16 +69,16 @@ class _SignInRouteState extends State<SignInRoute> {
                   },
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 ),
-                Design.padding15,
+                OldDesign.padding15,
 
-                const Text("PASSWORD", style: TextStyles.titleSmall),
+                const Text("PASSWORD", style: OldTextStyles.titleSmall),
                 TextFormField(
                   obscureText: true,
                   maxLength: Auth.passwordMaxLength,
                   validator: (text) =>
                   ((text!.isEmpty) ? _passwordHintText : null),
                   decoration: const InputDecoration(
-                    prefixIcon: AppIcons.password,
+                    prefixIcon: OldAppIcons.password,
                     hintText: _passwordHintText,
                     counterText: "",
                   ),
@@ -86,17 +86,17 @@ class _SignInRouteState extends State<SignInRoute> {
                   onEditingComplete: () => tryToSignIn(),
                 ),
               ],),
-              Design.padding15,
+              OldDesign.padding15,
 
-              Text(_errorText, style: TextStyles.errorTextStyle,),
-              Design.padding5,
+              Text(_errorText, style: OldTextStyles.errorTextStyle,),
+              OldDesign.padding5,
 
               ElevatedButton(
                   onPressed: tryToSignIn,
                   child: Container(
                     alignment: Alignment.center,
                     width: double.infinity,
-                    child: const Text(_signInText, style: TextStyles.titleSmall,),
+                    child: const Text(_signInText, style: OldTextStyles.titleSmall,),
                   )
               ),
 

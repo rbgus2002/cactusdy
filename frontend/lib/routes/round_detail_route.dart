@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
@@ -53,7 +53,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: () async => setState(() {}),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(Design.padding),
+          padding: const EdgeInsets.all(OldDesign.padding),
           child: Column(
             children: [
               FutureBuilder(
@@ -68,18 +68,18 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                       children: [
                         // Round Info
                         Panel(
-                          boxShadows: Design.basicShadows,
+                          boxShadows: OldDesign.basicShadows,
                           child: RoundInfoWidget(
                             roundSeq: widget.roundSeq,
                             round: snapshot.data!,
                             studyId: widget.studyId,
                           ),
                         ),
-                        Design.padding15,
+                        OldDesign.padding15,
 
                         // Detail Record
                         TitleWidget(
-                          title: "Detail Record", icon: AppIcons.edit,
+                          title: "Detail Record", icon: OldAppIcons.edit,
                           onTap: () => _focusNode.requestFocus()
                         ),
                         _detailRecord(),
@@ -87,10 +87,10 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                     );
                   }
 
-                  return Design.loadingIndicator;
+                  return OldDesign.loadingIndicator;
                 },
               ),
-              Design.padding15,
+              OldDesign.padding15,
 
               ParticipantInfoListWidget(roundId: widget.roundId),
             ],
@@ -121,13 +121,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     return TextField(
       minLines: 3, maxLines: 7,
       controller: _detailRecordEditingController,
-      style: TextStyles.bodyLarge,
-      cursorHeight: TextStyles.bodyLarge.fontSize,
+      style: OldTextStyles.bodyLarge,
+      cursorHeight: OldTextStyles.bodyLarge.fontSize,
       focusNode: _focusNode,
       decoration: const InputDecoration(
         hintText: _detailHintText,
         filled: true,
-        fillColor: ColorStyles.grey,
+        fillColor: OldColorStyles.grey,
         border: OutlineInputBorder(borderSide: BorderSide.none),
       ),
       onChanged: (value) { _isEdited = true; },
@@ -145,13 +145,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Widget _roundPopupMenu() {
     return PopupMenuButton(
-      icon: AppIcons.moreVert,
+      icon: OldAppIcons.moreVert,
       splashRadius: 16,
       offset: const Offset(0, 42),
 
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: const Text(_deleteRoundText, style: TextStyles.bodyMedium,),
+          child: const Text(_deleteRoundText, style: OldTextStyles.bodyMedium,),
           onTap: () => _showDeleteRoundDialog(context),
         ),
       ],

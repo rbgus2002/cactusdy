@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
 
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
 import 'package:group_study_app/widgets/buttons/percent_circle_button.dart';

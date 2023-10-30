@@ -1,5 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 
 
 class Toast {
@@ -7,7 +7,7 @@ class Toast {
     Fluttertoast.showToast(
       msg: msg,
       gravity: position??ToastGravity.BOTTOM,
-      backgroundColor: ColorStyles.orange,
+      backgroundColor: OldColorStyles.orange,
     );
   }
 }

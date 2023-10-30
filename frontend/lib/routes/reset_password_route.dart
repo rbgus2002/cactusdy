@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -46,7 +46,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
-          padding: Design.edgePadding,
+          padding: OldDesign.edgePadding,
           alignment: Alignment.center,
           child: Form(
             key: _formKey,
@@ -54,32 +54,32 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("PHONE NUMBER", style: TextStyles.titleSmall),
+                  const Text("PHONE NUMBER", style: OldTextStyles.titleSmall),
                   TextFormField(
                     controller: TextEditingController(text: FormatterUtility.phoneNumberFormatter(widget.phoneNumber)),
                     decoration: const InputDecoration(
                       filled: true,
-                      fillColor: ColorStyles.grey,
-                      prefixIcon: AppIcons.phone,
+                      fillColor: OldColorStyles.grey,
+                      prefixIcon: OldAppIcons.phone,
                     ),
                     enabled: false,
                   ),
-                  Design.padding30,
+                  OldDesign.padding30,
 
-                  const Text("PASSWORD", style: TextStyles.titleSmall),
+                  const Text("PASSWORD", style: OldTextStyles.titleSmall),
                   TextFormField(
                     obscureText: true,
                     maxLength: Auth.passwordMaxLength,
                     validator: (text) =>
                     ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
                     decoration: const InputDecoration(
-                      prefixIcon: AppIcons.password,
+                      prefixIcon: OldAppIcons.password,
                       hintText: _passwordText,
                       counterText: "",
                     ),
                     onChanged: (value) => _newPassword = value,
                   ),
-                  Design.padding15,
+                  OldDesign.padding15,
 
                   TextFormField(
                     obscureText: true,
@@ -87,7 +87,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
                     validator: (text) =>
                     ((text != _newPassword) ? _passwordNotSameText : null),
                     decoration: InputDecoration(
-                      prefixIcon: AppIcons.password,
+                      prefixIcon: OldAppIcons.password,
                       hintText: _passwordConfirmText,
                       counterText: "",
                       errorText: _errorText,
@@ -99,7 +99,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
                       child: Container(
                         alignment: Alignment.center,
                         width: double.infinity,
-                        child: const Text(_confirmText, style: TextStyles.titleSmall,),
+                        child: const Text(_confirmText, style: OldTextStyles.titleSmall,),
                       )
                   ),]
             ),

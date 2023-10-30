@@ -2,8 +2,8 @@ import 'package:group_study_app/models/notice_summary.dart';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/notice_panel.dart';
 
@@ -27,7 +27,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
       appBar: AppBar(shadowColor: Colors.transparent,
         actions: [
           IconButton(
-            icon: AppIcons.add,
+            icon: OldAppIcons.add,
             splashRadius: 16,
             onPressed: () {
               Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));
@@ -44,7 +44,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Container(
-                  padding: Design.edge15,
+                  padding: OldDesign.edge15,
                   child: ListView.builder(
                     shrinkWrap: true,
                     primary: false,
@@ -55,7 +55,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
                 );
               }
 
-              return Design.loadingIndicator;
+              return OldDesign.loadingIndicator;
                 //return Text("공지가 없어용");
             }
           ,)

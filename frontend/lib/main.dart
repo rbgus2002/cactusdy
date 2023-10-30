@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/backdoor_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/new_text_styles.dart';
 import 'package:group_study_app/services/notification_service.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 void main() {
@@ -16,7 +16,7 @@ void main() {
     title: 'asd', //< FIXME
     home: const MyApp(),
     theme: ThemeData(
-      fontFamily: NewTextStyles.mainFont,
+      fontFamily: TextStyles.mainFont,
 
       primaryColor: Colors.black87,
       buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),

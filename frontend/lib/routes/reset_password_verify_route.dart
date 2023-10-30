@@ -9,10 +9,10 @@ import 'package:group_study_app/routes/reset_password_route.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_up_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -58,7 +58,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        padding: Design.edgePadding,
+        padding: OldDesign.edgePadding,
         alignment: Alignment.center,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,9 +67,9 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(_title, style: TextStyles.titleMedium),
-                  Design.padding60,
-                  Design.padding15,
+                  const Text(_title, style: OldTextStyles.titleMedium),
+                  OldDesign.padding60,
+                  OldDesign.padding15,
                   TextFormField(
                     enabled: !_isVerificationCodeSend,
                     controller: _editingController,
@@ -93,7 +93,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
                         width: double.infinity,
                         child: Text((_isVerificationCodeSend)?
                         '$_sendMessageAgainText (${TimeUtility.secondToString(_restTime)})' : _sendMessageText,
-                          style: TextStyles.titleSmall,),
+                          style: OldTextStyles.titleSmall,),
                       )
                   ),
                 ],
@@ -117,7 +117,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
                           child: Container(
                             alignment: Alignment.center,
                             width: double.infinity,
-                            child: const Text(_startText, style: TextStyles.titleSmall,),
+                            child: const Text(_startText, style: OldTextStyles.titleSmall,),
                           )
                       ),]
                 ),

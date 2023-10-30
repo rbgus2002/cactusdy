@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWidget extends StatefulWidget {
@@ -37,7 +37,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       child: InkWell(
         borderRadius: borderRadius,
         child: (imageFile == null)?
-            Image.asset(Design.defaultImagePath) :
+            Image.asset(OldDesign.defaultImagePath) :
             Image.file(
               File(imageFile!.path),
               fit: BoxFit.cover,

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/widgets/participant_info_widget.dart';
 import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
@@ -41,7 +41,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
             itemCount: participantInfos.length,
             itemBuilder: (context, index) {
               return Container(
-                  padding: Design.bottom10,
+                  padding: OldDesign.bottom10,
                   child: ParticipantInfoWidget(
                     participantInfo: participantInfos[index],
                     subscribe: addListener,
@@ -51,7 +51,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
             },);
         }
 
-        return Design.loadingIndicator;
+        return OldDesign.loadingIndicator;
       },
     );
   }

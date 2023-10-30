@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
@@ -32,12 +32,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         onRefresh: () async => setState(() {}),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(Design.padding),
+          padding: const EdgeInsets.all(OldDesign.padding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Design.padding15,
+              OldDesign.padding15,
 
               // Study Head
               FutureBuilder(
@@ -48,24 +48,24 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                     }
                     return const SizedBox(); //< FIXME
                 },),
-              Design.padding15,
+              OldDesign.padding15,
 
               // Notice
-              TitleWidget(title: "NOTICE", icon: AppIcons.chevronRight,
+              TitleWidget(title: "NOTICE", icon: OldAppIcons.chevronRight,
                 onTap: () => Util.pushRoute(context,
                         (context)=>NoticeListRoute(studyId: widget.studyId,))),
               NoticeSummaryPanel(studyId: widget.studyId,),
-              Design.padding15,
+              OldDesign.padding15,
 
               //
-              TitleWidget(title: "MEMBER", icon: AppIcons.add,
+              TitleWidget(title: "MEMBER", icon: OldAppIcons.add,
                 onTap: () => null,),
               ParticipantProfileListWidget(studyId: widget.studyId),
-              Design.padding15,
+              OldDesign.padding15,
 
               //
               RuleListWidget(studyId: widget.studyId),
-              Design.padding15,
+              OldDesign.padding15,
 
               RoundInfoListWidget(studyId: widget.studyId),
             ],
