@@ -45,6 +45,12 @@ jobs:
           touch ./src/main/resources/application-dev.yml
           echo "${{ secrets.APPLICATION_DEV }}" > ./src/main/resources/application-dev.yml
 
+      - name: Copy studygroup-fcm.json
+        working-directory: ${{ env.wd }}
+        run: |
+          touch ./src/main/resources/studygroup-fcm.json
+          echo "${{ secrets.FCM_ACCESS_JSON }}" > ./src/main/resources/studygroup-fcm.json          
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
