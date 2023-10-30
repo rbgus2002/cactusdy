@@ -63,19 +63,19 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCgoBBGI8XHdaOlzplXfMJ8kPJjkvxr9WY',
-    appId: '1:295774991714:ios:d59ff9b1cdbea42163e83b',
+    appId: '1:295774991714:ios:4e1b76ea3063d78863e83b',
     messagingSenderId: '295774991714',
     projectId: 'studygroup-8d056',
     storageBucket: 'studygroup-8d056.appspot.com',
-    iosBundleId: 'com.ssu.groupStudyApp',
+    iosBundleId: 'com.ssu.groupstudy',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCgoBBGI8XHdaOlzplXfMJ8kPJjkvxr9WY',
-    appId: '1:295774991714:ios:3e0f10f0eff7ca4463e83b',
+    appId: '1:295774991714:ios:61cc680d19093f3663e83b',
     messagingSenderId: '295774991714',
     projectId: 'studygroup-8d056',
     storageBucket: 'studygroup-8d056.appspot.com',
-    iosBundleId: 'com.example.groupStudyApp.RunnerTests',
+    iosBundleId: 'com.example.groupstudy.RunnerTests',
   );
 }
