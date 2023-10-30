@@ -47,9 +47,12 @@ jobs:
 
       - name: Copy studygroup-fcm.json
         working-directory: ${{ env.wd }}
-        run: |
-          touch ./src/main/resources/studygroup-fcm.json
-          echo "${{ secrets.FCM_ACCESS_JSON }}" > ./src/main/resources/studygroup-fcm.json          
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "studygroup-fcm.json"
+          json: ${{ secrets.FCM_ACCESS_JSON }}
+          dir: "./src/main/resources/"
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
