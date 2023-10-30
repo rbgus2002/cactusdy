@@ -8,9 +8,7 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -42,6 +40,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
     private final List<Authority> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
+    private final Set<FcmToken> fcmTokens = new HashSet<>();
 
     @Column
     private String statusMessage;
@@ -111,6 +112,14 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addFcmToken(String token){
+        fcmTokens.add(FcmToken.from(token));
+    }
+
+    public void addFcmTokenDefaultTest(){ // TODO : 테스트 끝나면 삭제
+        fcmTokens.add(FcmToken.from("default"));
     }
 }
 
