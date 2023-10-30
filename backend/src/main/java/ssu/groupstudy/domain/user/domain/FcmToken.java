@@ -59,4 +59,8 @@ public class FcmToken {
     public int hashCode() {
         return Objects.hash(this.token);
     }
+
+    public void updateActivateDate(){
+        this.activateDate = LocalDateTime.now();
+    }
 }
