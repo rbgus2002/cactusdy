@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notification.domain.event.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -31,4 +32,12 @@ public class SubscribeListener {
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, event.getNoticeId());
         log.info("## handleNoticeTopicSubscribeEvent : ");
     }
+
+    @EventListener
+    public void handleStudyTopicSubscribeEvent(StudyTopicSubscribeEvent event) {
+        User user = event.getUser();
+        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        log.info("## handleStudyTopicSubscribeEvent : ");
+    }
+
 }

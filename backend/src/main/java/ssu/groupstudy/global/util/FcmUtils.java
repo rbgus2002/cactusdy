@@ -70,6 +70,7 @@ public class FcmUtils {
 
     }
 
+    // TODO : 비동기 처리
     public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
         String topic = TopicCode.handleTopicString(code, id);
         try {
