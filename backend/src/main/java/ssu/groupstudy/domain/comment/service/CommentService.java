@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
@@ -13,6 +14,7 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notification.domain.event.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 
@@ -28,12 +30,14 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Long createComment(CreateCommentRequest dto, User writer) {
         Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
+        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
         return commentRepository.save(comment).getCommentId();
