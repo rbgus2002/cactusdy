@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.auth.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
-import ssu.groupstudy.domain.notification.domain.TopicCode;
+import ssu.groupstudy.domain.notification.domain.SignInSuccessEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -19,7 +20,6 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.util.FcmUtils;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
 
@@ -33,7 +33,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
-    private final FcmUtils fcmUtils;
+    private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
 
@@ -54,7 +54,7 @@ public class AuthService {
 
     private void handleFcmToken(SignInRequest request, User user) {
         user.addFcmToken(request.getFcmToken());
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, 1L); // 리스너 분리
+        eventPublisher.publishEvent(new SignInSuccessEvent(user));
     }
 
     private void validatePassword(SignInRequest request, User user) {
