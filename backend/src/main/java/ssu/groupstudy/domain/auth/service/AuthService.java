@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -18,6 +19,7 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.FcmUtils;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
 
@@ -31,6 +33,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
+    private final FcmUtils fcmUtils;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
 
@@ -40,10 +43,18 @@ public class AuthService {
         User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
-        user.updateActivateDate();
-        user.addFcmToken(request.getFcmToken());
-
+        handleSuccessfulLogin(request, user);
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
+    }
+
+    private void handleSuccessfulLogin(SignInRequest request, User user) {
+        user.updateActivateDate();
+        handleFcmToken(request, user);
+    }
+
+    private void handleFcmToken(SignInRequest request, User user) {
+        user.addFcmToken(request.getFcmToken());
+        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, 1L); // 리스너 분리
     }
 
     private void validatePassword(SignInRequest request, User user) {

@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ssu.groupstudy.domain.notification.domain.TopicCode;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class FcmUtils {
+    // TODO : 추후 테스트 코드 작성
     @PostConstruct
     void initialize() {
         try {
@@ -43,10 +45,39 @@ public class FcmUtils {
                 .addAllTokens(tokens)
                 .build();
         try {
-            BatchResponse result = FirebaseMessaging.getInstance().sendEachForMulticast(message);
-            log.info("## sendNotificationByTokens : success >> {}, fail >> {}", result.getSuccessCount(), result.getFailureCount()); // TODO : 함수 이름은 로그 내용에 제외 고려
+            BatchResponse response = FirebaseMessaging.getInstance().sendEachForMulticast(message);
+            log.info("## sendNotificationByTokens : success >> {}, fail >> {}", response.getSuccessCount(), response.getFailureCount());
         }catch (FirebaseMessagingException e){
             log.error("## sendNotificationByTokens : can not push >> {}", e.getMessage());
+        }
+    }
+
+    public void sendMessageTestToTopic(){
+        Message message = Message.builder()
+                .setNotification(Notification.builder()
+                        .setTitle("topic TEST")
+                        .setBody(("HERE"))
+                        .build())
+                .setTopic(TopicCode.ALL_USERS.getFormat())
+                .build();
+
+        try {
+            String response = FirebaseMessaging.getInstance().send(message);
+            log.info("## sendMessageTestToTopic : {}", response);
+        } catch (FirebaseMessagingException e) {
+            log.error("## sendMessageTestToTopic : {}", e.getMessage());
+        }
+
+    }
+
+    public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
+        String topic = TopicCode.handleTopicString(code, id);
+        log.info("topic ::: {}", topic);
+        try {
+            TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic);
+            log.info("## subscribeTopicForAllUser : success >> {}, fail >> {}", response.getSuccessCount(), response.getFailureCount());
+        } catch (FirebaseMessagingException e) {
+            log.error("## subscribeTopicForAllUser : {}", e.getMessage());
         }
     }
 }
