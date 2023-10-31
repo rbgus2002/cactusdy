@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
-import ssu.groupstudy.domain.notification.domain.SignInSuccessEvent;
+import ssu.groupstudy.domain.notification.domain.event.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -54,7 +54,7 @@ public class AuthService {
 
     private void handleFcmToken(SignInRequest request, User user) {
         user.addFcmToken(request.getFcmToken());
-        eventPublisher.publishEvent(new SignInSuccessEvent(user));
+        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
     }
 
     private void validatePassword(SignInRequest request, User user) {
