@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:group_study_app/services/firebase_options.dart';
+import 'package:group_study_app/services/notification_channel.dart';
 
 class MessageService {
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -18,7 +18,8 @@ class MessageService {
     await _initFCM();
     await _initLocalNotification();
 
-    print(await FirebaseMessaging.instance.getToken());
+    // if you want to see firebase messaging token, uncomment under line.
+    //print(await FirebaseMessaging.instance.getToken());
   }
 
   static Future<void> _initFCM() async {
@@ -43,45 +44,29 @@ class MessageService {
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
   }
 
-  void showFlutterNotification(RemoteMessage message) {
-    /*
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    if (notification != null && android != null && !kIsWeb) {
-      _flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            // TODO add a proper drawable resource to android, for now using
-            //      one that already exists in example app.
-            icon: 'launch_background',
-          ),
-        ),
-      );
-    }
-
-     */
-  }
-
   static Future<void> _initLocalNotification() async {
     if (_isInitLocalNotification || kIsWeb) return;
+    _isInitLocalNotification = true;
 
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+    // Android init
     AndroidInitializationSettings initSettingsAndroid =
       const AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    NotificationChannel.channels.forEach((key, channel) {
+      _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+    });
+
+    // iOS init
     DarwinInitializationSettings initSettingsIOS =
       const DarwinInitializationSettings(
         requestSoundPermission: true,
         requestBadgePermission: true,
-        requestAlertPermission: true,
-      );
+        requestAlertPermission: true);
 
     InitializationSettings initSettings = InitializationSettings(
       android: initSettingsAndroid,
@@ -89,8 +74,6 @@ class MessageService {
     );
 
     await _flutterLocalNotificationsPlugin.initialize(initSettings);
-
-    _isInitLocalNotification = true;
   }
 
   static Future<void> _showNotification(RemoteMessage message) async {
@@ -99,23 +82,34 @@ class MessageService {
 
     String title = notification!.title??"";
     String body = notification!.body??"";
+    print('notification : { title : $title, body : $body }');
 
-    print('title : $title, body : $body');
+    // Android : in our app, { channel id == title }
+    var channel = NotificationChannel.channels[title]??
+                  NotificationChannel.unknownChannel;
 
-    var androidDetails = AndroidNotificationDetails(title, body, importance: Importance.max, priority: Priority.max);
-    var iOSDetails = DarwinNotificationDetails();
+    // Android Details
+    var androidDetails = AndroidNotificationDetails(
+        channel.id, channel.name, importance: channel.importance, priority: Priority.max);
 
-    var details = NotificationDetails(android: androidDetails, iOS: iOSDetails);
+    // iOS Details
+    var iOSDetails = const DarwinNotificationDetails(
+        presentAlert: true);
 
     await _flutterLocalNotificationsPlugin.show(
         notification.hashCode,
         title,
         body,
-        details);
+        NotificationDetails(
+          android:  androidDetails,
+          iOS:      iOSDetails
+        ));
   }
 
   static Future<void> _foregroundHandler(RemoteMessage message) async {
-    _showNotification(message);
+    if (_isAndroid(message)) {
+      _showNotification(message);
+    }
 
     print('Handling a foreground message ${message.messageId}');
   }
@@ -128,5 +122,9 @@ class MessageService {
     _showNotification(message);
 
     print('Handling a background message ${message.messageId}');
+  }
+
+  static bool _isAndroid(RemoteMessage message) {
+    return (message.notification?.android != null);
   }
 }
