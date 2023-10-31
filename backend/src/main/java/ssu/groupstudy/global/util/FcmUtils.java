@@ -74,9 +74,9 @@ public class FcmUtils {
         String topic = TopicCode.handleTopicString(code, id);
         try {
             TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic);
-            log.info("## subscribeTopicForAllUser : success >> {}, fail >> {}", response.getSuccessCount(), response.getFailureCount());
+            log.info("## subscribe {} : success >> {}, fail >> {}", topic, response.getSuccessCount(), response.getFailureCount());
         } catch (FirebaseMessagingException e) {
-            log.error("## subscribeTopicForAllUser : {}", e.getMessage());
+            log.error("## subscribeTopicFor : {}", e.getMessage());
         }
     }
 }

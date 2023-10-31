@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notification.domain.event.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
+import ssu.groupstudy.domain.notification.domain.event.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -18,9 +19,16 @@ public class SubscribeListener {
     private final FcmUtils fcmUtils;
 
     @EventListener
-    public void handleSignInSuccessEvent(AllUserTopicSubscribeEvent event) {
+    public void handleAllUserTopicSubscribeEvent(AllUserTopicSubscribeEvent event) {
         User user = event.getUser();
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.ALL_USERS, null);
-        log.info("## handleSignInSuccessEvent : ");
+        log.info("## handleAllUserTopicSubscribeEvent : ");
+    }
+
+    @EventListener
+    public void handleNoticeTopicSubscribeEvent(NoticeTopicSubscribeEvent event) {
+        User user = event.getUser();
+        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, event.getNoticeId());
+        log.info("## handleNoticeTopicSubscribeEvent : ");
     }
 }
