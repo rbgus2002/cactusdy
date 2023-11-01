@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.notification.domain.event.push.NoticeTopicPushEvent;
+import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
@@ -40,7 +40,7 @@ public class CommentService {
         validateUser(writer, notice);
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new NoticeTopicPushEvent(writer, notice));
+        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
         return commentRepository.save(comment).getCommentId();
     }

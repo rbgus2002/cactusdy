@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @RequiredArgsConstructor
-public class NoticeTopicPushEvent{
+public class CommentCreationEvent {
     private final User user;
     private final Notice notice;
 
