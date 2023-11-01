@@ -19,7 +19,7 @@ class MessageService {
     await _initLocalNotification();
 
     // if you want to see firebase messaging token, uncomment under line.
-    //print(await FirebaseMessaging.instance.getToken());
+    print('Firebase Messaging Token : ${await FirebaseMessaging.instance.getToken()}');
   }
 
   static Future<void> _initFCM() async {
