@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
@@ -30,6 +31,8 @@ class StudyServiceTest extends ServiceTest {
     private StudyRepository studyRepository;
     @Mock
     private ParticipantRepository participantRepository;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
 
     @Nested
