@@ -57,7 +57,7 @@ public class FcmUtils {
     public void sendNotificationToTopic(String title, String body, TopicCode code, Long id){
         String topic = TopicCode.handleTopicString(code, id);
         Message message = Message.builder()
-                .putData("id", String.valueOf(id))
+//                .putData("id", String.valueOf(id))
                 .setNotification(Notification.builder()
                         .setTitle(title)
                         .setBody(body)
