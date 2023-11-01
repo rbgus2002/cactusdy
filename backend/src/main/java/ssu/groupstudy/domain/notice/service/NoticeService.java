@@ -17,6 +17,7 @@ import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -45,7 +46,10 @@ public class NoticeService {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
+
+        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+
         return notice.getNoticeId();
     }
 

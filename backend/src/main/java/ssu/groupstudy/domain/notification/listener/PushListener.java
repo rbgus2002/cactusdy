@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
-import ssu.groupstudy.domain.notification.domain.event.push.StudyTopicPushEvent;
+import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -27,8 +27,10 @@ public class PushListener {
     }
 
     @EventListener
-    public void handleStudyTopicPushEvent(StudyTopicPushEvent event){
-        fcmUtils.sendNotificationToTopic("스터디", event.getBody(), TopicCode.STUDY, event.getStudyId());
-        log.info("## handleStudyTopicPushEvent : ");
+    public void handleNoticeCreationEvent(NoticeCreationEvent event){
+        User user = event.getUser();
+        String body = String.format("[%s]님이 공지사항을 작성했습니다.", user.getNickname());
+        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
+        log.info("## handleNoticeCreationEvent : ");
     }
 }
