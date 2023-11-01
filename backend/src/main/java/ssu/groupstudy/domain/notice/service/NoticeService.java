@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.notification.domain.event.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;

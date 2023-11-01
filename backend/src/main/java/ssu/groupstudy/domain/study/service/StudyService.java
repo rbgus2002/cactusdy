@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.domain.event.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;

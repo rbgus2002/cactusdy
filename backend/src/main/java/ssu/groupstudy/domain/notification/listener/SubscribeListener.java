@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.domain.event.AllUserTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
-import ssu.groupstudy.domain.notification.domain.event.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 

@@ -6,8 +6,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
-import ssu.groupstudy.domain.notification.domain.event.NoticeTopicPushEvent;
-import ssu.groupstudy.domain.notification.domain.event.StudyTopicPushEvent;
+import ssu.groupstudy.domain.notification.domain.event.push.NoticeTopicPushEvent;
+import ssu.groupstudy.domain.notification.domain.event.push.StudyTopicPushEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
