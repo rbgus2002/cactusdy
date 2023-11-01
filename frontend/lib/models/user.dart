@@ -87,4 +87,22 @@ class User{
       return responseJson['success'];
     }
   }
+
+  static Future<bool> notifyParticipant(int targetUserId, int studyId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/notifications?targetUserId=$targetUserId&studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception();
+    } else {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      if (responseJson['success']) {
+        print("success to notify to user_$targetUserId in study_$studyId");
+      }
+
+      return responseJson['success'];
+    }
+  }
 }

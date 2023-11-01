@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
@@ -48,6 +49,7 @@ class Auth {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'password': password,
+      'fcmToken': await FirebaseMessaging.instance.getToken(),
     };
 
     final response = await http.post(
@@ -61,7 +63,7 @@ class Auth {
       throw Exception(responseJson['message']);
     } else {
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      print(signInfo!.token);
+      print('User Auth Token : ${signInfo!.token}');
       SignInfo.setSignInfo(signInfo!);
       print("success to sign in");
 

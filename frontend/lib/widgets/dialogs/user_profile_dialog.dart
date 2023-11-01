@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -12,6 +13,7 @@ import 'package:group_study_app/widgets/tags/study_group_tag.dart';
 class UserProfileDialog {
   static const double borderRadius = 30;
   static Future<dynamic> showProfileDialog(BuildContext context, int userId) {
+    int studyId = 1; //< FIXME
     return showDialog(
       context: context,
       builder: (context) {
@@ -76,7 +78,7 @@ class UserProfileDialog {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      OutlinedButton(onPressed: (){},
+                      OutlinedButton(onPressed: () => User.notifyParticipant(userId, studyId),
                         child: Text("Stab!", style: TextStyles.titleLarge,), style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius),),
                           minimumSize: const Size(120, borderRadius),
