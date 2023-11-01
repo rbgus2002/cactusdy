@@ -1,8 +1,10 @@
 package ssu.groupstudy.domain.task.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
@@ -16,6 +18,7 @@ import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
+import ssu.groupstudy.domain.user.domain.User;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +33,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     public List<TaskResponse> getTasks(Long roundId) {
@@ -103,9 +107,17 @@ public class TaskService {
     }
 
     @Transactional
-    public char switchTask(Long taskId) {
+    public char switchTask(Long taskId, User user) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        return task.switchDoneYn();
+        char doneYn = task.switchDoneYn();
+        processNotification(task, user);
+        return doneYn;
+    }
+
+    private void processNotification(Task task, User user) {
+        if(task.isDone()){
+            eventPublisher.publishEvent(new TaskDoneEvent(user, task.getStudy()));
+        }
     }
 }

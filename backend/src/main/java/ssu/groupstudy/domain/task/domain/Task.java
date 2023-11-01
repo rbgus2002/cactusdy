@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
+import ssu.groupstudy.domain.study.domain.Study;
 
 import javax.persistence.*;
 
@@ -82,5 +83,9 @@ public class Task{
 
     public boolean isDone(){
         return doneYn == 'Y';
+    }
+
+    public Study getStudy(){
+        return getRoundParticipant().getRound().getStudy();
     }
 }

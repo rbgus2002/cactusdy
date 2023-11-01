@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
+import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -23,14 +24,19 @@ public class PushListener {
         User user = event.getUser();
         String body = String.format("[%s]님이 댓글을 작성했습니다.", user.getNickname());
         fcmUtils.sendNotificationToTopic("공지사항", body, TopicCode.NOTICE, event.getNoticeId());
-        log.info("## handleNoticeTopicPushEvent : ");
     }
 
     @EventListener
-    public void handleNoticeCreationEvent(NoticeCreationEvent event){
+    public void handleNoticeCreationEvent(NoticeCreationEvent event) {
         User user = event.getUser();
         String body = String.format("[%s]님이 공지사항을 작성했습니다.", user.getNickname());
         fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
-        log.info("## handleNoticeCreationEvent : ");
+    }
+
+    @EventListener
+    public void handleTaskDoneEvent(TaskDoneEvent event) {
+        User user = event.getUser();
+        String body = String.format("[%s]님이 과제를 완료했습니다.", user.getNickname());
+        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
     }
 }
