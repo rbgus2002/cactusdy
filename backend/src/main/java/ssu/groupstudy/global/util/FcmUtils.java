@@ -52,20 +52,22 @@ public class FcmUtils {
         }
     }
 
-    public void sendMessageTestToTopic(){
+    // TODO : 비동기 처리
+    public void sendNotificationToTopic(String title, String body, TopicCode code, Long id){
+        String topic = TopicCode.handleTopicString(code, id);
         Message message = Message.builder()
                 .setNotification(Notification.builder()
-                        .setTitle("topic TEST")
-                        .setBody(("HERE"))
+                        .setTitle(title)
+                        .setBody(body)
                         .build())
-                .setTopic(TopicCode.ALL_USERS.getFormat())
+                .setTopic(topic)
                 .build();
 
         try {
             String response = FirebaseMessaging.getInstance().send(message);
-            log.info("## sendMessageTestToTopic : {}", response);
+            log.info("## sendNotificationToTopic : {}", response);
         } catch (FirebaseMessagingException e) {
-            log.error("## sendMessageTestToTopic : {}", e.getMessage());
+            log.error("## sendNotificationToTopic : {}", e.getMessage());
         }
 
     }
