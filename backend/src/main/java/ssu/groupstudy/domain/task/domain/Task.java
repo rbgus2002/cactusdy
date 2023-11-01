@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
+import ssu.groupstudy.domain.study.domain.Study;
 
 import javax.persistence.*;
 
@@ -32,7 +33,7 @@ public class Task{
     @Column(nullable = false)
     private char doneYn;
 
-    @ManyToOne(fetch = LAZY) // TODO : EAGER로 하지 않으면 equals&hash 안먹음
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_round_id", nullable = false)
     private RoundParticipant roundParticipant;
 
@@ -82,5 +83,9 @@ public class Task{
 
     public boolean isDone(){
         return doneYn == 'Y';
+    }
+
+    public Study getStudy(){
+        return getRoundParticipant().getRound().getStudy();
     }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
@@ -32,6 +33,8 @@ class AuthServiceTest extends ServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private JwtProvider jwtProvider;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
 
     @Nested

@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.auth.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -31,6 +33,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
+    private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
 
@@ -40,10 +43,18 @@ public class AuthService {
         User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request, user);
-        user.updateActivateDate();
-        user.addFcmToken(request.getFcmToken());
-
+        handleSuccessfulLogin(request, user);
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
+    }
+
+    private void handleSuccessfulLogin(SignInRequest request, User user) {
+        user.updateActivateDate();
+        handleFcmToken(request, user);
+    }
+
+    private void handleFcmToken(SignInRequest request, User user) {
+        user.addFcmToken(request.getFcmToken());
+        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
     }
 
     private void validatePassword(SignInRequest request, User user) {

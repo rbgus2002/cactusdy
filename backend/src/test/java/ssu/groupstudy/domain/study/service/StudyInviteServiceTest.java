@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.Optional;
@@ -24,12 +24,10 @@ import static org.mockito.Mockito.doReturn;
 class StudyInviteServiceTest extends ServiceTest {
     @InjectMocks
     private StudyInviteService studyInviteService;
-
-    @Mock
-    private UserRepository userRepository;
-
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @Nested
     class inviteUser {
