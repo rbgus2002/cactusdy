@@ -80,4 +80,8 @@ public class Study extends BaseEntity {
     public List<Participant> getParticipants(){
         return this.participants.getParticipants();
     }
+
+    public void delete(){
+        this.deleteYn = 'Y';
+    }
 }

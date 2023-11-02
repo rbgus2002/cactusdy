@@ -1,6 +1,7 @@
 package ssu.groupstudy.domain.study.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
@@ -11,4 +12,7 @@ import java.util.Optional;
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
     Optional<Participant> findByUserAndStudy(User user, Study study);
     List<Participant> findByUserOrderByCreateDate(User user);
+
+    @Query("SELECT s.studyName FROM Participant p JOIN Study s ON s.studyId = p.study.studyId WHERE p.user = :user AND s.deleteYn ='N' ORDER BY p.createDate ASC")
+    List<String> findStudyNamesByUser(User user);
 }

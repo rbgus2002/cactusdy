@@ -151,4 +151,27 @@ class ParticipantRepositoryTest {
         softly.assertThat(participants.size()).isEqualTo(2);
         softly.assertThat(participants.get(0).getCreateDate()).isBefore(participants.get(1).getCreateDate());
     }
+
+    @Test
+    @DisplayName("사용자가 참여중인 스터디의 이름들을 가져온다")
+    void findStudyNamesByUser(){
+        // given
+        User 최규현 = userRepository.findById(1L).get();
+        Study 알고스터디 = studyRepository.findById(1L).get();
+        Study 영어스터디 = studyRepository.findById(2L).get();
+        participantRepository.save(Participant.builder()
+                .user(최규현)
+                .study(알고스터디)
+                .build());
+        participantRepository.save(Participant.builder()
+                .user(최규현)
+                .study(영어스터디)
+                .build());
+
+        // when
+        List<String> studyNames = participantRepository.findStudyNamesByUser(최규현);
+
+        // then
+        softly.assertThat(studyNames.size()).isEqualTo(2);
+    }
 }
