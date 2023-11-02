@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
 import ssu.groupstudy.domain.study.service.ParticipantsService;
 import ssu.groupstudy.domain.study.service.StudyInviteService;
@@ -48,5 +49,12 @@ public class ParticipantApi {
     public ResponseDto modifyColor(@RequestParam Long participantId, @RequestParam String colorCode){ // TODO : userStudyId라고 네이밍 하는 게 맞을지 고민
         participantsService.modifyColor(participantId, colorCode);
         return ResponseDto.success();
+    }
+
+    @Operation(summary = "스터디 참여자 프로필 상세보기")
+    @GetMapping
+    public ResponseDto getParticipant(@RequestParam Long userId, @RequestParam Long studyId){
+        ParticipantResponse participant = participantsService.getParticipant(userId, studyId);
+        return DataResponseDto.of("participant", participant);
     }
 }

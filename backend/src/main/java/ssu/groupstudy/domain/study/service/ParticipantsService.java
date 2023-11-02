@@ -4,20 +4,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.DoneCount;
+import ssu.groupstudy.domain.study.dto.StatusTagInfo;
+import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.PARTICIPANT_NOT_FOUND;
-import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
+import static ssu.groupstudy.global.constant.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +31,9 @@ import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
 @Slf4j
 public class ParticipantsService {
     private final StudyRepository studyRepository;
+    private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
 
-    // TODO : userId가 아닌 userStudyId를 보내주어야 하는 것이 아닌가?
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
@@ -49,5 +55,32 @@ public class ParticipantsService {
         Participant participant = participantRepository.findById(participantId)
                 .orElseThrow(() -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
         participant.setColor(colorCode);
+    }
+
+    public ParticipantResponse getParticipant(Long userId, Long studyId) {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+
+        List<String> studyNames = participantRepository.findStudyNamesByUser(user);
+        List<StatusTagInfo> statusTagInfo = handleStatusTagInfo(study, user);
+        DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
+
+        return ParticipantResponse.of(user, studyNames, statusTagInfo, doneCount);
+    }
+
+    private List<StatusTagInfo> handleStatusTagInfo(Study study, User user) {
+        List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
+        EnumSet<StatusTag> statusTags = EnumSet.allOf(StatusTag.class);
+
+        Map<StatusTag, StatusTagInfo> statusTagInfoMap = statusTagInfos.stream()
+                .collect(Collectors.toMap(StatusTagInfo::getStatusTag, Function.identity()));
+
+        for (StatusTag tag : statusTags) {
+            statusTagInfoMap.computeIfAbsent(tag, t -> new StatusTagInfo(t, 0L));
+        }
+
+        return new ArrayList<>(statusTagInfoMap.values());
     }
 }
