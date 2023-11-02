@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
-import 'package:group_study_app/routes/font_test_route.dart';
+import 'package:group_study_app/routes/design_test_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/login_route_old.dart';
@@ -172,7 +172,7 @@ class BackdoorRoute extends StatelessWidget {
                 ElevatedButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FontTestRoute()),
+                    MaterialPageRoute(builder: (context) => DesignTestRoute()),
                   );
                 }, style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 50),
