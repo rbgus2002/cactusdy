@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -40,7 +41,7 @@ class StudyRepositoryTest {
 
     @Test
     @DisplayName("각 출석태그의 횟수를 모두 가져온다")
-    void calculateAttendanceCount(){
+    void calculateStatusTag(){
         // given
         User user = userRepository.findById(1L).get();
         Study study = studyRepository.findById(1L).get();
@@ -50,5 +51,19 @@ class StudyRepositoryTest {
 
         // then
         softly.assertThat(statusTagInfos).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("본인의 모든 과제 수를 가져온다")
+    void calculateDoneCount(){
+        // given
+        User user = userRepository.findById(1L).get();
+        Study study = studyRepository.findById(1L).get();
+
+        // when
+        DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
+
+        // then
+        softly.assertThat(doneCount.getSumCount()).isGreaterThan(0);
     }
 }
