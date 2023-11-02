@@ -39,7 +39,10 @@ INSERT INTO round (round_id, create_date, modified_date, study_place, study_time
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (6, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 2);
 
 -- user_round
-INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'ATTENDANCE', 1, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (2, 'ATTENDANCE', 3, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (3, 'ATTENDANCE', 4, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (4, 'ATTENDANCE', 5, 1);
 
 -- rule
 INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (1, '2023-10-22 21:34:31.260542', '2023-10-22 21:34:31.260542', 'N', '규칙1', 1);
