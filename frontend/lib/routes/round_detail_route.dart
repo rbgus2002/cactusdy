@@ -182,7 +182,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     Round.deleteRound(round!.roundId).then((result) {
           if (result == true) Navigator.of(context).pop();
         }).catchError((e) {
-      Toast.showToast(msg: e.toString().substring(10));
+      Toast.showToast(context: context, message: e.toString().substring(10));
     });
   }
 }

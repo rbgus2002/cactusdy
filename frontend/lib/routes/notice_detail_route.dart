@@ -197,7 +197,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   bool _checkValidate() {
     if (_commentEditor.text.isEmpty) {
-      Toast.showToast(msg: _commentHintMessage);
+      Toast.showToast(context: context, message: _commentHintMessage);
       return false;
     }
     return true;
@@ -221,7 +221,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         });
       }
       else {
-        Toast.showToast(msg: _writingFailMessage);
+        Toast.showToast(context: context, message: _writingFailMessage);
       }// FIXME catch error
     });
   }
@@ -229,7 +229,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   void deleteComment(int commentId) {
     Comment.deleteComment(commentId).then((result) {
       if (result == false) {
-        Toast.showToast(msg: _deleteNoticeFailMessage);
+        Toast.showToast(context: context, message: _deleteNoticeFailMessage);
       }
       else {
         futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
@@ -241,7 +241,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   void _deleteNotice() {
     Notice.deleteNotice(widget.noticeId).then((result) {
         if (result == false) {
-          Toast.showToast(msg: _deleteNoticeFailMessage);
+          Toast.showToast(context: context, message: _deleteNoticeFailMessage);
         }
         else { Navigator.of(context).pop(); }
       },

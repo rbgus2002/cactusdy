@@ -114,7 +114,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
       try {
         await Auth.resetPassword(widget.phoneNumber, _newPassword).then((value) {
           if (value) {
-            Toast.showToast(msg: '성공적으로 비밀번호를 수정하였습니다.');
+            Toast.showToast(context: context, message: '성공적으로 비밀번호를 수정하였습니다.');
             Util.pushRouteAndPopUtil(context, (context) => const StartRoute());
             Util.pushRoute(context, (context) => const SignInRoute());
           }

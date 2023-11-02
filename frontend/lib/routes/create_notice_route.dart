@@ -62,7 +62,7 @@ class CreateNoticeRoute extends StatelessWidget {
                     // [Create Button]
                     ElevatedButton(
                       onPressed: () {
-                        if (_checkValidation()) {
+                        if (_checkValidation(context)) {
                           Future<int> result = Notice.createNotice(
                               _title, _contents, studyId);
 
@@ -72,7 +72,7 @@ class CreateNoticeRoute extends StatelessWidget {
                               Util.pushRoute(context, (context) => NoticeDetailRoute(noticeId: newNoticeId));
                             }
                             else {
-                              Toast.showToast(msg: _creationFailMessage);
+                              Toast.showToast(context: context, message: _creationFailMessage);
                             }
                           });
                         }
@@ -86,14 +86,14 @@ class CreateNoticeRoute extends StatelessWidget {
     );
   }
 
-  bool _checkValidation() {
+  bool _checkValidation(BuildContext context) {
     if (_title.isEmpty) {
-      Toast.showToast(msg: _titleHintMessage);
+      Toast.showToast(context: context, message: _titleHintMessage);
       return false;
     }
 
     if (_contents.isEmpty) {
-      Toast.showToast(msg: _contentHintMessage);
+      Toast.showToast(context: context, message: _contentHintMessage);
       return false;
     }
 
