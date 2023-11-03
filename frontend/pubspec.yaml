@@ -112,3 +112,7 @@ flutter:
         - asset: assets/fonts/Pretendard-Regular.ttf
         - asset: assets/fonts/Pretendard-SemiBold.ttf
         - asset: assets/fonts/Pretendard-Thin.ttf
+
+    - family: custom_icons
+      fonts:
+        - asset: assets/icons/custom_icons.ttf
