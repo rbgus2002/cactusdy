@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -9,7 +10,9 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/buttons/secondary_button.dart';
+import 'package:group_study_app/widgets/custom_checkbox.dart';
 import 'package:group_study_app/widgets/input_field.dart';
+import 'package:group_study_app/widgets/task_list_title.dart';
 
 class DesignTestRoute extends StatelessWidget {
   DesignTestRoute({
@@ -42,6 +45,23 @@ class DesignTestRoute extends StatelessWidget {
 
             Text('프리텐다드', style: TextStyles.caption1),
             Text('프리텐다드', style: TextStyles.caption2),
+
+            CustomCheckBox(
+                onChanged: (value) {}),
+
+            TaskListTitle(
+                title: "그룹 과제",
+                onTap: () {}),
+
+            Checkbox(
+              value: true,
+              activeColor: Colors.blue,//<
+              onChanged: (value) {},
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),
+                side: BorderSide.none,),
+              side: BorderSide.none,
+            ),
 
             OldDesign.padding15,
             InputField(
