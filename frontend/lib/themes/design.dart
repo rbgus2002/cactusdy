@@ -9,6 +9,11 @@ class Design {
   static const BorderRadius borderRadiusSmall = BorderRadius.all(Radius.circular(borderRadiusValueSmall));
   static const BorderRadius borderRadius = BorderRadius.all(Radius.circular(borderRadiusValue));
 
+  static const EdgeInsets edge4 = EdgeInsets.all(4.0);
+  static const EdgeInsets edge8 = EdgeInsets.all(8.0);
+
+  static const SizedBox padding4 = SizedBox(height: 4, width: 4,);
+  static const SizedBox padding8 = SizedBox(height: 8, width: 8,);
 
   static const double _buttonTargetHeight = 52;
 
@@ -20,7 +25,4 @@ class Design {
 
   static const EdgeInsets toastPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
   static const double toastHeight = 44.0;
-
-  static const EdgeInsets edge4 = EdgeInsets.all(4.0);
-  static const EdgeInsets edge8 = EdgeInsets.all(8.0);
 }
