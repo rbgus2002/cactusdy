@@ -7,8 +7,8 @@ class ColorStyles {
   static const Color secondColor  = Color(0xFF202B42);
 
   static const Color errorColor = Color(0xFFFF4747);
-  static const Color darkDim    = Color(0xB3000000);  // opacity 70%
-  static const Color dim        = Color(0xB3191F28);  // opacity 70%
+  static const Color darkDim    = Color(0xB3000000);  // opacity 70% : B3
+  static const Color dim        = Color(0xB3191F28);  // opacity 70% : B3
 
   /// Color chip for light mode
   static const Color _blue         = Color(0xFFE3F1FF);

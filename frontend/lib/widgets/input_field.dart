@@ -7,11 +7,13 @@ import 'package:group_study_app/themes/text_styles.dart';
 class InputField extends StatefulWidget {
   final String? hintText;
   final FormFieldValidator<String>? validator;
+  final int? maxLength;
 
   const InputField({
     Key? key,
     this.hintText,
     this.validator,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -37,12 +39,13 @@ class InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return TextField(
       controller: _textEditingController,
       style: TextStyles.body1,
+      maxLength: widget.maxLength,
+      maxLines: 1,
       decoration: InputDecoration(
-        contentPadding: Design.buttonPadding,
+        contentPadding: Design.textFieldPadding,
 
         hintText: widget.hintText,
         hintStyle: TextStyles.body1.copyWith(
