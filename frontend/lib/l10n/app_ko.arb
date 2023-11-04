@@ -1,0 +1,10 @@
+{
+    "@@locale": "ko",
+    "helloWorld": "Hello World!",
+
+    "start": "시작하기",
+    "alreadyHaveAnAccount": "이미 계정이 있나요?",
+
+    "signIn": "로그인",
+    "signOut": "로그아웃"
+}

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
@@ -33,6 +34,10 @@ class Util {
     (taskProgress > 0.5)? OldColorStyles.orange : OldColorStyles.red;
 
     return color;
+  }
+
+  static AppLocalizations str(BuildContext context) {
+    return AppLocalizations.of(context)!;
   }
 
   @deprecated
