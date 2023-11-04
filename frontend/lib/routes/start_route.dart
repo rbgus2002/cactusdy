@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_up_route.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
+import 'package:group_study_app/widgets/logo.dart';
 
 class StartRoute extends StatelessWidget {
   const StartRoute({
@@ -13,34 +16,42 @@ class StartRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
+
     return Scaffold(
       body: Container(
+        padding: Design.edgePadding,
         alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            const Text("DO YOU WANT TO", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 5),),
-            RichText(text: TextSpan(text: "STUDY\nWITH\n", style: TextStyle(fontSize: 52, fontWeight: FontWeight.w900, color: Colors.black87),
-                children: [ TextSpan(text: "ME?", style: TextStyle(fontSize: 52, fontWeight: FontWeight.w900, color: Colors.blue),), ])),
+            // logo
+            const Expanded(child: Logo()),
 
-            OldDesign.padding15,
-            OldDesign.padding15,
+            // start(sing up) button
+            PrimaryButton(
+              text: Util.str(context).start,
+              onPressed: () => Util.pushRoute(context, (context) => const SignUpRoute()),
+            ),
+            Design.padding8,
 
+            // sing in button
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                OldDesign.padding5,
+                Text(
+                  Util.str(context).alreadyHaveAnAccount,
+                  style: TextStyles.head5.copyWith(color: additionalColor.grey500),),
+
+                Design.padding8,
+
                 TextButton(
-                    onPressed: () => Util.pushRoute(context, (context) => SignUpRoute()),
-                    child: Text("회원가입", style: TextStyle(fontSize: 15, fontWeight: OldTextStyles.medium, decoration: TextDecoration.underline, letterSpacing: 4),)
-                  ),
-                TextButton(
-                    onPressed: () => Util.pushRoute(context, (context) => SignInRoute()),
-                    child: Text("로그인", style: TextStyle(fontSize: 15, fontWeight: OldTextStyles.medium, color: Colors.black, decoration: TextDecoration.underline,letterSpacing: 4),)
-                  ),
-                OldDesign.padding5,
-              ],
-            )
+                  onPressed: () => Util.pushRoute(context, (context) => const SignInRoute()),
+                  child : Text(Util.str(context).signIn),),
+              ],),
+
+            Design.padding20,
           ],
         )
       ),

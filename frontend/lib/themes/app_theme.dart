@@ -13,18 +13,15 @@ class AppTheme {
       primaryColor: ColorStyles.mainColor,
       scaffoldBackgroundColor: ColorStyles.backgroundColor,
 
+      appBarTheme: _appBarTheme,
       colorScheme: ColorStyles.colorScheme,
-      buttonTheme: _buttonTheme,
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textTheme: TextStyles.textTheme,
 
-      //checkboxTheme: ,
-
       extensions: const [
         AdditionalColor.additionalColor,
       ]
-      //inputDecorationTheme: _inputDecorationTheme,
   );
 
   static final ThemeData darkThemeData = ThemeData(
@@ -33,8 +30,8 @@ class AppTheme {
       primaryColor: ColorStyles.mainColor,
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
 
+      appBarTheme: _appBarTheme,
       colorScheme: ColorStyles.darkColorScheme,
-      buttonTheme: _buttonTheme,
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textTheme: TextStyles.textTheme,
@@ -61,12 +58,9 @@ class AppTheme {
       )
   );
 
-  static const ButtonThemeData _buttonTheme = ButtonThemeData(
-    buttonColor: ColorStyles.mainColor,
-  );
-
-  static const CheckboxThemeData _checkboxThemeData = CheckboxThemeData(
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
+  static const AppBarTheme _appBarTheme = AppBarTheme(
+    color: Colors.transparent,
+    elevation: 0,
+    titleTextStyle: TextStyles.head4,
   );
 }

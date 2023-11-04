@@ -8,8 +8,8 @@ import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/services/notification_service.dart';
 import 'package:group_study_app/themes/app_theme.dart';
-import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/logo.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +33,9 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    Key? key
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-          child: Text("SPLASH~", style: TextStyles.head1),
+          child: Logo(),
       ),
     );
   }
