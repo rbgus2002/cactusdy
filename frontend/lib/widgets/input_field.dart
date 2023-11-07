@@ -10,6 +10,7 @@ class InputField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final int? maxLength;
   final bool obscureText;
+  final bool enable;
 
   const InputField({
     Key? key,
@@ -18,6 +19,7 @@ class InputField extends StatefulWidget {
     this.onChanged,
     this.validator,
     this.maxLength,
+    this.enable = true,
   }) : super(key: key);
 
   @override
@@ -38,13 +40,14 @@ class InputFieldState extends State<InputField> {
     borderSide: BorderSide(color: ColorStyles.errorColor),);
 
   final TextEditingController _textEditingController = TextEditingController();
-  String? errorText;
+  String? _errorText;
 
   @override
   Widget build(BuildContext context) {
     final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
 
     return TextField(
+      enabled: widget.enable,
       controller: _textEditingController,
       style: TextStyles.body1,
       maxLength: widget.maxLength,
@@ -92,6 +95,7 @@ class InputFieldState extends State<InputField> {
   String? _validator(String? text) {
     if (widget.validator != null) {
       setState(() => errorText = widget.validator!(text));
+      return errorText;
     }
 
     return null;
@@ -99,6 +103,11 @@ class InputFieldState extends State<InputField> {
 
   String get text => _textEditingController.text;
   set text(String text) {
-    _textEditingController.text = text;
+    setState(() => _textEditingController.text = text );
+  }
+
+  String? get errorText => _errorText;
+  set errorText(String? text) {
+    setState(() => _errorText = text);
   }
 }

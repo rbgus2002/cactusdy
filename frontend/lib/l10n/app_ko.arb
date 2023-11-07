@@ -13,6 +13,8 @@
     "inputHint1": "{target}을 입력해주세요.",
     "inputHint2": "{target}를 입력해주세요.",
 
+    "unknownException": "알 수 없는 문제가 발생하였어요.",
+
     "start": "시작하기",
     "signIn": "로그인",
     "signOut": "로그아웃",
@@ -28,16 +30,16 @@
     "confirmPassword": "비밀번호 확인",
     "forgotPassword": "비밀번호를 잊으셨나요?",
     "resetPassword": "비밀번호 재설정",
+    "mismatchPassword": "비밀번호가 일치하지 않아요.",
     "successToResetPassword": "비밀번호 변경이 완료되었어요.",
 
-    "sendVerifyCode": "인증문자 받기",
-    "resendVerifyCode": "인증문자 다시 받기",
-    "verifyHintCode": "인증번호 8자리",
-    "sentVerifyCode": "인증번호가 문자로 전송되었어요.",
-    "wrongVerifyCode": "인증번호를 다시 입력해주세요.",
+    "receiveVerificationCode": "인증문자 받기",
+    "receiveVerificationCodeAgain": "인증문자 다시 받기",
+    "verificationCodeHint": "인증번호 6자리",
+    "sentVerificationCode": "인증번호가 문자로 전송되었어요.",
+    "wrongVerificationCode": "인증번호를 다시 입력해주세요.",
 
     "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
     "name": "이름",
     "nickname": "닉네임"
-
 }
