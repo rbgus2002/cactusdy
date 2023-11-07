@@ -46,9 +46,7 @@ class StartRoute extends StatelessWidget {
 
                 TextButton(
                   onPressed: () => Util.pushRoute(context, (context) => const SignInRoute()),
-                  child : Text(
-                    Util.str(context).signIn,
-                    style: TextStyles.head5,),),
+                  child : Text(Util.str(context).signIn),),
               ],),
 
             Design.padding28,

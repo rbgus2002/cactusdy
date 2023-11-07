@@ -72,7 +72,7 @@ class _SignInRouteState extends State<SignInRoute> {
 
                 PrimaryButton(
                   text: Util.str(context).confirm,
-                  onPressed: tryToSignIn,
+                  onPressed: _tryToSignIn,
                 ),
                 Design.padding4,
 
@@ -85,9 +85,7 @@ class _SignInRouteState extends State<SignInRoute> {
 
                     TextButton(
                       onPressed: () => Util.pushRoute(context, (context) => const ResetPasswordVerifyRoute()),
-                      child : Text(
-                          Util.str(context).resetPassword,
-                          style: TextStyles.head5,),),
+                      child : Text(Util.str(context).resetPassword,),),
                   ],
                 )
               ],
@@ -111,7 +109,7 @@ class _SignInRouteState extends State<SignInRoute> {
     return null;
   }
 
-  void tryToSignIn() async {
+  void _tryToSignIn() async {
     if (_phoneNumberEditor.currentState!.validate() &&
       _passwordEditor.currentState!.validate()) {
       if (!_isProcessing) {
@@ -123,10 +121,8 @@ class _SignInRouteState extends State<SignInRoute> {
           });
         }
         on Exception catch (e) {
-          setState(() {
-            _passwordEditor.currentState!.errorText =
-                Util.getExceptionMessage(e);
-          });
+          _passwordEditor.currentState!.errorText
+              = Util.getExceptionMessage(e);
         }
 
         _isProcessing = false;

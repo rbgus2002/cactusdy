@@ -9,14 +9,16 @@ import 'package:group_study_app/themes/text_styles.dart';
 class AppTheme {
   static final ThemeData themeData = ThemeData(
       fontFamily: TextStyles.mainFont,
+      textTheme: TextStyles.textTheme,
 
       primaryColor: ColorStyles.mainColor,
-      scaffoldBackgroundColor: ColorStyles.backgroundColor,
-      appBarTheme: ColorStyles.appBarTheme,
       colorScheme: ColorStyles.colorScheme,
+      appBarTheme: ColorStyles.appBarTheme,
+      scaffoldBackgroundColor: ColorStyles.backgroundColor,
+
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
-      textTheme: TextStyles.textTheme,
+      textButtonTheme: _textButtonThemeData,
 
       extensions: const [
         AdditionalColor.additionalColor,
@@ -25,15 +27,16 @@ class AppTheme {
 
   static final ThemeData darkThemeData = ThemeData(
       fontFamily: TextStyles.mainFont,
+      textTheme: TextStyles.textTheme,
 
       primaryColor: ColorStyles.mainColor,
+      colorScheme: ColorStyles.darkColorScheme,
+      appBarTheme: ColorStyles.appBarDarkTheme,
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
 
-      appBarTheme: ColorStyles.appBarDarkTheme,
-      colorScheme: ColorStyles.darkColorScheme,
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
-      textTheme: TextStyles.textTheme,
+      textButtonTheme: _textButtonThemeData,
 
       extensions: const [
         AdditionalColor.additionalColorDark,
@@ -54,6 +57,13 @@ class AppTheme {
         padding: Design.buttonPadding,
         shape: const RoundedRectangleBorder(
             borderRadius: Design.borderRadius),
+      )
+  );
+
+  static final TextButtonThemeData _textButtonThemeData = TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: ColorStyles.tintColor,
+        textStyle: TextStyles.head5,
       )
   );
 }

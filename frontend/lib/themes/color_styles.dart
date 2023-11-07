@@ -7,6 +7,7 @@ class ColorStyles {
   /// [mainColor] & [secondColor]
   static const Color mainColor    = Color(0xFF5676FF);
   static const Color secondColor  = Color(0xFF202B42);
+  static const Color tintColor    = Color(0xFF638EFF);
 
   static const Color errorColor = Color(0xFFFF4747);
   static const Color darkDim    = Color(0xB3000000);  // opacity 70% : B3
