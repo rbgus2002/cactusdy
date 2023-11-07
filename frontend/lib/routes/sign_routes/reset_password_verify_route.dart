@@ -7,6 +7,7 @@ import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/secondary_button.dart';
@@ -115,13 +116,13 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
       try {
         await Auth.requestResetPasswordVerifyMessage(_phoneNumber).then((result) {
           _isVerificationCodeSend = true;
+          Toast.showToast(context: context, message: Util.str(context).sentVerificationCode);
           _startTimer();
         });
       } on Exception catch (e) {
         _phoneNumberEditor.currentState!.errorText = Util.getExceptionMessage(e);
       }
 
-      setState(() { });
       _isProcessing = false;
     }
   }
