@@ -7,11 +7,15 @@ import 'package:group_study_app/themes/text_styles.dart';
 class InputField extends StatefulWidget {
   final String? hintText;
   final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
   final int? maxLength;
+  final bool obscureText;
 
   const InputField({
     Key? key,
     this.hintText,
+    this.obscureText = false,
+    this.onChanged,
     this.validator,
     this.maxLength,
   }) : super(key: key);
@@ -34,16 +38,19 @@ class InputFieldState extends State<InputField> {
     borderSide: BorderSide(color: ColorStyles.errorColor),);
 
   final TextEditingController _textEditingController = TextEditingController();
-  String? _errorText;
+  String? errorText;
 
   @override
   Widget build(BuildContext context) {
     final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
+
     return TextField(
       controller: _textEditingController,
       style: TextStyles.body1,
       maxLength: widget.maxLength,
       maxLines: 1,
+      obscureText: widget.obscureText,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         contentPadding: Design.textFieldPadding,
 
@@ -60,15 +67,22 @@ class InputFieldState extends State<InputField> {
         focusedBorder: (_isError())? _errorBorderSide : _focusedBorderSide,
         focusedErrorBorder: _errorBorderSide,
 
+        counterText: "",
         error: (_isError())? Transform.translate(
             offset: Offset(-Design.buttonPadding.left, 0),
-            child: Text(_errorText!, style: TextStyles.body1.copyWith(color: ColorStyles.errorColor),)) : null,
+            child: Text(errorText!, style: TextStyles.body1.copyWith(color: ColorStyles.errorColor),)) : null,
       ),
     );
   }
 
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   bool _isError() {
-    return (_errorText != null);
+    return (errorText != null);
   }
 
   bool validate() {
@@ -77,9 +91,14 @@ class InputFieldState extends State<InputField> {
 
   String? _validator(String? text) {
     if (widget.validator != null) {
-      setState(() => _errorText = widget.validator!(text));
+      setState(() => errorText = widget.validator!(text));
     }
 
     return null;
+  }
+
+  String get text => _textEditingController.text;
+  set text(String text) {
+    _textEditingController.text = text;
   }
 }
