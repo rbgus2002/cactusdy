@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class FormatterUtility {
-  static const String numberSeparator = "-";
+  static const String numberSeparator = " ";
 
   static String getNumberOnly(String numberWithOther) {
     return numberWithOther.replaceAll(RegExp("\\D"), "");
