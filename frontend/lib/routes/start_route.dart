@@ -34,7 +34,7 @@ class StartRoute extends StatelessWidget {
               text: Util.str(context).start,
               onPressed: () => Util.pushRoute(context, (context) => const SignUpRoute()),
             ),
-            Design.padding8,
+            Design.padding4,
 
             // sing in button
             Row(
@@ -44,14 +44,14 @@ class StartRoute extends StatelessWidget {
                   Util.str(context).alreadyHaveAnAccount,
                   style: TextStyles.head5.copyWith(color: additionalColor.grey500),),
 
-                Design.padding8,
-
                 TextButton(
                   onPressed: () => Util.pushRoute(context, (context) => const SignInRoute()),
-                  child : Text(Util.str(context).signIn),),
+                  child : Text(
+                    Util.str(context).signIn,
+                    style: TextStyles.head5,),),
               ],),
 
-            Design.padding20,
+            Design.padding28,
           ],
         )
       ),

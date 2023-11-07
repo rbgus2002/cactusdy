@@ -1,14 +1,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/reset_password_route.dart';
 import 'package:group_study_app/routes/reset_password_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/app_theme.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
+import 'package:group_study_app/widgets/input_field.dart';
 
 class SignInRoute extends StatefulWidget {
   const SignInRoute({
@@ -18,17 +23,9 @@ class SignInRoute extends StatefulWidget {
   @override
   State<SignInRoute> createState() => _SignInRouteState();
 }
-
 class _SignInRouteState extends State<SignInRoute> {
-  final TextEditingController _editingController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  static const String _phoneNumberHintText = "핸드폰 번호(아이디)를 입력해 주세요";
-  static const String _passwordHintText = "비밀 번호를 입력해 주세요";
-
-  static const String _signInText = "로그인";
-
-  String _errorText = "";
+  final GlobalKey<InputFieldState> _phoneNumberEditor = GlobalKey();
+  final GlobalKey<InputFieldState> _passwordEditor = GlobalKey();
 
   String _phoneNumber = "";
   String _password = "";
@@ -37,100 +34,105 @@ class _SignInRouteState extends State<SignInRoute> {
 
   @override
   Widget build(BuildContext context) {
+    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
+
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        padding: OldDesign.edgePadding,
-        alignment: Alignment.center,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
+      appBar: AppBar(
+        title: Text(Util.str(context).signIn),),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: Design.edgePadding,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("PHONE NUMBER", style: OldTextStyles.titleSmall),
-                TextFormField(
-                  controller: _editingController,
-                  keyboardType: TextInputType.number,
-                  maxLength: Auth.phoneNumberMaxLength,
-                  validator: (text) =>
-                  ((text!.isEmpty) ? _phoneNumberHintText : null),
-                  decoration: const InputDecoration(
-                    prefixIcon: OldAppIcons.phone,
-                    hintText: _phoneNumberHintText,
-                    counterText: "",
-                  ),
-                  onChanged: (value) {
-                    _phoneNumber = FormatterUtility.getNumberOnly(value);
-                    setState(() => _editingController.text = FormatterUtility.phoneNumberFormatter(_phoneNumber));
-                  },
-                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                ),
-                OldDesign.padding15,
+                Design.padding28,
+                Text(Util.str(context).phoneNumber, style: TextStyles.head5,),
+                Design.padding8,
 
-                const Text("PASSWORD", style: OldTextStyles.titleSmall),
-                TextFormField(
+                InputField(
+                  key: _phoneNumberEditor,
+                  maxLength: Auth.phoneNumberMaxLength,
+                  validator: _phoneNumberValidator,
+                  onChanged: (input) {
+                    _phoneNumber = FormatterUtility.getNumberOnly(input);
+                    setState(() => _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber));
+                  },),
+                Design.padding12,
+
+                Text(Util.str(context).password, style: TextStyles.head5,),
+                Design.padding8,
+
+                InputField(
+                  key: _passwordEditor,
                   obscureText: true,
                   maxLength: Auth.passwordMaxLength,
-                  validator: (text) =>
-                  ((text!.isEmpty) ? _passwordHintText : null),
-                  decoration: const InputDecoration(
-                    prefixIcon: OldAppIcons.password,
-                    hintText: _passwordHintText,
-                    counterText: "",
-                  ),
-                  onChanged: (value) => _password = value,
-                  onEditingComplete: () => tryToSignIn(),
+                  validator: _passwordValidator,
+                  onChanged: (input) {
+                    _password = input;
+                  },
                 ),
-              ],),
-              OldDesign.padding15,
+                Design.padding(80),
 
-              Text(_errorText, style: OldTextStyles.errorTextStyle,),
-              OldDesign.padding5,
-
-              ElevatedButton(
+                PrimaryButton(
+                  text: Util.str(context).confirm,
                   onPressed: tryToSignIn,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    child: const Text(_signInText, style: OldTextStyles.titleSmall,),
-                  )
-              ),
+                ),
+                Design.padding4,
 
-              TextButton(
-                child: const Text("비밀번호 찾기"),
-                onPressed: () => Util.pushRoute(context, (context) => const ResetPasswordVerifyRoute()),
-              )
-            ]
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      Util.str(context).forgotPassword,
+                      style: TextStyles.head5.copyWith(color: additionalColor.grey500),),
+
+
+                    TextButton(
+                      onPressed: () => Util.pushRoute(context, (context) => ResetPasswordVerifyRoute()),
+                      child : Text(
+                          Util.str(context).resetPassword,
+                          style: TextStyles.head5,),),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 
-  @override
-  void dispose() {
-    _editingController.dispose();
-    super.dispose();
+  String? _phoneNumberValidator(String? input) {
+    if (input?.isEmpty == true) {
+      return Util.str(context).inputHint2(Util.str(context).phoneNumber);
+    }
+    return null;
+  }
+
+  String? _passwordValidator(String? input) {
+    if (input?.isEmpty == true) {
+      return Util.str(context).inputHint2(Util.str(context).password);
+    }
+    return null;
   }
 
   void tryToSignIn() async {
     if (!_isProcessing) {
       _isProcessing = true;
-
-      if (_formKey.currentState!.validate()) {
-        try {
-          await Auth.signIn(_phoneNumber, _password).then((value) {
-            Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
-          });
-        }
-        on Exception catch (e) {
-          setState(() => _errorText = Util.getExceptionMessage(e));
-        }
+      try {
+        await Auth.signIn(_phoneNumber, _password).then((value) {
+          Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
+        });
       }
+      on Exception catch (e) {
+        setState(() {
+          _passwordEditor.currentState!.errorText = Util.getExceptionMessage(e);
+        });
+      }
+      /*
+      if (_phoneNumberEditor.currentState!.validate() &&
+        _passwordEditor.currentState!.validate()) {
+        //< FIXME error text from server
+      }*/
     }
 
     _isProcessing = false;
