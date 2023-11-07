@@ -14,16 +14,23 @@ class Design {
   static const EdgeInsets edge20 = EdgeInsets.all(20.0);
   static const EdgeInsets edgePadding = edge20;
 
-  static const SizedBox padding4 = SizedBox(height: 4, width: 4,);
+  // real size = padding / 4
+  static const SizedBox padding4 = SizedBox(height: 4, width: 4, );
   static const SizedBox padding8 = SizedBox(height: 8, width: 8,);
   static const SizedBox padding12 = SizedBox(height: 12, width: 12,);
   static const SizedBox padding16 = SizedBox(height: 16, width: 16,);
   static const SizedBox padding20 = SizedBox(height: 20, width: 20,);
+  static const SizedBox padding28 = SizedBox(height: 28, width: 28,);
+  static const SizedBox padding48 = SizedBox(height: 48, width: 48,);
+
+  static SizedBox padding(double size) {
+    return SizedBox(height: size, width: size);
+  }
 
   static const double _buttonTargetHeight = 52;
 
   static const EdgeInsets buttonPadding     = EdgeInsets.symmetric(vertical: 10, horizontal: 20);
-  static const EdgeInsets textFieldPadding  = EdgeInsets.symmetric(vertical: 18, horizontal: 20);
+  static const EdgeInsets textFieldPadding  = EdgeInsets.symmetric(vertical: 16, horizontal: 20);
   // textFieldPadding.vertical = (_buttonTargetHeight - body1.fontHeight:20) / 2);
 
   static const double buttonContentHeight = 32; //_buttonTargetHeight - buttonPadding.vertical * 2;
