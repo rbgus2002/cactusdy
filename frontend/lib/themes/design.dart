@@ -21,6 +21,7 @@ class Design {
   static const SizedBox padding16 = SizedBox(height: 16, width: 16,);
   static const SizedBox padding20 = SizedBox(height: 20, width: 20,);
   static const SizedBox padding28 = SizedBox(height: 28, width: 28,);
+  static const SizedBox padding32 = SizedBox(height: 28, width: 28,);
   static const SizedBox padding48 = SizedBox(height: 48, width: 48,);
 
   static SizedBox padding(double size) {
