@@ -52,7 +52,7 @@ class _SignInRouteState extends State<SignInRoute> {
                   validator: _phoneNumberValidator,
                   onChanged: (input) {
                     _phoneNumber = FormatterUtility.getNumberOnly(input);
-                    setState(() => _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber));
+                    _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber);
                   },),
                 Design.padding12,
 

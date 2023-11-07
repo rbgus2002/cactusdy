@@ -58,7 +58,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
 
             SecondaryButton(
               text: Util.str(context).start,
-              onPressed: tryResetPassword,),
+              onPressed: _tryResetPassword,),
           ],
         ),
       ),
@@ -79,7 +79,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
     return null;
   }
 
-  void tryResetPassword() async {
+  void _tryResetPassword() async {
     if (_newPasswordEditor.currentState!.validate() &&
       _newPasswordConfirmEditor.currentState!.validate()) {
       if (!_isProcessing) {
