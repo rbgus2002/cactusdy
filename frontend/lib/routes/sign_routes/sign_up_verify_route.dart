@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/sign_up_detail_route.dart';
+import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';

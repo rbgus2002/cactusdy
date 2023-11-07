@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/sign_in_route.dart';
-import 'package:group_study_app/routes/sign_up_route.dart';
+import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
+import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
