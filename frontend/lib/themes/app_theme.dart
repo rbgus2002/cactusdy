@@ -12,8 +12,7 @@ class AppTheme {
 
       primaryColor: ColorStyles.mainColor,
       scaffoldBackgroundColor: ColorStyles.backgroundColor,
-
-      appBarTheme: _appBarTheme,
+      appBarTheme: ColorStyles.appBarTheme,
       colorScheme: ColorStyles.colorScheme,
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
@@ -30,7 +29,7 @@ class AppTheme {
       primaryColor: ColorStyles.mainColor,
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
 
-      appBarTheme: _appBarTheme,
+      appBarTheme: ColorStyles.appBarDarkTheme,
       colorScheme: ColorStyles.darkColorScheme,
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
@@ -56,11 +55,5 @@ class AppTheme {
         shape: const RoundedRectangleBorder(
             borderRadius: Design.borderRadius),
       )
-  );
-
-  static const AppBarTheme _appBarTheme = AppBarTheme(
-    color: Colors.transparent,
-    elevation: 0,
-    titleTextStyle: TextStyles.head4,
   );
 }

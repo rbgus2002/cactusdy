@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 
 class ColorStyles {
   /// [mainColor] & [secondColor]
@@ -88,6 +90,24 @@ class ColorStyles {
       onBackground: _white800,
       surface: _white50,
       onSurface: _white800,
+  );
+
+  static final AppBarTheme appBarTheme = AppBarTheme(
+    elevation: 0,
+    color: Colors.transparent,
+    titleTextStyle: TextStyles.head4.copyWith(color: _black800),
+    foregroundColor: _black900,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
+    shape: const Border(bottom: BorderSide(color: _black200)),
+  );
+
+  static final AppBarTheme appBarDarkTheme = AppBarTheme(
+    elevation: 0,
+    color: Colors.transparent,
+    titleTextStyle: TextStyles.head4.copyWith(color: _white800),
+    foregroundColor: _white800,
+    systemOverlayStyle: SystemUiOverlayStyle.light,
+    shape: const Border(bottom: BorderSide(color: _white200)),
   );
 }
 
