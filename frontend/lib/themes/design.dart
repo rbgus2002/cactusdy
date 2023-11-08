@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Design {
+  static const String defaultImagePath = 'assets/images/default_profile.png';
+
   static const double targetWidth = 512;
 
   static const double borderRadiusValueSmall = 4.0;
