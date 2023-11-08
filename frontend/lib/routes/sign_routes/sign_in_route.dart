@@ -117,7 +117,7 @@ class _SignInRouteState extends State<SignInRoute> {
 
         try {
           await Auth.signIn(_phoneNumber, _password).then((value) {
-            Util.pushRouteAndPopUtil(context, (context) => const HomeRoute());
+            Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
           });
         }
         on Exception catch (e) {

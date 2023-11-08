@@ -17,7 +17,7 @@ class Util {
     );
   }
 
-  static void pushRouteAndPopUtil(BuildContext context, WidgetBuilder builder) {
+  static void pushRouteAndPopUntil(BuildContext context, WidgetBuilder builder) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: builder),

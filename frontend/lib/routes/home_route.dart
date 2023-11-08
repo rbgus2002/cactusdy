@@ -129,7 +129,7 @@ class _HomeRouteState extends State<HomeRoute> {
                 Navigator.pop(context);
                 Auth.signOut();
                 Future.delayed(Duration.zero, () {
-                  Util.pushRouteAndPopUtil(context, (context) => const StartRoute());
+                  Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
                 });
               },
               child: const Text(_checkText),)

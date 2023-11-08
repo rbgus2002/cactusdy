@@ -89,7 +89,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
           await Auth.resetPassword(widget.phoneNumber, _newPassword).then((value) {
             if (value) {
               Toast.showToast(context: context, message: Util.str(context).successToResetPassword);
-              Util.pushRouteAndPopUtil(context, (context) => const StartRoute());
+              Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
               Util.pushRoute(context, (context) => const SignInRoute());
             }
             else {
