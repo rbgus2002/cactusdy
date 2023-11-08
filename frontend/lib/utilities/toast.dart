@@ -28,7 +28,8 @@ class Toast {
       alignment: Alignment.centerLeft,
       child: Text(
           message,
-          style: TextStyles.body1.copyWith(color: additionalColor.grey200),
+          style: TextStyles.body1.copyWith(
+              color: additionalColor.grey200),
       ),
     );
 
