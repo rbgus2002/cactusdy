@@ -95,7 +95,7 @@ class ColorStyles {
 
   static final AppBarTheme appBarTheme = AppBarTheme(
     elevation: 0,
-    color: Colors.transparent,
+    color: backgroundColor,
     titleTextStyle: TextStyles.head4.copyWith(color: _black800),
     foregroundColor: _black900,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -104,7 +104,7 @@ class ColorStyles {
 
   static final AppBarTheme appBarDarkTheme = AppBarTheme(
     elevation: 0,
-    color: Colors.transparent,
+    color: backgroundColorDark,
     titleTextStyle: TextStyles.head4.copyWith(color: _white800),
     foregroundColor: _white800,
     systemOverlayStyle: SystemUiOverlayStyle.light,

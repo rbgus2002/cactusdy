@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 
 
@@ -48,22 +46,19 @@ class AppTheme {
        elevation: 0,
        padding: Design.buttonPadding,
        shape: const RoundedRectangleBorder(
-           borderRadius: Design.borderRadius),
-     )
+           borderRadius: Design.borderRadius),)
   );
 
   static final OutlinedButtonThemeData _outlinedButtonThemeData = OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         padding: Design.buttonPadding,
         shape: const RoundedRectangleBorder(
-            borderRadius: Design.borderRadius),
-      )
+            borderRadius: Design.borderRadius),)
   );
 
   static final TextButtonThemeData _textButtonThemeData = TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: ColorStyles.tintColor,
-        textStyle: TextStyles.head5,
-      )
+        textStyle: TextStyles.head5,)
   );
 }
