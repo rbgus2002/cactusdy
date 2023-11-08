@@ -9,6 +9,7 @@ import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
+import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
@@ -28,7 +29,7 @@ class BackdoorRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Center(
+        body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -178,6 +179,19 @@ class BackdoorRoute extends StatelessWidget {
                   fixedSize: const Size(300, 50),
                   backgroundColor: Colors.grey,
                 ), child: const Text('font Test Screen')
+                  ,
+                ),
+                
+                Container(height: 15,),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpDetailRoute(phoneNumber: '01055923653', password: '1234')),
+                  );
+                }, style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(300, 50),
+                  backgroundColor: Colors.grey,
+                ), child: const Text('sign up details Screen')
                   ,
                 ),
               ],

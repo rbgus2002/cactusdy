@@ -1,26 +1,26 @@
 
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/home_route.dart';
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
-import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
+import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/old_app_icons.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/utilities/formatter_utility.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/secondary_button.dart';
+import 'package:group_study_app/widgets/image_picker_widget.dart';
+import 'package:group_study_app/widgets/input_field.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpDetailRoute extends StatefulWidget {
   final String phoneNumber;
+  final String password;
 
   const SignUpDetailRoute({
     Key? key,
     required this.phoneNumber,
+    required this.password,
   }) : super(key: key);
 
   @override
@@ -28,31 +28,20 @@ class SignUpDetailRoute extends StatefulWidget {
 }
 
 class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<InputFieldState> _nameEditor = GlobalKey();
+  final GlobalKey<InputFieldState> _nicknameEditor = GlobalKey();
 
-  static const String _hintSuffix1Text = "을 입력해주세요";  //< FIXME
-  static const String _hintSuffix2Text = "를 입력해주세요";
-  static const String _passwordText = "비밀 번호";
-  static const String _passwordConfirmText = "비밀 번호(확인)";
-  static const String _nameText = "이름";
-  static const String _nicknameText = "닉네임";
-
-  static const String _passwordNotSameText = "입력한 비밀 번호가 달라요!";
-
-  static const String _confirmText = "확인";
-
-  String _errorText = " ";
-
-  String _password = "";
   String _name = "";
   String _nickname = "";
-  String _picture = "";
   String _phoneModel = "string";
+  XFile? _profileImage;
+
+  bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    getPhoneModel();
+    //getPhoneModel();
   }
 
   @override
@@ -60,115 +49,49 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Container(
-          padding: OldDesign.edgePadding,
-          alignment: Alignment.center,
-          child: Form(
-            key: _formKey,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  OldDesign.padding30,
-                  //CircleButton(url: '', scale: 128,), << FIXME : IMAGE PICKER
-                  OldDesign.padding30,
+        padding: Design.edgePadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Util.str(context).setProfileAndNickname,
+              style: TextStyles.head2),
+            Design.padding(40),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            Container(
+              alignment: Alignment.center,
+              child: ImagePickerWidget(
+                onPicked: (pickedImage) => _profileImage = pickedImage,),),
+            Design.padding28,
 
-                      const Text("PHONE NUMBER", style: OldTextStyles.titleSmall),
-                      TextFormField(
-                        controller: TextEditingController(text: FormatterUtility.phoneNumberFormatter(widget.phoneNumber)),
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: OldColorStyles.grey,
-                          prefixIcon: OldAppIcons.phone,
-                        ),
-                        enabled: false,
-                      ),
-                      OldDesign.padding30,
+            InputField(
+              key: _nameEditor,
+              hintText: Util.str(context).name,
+              maxLength: User.nameMaxLength,
+              validator: _nameValidator,
+              onChanged: (input) => _name = input,),
+            Design.padding16,
 
-                      const Text("PASSWORD", style: OldTextStyles.titleSmall),
-                      TextFormField(
-                        obscureText: true,
-                        maxLength: Auth.passwordMaxLength,
-                        validator: (text) =>
-                          ((text!.isEmpty) ? _passwordText + _hintSuffix2Text : null),
-                        decoration: const InputDecoration(
-                          prefixIcon: OldAppIcons.password,
-                          hintText: _passwordText,
-                          counterText: "",
-                        ),
-                        onChanged: (value) => _password = value,
-                      ),
-                      OldDesign.padding15,
+            InputField(
+              key: _nicknameEditor,
+              hintText: Util.str(context).nickname,
+              maxLength: User.nicknameMaxLength,
+              validator: _nicknameValidator,
+              onChanged: (input) => _nickname = input,),
+            Design.padding(64),
 
-                      TextFormField(
-                        obscureText: true,
-                        maxLength: Auth.passwordMaxLength,
-                        validator: (text) =>
-                        ((text != _password) ? _passwordNotSameText : null),
-                        decoration: const InputDecoration(
-                          prefixIcon: OldAppIcons.password,
-                          hintText: _passwordConfirmText,
-                          counterText: "",
-                        ),
-                      ),
-                      OldDesign.padding30,
-
-                      const Text("NAME", style: OldTextStyles.titleSmall),
-                      TextFormField(
-                        maxLength: Auth.passwordMaxLength,
-                        validator: (text) =>
-                        ((text!.isEmpty) ? _nameText + _hintSuffix1Text : null),
-                        decoration: const InputDecoration(
-                          prefixIcon: OldAppIcons.person,
-                          hintText: _nameText,
-                          counterText: "",
-                        ),
-                        onChanged: (value) => _name = value,
-                      ),
-                      OldDesign.padding30,
-
-
-                      const Text("NICKNAME", style: OldTextStyles.titleSmall),
-                      TextFormField(
-                        maxLength: Auth.passwordMaxLength,
-                        validator: (text) =>
-                        ((text!.isEmpty) ? _nicknameText + _hintSuffix1Text : null),
-                        decoration: const InputDecoration(
-                          prefixIcon: OldAppIcons.edit,
-                          hintText: _nicknameText,
-                          counterText: "",
-                        ),
-                        onChanged: (value) => _nickname = value,
-                      ),
-                    ],),
-                  OldDesign.padding15,
-
-                  Text(_errorText, style: OldTextStyles.errorTextStyle,),
-                  OldDesign.padding30,
-
-                  ElevatedButton(
-                      onPressed: signUp,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        child: const Text(_confirmText, style: OldTextStyles.titleSmall,),
-                      )
-                  ),
-                  OldDesign.padding60,
-                ]
-            ),
-          ),
+            SecondaryButton(
+              text: Util.str(context).signUp,
+              onPressed: _tryToSignUp,),
+          ],
         ),
-      ),
+      )
     );
   }
 
+  /*
   void getPhoneModel() async {
-    final deviceInfo = await DeviceInfoPlugin();
+    final deviceInfo = DeviceInfoPlugin();
     //< FIXME : Not Works...
     return;
     if (Platform.isAndroid) {
@@ -188,17 +111,48 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
     print(_phoneModel);
   }
 
-  void signUp() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await Auth.signUp(name: _name, nickname: _nickname, phoneModel: _phoneModel, picture: _picture, phoneNumber: widget.phoneNumber, password: _password).then((value) {
-          if (value) {
-            Util.pushRouteAndPopUtil(context, (context) => const SignInRoute());
-          }
-        });
-      }
-      on Exception catch (e) {
-        setState(() => _errorText = Util.getExceptionMessage(e));
+   */
+
+  String? _nameValidator(String? input) {
+    if (input == null || input.isEmpty) {
+      return Util.str(context).inputHint1(Util.str(context).name);
+    }
+    return null;
+  }
+
+  String? _nicknameValidator(String? input) {
+    if (input == null || input.isEmpty) {
+      return Util.str(context).inputHint1(Util.str(context).nickname);
+    }
+    return null;
+  }
+
+  void _tryToSignUp() async {
+    if (_nameEditor.currentState!.validate() &&
+        _nicknameEditor.currentState!.validate()) {
+      if (!_isProcessing) {
+        _isProcessing = true;
+
+        try {
+          await Auth.signUp(
+              name: _name,
+              nickname: _nickname,
+              phoneModel: _phoneModel,          // FIXME
+              picture: "",                      // FIXME
+              phoneNumber: widget.phoneNumber,
+              password: widget.password).then((value) {
+            if (value) {
+              Toast.showToast(context: context, message: Util.str(context).successToSignUp);
+              Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
+              Util.pushRoute(context, (context) => const SignInRoute());
+            }
+          });
+        }
+        on Exception catch (e) {
+          _nicknameEditor.currentState!.errorText = Util.getExceptionMessage(e);
+        }
+
+        _isProcessing = false;
       }
     }
   }

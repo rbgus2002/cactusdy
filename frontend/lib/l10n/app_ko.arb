@@ -19,7 +19,9 @@
     "signIn": "로그인",
     "signOut": "로그아웃",
     "signUp": "가입하기",
+
     "alreadyHaveAnAccount": "이미 계정이 있나요?",
+    "successToSignUp": "가입이 완료되었어요.",
 
     "phoneNumber": "휴대폰 번호",
     "inputPhoneNumber": "휴대폰 번호를 입력해주세요",
