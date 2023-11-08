@@ -37,14 +37,14 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
         child: Column(
           children: [
             Design.padding48,
+
             InputField(
               key: _newPasswordEditor,
               obscureText: true,
               hintText: Util.str(context).password,
               maxLength: Auth.passwordMaxLength,
               validator: _newPasswordValidator,
-              onChanged: (input) => _newPassword = input,
-            ),
+              onChanged: (input) => _newPassword = input,),
             Design.padding16,
 
             InputField(
@@ -52,8 +52,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
               obscureText: true,
               hintText: Util.str(context).confirmPassword,
               validator: _newPasswordConfirmValidator,
-              maxLength: Auth.passwordMaxLength,
-            ),
+              maxLength: Auth.passwordMaxLength,),
             Design.padding(132),
 
             SecondaryButton(

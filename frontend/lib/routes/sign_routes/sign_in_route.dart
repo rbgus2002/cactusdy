@@ -43,6 +43,7 @@ class _SignInRouteState extends State<SignInRoute> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Design.padding28,
+
                 Text(Util.str(context).phoneNumber, style: TextStyles.head5,),
                 Design.padding8,
 
@@ -66,14 +67,12 @@ class _SignInRouteState extends State<SignInRoute> {
                   validator: _passwordValidator,
                   onChanged: (input) {
                     _password = input;
-                  },
-                ),
+                  },),
                 Design.padding(80),
 
                 PrimaryButton(
                   text: Util.str(context).confirm,
-                  onPressed: _tryToSignIn,
-                ),
+                  onPressed: _tryToSignIn,),
                 Design.padding4,
 
                 Row(
@@ -96,14 +95,14 @@ class _SignInRouteState extends State<SignInRoute> {
   }
 
   String? _phoneNumberValidator(String? input) {
-    if (input?.isEmpty == true) {
+    if (input == null || input.isEmpty) {
       return Util.str(context).inputHint2(Util.str(context).phoneNumber);
     }
     return null;
   }
 
   String? _passwordValidator(String? input) {
-    if (input?.isEmpty == true) {
+    if (input == null || input.isEmpty) {
       return Util.str(context).inputHint2(Util.str(context).password);
     }
     return null;

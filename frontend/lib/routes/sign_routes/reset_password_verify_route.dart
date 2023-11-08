@@ -47,6 +47,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
         child: Column(
           children: [
             Design.padding48,
+
             InputField(
               enable: !_isVerificationCodeSend,
               key: _phoneNumberEditor,
@@ -96,7 +97,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
   }
 
   String? _phoneNumberValidator(String? input) {
-    if (input?.isEmpty == true) {
+    if (input == null || input.isEmpty) {
       return Util.str(context).inputHint2(Util.str(context).phoneNumber);
     }
     return null;
