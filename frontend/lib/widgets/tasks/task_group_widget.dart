@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/task_group.dart';
-import 'package:group_study_app/themes/app_icons.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/widgets/tasks/task_widget.dart';
@@ -62,7 +62,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          TitleWidget(title: widget.taskGroup.taskType, icon: AppIcons.add,
+          TitleWidget(title: widget.taskGroup.taskType, icon: OldAppIcons.add,
             onTap: () => addTask(Task())),
 
           AnimatedList(

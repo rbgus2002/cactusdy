@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
@@ -48,17 +48,17 @@ class CommentWidget extends StatelessWidget {
       child: Column (
         children: [
           Container(
-            padding: Design.edge5,
+            padding: OldDesign.edge5,
             decoration: BoxDecoration(
-              color: (isSelected)?ColorStyles.grey:null,
-              borderRadius: BorderRadius.circular(Design.borderRadius),
+              color: (isSelected)?OldColorStyles.grey:null,
+              borderRadius: BorderRadius.circular(OldDesign.borderRadius),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
                 CircleButton(url: comment.picture, scale: 36,),
-                Design.padding5,
+                OldDesign.padding5,
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class CommentWidget extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(child: Text(comment.nickname, style: TextStyles.titleTiny)),
+                          Flexible(child: Text(comment.nickname, style: OldTextStyles.titleTiny)),
                           if (!comment.deleteYn)
                             SizedBox(
                               width: 18,
@@ -76,21 +76,21 @@ class CommentWidget extends StatelessWidget {
                             ),
                         ]
                       ),
-                      Design.padding5,
+                      OldDesign.padding5,
 
                       SelectableText(comment.contents, textAlign: TextAlign.justify,),
-                      Design.padding5,
+                      OldDesign.padding5,
 
                       if (!comment.deleteYn)
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                             children : [
-                              Text(TimeUtility.getElapsedTime(comment.createDate), style: TextStyles.bodyMedium,),
+                              Text(TimeUtility.getElapsedTime(comment.createDate), style: OldTextStyles.bodyMedium,),
                               const Text(" | "),
                               InkWell(
                                 borderRadius: BorderRadius.circular(3),
                                 onTap: (){setReplyTo(index);},
-                                child: const Text(_writeReplyText, style: TextStyles.bodyMedium),
+                                child: const Text(_writeReplyText, style: OldTextStyles.bodyMedium),
                               ),
                             ]
                           ),
@@ -118,7 +118,7 @@ class CommentWidget extends StatelessWidget {
 
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
+          child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
           onTap: () {
             Future.delayed(Duration.zero, ()=>
               UserProfileDialog.showProfileDialog(context, comment.userId)); }
@@ -126,7 +126,7 @@ class CommentWidget extends StatelessWidget {
 
         if (comment.userId == Auth.signInfo!.userId)
         PopupMenuItem(
-          child: const Text(_deleteCommentText, style: TextStyles.bodyMedium,),
+          child: const Text(_deleteCommentText, style: OldTextStyles.bodyMedium,),
           onTap: () => _showDeleteCommentDialog(context),
         )
       ],

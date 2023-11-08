@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
@@ -33,7 +33,7 @@ class _NoticePanel extends State<NoticePanel> {
   @override
   Widget build(BuildContext context) {
     return Panel(
-        boxShadows: Design.basicShadows,
+        boxShadows: OldDesign.basicShadows,
         child: InkWell(child:
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,21 +44,21 @@ class _NoticePanel extends State<NoticePanel> {
               children: [
                 Flexible(child:
                   Text(widget.noticeSummary.title,
-                    style: TextStyles.titleTiny,
+                    style: OldTextStyles.titleTiny,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.push_pin_sharp, size: 20,),
-                  color: (widget.noticeSummary.pinYn) ? null : ColorStyles.lightGrey,
+                  color: (widget.noticeSummary.pinYn) ? null : OldColorStyles.lightGrey,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   onPressed: _switchPin,
                 )
               ],
             ),
-            Design.padding5,
+            OldDesign.padding5,
 
             // Writing Info
             Row(
@@ -68,7 +68,7 @@ class _NoticePanel extends State<NoticePanel> {
                 Text("$_writerText : ${widget.noticeSummary.writerNickname}"),
               ],
             ),
-            Design.padding10,
+            OldDesign.padding10,
 
             // Notice Summary Body
             Text(widget.noticeSummary.contents,
@@ -76,7 +76,7 @@ class _NoticePanel extends State<NoticePanel> {
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
-            Design.padding10,
+            OldDesign.padding10,
 
             // Reaction Tag
             Row(
@@ -88,10 +88,10 @@ class _NoticePanel extends State<NoticePanel> {
                     child: Row(
                       children: [
                         // Check Icon
-                        Icon(Icons.check_circle, color: (widget.noticeSummary.read)? ColorStyles.green : ColorStyles.darkGrey, size: 20,),
-                        Design.padding3,
+                        Icon(Icons.check_circle, color: (widget.noticeSummary.read)? OldColorStyles.green : OldColorStyles.darkGrey, size: 20,),
+                        OldDesign.padding3,
                         Text('${widget.noticeSummary.readCount}'), //< FIXME
-                        Design.padding5
+                        OldDesign.padding5
                       ],
                     ),
                   ),
@@ -99,9 +99,9 @@ class _NoticePanel extends State<NoticePanel> {
                   Row(
                     children: [
                       const Icon(Icons.comment, size: 18,),
-                      Design.padding5,
+                      OldDesign.padding5,
                       Text('${widget.noticeSummary.commentCount}'),
-                      Design.padding5
+                      OldDesign.padding5
                     ]
                   )
                 ]

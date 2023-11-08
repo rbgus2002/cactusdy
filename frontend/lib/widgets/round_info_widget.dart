@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -62,16 +62,16 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("${widget.roundSeq}", style: TextStyles.numberTextStyle),
+                Text("${widget.roundSeq}", style: OldTextStyles.numberTextStyle),
                 const Text(_roundText, style:
                   TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 2)),
               ]
             ),
-            Design.padding10,
+            OldDesign.padding10,
             const Column(
               children: [
-                Text('$_placeText : ', style: TextStyles.roundTextStyle,),
-                Text('$_timeText : ', style: TextStyles.roundTextStyle,),
+                Text('$_placeText : ', style: OldTextStyles.roundTextStyle,),
+                Text('$_timeText : ', style: OldTextStyles.roundTextStyle,),
               ],
             ),
             _studyTimeAndPlace(),
@@ -112,17 +112,17 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
               TextField(
                 maxLength: Round.placeMaxLength,
                 maxLines: 1,
-                style: TextStyles.roundTextStyle,
+                style: OldTextStyles.roundTextStyle,
 
                 controller: _placeEditingController,
                 decoration: const InputDecoration(
                   hintText: _placeHintText,
-                  hintStyle: TextStyles.roundHintTextStyle,
+                  hintStyle: OldTextStyles.roundHintTextStyle,
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
 
                   border: InputBorder.none,
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskTextColor)),
+                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: OldColorStyles.taskTextColor)),
                   counterText: "",
                 ),
 
@@ -137,8 +137,8 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
                 child: Text((widget.round.studyTime != null)?
                   TimeUtility.timeToString(widget.round.studyTime!):_timeHintText,
                   maxLines: 1,
-                  style: (widget.round.studyTime != null)? TextStyles.roundTextStyle:
-                  TextStyles.roundHintTextStyle,
+                  style: (widget.round.studyTime != null)? OldTextStyles.roundTextStyle:
+                  OldTextStyles.roundHintTextStyle,
                 ),
               )
             ],

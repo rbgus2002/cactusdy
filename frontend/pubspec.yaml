@@ -30,6 +30,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -37,7 +39,7 @@ dependencies:
   fluttertoast: ^8.2.2
   http: ^0.13.6
 
-  intl: ^0.17.0-1987
+  intl: ^0.18.1
   flutter_colorpicker: ^1.0.3
   flutter_secure_storage: ^9.0.0
   device_info_plus: ^9.0.3
@@ -47,7 +49,6 @@ dependencies:
   firebase_messaging: ^14.7.2
   firebase_analytics: ^10.6.2
   flutter_local_notifications: ^16.1.0
-
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -100,3 +102,19 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Black.ttf
+        - asset: assets/fonts/Pretendard-Bold.ttf
+        - asset: assets/fonts/Pretendard-ExtraBold.ttf
+        - asset: assets/fonts/Pretendard-ExtraLight.ttf
+        - asset: assets/fonts/Pretendard-Light.ttf
+        - asset: assets/fonts/Pretendard-Medium.ttf
+        - asset: assets/fonts/Pretendard-Regular.ttf
+        - asset: assets/fonts/Pretendard-SemiBold.ttf
+        - asset: assets/fonts/Pretendard-Thin.ttf
+
+    - family: custom_icons
+      fonts:
+        - asset: assets/icons/custom_icons.ttf

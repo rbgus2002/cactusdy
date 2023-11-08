@@ -4,10 +4,10 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
 import 'package:group_study_app/widgets/panels/study_group_panel.dart';
@@ -48,7 +48,7 @@ class _HomeRouteState extends State<HomeRoute> {
         onRefresh: () async => setState(() {}),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(Design.padding),
+          padding: const EdgeInsets.all(OldDesign.padding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,7 +64,7 @@ class _HomeRouteState extends State<HomeRoute> {
                 }
               ),
 
-              Design.padding10,
+              OldDesign.padding10,
               FutureBuilder(
                 future: StudyInfo.getStudies(),
                 builder: (context, snapshot) {
@@ -77,7 +77,7 @@ class _HomeRouteState extends State<HomeRoute> {
                           StudyGroupPanel(studyInfo: snapshot.data![index]),
                     );
                   }
-                  return Design.loadingIndicator;
+                  return OldDesign.loadingIndicator;
                 },
               ),
 
@@ -91,11 +91,11 @@ class _HomeRouteState extends State<HomeRoute> {
 
   Widget addStudyPanel() {
     return Panel(
-      backgroundColor: ColorStyles.lightGrey,
-      boxShadows: Design.basicShadows,
+      backgroundColor: OldColorStyles.lightGrey,
+      boxShadows: OldDesign.basicShadows,
       onTap: () => Util.pushRoute(context, (context) => const GenerateStudyRoute()),
       child: const Center(
-        child: AppIcons.add,
+        child: OldAppIcons.add,
       ),
     );
   }
@@ -103,13 +103,13 @@ class _HomeRouteState extends State<HomeRoute> {
   // FIXME : this is temporary
   Widget _homePopupMenu() {
     return PopupMenuButton(
-        icon: AppIcons.moreVert,
+        icon: OldAppIcons.moreVert,
         splashRadius: 16,
         offset: const Offset(0, 42),
 
         itemBuilder: (context) => [
           PopupMenuItem(
-              child: const Text(_signOutText, style: TextStyles.bodyMedium),
+              child: const Text(_signOutText, style: OldTextStyles.bodyMedium),
               onTap: () => _showSignOutDialog(context),),
         ]
     );
@@ -129,7 +129,7 @@ class _HomeRouteState extends State<HomeRoute> {
                 Navigator.pop(context);
                 Auth.signOut();
                 Future.delayed(Duration.zero, () {
-                  Util.pushRouteAndPopUtil(context, (context) => const StartRoute());
+                  Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
                 });
               },
               child: const Text(_checkText),)

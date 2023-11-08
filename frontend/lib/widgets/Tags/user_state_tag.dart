@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/Tags/tag_button.dart';
 
 class UserStateTag extends TagButton {
@@ -13,6 +13,6 @@ class UserStateTag extends TagButton {
     super.onTap }) : super(
     padding: userStateTagPadding,
     child: Text(text, textWidthBasis: TextWidthBasis.parent,
-      style: TextStyles.tagTextStyle, textAlign: TextAlign.center,),
+      style: OldTextStyles.tagTextStyle, textAlign: TextAlign.center,),
   );
 }

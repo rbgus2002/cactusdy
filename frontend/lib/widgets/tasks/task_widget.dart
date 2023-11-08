@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 
@@ -57,7 +57,7 @@ class _TaskWidget extends State<TaskWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             _taskCheckBox(),
-            Design.padding5,
+            OldDesign.padding5,
             _taskDetail(),
             _taskPopupMenu(),
           ],
@@ -96,7 +96,7 @@ class _TaskWidget extends State<TaskWidget> {
       child: TextField(
         maxLength: Task.taskMaxLength,
         maxLines: 1,
-        style: TextStyles.taskTextStyle,
+        style: OldTextStyles.taskTextStyle,
 
         focusNode: _focusNode,
         controller: _textEditingController,
@@ -104,7 +104,7 @@ class _TaskWidget extends State<TaskWidget> {
           hintText: _taskHintMessage,
           isDense: true,
           contentPadding: EdgeInsets.zero,
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskHintTextColor,)),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: OldColorStyles.taskHintTextColor,)),
           border:InputBorder.none,
           counterText: "",
         ),
@@ -129,11 +129,11 @@ class _TaskWidget extends State<TaskWidget> {
 
         itemBuilder: (context) => [
           PopupMenuItem(
-            child: const Text(_modifyTaskText, style: TextStyles.bodyMedium,),
+            child: const Text(_modifyTaskText, style: OldTextStyles.bodyMedium,),
             onTap: () => _focusNode.requestFocus(),
           ),
           PopupMenuItem(
-            child: const Text(_deleteTaskText, style: TextStyles.bodyMedium,),
+            child: const Text(_deleteTaskText, style: OldTextStyles.bodyMedium,),
             onTap: () => widget.onDeleteTask(widget.task, widget.index),
           )
         ],

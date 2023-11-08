@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class TagButton extends StatelessWidget{
@@ -15,7 +15,7 @@ class TagButton extends StatelessWidget{
 
   TagButton({
     Key? key,
-    this.color = ColorStyles.transparent,
+    this.color = OldColorStyles.transparent,
     this.padding,
     this.child,
     this.onTap,

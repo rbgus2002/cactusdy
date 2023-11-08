@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 
 class PercentInfo {
   double percent;
@@ -7,7 +7,7 @@ class PercentInfo {
 
   PercentInfo({
     this.percent = 0.0,
-    this.color = ColorStyles.transparent,
+    this.color = OldColorStyles.transparent,
   });
 }
 
@@ -18,7 +18,7 @@ abstract class Chart extends StatelessWidget {
 
   Chart({Key? key,
     required this.percentInfos,
-    this.backgroundColor = ColorStyles.grey,
+    this.backgroundColor = OldColorStyles.grey,
     this.stroke = 5,
   }) : super(key: key);
 }

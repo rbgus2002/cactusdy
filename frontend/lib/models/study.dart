@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:group_study_app/services/database_service.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:http/http.dart' as http;
 
 class Study {

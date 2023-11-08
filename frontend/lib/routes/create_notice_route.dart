@@ -3,8 +3,8 @@ import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -29,13 +29,13 @@ class CreateNoticeRoute extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent,),
       body: Container(
-          padding: Design.edge15,
+          padding: OldDesign.edge15,
           child: SingleChildScrollView(
               child: Column(
                   children: [
                     // [Title]
                     TextField(
-                      style: TextStyles.titleTiny,
+                      style: OldTextStyles.titleTiny,
                       maxLength: Notice.titleMaxLength,
                       decoration: const InputDecoration(
                         hintText: _titleHintMessage,
@@ -62,7 +62,7 @@ class CreateNoticeRoute extends StatelessWidget {
                     // [Create Button]
                     ElevatedButton(
                       onPressed: () {
-                        if (_checkValidation()) {
+                        if (_checkValidation(context)) {
                           Future<int> result = Notice.createNotice(
                               _title, _contents, studyId);
 
@@ -72,7 +72,7 @@ class CreateNoticeRoute extends StatelessWidget {
                               Util.pushRoute(context, (context) => NoticeDetailRoute(noticeId: newNoticeId));
                             }
                             else {
-                              Toast.showToast(msg: _creationFailMessage);
+                              Toast.showToast(context: context, message: _creationFailMessage);
                             }
                           });
                         }
@@ -86,14 +86,14 @@ class CreateNoticeRoute extends StatelessWidget {
     );
   }
 
-  bool _checkValidation() {
+  bool _checkValidation(BuildContext context) {
     if (_title.isEmpty) {
-      Toast.showToast(msg: _titleHintMessage);
+      Toast.showToast(context: context, message: _titleHintMessage);
       return false;
     }
 
     if (_contents.isEmpty) {
-      Toast.showToast(msg: _contentHintMessage);
+      Toast.showToast(context: context, message: _contentHintMessage);
       return false;
     }
 

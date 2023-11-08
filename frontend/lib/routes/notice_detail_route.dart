@@ -3,8 +3,8 @@ import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
@@ -67,11 +67,11 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           height: double.maxFinite,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(Design.padding),
+            padding: const EdgeInsets.all(OldDesign.padding),
             child: Column(
                 children: [
                   _NoticeBody(futureNotice: futureNotice, focusNode: focusNode),
-                  Design.padding15,
+                  OldDesign.padding15,
 
                   _commentList(),
                 ]
@@ -90,14 +90,14 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: const Text(_showProfileText, style: TextStyles.bodyMedium,),
+          child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
             onTap: () {
               Future.delayed(Duration.zero, ()=>
                   UserProfileDialog.showProfileDialog(context, _writerId)); }
         ),
         if (Auth.signInfo!.userId == _writerId)
         PopupMenuItem(
-          child: const Text(_deleteNoticeText, style: TextStyles.bodyMedium,),
+          child: const Text(_deleteNoticeText, style: OldTextStyles.bodyMedium,),
           onTap: () => _showDeleteNoticeDialog(context),
         ),
       ],
@@ -150,11 +150,11 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   Widget _writingCommentBox() {
     return Container(
-      padding: Design.edge10,
+      padding: OldDesign.edge10,
       child: TextField(
         minLines: 1, maxLines: 5,
         maxLength: 100,
-        style: TextStyles.bodyMedium,
+        style: OldTextStyles.bodyMedium,
         textAlign: TextAlign.justify,
         controller: _commentEditor,
         focusNode: focusNode,
@@ -197,7 +197,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   bool _checkValidate() {
     if (_commentEditor.text.isEmpty) {
-      Toast.showToast(msg: _commentHintMessage);
+      Toast.showToast(context: context, message: _commentHintMessage);
       return false;
     }
     return true;
@@ -221,7 +221,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         });
       }
       else {
-        Toast.showToast(msg: _writingFailMessage);
+        Toast.showToast(context: context, message: _writingFailMessage);
       }// FIXME catch error
     });
   }
@@ -229,7 +229,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   void deleteComment(int commentId) {
     Comment.deleteComment(commentId).then((result) {
       if (result == false) {
-        Toast.showToast(msg: _deleteNoticeFailMessage);
+        Toast.showToast(context: context, message: _deleteNoticeFailMessage);
       }
       else {
         futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
@@ -241,7 +241,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   void _deleteNotice() {
     Notice.deleteNotice(widget.noticeId).then((result) {
         if (result == false) {
-          Toast.showToast(msg: _deleteNoticeFailMessage);
+          Toast.showToast(context: context, message: _deleteNoticeFailMessage);
         }
         else { Navigator.of(context).pop(); }
       },
@@ -279,27 +279,27 @@ class _NoticeBody extends StatelessWidget {
             children: [
               // Title
               SelectableText(snapshot.data!.title,
-                style: TextStyles.titleSmall,
+                style: OldTextStyles.titleSmall,
                 textAlign: TextAlign.justify,
               ),
-              Design.padding3,
+              OldDesign.padding3,
   
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(TimeUtility.getElapsedTime(snapshot.data!.createDate),
-                    style: TextStyles.bodyMedium,),
+                    style: OldTextStyles.bodyMedium,),
                   Text('$_writerText : ${snapshot.data!.writerNickname}',
-                    style: TextStyles.bodyMedium,),
+                    style: OldTextStyles.bodyMedium,),
                 ],
               ),
-              Design.padding10,
+              OldDesign.padding10,
   
               // Body
               SelectableText(snapshot.data!.contents,
-                style: TextStyles.bodyLarge,
+                style: OldTextStyles.bodyLarge,
                 textAlign: TextAlign.justify,),
-              Design.padding15,
+              OldDesign.padding15,
   
               // Reaction Tag
               Row(
@@ -315,9 +315,9 @@ class _NoticeBody extends StatelessWidget {
                         child: Row(
                             children: [
                               const Icon(Icons.comment, size: 18,),
-                              Design.padding5,
+                              OldDesign.padding5,
                               Text('${snapshot.data!.commentCount}'),
-                              Design.padding5
+                              OldDesign.padding5
                             ]
                         )
                     )
@@ -327,7 +327,7 @@ class _NoticeBody extends StatelessWidget {
           );
         }
         else {
-          return Design.loadingIndicator;
+          return OldDesign.loadingIndicator;
         }
       }
     );

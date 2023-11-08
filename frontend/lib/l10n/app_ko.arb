@@ -1,0 +1,47 @@
+{
+    "@@locale": "ko",
+    "helloWorld": "Hello World!",
+
+    "confirm": "확인",
+    "cancel": "취소",
+    "complete": "완료",
+
+    "hour": "시",
+    "min": "분",
+    "sec": "초",
+
+    "inputHint1": "{target}을 입력해주세요.",
+    "inputHint2": "{target}를 입력해주세요.",
+
+    "unknownException": "알 수 없는 문제가 발생하였어요.",
+
+    "start": "시작하기",
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signUp": "가입하기",
+
+    "alreadyHaveAnAccount": "이미 계정이 있나요?",
+    "successToSignUp": "가입이 완료되었어요.",
+
+    "phoneNumber": "휴대폰 번호",
+    "inputPhoneNumber": "휴대폰 번호를 입력해주세요",
+    "existPhoneNumber": "이미 가입된 휴대폰 번호에요.",
+
+    "password": "비밀번호",
+    "inputPassword": "비밀번호 입력해주세요",
+    "confirmPassword": "비밀번호 확인",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "resetPassword": "비밀번호 재설정",
+    "mismatchPassword": "비밀번호가 일치하지 않아요.",
+    "successToResetPassword": "비밀번호 변경이 완료되었어요.",
+
+    "receiveVerificationCode": "인증문자 받기",
+    "receiveVerificationCodeAgain": "인증문자 다시 받기",
+    "verificationCodeHint": "인증번호 6자리",
+    "sentVerificationCode": "인증번호가 문자로 전송되었어요.",
+    "wrongVerificationCode": "인증번호를 다시 입력해주세요.",
+
+    "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
+    "name": "이름",
+    "nickname": "닉네임"
+}

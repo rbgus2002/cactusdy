@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/test.dart';
 
 class Panel extends StatelessWidget {
@@ -14,11 +14,11 @@ class Panel extends StatelessWidget {
 
   const Panel({
     Key? key,
-    this.backgroundColor = ColorStyles.panelBackgroundColor, //< FIXME
+    this.backgroundColor = OldColorStyles.panelBackgroundColor, //< FIXME
     this.boxShadows,
     this.onTap,
     this.child,
-    this.padding = Design.padding,
+    this.padding = OldDesign.padding,
     this.marginBottom = 15,
   }) : super(key: key);
 
@@ -27,9 +27,9 @@ class Panel extends StatelessWidget {
     if (onTap == null) {
       return Container(
         margin: EdgeInsets.only(bottom: marginBottom),
-        padding: Design.edge15,
+        padding: OldDesign.edge15,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Design.borderRadius),
+          borderRadius: BorderRadius.circular(OldDesign.borderRadius),
           boxShadow: boxShadows,
           color: backgroundColor,
         ),
@@ -42,15 +42,15 @@ class Panel extends StatelessWidget {
         margin: EdgeInsets.only(bottom: marginBottom),
         child: Ink(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Design.borderRadius),
+            borderRadius: BorderRadius.circular(OldDesign.borderRadius),
             boxShadow: boxShadows,
             color: backgroundColor,
           ),
           child: InkWell(
-            borderRadius: BorderRadius.circular(Design.borderRadius),
+            borderRadius: BorderRadius.circular(OldDesign.borderRadius),
             onTap: () {  onTap!(); },
             child: Container(
-              padding: Design.edge15,
+              padding: OldDesign.edge15,
               child: child,
             ),
             onLongPress: null,

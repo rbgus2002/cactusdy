@@ -2,8 +2,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 
 @Deprecated("Not used as a design modification")
@@ -52,18 +52,18 @@ class _VerificationCodeWidgetState extends State<VerificationCodeWidget> {
   Widget _cell(BuildContext context, int idx) {
     return Container(
       width: 55,
-      padding: Design.edge5,
+      padding: OldDesign.edge5,
       child: TextFormField(
         controller: _controllers[idx],
         keyboardType: TextInputType.number,
         autofocus: true,
         textAlign: TextAlign.center,
-        style: TextStyles.numberTextStyle,
+        style: OldTextStyles.numberTextStyle,
         showCursor: false,
         decoration: const InputDecoration(
           hintText: '*',
           counterText: '',
-          hintStyle: TextStyles.numberTextStyle,
+          hintStyle: OldTextStyles.numberTextStyle,
         ),
         validator: (value) => (value! == "")? " " : null,
         onChanged: (value) => _setNumber(value, idx),

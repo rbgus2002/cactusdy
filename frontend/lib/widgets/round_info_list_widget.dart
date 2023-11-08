@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
+import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/panels/panel.dart';
@@ -45,7 +45,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleWidget(title: "ROUND LIST", icon: AppIcons.add, onTap: _addNewRound),
+              TitleWidget(title: "ROUND LIST", icon: OldAppIcons.add, onTap: _addNewRound),
               AnimatedList(
                 key: _roundListKey,
                 shrinkWrap: true,
@@ -58,7 +58,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
             ]
           );
         }
-        return Design.loadingIndicator;
+        return OldDesign.loadingIndicator;
       });
   }
 
@@ -66,7 +66,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
       BuildContext context, int index, Animation<double> animation) {
     int roundSeq = _roundListModel.length - index;
     return Panel(
-      boxShadows: Design.basicShadows,
+      boxShadows: OldDesign.basicShadows,
       onTap: () => _viewRound(roundSeq, index),
       child: SizeTransition(
         sizeFactor: animation,
