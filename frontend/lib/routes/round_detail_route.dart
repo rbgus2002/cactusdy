@@ -5,7 +5,7 @@ import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/panels/panel.dart';
+import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
@@ -67,7 +67,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Round Info
-                        Panel(
+                        OldPanel(
                           boxShadows: OldDesign.basicShadows,
                           child: RoundInfoWidget(
                             roundSeq: widget.roundSeq,
