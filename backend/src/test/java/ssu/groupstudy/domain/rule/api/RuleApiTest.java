@@ -59,8 +59,6 @@ class RuleApiTest {
                 .name("최규현")
                 .phoneNumber("rbgus200@@naver.com")
                 .nickname("규규")
-                .phoneModel("")
-                .picture("")
                 .build();
     }
 

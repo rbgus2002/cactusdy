@@ -19,8 +19,6 @@ class UserTest {
         User user = User.builder()
                 .name("")
                 .nickname("")
-                .phoneModel("")
-                .picture("")
                 .phoneNumber("")
                 .build();
 
