@@ -1,10 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 class Util {
   static const int _exceptionTextLength = "Exception: ".length;

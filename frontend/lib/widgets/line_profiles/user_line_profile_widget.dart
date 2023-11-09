@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extra_color_extension.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_button.dart';
 
@@ -29,8 +29,6 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return SizedBox(
       height: _height,
       child: Row(
@@ -51,22 +49,22 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
               children: [
                 Text(
                     widget.user.nickname,
-                    style: TextStyles.head3.copyWith(color: additionalColor.grey800)),
+                    style: TextStyles.head3.copyWith(color: context.extraColors.grey800)),
                 Text(
                     widget.user.statusMessage,
-                    style: TextStyles.body2.copyWith(color: additionalColor.grey500)),
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
               ],
             ),
           ),
 
           // for sizing down of PopupMenuButton
           SizedBox(
-            width: _iconSize,
+            width: 20, // HomeRoute.specialPadding: 16 + 4
             height: _iconSize,
             child: PopupMenuButton(
               icon: Icon(
                   CustomIcons.more_vert,
-                  color: additionalColor.grey500,
+                  color: context.extraColors.grey500,
                   size: _iconSize,),
               splashRadius: _iconSize / 2,
               padding: EdgeInsets.zero,

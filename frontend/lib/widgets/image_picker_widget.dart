@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/utilities/extra_color_extension.dart';
 import 'package:group_study_app/widgets/buttons/squircle_button.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -33,8 +33,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return Stack(
           alignment: Alignment.topLeft,
           clipBehavior: Clip.none,
@@ -54,11 +52,11 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 height: _overlaySize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: additionalColor.grey000,
-                  border: Border.all(color: additionalColor.grey200!, width: 2),),
+                  color: context.extraColors.grey000,
+                  border: Border.all(color: context.extraColors.grey200!, width: 2),),
                 child: Icon(
                   CustomIcons.camera,
-                  color: additionalColor.grey400,
+                  color: context.extraColors.grey400,
                   size: _iconSize,),),)
           ],
         );

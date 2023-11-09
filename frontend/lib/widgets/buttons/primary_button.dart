@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extra_color_extension.dart';
 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -19,13 +19,11 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: additionalColor.disabledPrimaryButtonColor,
-          disabledForegroundColor: additionalColor.grey000),
+          disabledBackgroundColor: context.extraColors.disabledPrimaryButtonColor,
+          disabledForegroundColor: context.extraColors.grey000),
         child: Container(
           width: width,
           height: Design.buttonContentHeight,

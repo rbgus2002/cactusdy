@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
 
 class CustomCheckBox extends StatefulWidget {
   final bool value;
@@ -47,7 +46,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> with TickerProviderStat
           decoration: BoxDecoration(
             color: (_value)?
               widget.activeColor??Theme.of(context).primaryColor :
-              widget.fillColor??Theme.of(context).extension<AdditionalColor>()!.grey300,
+              widget.fillColor??Theme.of(context).extension<ExtraColors>()!.grey300,
             borderRadius: BorderRadius.circular(widget.size),
           ),
           child: (_value)? Icon(CustomIcons.check, size: widget.size * 0.7) : null,
