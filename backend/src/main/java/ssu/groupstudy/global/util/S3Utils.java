@@ -3,6 +3,7 @@ package ssu.groupstudy.global.util;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class S3Utils {
     private final AmazonS3 amazonS3;
 
@@ -21,6 +23,7 @@ public class S3Utils {
     private String imageBucket;
 
     public String uploadUserProfileImage(MultipartFile image, User user) throws IOException {
+        log.info("## uploadUserProfileImage ");
         ObjectMetadata metadata = createMetadataForFile(image);
         String imageName = generateImageName(S3Code.USER_IMAGE, user);
         amazonS3.putObject(imageBucket, imageName, image.getInputStream(), metadata);
