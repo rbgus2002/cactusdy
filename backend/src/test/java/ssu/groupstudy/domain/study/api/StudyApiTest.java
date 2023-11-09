@@ -50,8 +50,6 @@ class StudyApiTest {
                 .name("최규현")
                 .phoneNumber("rbgus2002@naver.com")
                 .nickname("규규")
-                .phoneModel("")
-                .picture("")
                 .build();
     }
 

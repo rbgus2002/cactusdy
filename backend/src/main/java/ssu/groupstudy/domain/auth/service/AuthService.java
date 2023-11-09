@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.auth.dto.request.MessageRequest;
 import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
@@ -22,6 +23,9 @@ import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
+import ssu.groupstudy.global.util.S3Utils;
+
+import java.io.IOException;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,6 +37,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
+    private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
@@ -64,11 +69,26 @@ public class AuthService {
     }
 
     @Transactional
-    public Long signUp(SignUpRequest request) {
+    public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
         assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
-        User user = request.toEntity(passwordEncoder);
+        User user = processUserSaving(request);
         user.addUserRole();
-        return userRepository.save(user).getUserId();
+        handleUploadProfileImage(user, image);
+        return user.getUserId();
+    }
+
+    private User processUserSaving(SignUpRequest request) {
+        String password = passwordEncoder.encode(request.getPassword());
+        User user = request.toEntity(password);
+        return userRepository.save(user);
+    }
+
+    private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
+        if(image == null){
+            return;
+        }
+        String imageUrl = s3Utils.uploadUserProfileImage(image, user);
+        user.updatePicture(imageUrl);
     }
 
     private void assertPhoneNumberDoesNotExistOrThrow(String phoneNumber) {

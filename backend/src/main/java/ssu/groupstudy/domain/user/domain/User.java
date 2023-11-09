@@ -58,16 +58,13 @@ public class User extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public User(String name, String nickname, String picture, String phoneModel, String phoneNumber, String password) {
+    public User(String name, String nickname, String phoneNumber, String password) {
         this.name = name;
         this.nickname = nickname;
-        this.picture = picture;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.activateDate = LocalDateTime.now();
-        this.phoneModel = phoneModel;
         this.deleteYn = 'N';
-        this.statusMessage = "";
     }
 
     @Override

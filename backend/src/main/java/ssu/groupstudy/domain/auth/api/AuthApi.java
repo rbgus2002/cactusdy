@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.auth.dto.request.MessageRequest;
 import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
@@ -15,6 +16,7 @@ import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,8 +35,8 @@ public class AuthApi {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signUp")
-    public ResponseDto signUp(@Valid @RequestBody SignUpRequest dto) {
-        Long userId = authService.signUp(dto);
+    public ResponseDto signUp(@Valid @RequestPart("dto") SignUpRequest dto, @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
+        Long userId = authService.signUp(dto, profileImage);
         return DataResponseDto.of("userId", userId);
     }
 
