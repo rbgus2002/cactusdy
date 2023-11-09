@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
@@ -16,7 +17,9 @@ import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.MessageUtils;
+import ssu.groupstudy.global.util.S3Utils;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +37,8 @@ class AuthServiceTest extends ServiceTest {
     @Mock
     private JwtProvider jwtProvider;
     @Mock
+    private S3Utils s3Utils;
+    @Mock
     private ApplicationEventPublisher eventPublisher;
 
 
@@ -46,22 +51,38 @@ class AuthServiceTest extends ServiceTest {
             doReturn(true).when(userRepository).existsByPhoneNumber(any(String.class));
 
             // when, then
-            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest))
+            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest, null))
                     .isInstanceOf(PhoneNumberExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_PHONE_NUMBER.getMessage());
         }
 
         @Test
         @DisplayName("회원가입 성공")
-        void success() {
+        void success() throws IOException {
             // given
             doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
             doReturn(최규현).when(userRepository).save(any(User.class));
 
             // when
-            final Long userId = authService.signUp(최규현SignUpRequest);
+            final Long userId = authService.signUp(최규현SignUpRequest, null);
 
             // then
+            softly.assertThat(userId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("회원 가입 시에 프로필 이미지를 함께 업로드한다.")
+        void 회원가입() throws IOException {
+            // given
+            doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
+            doReturn(최규현).when(userRepository).save(any(User.class));
+            doReturn("profileImageUrl").when(s3Utils).uploadUserProfileImage(any(), any(User.class));
+
+            // when
+            final Long userId = authService.signUp(최규현SignUpRequest, new MockMultipartFile("tmp", new byte[1]));
+
+            // then
+            softly.assertThat(최규현.getPicture()).isEqualTo("profileImageUrl");
             softly.assertThat(userId).isNotNull();
         }
     }
