@@ -54,6 +54,9 @@
 
     "task": "과제",
     "round": "회차",
-    "reserved": "예정"
+    "reserved": "예정",
 
+    "undefined": "미정",
+    "undefinedPlace": "장소 미정",
+    "undefinedTime": "시간 미정"
 }
