@@ -6,7 +6,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extra_color_extension.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_button.dart';
+import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
 class UserLineProfileWidget extends StatefulWidget {
   final User user;
@@ -34,7 +34,8 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SquircleButton(
+          // User Profile Image
+          SquircleWidget(
             scale: _height,
             child: (widget.user.picture.isNotEmpty) ?
                 CachedNetworkImage(
@@ -42,6 +43,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                     fit: BoxFit.cover) : null,),
           Design.padding12,
 
+          // User nickname & status message
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,8 +59,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
             ),
           ),
 
-          // for sizing down of PopupMenuButton
+          // Popup button to edit profile and setting
           SizedBox(
+            // for sizing down of PopupMenuButton
             width: 20, // HomeRoute.specialPadding: 16 + 4
             height: _iconSize,
             child: PopupMenuButton(
@@ -79,10 +82,12 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
 
   List<PopupMenuEntry> popupMenuBuilder(BuildContext context) {
     return [
+      // edit profile
       itemEntry(
         text: Util.str(context).editProfile,
         icon: const Icon(CustomIcons.write),),
 
+      // setting
       itemEntry(
           text: Util.str(context).setting,
           icon: const Icon(CustomIcons.setting_outline,),),

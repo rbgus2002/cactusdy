@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/utilities/extra_color_extension.dart';
 import 'package:group_study_app/widgets/diagrams/squircle.dart';
 
-class SquircleButton extends StatelessWidget {
+class SquircleWidget extends StatelessWidget {
   final Widget? child;
   final double scale;
   final BorderSide? side;
 
-  const SquircleButton({
+  const SquircleWidget({
     Key? key,
     this.child,
     required this.scale,
