@@ -11,10 +11,10 @@ import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
-class StudyGroupPanel extends StatelessWidget {
+class OldStudyGroupPanel extends StatelessWidget {
   final StudyInfo studyInfo;
 
-  const StudyGroupPanel({
+  const OldStudyGroupPanel({
     Key? key,
     required this.studyInfo,
   }) : super(key: key) ;
