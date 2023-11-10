@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +15,7 @@ class User{
 
   final int userId;
   final String nickname;
-  String statusMessage;
+  final String statusMessage;
   final String picture;
 
   User({
@@ -31,7 +30,7 @@ class User{
         userId: json['userId'],
         nickname: json['nickname'],
         statusMessage: json['statusMessage'],
-        picture: json['picture'],
+        picture: json['picture']??"", //< FIXME : null handling
     );
   }
 

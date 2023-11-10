@@ -18,7 +18,7 @@ class ParticipantSummary {
   factory ParticipantSummary.fromJson(Map<String, dynamic> json) {
     return ParticipantSummary(
         userId: json['userId']??User.nonAllocatedUserId,
-        picture: json['picture'],
+        picture: json['picture']??"",
         statusTag: json['statusTag']??"NONE",
     );
   }
