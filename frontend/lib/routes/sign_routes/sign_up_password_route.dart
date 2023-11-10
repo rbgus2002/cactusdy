@@ -3,6 +3,7 @@ import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/secondary_button.dart';
 import 'package:group_study_app/widgets/input_field.dart';
@@ -34,14 +35,14 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
         child: Column(
           children: [
             Text(
-              Util.str(context).inputPassword,
+              context.local.inputPassword,
               style: TextStyles.head2,),
             Design.padding48,
 
             InputField(
               key: _newPasswordEditor,
               obscureText: true,
-              hintText: Util.str(context).password,
+              hintText: context.local.password,
               maxLength: Auth.passwordMaxLength,
               validator: _newPasswordValidator,
               onChanged: (input) => _newPassword = input,
@@ -51,14 +52,14 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
             InputField(
               key: _newPasswordConfirmEditor,
               obscureText: true,
-              hintText: Util.str(context).confirmPassword,
+              hintText: context.local.confirmPassword,
               validator: _newPasswordConfirmValidator,
               maxLength: Auth.passwordMaxLength,
             ),
             Design.padding(132),
 
             SecondaryButton(
-              text: Util.str(context).start,
+              text: context.local.start,
               onPressed: _tryResetPassword,),
           ],
         ),
@@ -68,14 +69,14 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
 
   String? _newPasswordValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint2(Util.str(context).password);
+      return context.local.inputHint2(context.local.password);
     }
     return null;
   }
 
   String? _newPasswordConfirmValidator(String? input) {
     if (input == null || input != _newPassword) {
-      return Util.str(context).mismatchPassword;
+      return context.local.mismatchPassword;
     }
     return null;
   }

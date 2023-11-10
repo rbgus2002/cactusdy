@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/extra_color_extension.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 
 class Panel extends StatelessWidget {
   final VoidCallback onTap;

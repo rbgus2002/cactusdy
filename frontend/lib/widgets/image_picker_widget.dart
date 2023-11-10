@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/utilities/extra_color_extension.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:image_picker/image_picker.dart';
 

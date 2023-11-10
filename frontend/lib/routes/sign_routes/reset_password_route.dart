@@ -4,6 +4,7 @@ import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/secondary_button.dart';
@@ -31,7 +32,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(Util.str(context).resetPassword),),
+      appBar: AppBar(title: Text(context.local.resetPassword),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(
@@ -41,7 +42,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
             InputField(
               key: _newPasswordEditor,
               obscureText: true,
-              hintText: Util.str(context).password,
+              hintText: context.local.password,
               maxLength: Auth.passwordMaxLength,
               validator: _newPasswordValidator,
               onChanged: (input) => _newPassword = input,),
@@ -50,13 +51,13 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
             InputField(
               key: _newPasswordConfirmEditor,
               obscureText: true,
-              hintText: Util.str(context).confirmPassword,
+              hintText: context.local.confirmPassword,
               validator: _newPasswordConfirmValidator,
               maxLength: Auth.passwordMaxLength,),
             Design.padding(132),
 
             SecondaryButton(
-              text: Util.str(context).start,
+              text: context.local.start,
               onPressed: _tryResetPassword,),
           ],
         ),
@@ -66,14 +67,14 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
 
   String? _newPasswordValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint2(Util.str(context).password);
+      return context.local.inputHint2(context.local.password);
     }
     return null;
   }
 
   String? _newPasswordConfirmValidator(String? input) {
     if (input == null || input != _newPassword) {
-      return Util.str(context).mismatchPassword;
+      return context.local.mismatchPassword;
     }
     return null;
   }
@@ -87,14 +88,14 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
         try {
           await Auth.resetPassword(widget.phoneNumber, _newPassword).then((value) {
             if (value) {
-              Toast.showToast(context: context, message: Util.str(context).successToResetPassword);
+              Toast.showToast(context: context, message: context.local.successToResetPassword);
               Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
               Util.pushRoute(context, (context) => const SignInRoute());
             }
             else {
               //< FIXME Error Handling
               _newPasswordEditor.currentState!.errorText
-                  = Util.str(context).unknownException;
+                  = context.local.unknownException;
             }
           });
         }

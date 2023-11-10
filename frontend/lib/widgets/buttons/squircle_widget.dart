@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/utilities/extra_color_extension.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/diagrams/squircle.dart';
 
 class SquircleWidget extends StatelessWidget {

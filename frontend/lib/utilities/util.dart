@@ -33,26 +33,6 @@ class Util {
     return color;
   }
 
-  static AppLocalizations str(BuildContext context) {
-    return AppLocalizations.of(context)!;
-  }
-
-  @deprecated
-  static Widget customIconButton({
-    required Icon icon,
-    Function? onTap,
-  }) {
-    return IconButton(
-      icon: icon,
-      splashRadius: 16,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),
-      onPressed: () {
-        if (onTap != null) { onTap!(); }
-      }
-    );
-  }
-
   static String getExceptionMessage(Exception e) {
     return e.toString().substring(_exceptionTextLength);
   }
