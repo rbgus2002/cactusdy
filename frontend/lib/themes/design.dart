@@ -42,4 +42,11 @@ class Design {
 
   static const EdgeInsets toastPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
   static const double toastHeight = 44.0;
+
+  static const Widget loadingIndicator = SizedBox(
+      height: 128,
+      child: Center(
+          child: CircularProgressIndicator()
+      )
+  );
 }
