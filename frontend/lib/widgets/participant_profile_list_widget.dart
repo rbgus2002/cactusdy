@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_summary.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
@@ -22,8 +22,8 @@ class ParticipantProfileListWidget extends StatelessWidget {
         future: ParticipantSummary.getParticipantsProfileImageList(studyId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<CircleButton> userImages = snapshot.data!.map((userImage) =>
-                CircleButton(url: userImage.picture,
+            List<OldCircleButton> userImages = snapshot.data!.map((userImage) =>
+                OldCircleButton(url: userImage.picture,
                     onTap: () =>
                         UserProfileDialog.showProfileDialog(context, userImage.userId),
                     scale: scale),).toList();

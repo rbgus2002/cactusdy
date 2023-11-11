@@ -3,13 +3,13 @@ import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
-import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
+import 'package:group_study_app/widgets/line_profiles/old_study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
+import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 
 class OldStudyGroupPanel extends StatelessWidget {
   final StudyInfo studyInfo;
@@ -21,7 +21,7 @@ class OldStudyGroupPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CircleButton> userImages = studyInfo.participantSummaries.map((participant) =>
+    List<OldCircleButton> userImages = studyInfo.participantSummaries.map((participant) =>
         OutlineCircleButton(scale: 24, url: participant.picture, stroke: 2,),).toList();
     return OldPanel(
         boxShadows: OldDesign.basicShadows,
@@ -30,7 +30,7 @@ class OldStudyGroupPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            StudyLineProfileWidget(study: studyInfo.study,
+            OldStudyLineProfileWidget(study: studyInfo.study,
                 bottomWidget: CircleButtonList(
                   circleButtons: userImages,
                   paddingVertical: 2,
@@ -48,7 +48,7 @@ class OldStudyGroupPanel extends StatelessWidget {
               itemBuilder: (context, index) => 
                 Container(
                   padding: OldDesign.bottom10,
-                  child: TaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
+                  child: OldTaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
                 ),
             )
           ],

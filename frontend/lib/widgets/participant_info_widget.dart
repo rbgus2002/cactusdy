@@ -8,7 +8,7 @@ import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/widgets/line_profiles/participant_line_profile_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
+import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 
 class ParticipantInfoWidget extends StatefulWidget {
   final ParticipantInfo participantInfo;
@@ -78,7 +78,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
   Widget _buildTaskGroup(BuildContext context, int index) {
     return Container(
       padding: OldDesign.bottom15,
-      child: TaskGroupWidget(
+      child: OldTaskGroupWidget(
           taskGroup: widget.participantInfo.taskGroups[index],
           updateProgress: updateProgress,
           notify: widget.notify,
