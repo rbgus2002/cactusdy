@@ -6,7 +6,7 @@ class TaskGroup {
 
   final int roundParticipantId;
   final String taskType;
-  List<Task> tasks;
+  final List<Task> tasks;
   bool isShared;
 
   TaskGroup({

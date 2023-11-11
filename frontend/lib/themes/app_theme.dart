@@ -13,6 +13,7 @@ class AppTheme {
       colorScheme: ColorStyles.colorScheme,
       appBarTheme: ColorStyles.appBarTheme,
       scaffoldBackgroundColor: ColorStyles.backgroundColor,
+      focusColor: Colors.transparent,
 
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
@@ -31,6 +32,7 @@ class AppTheme {
       colorScheme: ColorStyles.darkColorScheme,
       appBarTheme: ColorStyles.appBarDarkTheme,
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
+      focusColor: Colors.transparent,
 
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,

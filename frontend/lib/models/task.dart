@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:group_study_app/models/participant_info.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/services/database_service.dart';
-import 'package:group_study_app/utilities/list_model.dart';
 import 'package:http/http.dart' as http;
 
 class Task {
@@ -24,7 +22,7 @@ class Task {
     return Task(
       taskId: json['taskId'],
       isDone: (json['doneYn'] == 'Y'),
-      detail: json['detail'],
+      detail: json['detail']??"",
     );
   }
 
@@ -78,7 +76,6 @@ class Task {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to delete task");
     } else {
-      print(response.body);
       bool result = json.decode(response.body)['success'];
       return result;
     }

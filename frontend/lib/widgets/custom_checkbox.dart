@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 
 class CustomCheckBox extends StatefulWidget {
   final bool value;
@@ -13,7 +14,7 @@ class CustomCheckBox extends StatefulWidget {
 
   const CustomCheckBox({
     Key? key,
-    this.value = false,
+    required this.value,
     required this.onChanged,
 
     this.activeColor,
@@ -26,7 +27,7 @@ class CustomCheckBox extends StatefulWidget {
   State<CustomCheckBox> createState() => _CustomCheckBoxState();
 }
 
-class _CustomCheckBoxState extends State<CustomCheckBox> with TickerProviderStateMixin {
+class _CustomCheckBoxState extends State<CustomCheckBox> {
   bool _value = false;
 
   @override
@@ -45,16 +46,18 @@ class _CustomCheckBoxState extends State<CustomCheckBox> with TickerProviderStat
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: (_value)?
-              widget.activeColor??Theme.of(context).primaryColor :
-              widget.fillColor??Theme.of(context).extension<ExtraColors>()!.grey300,
-            borderRadius: BorderRadius.circular(widget.size),
-          ),
-          child: (_value)? Icon(CustomIcons.check, size: widget.size * 0.7) : null,
+              widget.activeColor??ColorStyles.mainColor :
+              widget.fillColor??context.extraColors.grey300,
+            borderRadius: BorderRadius.circular(widget.size),),
+          child: (_value)?
+              Icon(
+                color: context.extraColors.grey000,
+                CustomIcons.check,
+                size: widget.size * 0.7) : null,
         ),
       onTap: () {
-        setState(() {
-          _value = !_value;
-        });
+        setState(() => _value = !_value);
+        widget.onChanged(_value);
       },
     );
   }

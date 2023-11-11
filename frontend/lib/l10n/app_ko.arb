@@ -6,6 +6,9 @@
     "cancel": "취소",
     "complete": "완료",
 
+    "modify": "수정하기",
+    "delete": "삭제하기",
+
     "hour": "시",
     "min": "분",
     "sec": "초",
