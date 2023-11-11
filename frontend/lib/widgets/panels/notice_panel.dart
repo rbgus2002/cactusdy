@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/notice_summary.dart';
@@ -7,13 +5,9 @@ import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
-import 'package:intl/intl.dart';
+import 'package:group_study_app/widgets/panels/old_panel.dart';
 
 class NoticePanel extends StatefulWidget {
   final NoticeSummary noticeSummary;
@@ -32,7 +26,7 @@ class _NoticePanel extends State<NoticePanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Panel(
+    return OldPanel(
         boxShadows: OldDesign.basicShadows,
         child: InkWell(child:
         Column(

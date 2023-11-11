@@ -37,7 +37,7 @@ class ColorStyles {
   static const Color _black300 = Color(0xFFD1D6DB);
   static const Color _black200 = Color(0xFFE5E8EB);
   static const Color _black100 = Color(0xFFF2F4F6);
-  static const Color _black50  = Color(0xFFF2F4F6);
+  static const Color _black50  = Color(0xFFF7F9FB);
   static const Color _black000 = Color(0xFFFFFFFF);
 
   static const Color backgroundColor = _black000;
@@ -112,7 +112,7 @@ class ColorStyles {
   );
 }
 
-class AdditionalColor extends ThemeExtension<AdditionalColor> {
+class ExtraColors extends ThemeExtension<ExtraColors> {
   /// Color chip
   final Color? blue;
   final Color? mint;
@@ -143,7 +143,13 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
   final Color? inputFieldBackgroundColor;
   final Color? inputFieldBackgroundErrorColor;
 
-  const AdditionalColor({
+  /// Base background Color
+  final Color? baseBackgroundColor;
+
+  /// Reserved Tag Color
+  final Color? reservedTagColor;
+
+  const ExtraColors({
     required this.blue,
     required this.mint,
     required this.green,
@@ -169,10 +175,14 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
 
     required this.inputFieldBackgroundColor,
     required this.inputFieldBackgroundErrorColor,
+
+    required this.baseBackgroundColor,
+
+    required this.reservedTagColor,
   });
 
   @override
-  AdditionalColor copyWith({
+  ExtraColors copyWith({
     Color? blue,
     Color? mint,
     Color? green,
@@ -198,8 +208,12 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
 
     Color? inputFieldBackgroundColor,
     Color? inputFieldBackgroundErrorColor,
+
+    Color? baseBackgroundColor,
+
+    Color? reservedTagColor,
   }) {
-    return AdditionalColor(
+    return ExtraColors(
         blue: blue?? this.blue,
         mint: mint?? this.mint,
         green: green?? this.green,
@@ -225,15 +239,19 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
 
         inputFieldBackgroundColor: inputFieldBackgroundColor?? this.inputFieldBackgroundColor,
         inputFieldBackgroundErrorColor: inputFieldBackgroundErrorColor?? this.inputFieldBackgroundErrorColor,
+
+        baseBackgroundColor: baseBackgroundColor?? this.baseBackgroundColor,
+
+        reservedTagColor: reservedTagColor?? this.reservedTagColor,
     );
   }
 
   @override
-  AdditionalColor lerp(ThemeExtension<AdditionalColor>? other, double t) {
-    if (other is! AdditionalColor) {
+  ExtraColors lerp(ThemeExtension<ExtraColors>? other, double t) {
+    if (other is! ExtraColors) {
       return this;
     }
-    return AdditionalColor(
+    return ExtraColors(
       blue: Color.lerp(blue, other.blue, t),
       mint: Color.lerp(mint, other.mint, t),
       green: Color.lerp(green, other.green, t),
@@ -257,12 +275,16 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
       disabledPrimaryButtonColor: Color.lerp(disabledPrimaryButtonColor, other.disabledPrimaryButtonColor, t),
       disabledSecondButtonColor: Color.lerp(disabledSecondButtonColor, disabledSecondButtonColor, t),
 
-      inputFieldBackgroundColor: inputFieldBackgroundColor,
-      inputFieldBackgroundErrorColor: inputFieldBackgroundErrorColor,
+      inputFieldBackgroundColor: Color.lerp(inputFieldBackgroundColor, other.inputFieldBackgroundColor, t),
+      inputFieldBackgroundErrorColor: Color.lerp(inputFieldBackgroundErrorColor, other.inputFieldBackgroundErrorColor, t),
+
+      baseBackgroundColor: Color.lerp(baseBackgroundColor, other.baseBackgroundColor, t),
+
+      reservedTagColor: Color.lerp(reservedTagColor, other.reservedTagColor, t),
     );
   }
 
-  static const AdditionalColor additionalColor = AdditionalColor(
+  static const ExtraColors extraColors = ExtraColors(
       blue: ColorStyles._blue,
       mint: ColorStyles._mint,
       green: ColorStyles._green,
@@ -288,9 +310,13 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
 
       inputFieldBackgroundColor: ColorStyles._inputFieldBackground,
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
+
+      baseBackgroundColor: ColorStyles._black100,
+
+      reservedTagColor: ColorStyles.secondColor,
   );
 
-  static const AdditionalColor additionalColorDark = AdditionalColor(
+  static const ExtraColors extraColorsDark = ExtraColors(
       blue: ColorStyles._blueDark,
       mint: ColorStyles._mintDark,
       green: ColorStyles._greenDark,
@@ -316,5 +342,8 @@ class AdditionalColor extends ThemeExtension<AdditionalColor> {
 
       inputFieldBackgroundColor: ColorStyles._inputFieldDarkBackground,
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
+
+      baseBackgroundColor: Colors.black,
+      reservedTagColor: ColorStyles._pinkDark,
   );
 }

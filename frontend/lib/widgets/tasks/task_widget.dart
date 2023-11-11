@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/widgets/custom_checkbox.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 
 class TaskWidget extends StatefulWidget {
   final int index;
   final Task task;
+  final Color color;
   final Animation<double> animation;
-  final Function onUpdateTaskDetail;
+  final Function(Task) onUpdateTaskDetail;
   final Function(Task, int) onDeleteTask;
   final Function? onCheckTask;
 
@@ -18,6 +20,7 @@ class TaskWidget extends StatefulWidget {
     super.key,
     required this.index,
     required this.task,
+    required this.color,
     required this.animation,
     required this.onUpdateTaskDetail,
     required this.onDeleteTask,
@@ -29,11 +32,6 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidget extends State<TaskWidget> {
-  static const String _taskHintMessage = "할 일을 입력해 주세요";
-
-  static const String _modifyTaskText = "수정하기";
-  static const String _deleteTaskText = "삭제하기";
-
   late final TextEditingController _textEditingController;
   late final FocusNode _focusNode;
 
@@ -48,66 +46,59 @@ class _TaskWidget extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.task.detail ?? "";
+    _textEditingController.text = widget.task.detail;
     return SizeTransition(
       sizeFactor: widget.animation,
-      child: SizedBox(
-        height: 26,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _taskCheckBox(),
-            OldDesign.padding5,
-            _taskDetail(),
-            _taskPopupMenu(),
-          ],
+      child: Ink(
+        height: 36,
+        child: InkWell(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomCheckBox(
+                value: widget.task.isDone,
+                activeColor: widget.color,
+                onChanged: _onChecked),
+              Design.padding12,
+
+              _taskDetail(),
+              _taskPopupMenu(),
+            ],
+          ),
+          onTap: () {},
         ),
+
       ),
     );
   }
 
-  Widget _taskCheckBox() {
-    return SizedBox(
-      width: 18,
-      height: 18,
-      child: Checkbox(
-          value: widget.task.isDone,
-          onChanged: (value) {
-            if (widget.task.taskId == Task.nonAllocatedTaskId) return;
-
-            // Fast Unsafe State Update
-            setState(() => widget.task.isDone = value! );
-
-            // Call API and Verify State
-            Task.switchTask(widget.task.taskId).then((result) =>
-                widget.task.isDone = result);
-
-            if (widget.onCheckTask != null) {
-              widget.onCheckTask!();
-            }
-          },
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
-    );
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Widget _taskDetail() {
     return Flexible(
       fit: FlexFit.tight,
       child: TextField(
-        maxLength: Task.taskMaxLength,
         maxLines: 1,
-        style: OldTextStyles.taskTextStyle,
+        maxLength: Task.taskMaxLength,
+        style: TextStyles.task.copyWith(
+            color: context.extraColors.grey900),
 
         focusNode: _focusNode,
         controller: _textEditingController,
-        decoration: const InputDecoration(
-          hintText: _taskHintMessage,
+        decoration: InputDecoration(
           isDense: true,
-          contentPadding: EdgeInsets.zero,
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: OldColorStyles.taskHintTextColor,)),
-          border:InputBorder.none,
+          hintText: context.local.inputHint2(context.local.task),
+          contentPadding: const EdgeInsets.symmetric(vertical: 4),
           counterText: "",
-        ),
+          border: InputBorder.none,
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: context.extraColors.grey700!,),),),
 
         onChanged: (value) => _isEdited = true,
         onTapOutside: (event) => _updateTask(),
@@ -118,27 +109,40 @@ class _TaskWidget extends State<TaskWidget> {
 
   Widget _taskPopupMenu() {
     return SizedBox(
-      width: 24,
-      height: 24,
-      child : PopupMenuButton(
-        icon: const Icon(Icons.more_horiz, size: 16, color: Colors.grey,),
-        splashRadius: 12,
+      width: 20,
+      height: 20,
+      child: IconButton(
+        icon: const Icon(CustomIcons.more_horiz),
+        iconSize: 20,
+        color: context.extraColors.grey500,
+        splashRadius: 10,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
-        offset: const Offset(0, 18),
+        onPressed: () => TwoButtonDialog.showProfileDialog(
+          context: context,
+          text: widget.task.detail,
 
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            child: const Text(_modifyTaskText, style: OldTextStyles.bodyMedium,),
-            onTap: () => _focusNode.requestFocus(),
-          ),
-          PopupMenuItem(
-            child: const Text(_deleteTaskText, style: OldTextStyles.bodyMedium,),
-            onTap: () => widget.onDeleteTask(widget.task, widget.index),
-          )
-        ],
-      )
+          buttonText1: context.local.modify,
+          onPressed1: () => _focusNode.requestFocus(),
+
+          buttonText2: context.local.delete,
+          onPressed2: () => widget.onDeleteTask(widget.task, widget.index),),),
     );
+  }
+
+  void _onChecked(bool? value) {
+    if (widget.task.taskId == Task.nonAllocatedTaskId) return;
+
+    // Fast Unsafe State Update
+    widget.task.isDone = value!;
+
+    // Call API and Verify State
+    Task.switchTask(widget.task.taskId).then((result) =>
+    widget.task.isDone = result);
+
+    if (widget.onCheckTask != null) {
+      widget.onCheckTask!();
+    }
   }
 
   void _updateTask() {
@@ -152,10 +156,4 @@ class _TaskWidget extends State<TaskWidget> {
     setState(() { });
   }
 
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
 }

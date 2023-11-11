@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/sign_routes/reset_password_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
@@ -41,7 +42,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(Util.str(context).resetPassword),),
+      appBar: AppBar(title: Text(context.local.resetPassword),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(
@@ -51,7 +52,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
             InputField(
               enable: !_isVerificationCodeSend,
               key: _phoneNumberEditor,
-              hintText: Util.str(context).phoneNumber,
+              hintText: context.local.phoneNumber,
               maxLength: Auth.phoneNumberMaxLength,
               validator: _phoneNumberValidator,
               onChanged: (input) {
@@ -62,8 +63,8 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
 
             OutlinedPrimaryButton(
               text: (!_isVerificationCodeSend)?
-                  Util.str(context).receiveVerificationCode :
-                  '${Util.str(context).receiveVerificationCodeAgain} (${TimeUtility.secondToString(_restTime)})',
+                  context.local.receiveVerificationCode :
+                  '${context.local.receiveVerificationCodeAgain} (${TimeUtility.secondToString(_restTime)})',
               onPressed: _requestVerificationCode,),
             Design.padding32,
 
@@ -73,14 +74,14 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
                 children: [
                   InputField(
                     key: _verificationCodeEditor,
-                    hintText: Util.str(context).verificationCodeHint,
+                    hintText: context.local.verificationCodeHint,
                     maxLength: _verificationCodeLength,
                     validator: _verificationCodeValidator,
                     onChanged: (input) => _inputCode = input,),
                   Design.padding48,
 
                   SecondaryButton(
-                    text: Util.str(context).complete,
+                    text: context.local.complete,
                     onPressed: _verifyCode,),
                 ],
               )),
@@ -98,14 +99,14 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
 
   String? _phoneNumberValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint2(Util.str(context).phoneNumber);
+      return context.local.inputHint2(context.local.phoneNumber);
     }
     return null;
   }
 
   String? _verificationCodeValidator(String? input) {
     if (input == null || input.length < _verificationCodeLength) {
-      return Util.str(context).wrongVerificationCode;
+      return context.local.wrongVerificationCode;
     }
     return null;
   }
@@ -117,7 +118,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
       try {
         await Auth.requestResetPasswordVerifyMessage(_phoneNumber).then((result) {
           _isVerificationCodeSend = true;
-          Toast.showToast(context: context, message: Util.str(context).sentVerificationCode);
+          Toast.showToast(context: context, message: context.local.sentVerificationCode);
           _startTimer();
         });
       } on Exception catch (e) {
@@ -145,7 +146,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
             else {
               //< FIXME : Error handling
               _verificationCodeEditor.currentState!.errorText
-                  = Util.str(context).wrongVerificationCode;
+                  = context.local.wrongVerificationCode;
             }
           });
         } on Exception catch (e) {

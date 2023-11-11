@@ -37,10 +37,10 @@ class TimeUtility {
     final nowTime = DateTime.now();
 
     if (dateTime.year == nowTime.year) {
-      return DateFormat("MM/dd HH:mm").format(dateTime);
+      return DateFormat('MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
     }
 
-    return DateFormat("yy/MM/dd HH:mm").format(dateTime);
+    return DateFormat('yy/MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
   }
 
   static String secondToString(int sec) {

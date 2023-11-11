@@ -13,13 +13,14 @@ class AppTheme {
       colorScheme: ColorStyles.colorScheme,
       appBarTheme: ColorStyles.appBarTheme,
       scaffoldBackgroundColor: ColorStyles.backgroundColor,
+      focusColor: Colors.transparent,
 
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
 
       extensions: const [
-        AdditionalColor.additionalColor,
+        ExtraColors.extraColors,
       ]
   );
 
@@ -31,13 +32,14 @@ class AppTheme {
       colorScheme: ColorStyles.darkColorScheme,
       appBarTheme: ColorStyles.appBarDarkTheme,
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
+      focusColor: Colors.transparent,
 
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
 
       extensions: const [
-        AdditionalColor.additionalColorDark,
+        ExtraColors.extraColorsDark,
       ]
   );
 
@@ -60,5 +62,11 @@ class AppTheme {
       style: TextButton.styleFrom(
         foregroundColor: ColorStyles.tintColor,
         textStyle: TextStyles.head5,)
+  );
+
+  static final CardTheme _cardTheme = CardTheme(
+    color: Colors.red,
+    elevation: 0,
+
   );
 }

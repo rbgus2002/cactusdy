@@ -5,7 +5,7 @@ import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/panels/panel.dart';
+import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
@@ -65,7 +65,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
     int roundSeq = _roundListModel.length - index;
-    return Panel(
+    return OldPanel(
       boxShadows: OldDesign.basicShadows,
       onTap: () => _viewRound(roundSeq, index),
       child: SizeTransition(

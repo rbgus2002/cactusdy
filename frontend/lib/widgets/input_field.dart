@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 
 class InputField extends StatefulWidget {
   final String? hintText;
@@ -44,8 +45,6 @@ class InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return TextField(
       enabled: widget.enable,
       controller: _textEditingController,
@@ -59,10 +58,10 @@ class InputFieldState extends State<InputField> {
 
         hintText: widget.hintText,
         hintStyle: TextStyles.body1.copyWith(
-          color: additionalColor.grey400,),
+          color: context.extraColors.grey400,),
 
         filled: true,
-        fillColor: (_isError())? additionalColor.inputFieldBackgroundErrorColor : additionalColor.inputFieldBackgroundColor,
+        fillColor: (_isError())? context.extraColors.inputFieldBackgroundErrorColor : context.extraColors.inputFieldBackgroundColor,
 
         border: _defaultBorder,
         disabledBorder: _defaultBorder,

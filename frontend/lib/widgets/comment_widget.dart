@@ -7,7 +7,7 @@ import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 class CommentWidget extends StatelessWidget {
@@ -57,7 +57,7 @@ class CommentWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                CircleButton(url: comment.picture, scale: 36,),
+                OldCircleButton(url: comment.picture, scale: 36,),
                 OldDesign.padding5,
                 Flexible(
                   child: Column(

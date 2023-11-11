@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/sign_routes/reset_password_verify_route.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/formatter_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
@@ -31,11 +31,9 @@ class _SignInRouteState extends State<SignInRoute> {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(Util.str(context).signIn),),
+        title: Text(context.local.signIn),),
         body: SingleChildScrollView(
           child: Container(
             padding: Design.edgePadding,
@@ -44,7 +42,7 @@ class _SignInRouteState extends State<SignInRoute> {
               children: [
                 Design.padding28,
 
-                Text(Util.str(context).phoneNumber, style: TextStyles.head5,),
+                Text(context.local.phoneNumber, style: TextStyles.head5,),
                 Design.padding8,
 
                 InputField(
@@ -57,7 +55,7 @@ class _SignInRouteState extends State<SignInRoute> {
                   },),
                 Design.padding12,
 
-                Text(Util.str(context).password, style: TextStyles.head5,),
+                Text(context.local.password, style: TextStyles.head5,),
                 Design.padding8,
 
                 InputField(
@@ -71,7 +69,7 @@ class _SignInRouteState extends State<SignInRoute> {
                 Design.padding(80),
 
                 PrimaryButton(
-                  text: Util.str(context).confirm,
+                  text: context.local.confirm,
                   onPressed: _tryToSignIn,),
                 Design.padding4,
 
@@ -79,12 +77,12 @@ class _SignInRouteState extends State<SignInRoute> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      Util.str(context).forgotPassword,
-                      style: TextStyles.head5.copyWith(color: additionalColor.grey500),),
+                      context.local.forgotPassword,
+                      style: TextStyles.head5.copyWith(color: context.extraColors.grey500),),
 
                     TextButton(
                       onPressed: () => Util.pushRoute(context, (context) => const ResetPasswordVerifyRoute()),
-                      child : Text(Util.str(context).resetPassword,),),
+                      child : Text(context.local.resetPassword,),),
                   ],
                 )
               ],
@@ -96,14 +94,14 @@ class _SignInRouteState extends State<SignInRoute> {
 
   String? _phoneNumberValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint2(Util.str(context).phoneNumber);
+      return context.local.inputHint2(context.local.phoneNumber);
     }
     return null;
   }
 
   String? _passwordValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint2(Util.str(context).password);
+      return context.local.inputHint2(context.local.password);
     }
     return null;
   }

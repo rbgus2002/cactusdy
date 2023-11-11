@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 
 class OutlinedPrimaryButton extends PrimaryButton {
@@ -15,13 +15,11 @@ class OutlinedPrimaryButton extends PrimaryButton {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: additionalColor.grey900,
-          disabledForegroundColor: additionalColor.grey300,
+          foregroundColor: context.extraColors.grey900,
+          disabledForegroundColor: context.extraColors.grey300,
         ),
         child: Container(
           width: width,

@@ -6,7 +6,7 @@ import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/models/user.dart';
 
@@ -32,7 +32,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   static const double _boarderRadius = _height + 2 * _padding;
   static const int _showCountMax = 5;
 
-  List<CircleButton> _checkerImages = [];
+  List<OldCircleButton> _checkerImages = [];
   double _width = 0;
   bool _isNeedUpdate = true;
   bool _isExpended = false;
@@ -119,7 +119,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
         setState(() {
           _checkerImages = List.generate(profileURIs.length, //< FIXME
-                  (index) => CircleButton(url: profileURIs[index])).toList();
+                  (index) => OldCircleButton(url: profileURIs[index])).toList();
         });
       },);
     }

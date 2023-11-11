@@ -7,9 +7,11 @@ class Design {
 
   static const double borderRadiusValueSmall = 4.0;
   static const double borderRadiusValue = 8.0;
+  static const double borderRadiusValueBig = 12.0;
 
   static const BorderRadius borderRadiusSmall = BorderRadius.all(Radius.circular(borderRadiusValueSmall));
   static const BorderRadius borderRadius = BorderRadius.all(Radius.circular(borderRadiusValue));
+  static const BorderRadius borderRadiusBig = BorderRadius.all(Radius.circular(borderRadiusValueBig));
 
   static const EdgeInsets edge4 = EdgeInsets.all(4.0);
   static const EdgeInsets edge8 = EdgeInsets.all(8.0);
@@ -40,4 +42,11 @@ class Design {
 
   static const EdgeInsets toastPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
   static const double toastHeight = 44.0;
+
+  static const Widget loadingIndicator = SizedBox(
+      height: 128,
+      child: Center(
+          child: CircularProgressIndicator()
+      )
+  );
 }

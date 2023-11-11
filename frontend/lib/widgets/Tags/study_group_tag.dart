@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/Tags/tag_button.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 
 class StudyGroupTag extends TagButton {
   static const studyTagPadding = EdgeInsets.fromLTRB(2, 2, 10, 2);
@@ -21,7 +21,7 @@ class StudyGroupTag extends TagButton {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-          const CircleButton(scale:16, onTap: null, url: '',), //< FIXME
+          const OldCircleButton(scale:16, onTap: null, url: '',), //< FIXME
           OldDesign.padding5,
           Text(name, style: OldTextStyles.tagTextStyle, textAlign: TextAlign.center),
         ],)

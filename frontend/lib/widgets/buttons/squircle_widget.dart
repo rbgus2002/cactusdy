@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/diagrams/squircle.dart';
 
-class SquircleButton extends StatelessWidget {
+class SquircleWidget extends StatelessWidget {
   final Widget? child;
   final double scale;
   final BorderSide? side;
 
-  const SquircleButton({
+  const SquircleWidget({
     Key? key,
     this.child,
     required this.scale,
@@ -17,8 +17,6 @@ class SquircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final additionalColor = Theme.of(context).extension<AdditionalColor>()!;
-
     return SizedBox(
       width: scale,
       height: scale,
@@ -26,9 +24,9 @@ class SquircleButton extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: const SquircleBorder(),
         child: Material(
-          color: additionalColor.inputFieldBackgroundColor,
+          color: context.extraColors.inputFieldBackgroundColor,
           shape: SquircleBorder(
-            side: side??BorderSide(color: additionalColor.grey200!, width: 2)),
+            side: side??BorderSide(color: context.extraColors.grey200!, width: 2)),
           child: child,)
       ),
     );

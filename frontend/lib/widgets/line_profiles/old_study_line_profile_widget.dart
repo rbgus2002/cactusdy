@@ -3,19 +3,19 @@ import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/line_profiles/line_profile_widget.dart';
 import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
 
-class StudyLineProfileWidget extends StatelessWidget {
+class OldStudyLineProfileWidget extends StatelessWidget {
   static const double _scale = 50;
   static const double _stroke = 4;
 
   final Study study;
   final Widget? bottomWidget;
 
-  const StudyLineProfileWidget({
+  const OldStudyLineProfileWidget({
     super.key,
     required this.study,
     this.bottomWidget,

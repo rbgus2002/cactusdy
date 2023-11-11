@@ -6,6 +6,9 @@
     "cancel": "취소",
     "complete": "완료",
 
+    "modify": "수정하기",
+    "delete": "삭제하기",
+
     "hour": "시",
     "min": "분",
     "sec": "초",
@@ -43,5 +46,20 @@
 
     "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
     "name": "이름",
-    "nickname": "닉네임"
+    "nickname": "닉네임",
+    "editProfile": "프로필 편집",
+    "setting": "설정",
+
+    "study": "스터디",
+    "myStudy": "나의 스터디",
+    "addStudy": "스터디 추가",
+    "createStudy": "스터디 만들기",
+
+    "task": "과제",
+    "round": "회차",
+    "reserved": "예정",
+
+    "undefined": "미정",
+    "undefinedPlace": "장소 미정",
+    "undefinedTime": "시간 미정"
 }

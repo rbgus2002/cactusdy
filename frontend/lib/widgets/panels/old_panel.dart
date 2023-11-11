@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/utilities/test.dart';
 
-class Panel extends StatelessWidget {
+class OldPanel extends StatelessWidget {
   final Color backgroundColor;
   final List<BoxShadow>? boxShadows;
   final Function? onTap;
@@ -12,7 +11,7 @@ class Panel extends StatelessWidget {
   final double padding;
   final double marginBottom;
 
-  const Panel({
+  const OldPanel({
     Key? key,
     this.backgroundColor = OldColorStyles.panelBackgroundColor, //< FIXME
     this.boxShadows,

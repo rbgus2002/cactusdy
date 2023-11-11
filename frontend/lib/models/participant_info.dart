@@ -17,7 +17,7 @@ class ParticipantInfo {
         userId: json['userId'],
         nickname: json['nickname'],
         statusMessage: "",
-        picture: json['profileImage']);
+        picture: json['profileImage']??"");
 
     return ParticipantInfo(
       participant: participant,

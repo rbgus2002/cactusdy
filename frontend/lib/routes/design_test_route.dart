@@ -47,6 +47,7 @@ class DesignTestRoute extends StatelessWidget {
             Text('프리텐다드', style: TextStyles.caption2),
 
             CustomCheckBox(
+              value: false,
                 onChanged: (value) {}),
 
             TaskListTitle(

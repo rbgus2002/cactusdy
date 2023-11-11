@@ -6,6 +6,7 @@ import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/secondary_button.dart';
@@ -54,7 +55,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              Util.str(context).setProfileAndNickname,
+              context.local.setProfileAndNickname,
               style: TextStyles.head2),
             Design.padding(40),
 
@@ -66,7 +67,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
             InputField(
               key: _nameEditor,
-              hintText: Util.str(context).name,
+              hintText: context.local.name,
               maxLength: User.nameMaxLength,
               validator: _nameValidator,
               onChanged: (input) => _name = input,),
@@ -74,14 +75,14 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
             InputField(
               key: _nicknameEditor,
-              hintText: Util.str(context).nickname,
+              hintText: context.local.nickname,
               maxLength: User.nicknameMaxLength,
               validator: _nicknameValidator,
               onChanged: (input) => _nickname = input,),
             Design.padding(64),
 
             SecondaryButton(
-              text: Util.str(context).signUp,
+              text: context.local.signUp,
               onPressed: _tryToSignUp,),
           ],
         ),
@@ -115,14 +116,14 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   String? _nameValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint1(Util.str(context).name);
+      return context.local.inputHint1(context.local.name);
     }
     return null;
   }
 
   String? _nicknameValidator(String? input) {
     if (input == null || input.isEmpty) {
-      return Util.str(context).inputHint1(Util.str(context).nickname);
+      return context.local.inputHint1(context.local.nickname);
     }
     return null;
   }
@@ -142,7 +143,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
               phoneNumber: widget.phoneNumber,
               password: widget.password).then((value) {
             if (value) {
-              Toast.showToast(context: context, message: Util.str(context).successToSignUp);
+              Toast.showToast(context: context, message: context.local.successToSignUp);
               Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
               Util.pushRoute(context, (context) => const SignInRoute());
             }

@@ -26,11 +26,11 @@ class Study {
   });
 
   factory Study.fromJson(Map<String, dynamic> json) {
-    return Study(
+    return Study( //< FIXME null handling
       studyId: json['studyId'],
       studyName: json['studyName'],
       detail: json['detail']??"",
-      picture: json['picture'],
+      picture: json['picture']??"",
       color : Color(int.parse((json['color'] as String).substring(2), radix: 16)),
     );
   }

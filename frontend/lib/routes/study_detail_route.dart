@@ -4,7 +4,7 @@ import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/line_profiles/study_line_profile_widget.dart';
+import 'package:group_study_app/widgets/line_profiles/old_study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
 import 'package:group_study_app/widgets/round_info_list_widget.dart';
@@ -44,7 +44,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                   future: Study.getStudySummary(widget.studyId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return StudyLineProfileWidget(study: snapshot.data!);
+                      return OldStudyLineProfileWidget(study: snapshot.data!);
                     }
                     return const SizedBox(); //< FIXME
                 },),
