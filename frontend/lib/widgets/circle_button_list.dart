@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'buttons/circle_button.dart';
+import 'buttons/old_circle_button.dart';
 
 class CircleButtonList extends StatelessWidget {
-  final List<CircleButton> circleButtons;
+  final List<OldCircleButton> circleButtons;
   final double paddingVertical;
 
   const CircleButtonList({
@@ -17,7 +17,7 @@ class CircleButtonList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          for (CircleButton circleButton in circleButtons)
+          for (OldCircleButton circleButton in circleButtons)
             Container(
               margin: EdgeInsets.fromLTRB(0, 0, paddingVertical, 0),
               child: circleButton,

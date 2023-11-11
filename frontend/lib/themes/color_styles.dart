@@ -143,8 +143,11 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
   final Color? inputFieldBackgroundColor;
   final Color? inputFieldBackgroundErrorColor;
 
-  /// Base background Colors
+  /// Base background Color
   final Color? baseBackgroundColor;
+
+  /// Reserved Tag Color
+  final Color? reservedTagColor;
 
   const ExtraColors({
     required this.blue,
@@ -174,6 +177,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
     required this.inputFieldBackgroundErrorColor,
 
     required this.baseBackgroundColor,
+
+    required this.reservedTagColor,
   });
 
   @override
@@ -205,6 +210,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
     Color? inputFieldBackgroundErrorColor,
 
     Color? baseBackgroundColor,
+
+    Color? reservedTagColor,
   }) {
     return ExtraColors(
         blue: blue?? this.blue,
@@ -234,6 +241,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
         inputFieldBackgroundErrorColor: inputFieldBackgroundErrorColor?? this.inputFieldBackgroundErrorColor,
 
         baseBackgroundColor: baseBackgroundColor?? this.baseBackgroundColor,
+
+        reservedTagColor: reservedTagColor?? this.reservedTagColor,
     );
   }
 
@@ -270,6 +279,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: Color.lerp(inputFieldBackgroundErrorColor, other.inputFieldBackgroundErrorColor, t),
 
       baseBackgroundColor: Color.lerp(baseBackgroundColor, other.baseBackgroundColor, t),
+
+      reservedTagColor: Color.lerp(reservedTagColor, other.reservedTagColor, t),
     );
   }
 
@@ -301,6 +312,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
 
       baseBackgroundColor: ColorStyles._black100,
+
+      reservedTagColor: ColorStyles.secondColor,
   );
 
   static const ExtraColors extraColorsDark = ExtraColors(
@@ -331,5 +344,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
 
       baseBackgroundColor: Colors.black,
+      reservedTagColor: ColorStyles._pinkDark,
   );
 }

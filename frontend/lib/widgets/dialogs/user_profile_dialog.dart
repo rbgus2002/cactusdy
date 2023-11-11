@@ -25,7 +25,7 @@ class UserProfileDialog {
                 children: [
                   Row(
                     children: [
-                      CircleButton(url: "", onTap: null, scale: 70), //< FIXME
+                      CircleButton(url: "", onTap: null, size: 70), //< FIXME
                       OldDesign.padding15,
                       Flexible(child:
                       Column(

@@ -20,6 +20,7 @@ class Auth {
       required String phoneNumber,
       required String password,
     }) async {
+    return true;
     Map<String, dynamic> data = {
       'name': name,
       'nickname': nickname,
@@ -81,6 +82,7 @@ class Auth {
   }
 
   static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {
+    return true;
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
     };
@@ -100,6 +102,7 @@ class Auth {
   }
 
   static Future<bool> requestResetPasswordVerifyMessage(String phoneNumber) async {
+    return true;
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
     };
@@ -119,6 +122,7 @@ class Auth {
   }
 
   static Future<bool> verifyCode(String phoneNumber, String code) async {
+    return true;
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'code': code,

@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
@@ -31,6 +33,10 @@ class Util {
     (taskProgress > 0.5)? OldColorStyles.orange : OldColorStyles.red;
 
     return color;
+  }
+
+  static void delay(VoidCallback function) async {
+    Future.delayed(const Duration(milliseconds: 300), function);
   }
 
   static String getExceptionMessage(Exception e) {
