@@ -83,4 +83,8 @@ public class Study extends BaseEntity {
     public void delete(){
         this.deleteYn = 'Y';
     }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
+    }
 }

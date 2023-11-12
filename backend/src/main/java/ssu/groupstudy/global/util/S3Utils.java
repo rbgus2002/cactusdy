@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.S3Code;
 
@@ -25,7 +26,7 @@ public class S3Utils {
     public String uploadUserProfileImage(MultipartFile image, User user) throws IOException {
         log.info("## uploadUserProfileImage ");
         ObjectMetadata metadata = createMetadataForFile(image);
-        String imageName = generateImageName(S3Code.USER_IMAGE, user);
+        String imageName = generateImageName(S3Code.USER_IMAGE, user.getUserId());
         amazonS3.putObject(imageBucket, imageName, image.getInputStream(), metadata);
         return amazonS3.getUrl(imageBucket, imageName).toString();
     }
@@ -37,7 +38,15 @@ public class S3Utils {
         return metadata;
     }
 
-    private String generateImageName(S3Code code, User user) {
-        return String.format(code.getFormat(), user.getUserId(), UUID.randomUUID());
+    private String generateImageName(S3Code code, Long id) {
+        return String.format(code.getFormat(), id, UUID.randomUUID());
+    }
+
+    public String uploadStudyProfileImage(MultipartFile image, Study study) throws IOException {
+        log.info("## uploadStudyProfileImage ");
+        ObjectMetadata metadata = createMetadataForFile(image);
+        String imageName = generateImageName(S3Code.STUDY_IMAGE, study.getStudyId());
+        amazonS3.putObject(imageBucket, imageName, image.getInputStream(), metadata);
+        return amazonS3.getUrl(imageBucket, imageName).toString();
     }
 }
