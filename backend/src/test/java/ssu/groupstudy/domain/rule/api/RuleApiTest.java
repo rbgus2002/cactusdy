@@ -44,7 +44,6 @@ class RuleApiTest {
     private CreateStudyRequest getRegisterStudyRequest() {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
-                .picture("")
                 .detail("알고문풀")
                 .build();
     }
