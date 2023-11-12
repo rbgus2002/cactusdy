@@ -54,7 +54,7 @@ public class Task{
     }
 
     public void validateAccess(RoundParticipant roundParticipant){
-        if(!roundParticipant.equals(this.roundParticipant)){
+        if(!this.roundParticipant.equals(roundParticipant)){
             throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }
     }
