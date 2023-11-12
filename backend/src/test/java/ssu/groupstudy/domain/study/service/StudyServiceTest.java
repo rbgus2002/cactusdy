@@ -21,7 +21,6 @@ import ssu.groupstudy.global.util.S3Utils;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,13 +46,15 @@ class StudyServiceTest extends ServiceTest {
         void 성공() throws IOException {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
-            doReturn("profileImage").when(s3Utils).uploadStudyProfileImage(any(), any(Study.class));
+            final String PROFILE_IMAGE = "profileImage";
+            doReturn(PROFILE_IMAGE).when(s3Utils).uploadStudyProfileImage(any(), any(Study.class));
 
             // when
             Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
 
             // then
-            assertThat(studyId).isNotNull();
+            softly.assertThat(studyId).isNotNull();
+            softly.assertThat(알고리즘스터디.getPicture()).isEqualTo(PROFILE_IMAGE);
         }
     }
 
