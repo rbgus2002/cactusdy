@@ -16,6 +16,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -35,6 +36,8 @@ class StudyServiceTest extends ServiceTest {
     private ParticipantRepository participantRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
+    @Mock
+    private S3Utils s3Utils;
 
 
     @Nested
@@ -44,6 +47,7 @@ class StudyServiceTest extends ServiceTest {
         void 성공() throws IOException {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
+            doReturn("profileImage").when(s3Utils).uploadStudyProfileImage(any(), any(Study.class));
 
             // when
             Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
