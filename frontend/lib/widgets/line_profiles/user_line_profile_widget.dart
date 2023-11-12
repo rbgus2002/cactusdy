@@ -6,6 +6,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/item_entry.dart';
 
 class UserLineProfileWidget extends StatefulWidget {
   final User user;
@@ -24,7 +25,6 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
   static const double _iconSize = 32;
 
   static const double _popupWidth = 250;
-  static const double _popupHeight = 44;
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                 Text(
                     widget.user.statusMessage,
                     style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
-              ],
-            ),
+              ],),
           ),
 
           // Popup button to edit profile and setting
@@ -70,40 +69,23 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                   size: _iconSize,),
               splashRadius: _iconSize / 2,
               padding: EdgeInsets.zero,
-              position: PopupMenuPosition.under,
-              itemBuilder: popupMenuBuilder,
-              constraints: const BoxConstraints(minWidth: _popupWidth),
-              shape: const RoundedRectangleBorder(
-                borderRadius: Design.borderRadiusBig,),),)
+              itemBuilder: _popupMenuBuilder,
+              constraints: const BoxConstraints(minWidth: _popupWidth),),),
         ],)
     );
   }
 
-  List<PopupMenuEntry> popupMenuBuilder(BuildContext context) {
+  List<PopupMenuEntry> _popupMenuBuilder(BuildContext context) {
     return [
       // edit profile
-      itemEntry(
+      ItemEntry(
         text: context.local.editProfile,
         icon: const Icon(CustomIcons.write),),
 
       // setting
-      itemEntry(
+      ItemEntry(
           text: context.local.setting,
           icon: const Icon(CustomIcons.setting_outline,),),
     ];
-  }
-
-  PopupMenuEntry itemEntry({ required String text, required Icon icon }) {
-    return  PopupMenuItem(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        height: _popupHeight,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(text, style: TextStyles.body1),
-              icon,
-            ],
-        ),
-    );
   }
 }

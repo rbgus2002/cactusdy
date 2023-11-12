@@ -18,6 +18,7 @@ class AppTheme {
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
+      popupMenuTheme: _popupMenuThemeData,
 
       extensions: const [
         ExtraColors.extraColors,
@@ -37,6 +38,7 @@ class AppTheme {
       elevatedButtonTheme: _elevatedButtonThemeData,
       outlinedButtonTheme: _outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
+      popupMenuTheme: _popupMenuThemeData,
 
       extensions: const [
         ExtraColors.extraColorsDark,
@@ -64,9 +66,9 @@ class AppTheme {
         textStyle: TextStyles.head5,)
   );
 
-  static final CardTheme _cardTheme = CardTheme(
-    color: Colors.red,
-    elevation: 0,
-
+  static const PopupMenuThemeData _popupMenuThemeData = PopupMenuThemeData(
+      position: PopupMenuPosition.under,
+      shape: RoundedRectangleBorder(
+        borderRadius: Design.borderRadiusBig,),
   );
 }
