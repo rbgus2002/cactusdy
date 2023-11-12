@@ -55,7 +55,7 @@ public class RoundParticipant {
             return false;
         }
         RoundParticipant that = (RoundParticipant) o;
-        return Objects.equals(this.user.getUserId(), that.user.getUserId()) && Objects.equals(this.round.getRoundId(), that.round.getRoundId());
+        return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.round.getRoundId(), that.getRound().getRoundId());
     }
 
     @Override
