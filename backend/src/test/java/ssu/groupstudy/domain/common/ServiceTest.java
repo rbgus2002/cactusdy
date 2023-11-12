@@ -111,12 +111,10 @@ public class ServiceTest {
         알고리즘스터디CreateRequest = CreateStudyRequest.builder()
                 .studyName("알고리즘")
                 .detail("내용1")
-                .picture("")
                 .build();
         영어스터디CreateRequest = CreateStudyRequest.builder()
                 .studyName("영어")
                 .detail("내용2")
-                .picture("")
                 .build();
     }
 

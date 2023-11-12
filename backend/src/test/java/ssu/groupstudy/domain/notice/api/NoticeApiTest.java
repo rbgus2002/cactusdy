@@ -29,7 +29,6 @@ class NoticeApiTest extends ApiTest {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
-                .picture("")
                 .build();
     }
 

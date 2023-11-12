@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
@@ -21,7 +22,9 @@ import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.S3Utils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +38,23 @@ public class StudyService {
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
+    private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public Long createStudy(CreateStudyRequest dto, User user) {
+    public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         Study study = studyRepository.save(dto.toEntity(user));
+        handleUploadProfileImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
+    }
+
+    private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {
+        if(image == null){
+            return;
+        }
+        String imageUrl = s3Utils.uploadStudyProfileImage(image, study);
+        study.updatePicture(imageUrl);
     }
 
     public StudySummaryResponse getStudySummary(long studyId, User user) {

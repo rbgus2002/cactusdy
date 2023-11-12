@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
@@ -15,10 +16,11 @@ import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.S3Utils;
 
+import java.io.IOException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,21 +35,26 @@ class StudyServiceTest extends ServiceTest {
     private ParticipantRepository participantRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
+    @Mock
+    private S3Utils s3Utils;
 
 
     @Nested
-    class 스터디생성{
+    class 스터디생성 {
         @Test
         @DisplayName("성공")
-        void 성공() {
+        void 성공() throws IOException {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
+            final String PROFILE_IMAGE = "profileImage";
+            doReturn(PROFILE_IMAGE).when(s3Utils).uploadStudyProfileImage(any(), any(Study.class));
 
             // when
-            Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, 최규현);
+            Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
 
             // then
-            assertThat(studyId).isNotNull();
+            softly.assertThat(studyId).isNotNull();
+            softly.assertThat(알고리즘스터디.getPicture()).isEqualTo(PROFILE_IMAGE);
         }
     }
 
@@ -67,7 +74,7 @@ class StudyServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("스터디 참여자가 존재하지 않는 경우 예외를 던진다")
-        void participantNotFound(){
+        void participantNotFound() {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
@@ -81,7 +88,7 @@ class StudyServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("성공")
-        void success(){
+        void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(User.class), any(Study.class));

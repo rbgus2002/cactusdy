@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
@@ -14,6 +15,7 @@ import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,10 @@ public class StudyApi {
     // TODO : 사용자 당 가질 수 있는 스터디 10개 제한 구현
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping
-    public ResponseDto register(@Valid @RequestBody CreateStudyRequest dto, @AuthenticationPrincipal CustomUserDetails userDetails){
-        Long studyId = studyService.createStudy(dto, userDetails.getUser());
+    public ResponseDto register(@Valid @RequestPart("dto") CreateStudyRequest dto,
+                                @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+                                @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+        Long studyId = studyService.createStudy(dto, profileImage, userDetails.getUser());
         return DataResponseDto.of("studyId", studyId);
     }
 

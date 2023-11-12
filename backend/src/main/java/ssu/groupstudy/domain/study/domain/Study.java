@@ -44,10 +44,9 @@ public class Study extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public Study(String studyName, String detail, String picture, User hostUser) {
+    public Study(String studyName, String detail, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
-        this.picture = picture;
         this.participants = Participants.empty(new Participant(hostUser, this));
         this.deleteYn = 'N';
     }
@@ -83,5 +82,9 @@ public class Study extends BaseEntity {
 
     public void delete(){
         this.deleteYn = 'Y';
+    }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
     }
 }
