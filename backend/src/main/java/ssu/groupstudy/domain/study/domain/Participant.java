@@ -54,7 +54,7 @@ public class Participant extends BaseEntity {
             return false;
         }
         Participant that = (Participant) o;
-        return Objects.equals(this.user.getUserId(), that.user.getUserId()) && Objects.equals(this.study.getStudyId(), that.study.getStudyId());
+        return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.study.getStudyId(), that.getStudy().getStudyId());
     }
 
     @Override

@@ -42,7 +42,7 @@ public class CheckNotice {
             return false;
         }
         CheckNotice that = (CheckNotice) o;
-        return Objects.equals(this.notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(this.user.getUserId(), that.user.getUserId());
+        return Objects.equals(this.notice.getNoticeId(), that.getNotice().getNoticeId()) && Objects.equals(this.user.getUserId(), that.getUser().getUserId());
     }
 
     @Override
