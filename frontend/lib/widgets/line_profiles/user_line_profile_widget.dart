@@ -24,8 +24,6 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
   static const double _height = 48;
   static const double _iconSize = 32;
 
-  static const double _popupWidth = 250;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -70,7 +68,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
               splashRadius: _iconSize / 2,
               padding: EdgeInsets.zero,
               itemBuilder: _popupMenuBuilder,
-              constraints: const BoxConstraints(minWidth: _popupWidth),),),
+              constraints: const BoxConstraints(minWidth: Design.popupWidth),),),
         ],)
     );
   }
