@@ -25,7 +25,6 @@ class StudyDetailRoute extends StatefulWidget {
 }
 
 class _StudyDetailRouteState extends State<StudyDetailRoute> {
-  static const double _popupWidth = 250;
   static const double _imageSize = 80;
 
   late Future<Study> _futureStudy;
@@ -43,8 +42,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       appBar: AppBar(
         backgroundColor: widget.study.color,
         actions: [ _studyPopupMenu() ],
-        shape: InputBorder.none,
-      ),
+        shape: InputBorder.none,),
       body: RefreshIndicator(
         onRefresh: () async => setState(() {}),
         child: SingleChildScrollView(
@@ -70,7 +68,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                   children: [
                     // Notice Summary Panel
                     NoticeSummaryPanel(studyId: widget.study.studyId,),
-                    Design.padding(24),
+                    Design.padding24,
 
                     // Member Images
                     Text(
@@ -88,8 +86,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                 padding: Design.edgePadding,
                 decoration: BoxDecoration(
                   border: Border.symmetric(
-                      horizontal: BorderSide(color: context.extraColors.grey100!)),
-                ),
+                      horizontal: BorderSide(color: context.extraColors.grey100!)),),
                 child: Column(
                 children: [
                   Row(
@@ -108,7 +105,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
               Container(
                 padding: Design.edgePadding,
-                child: RoundInfoListWidget(studyId: widget.study.studyId),),
+                child: RoundInfoListWidget(studyId: widget.study.studyId, studyColor: widget.study.color,),),
             ],
           )
         ),
@@ -150,13 +147,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   Widget _studyPopupMenu() {
     double iconSize = 32;
     return PopupMenuButton(
-      icon: Icon(
-        CustomIcons.more_vert,
-        color: context.extraColors.grey900,
-        size: iconSize,),
+      icon: const Icon(CustomIcons.more_vert),
+      color: context.extraColors.grey900,
+      iconSize: iconSize,
       splashRadius: iconSize / 2,
       position: PopupMenuPosition.under,
-      constraints: const BoxConstraints(minWidth: _popupWidth),
+      constraints: const BoxConstraints(minWidth: Design.popupWidth),
       itemBuilder: (context) => [
         // edit profile
         ItemEntry(

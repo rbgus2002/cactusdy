@@ -135,26 +135,22 @@ class _StudyPanel extends StatelessWidget {
       child: Column(
         children: [
           StudyProfileWidget(studyInfo: studyInfo),
-          Design.padding(24),
+          Design.padding24,
 
           // task groups
-          ListView.builder(
+          ListView.separated(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             primary: false,
+
             itemCount: studyInfo.taskGroups.length,
             itemBuilder: (context, index) =>
-                Container(
-                  margin: (_isNotLast(index))? _margin : null,
-                  child: TaskGroupWidget(
-                      taskGroup: studyInfo.taskGroups[index],
-                      studyColor: studyInfo.study.color,),),)
+                TaskGroupWidget(
+                    taskGroup: studyInfo.taskGroups[index],
+                    studyColor: studyInfo.study.color,),
+            separatorBuilder: (context, index) => Design.padding20,),
         ],),
     );
-  }
-
-  bool _isNotLast(int index) {
-    return (index != studyInfo.taskGroups.length - 1);
   }
 }
 

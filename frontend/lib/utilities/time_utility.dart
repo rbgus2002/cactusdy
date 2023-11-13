@@ -10,6 +10,10 @@ class TimeUtility {
     return (date != null && date.compareTo(DateTime.now()) > 0);
   }
 
+  static String getTime(DateTime dateTime) {
+    return DateFormat('a HH:mm', 'ko_KR').format(dateTime);
+  }
+
   static String getElapsedTime(DateTime dateTime) {
     final nowTime = DateTime.now();
     final difference = nowTime.difference(dateTime);

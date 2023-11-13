@@ -9,6 +9,7 @@ class ItemEntry extends PopupMenuItem {
     Key? key,
     required String text,
     required Icon icon,
+    super.onTap,
   }) : super(
       key: key,
       height: _popupHeight,
