@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/sign_info.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/create_notice_route.dart';
 import 'package:group_study_app/routes/design_test_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/login_route_old.dart';
 import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
@@ -13,9 +12,6 @@ import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
-import 'package:group_study_app/routes/work_space_route.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/util.dart';
 
 class BackdoorRoute extends StatelessWidget {
@@ -53,7 +49,9 @@ class BackdoorRoute extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            StudyDetailRoute(studyId: testStudyId,)),
+                            StudyDetailRoute(
+                              study: Study(color: Colors.red, studyName: "ASD",picture: "", detail: "asd", studyId: 1),
+                            )),
                   );
                 }, child: const Text('Study Detail Screen')
                   , style: ElevatedButton.styleFrom(

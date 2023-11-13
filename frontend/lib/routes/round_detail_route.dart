@@ -7,7 +7,7 @@ import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
-import 'package:group_study_app/widgets/round_info_widget.dart';
+import 'package:group_study_app/widgets/old_round_info_widget.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class RoundDetailRoute extends StatefulWidget {
@@ -69,7 +69,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         // Round Info
                         OldPanel(
                           boxShadows: OldDesign.basicShadows,
-                          child: RoundInfoWidget(
+                          child: OldRoundInfoWidget(
                             roundSeq: widget.roundSeq,
                             round: snapshot.data!,
                             studyId: widget.studyId,

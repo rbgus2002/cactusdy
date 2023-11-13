@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/Tags/user_state_tag.dart';
@@ -15,12 +12,12 @@ import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 
-class RoundInfoWidget extends StatefulWidget {
+class OldRoundInfoWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
   final int studyId;
 
-  const RoundInfoWidget({
+  const OldRoundInfoWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
@@ -28,10 +25,10 @@ class RoundInfoWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RoundInfoWidget> createState() => _RoundInformationWidget();
+  State<OldRoundInfoWidget> createState() => _RoundInformationWidget();
 }
 
-class _RoundInformationWidget extends State<RoundInfoWidget> {
+class _RoundInformationWidget extends State<OldRoundInfoWidget> {
   static const String _placeHintText = "장소를 입력해 주세요";
   static const String _timeHintText = "시간을 입력해 주세요";
 
@@ -52,7 +49,7 @@ class _RoundInformationWidget extends State<RoundInfoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _placeEditingController.text = widget.round.studyPlace??"";
+    _placeEditingController.text = widget.round.studyPlace;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

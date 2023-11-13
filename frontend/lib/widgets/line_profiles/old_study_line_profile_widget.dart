@@ -6,7 +6,7 @@ import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/line_profiles/line_profile_widget.dart';
-import 'package:group_study_app/widgets/participant_profile_list_widget.dart';
+import 'package:group_study_app/widgets/member_profile_list_widget.dart';
 
 class OldStudyLineProfileWidget extends StatelessWidget {
   static const double _scale = 50;

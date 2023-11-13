@@ -31,9 +31,9 @@ class StudyProfileWidget extends StatelessWidget {
         SquircleWidget(
           scale: _imageSize,
           child: (studyInfo.study.picture.isNotEmpty) ?
-          CachedNetworkImage(
-              imageUrl: studyInfo.study.picture,
-              fit: BoxFit.cover) : null,),
+              CachedNetworkImage(
+                imageUrl: studyInfo.study.picture,
+                fit: BoxFit.cover) : null,),
         Design.padding16,
 
         // Study Information (Right Part)
@@ -79,7 +79,7 @@ class StudyProfileWidget extends StatelessWidget {
 
                   // Scheduled Tag
                   Visibility(
-                    visible: _isScheduled(),
+                    visible: TimeUtility.isScheduled(studyInfo.round.studyTime),
                     child: RectangleTag(
                       text: Text(
                         context.local.reserved,
@@ -104,17 +104,12 @@ class StudyProfileWidget extends StatelessWidget {
   String _getPlaceAndTimeText(BuildContext context) {
     String placeText = (studyInfo.round.studyPlace.isEmpty)?
     studyInfo.round.studyPlace :
-    context.local.undefinedPlace;
+    context.local.undefinedOf(context.local.place);
 
     String timeText = (studyInfo.round.studyTime != null)?
     TimeUtility.timeToString(studyInfo.round.studyTime!) :
-    context.local.undefinedTime;
+    context.local.undefinedOf(context.local.time);
 
     return '$placeText • $timeText';
-  }
-
-  bool _isScheduled() {
-    return (studyInfo.round.studyTime != null
-        && studyInfo.round.studyTime!.compareTo(DateTime.now()) > 0);
   }
 }
