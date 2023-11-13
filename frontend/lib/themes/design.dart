@@ -25,6 +25,7 @@ class Design {
   static const SizedBox padding12 = SizedBox(height: 12, width: 12,);
   static const SizedBox padding16 = SizedBox(height: 16, width: 16,);
   static const SizedBox padding20 = SizedBox(height: 20, width: 20,);
+  static const SizedBox padding24 = SizedBox(height: 24, width: 24,);
   static const SizedBox padding28 = SizedBox(height: 28, width: 28,);
   static const SizedBox padding32 = SizedBox(height: 28, width: 28,);
   static const SizedBox padding48 = SizedBox(height: 48, width: 48,);
@@ -49,6 +50,8 @@ class Design {
     blurRadius: 4,
     offset: const Offset(0, 4),
   )];
+
+  static const double popupWidth = 250;
 
 
   static const Widget loadingIndicator = SizedBox(

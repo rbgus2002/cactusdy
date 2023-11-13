@@ -9,9 +9,13 @@
     "modify": "수정하기",
     "delete": "삭제하기",
 
+    "year": "년",
+    "month": "월",
+    "day": "일",
     "hour": "시",
     "min": "분",
     "sec": "초",
+    "date": "날짜",
 
     "inputHint1": "{target}을 입력해주세요.",
     "inputHint2": "{target}를 입력해주세요.",
@@ -67,8 +71,10 @@
     "round": "회차",
     "roundList": "회차 리스트",
     "addRound": "회차 추가",
+    "deleteRound": "회차 삭제",
+
     "record": "기록",
-    "recordHint": "자세한 기록을 입력해주세요",
+    "recordHint": "자세한 기록을 적어주세요",
 
     "attendanceTag": "출석태그",
     "attend": "참석",

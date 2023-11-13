@@ -10,7 +10,7 @@ class ColorStyles {
   static const Color tintColor    = Color(0xFF638EFF);
 
   static const Color errorColor = Color(0xFFFF4747);
-  static const Color darkDim    = Color(0xB3000000);  // opacity 70% : B3
+  static const Color dimDark    = Color(0xB3000000);  // opacity 70% : B3
   static const Color dim        = Color(0xB3191F28);  // opacity 70% : B3
 
   /// Color chip for light mode
@@ -149,6 +149,9 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
   /// Reserved Tag Color
   final Color? reservedTagColor;
 
+  /// Barrier Color
+  final Color? barrierColor;
+
   const ExtraColors({
     required this.blue,
     required this.mint,
@@ -177,8 +180,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
     required this.inputFieldBackgroundErrorColor,
 
     required this.baseBackgroundColor,
-
     required this.reservedTagColor,
+    required this.barrierColor,
   });
 
   @override
@@ -210,8 +213,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
     Color? inputFieldBackgroundErrorColor,
 
     Color? baseBackgroundColor,
-
     Color? reservedTagColor,
+    Color? barrierColor,
   }) {
     return ExtraColors(
         blue: blue?? this.blue,
@@ -241,8 +244,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
         inputFieldBackgroundErrorColor: inputFieldBackgroundErrorColor?? this.inputFieldBackgroundErrorColor,
 
         baseBackgroundColor: baseBackgroundColor?? this.baseBackgroundColor,
-
         reservedTagColor: reservedTagColor?? this.reservedTagColor,
+        barrierColor: barrierColor?? this.barrierColor,
     );
   }
 
@@ -279,8 +282,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: Color.lerp(inputFieldBackgroundErrorColor, other.inputFieldBackgroundErrorColor, t),
 
       baseBackgroundColor: Color.lerp(baseBackgroundColor, other.baseBackgroundColor, t),
-
       reservedTagColor: Color.lerp(reservedTagColor, other.reservedTagColor, t),
+      barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
     );
   }
 
@@ -312,8 +315,8 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
 
       baseBackgroundColor: ColorStyles._black100,
-
       reservedTagColor: ColorStyles.secondColor,
+      barrierColor: ColorStyles.dim,
   );
 
   static const ExtraColors extraColorsDark = ExtraColors(
@@ -345,5 +348,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
 
       baseBackgroundColor: Colors.black,
       reservedTagColor: ColorStyles._pinkDark,
+      barrierColor: ColorStyles.dimDark,
   );
 }
