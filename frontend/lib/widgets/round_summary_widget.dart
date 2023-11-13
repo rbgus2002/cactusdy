@@ -17,12 +17,14 @@ class RoundSummaryWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
   final int studyId;
+  final Color studyColor;
 
   const RoundSummaryWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
     required this.studyId,
+    required this.studyColor,
   }) : super(key: key);
 
   @override
@@ -142,14 +144,15 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   Widget _scheduleTag() {
     return RectangleTag(
+      width: 40,
+      height: 22,
       color: context.extraColors.reservedTagColor!,
-      padding: const EdgeInsets.symmetric(
-          vertical: 4, horizontal: 8),
       text: Text(
         context.local.reserved,
         style: TextStyles.caption2.copyWith(
           color: context.extraColors.grey000,),),
-      onTap: _lookUpRound,);
+      onTap: _lookUpRound,
+    );
   }
 
   Widget _placeWidget() {
@@ -222,7 +225,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         RoundDetailRoute(
             roundSeq: widget.roundSeq,
             roundId: widget.round.roundId,
-            studyId: widget.studyId));
+            studyId: widget.studyId,
+            studyColor: widget.studyColor,));
   }
 
   void updatePlace() {

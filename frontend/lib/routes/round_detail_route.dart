@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
@@ -14,12 +17,14 @@ class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
   final int roundId;
   final int studyId;
+  final Color studyColor;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
     required this.roundId,
     required this.studyId,
+    required this.studyColor,
   }) : super(key: key);
 
   @override
@@ -45,6 +50,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: InputBorder.none,
         actions: [
           _roundPopupMenu(),
         ]
@@ -67,14 +73,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Round Info
-                        OldPanel(
-                          boxShadows: OldDesign.basicShadows,
-                          child: OldRoundInfoWidget(
-                            roundSeq: widget.roundSeq,
-                            round: snapshot.data!,
-                            studyId: widget.studyId,
+                        _roundWidget(
                           ),
-                        ),
                         OldDesign.padding15,
 
                         // Detail Record
@@ -184,5 +184,39 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         }).catchError((e) {
       Toast.showToast(context: context, message: e.toString().substring(10));
     });
+  }
+
+  Widget _roundWidget() {
+    return Row(
+      children: [
+        Container(
+          width: 46,
+          height: 56,
+          decoration: BoxDecoration(
+            color: widget.studyColor,
+            borderRadius: Design.borderRadiusSmall,),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '10월',
+                style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
+              Text(
+                '14',
+                style: TextStyles.head3.copyWith(color: context.extraColors.grey800),),
+            ],
+          ),),
+        Design.padding12,
+
+        Flexible(child: Column(
+          children:
+          [Text("3회차"),
+          Text("wkdth"),]
+        )),
+
+
+      ],
+    );
   }
 }

@@ -62,6 +62,8 @@ class StudyProfileWidget extends StatelessWidget {
                 children: [
                   // Round Sequence Tag
                   RectangleTag(
+                    width: 48,
+                    height: 26,
                     text: Text(
                       '${studyInfo.roundSeq}${context.local.round}',
                       style: TextStyle(
@@ -74,13 +76,16 @@ class StudyProfileWidget extends StatelessWidget {
                         RoundDetailRoute(
                             roundSeq: studyInfo.roundSeq,
                             roundId: studyInfo.round.roundId,
-                            studyId: studyInfo.study.studyId)),),
+                            studyId: studyInfo.study.studyId,
+                            studyColor: studyInfo.study.color,)),),
                   Design.padding4,
 
                   // Scheduled Tag
                   Visibility(
                     visible: TimeUtility.isScheduled(studyInfo.round.studyTime),
                     child: RectangleTag(
+                      width: 40,
+                      height: 26,
                       text: Text(
                         context.local.reserved,
                         style: TextStyles.caption1.copyWith(
@@ -91,7 +96,8 @@ class StudyProfileWidget extends StatelessWidget {
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
-                              studyId: studyInfo.study.studyId)),),),
+                              studyId: studyInfo.study.studyId,
+                              studyColor: studyInfo.study.color,)),),),
                   const Spacer(),
 
                   ProfileImages(participantSummaries: studyInfo.participantSummaries),

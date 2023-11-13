@@ -12,10 +12,12 @@ import 'package:group_study_app/widgets/round_summary_widget.dart';
 
 class RoundInfoListWidget extends StatefulWidget {
   final int studyId;
+  final Color studyColor;
 
   const RoundInfoListWidget({
     Key? key,
     required this.studyId,
+    required this.studyColor,
   }) : super(key: key);
 
   @override
@@ -88,7 +90,8 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
         child: RoundSummaryWidget(
           roundSeq: roundSeq,
           round: _roundListModel[index],
-          studyId: widget.studyId,),
+          studyId: widget.studyId,
+          studyColor: widget.studyColor,),
     );
   }
 
@@ -110,7 +113,8 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
           RoundDetailRoute(
             roundSeq: roundSeq,
             roundId: _roundListModel[index].roundId,
-            studyId: widget.studyId,));
+            studyId: widget.studyId,
+            studyColor: widget.studyColor,));
     }
   }
 
