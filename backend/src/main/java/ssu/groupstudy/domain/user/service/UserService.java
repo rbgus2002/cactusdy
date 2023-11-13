@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class UserService {
 
     @Transactional
     public String updateProfileImage(User user, MultipartFile image) throws IOException {
-        String imageUrl = s3Utils.uploadUserProfileImage(image, user);
+        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
         user.updatePicture(imageUrl);
         return imageUrl;
     }

@@ -22,6 +22,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class StudyService {
     }
 
     private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {
-        if(image == null){
+        if (image == null) {
             return;
         }
-        String imageUrl = s3Utils.uploadStudyProfileImage(image, study);
+        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.STUDY_IMAGE, study.getStudyId());
         study.updatePicture(imageUrl);
     }
 
@@ -83,14 +84,14 @@ public class StudyService {
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
-    private Long handleRoundSeq(Study study, Round round){
-        if(round == null){
+    private Long handleRoundSeq(Study study, Round round) {
+        if (round == null) {
             return 1L;
         }
-        if(round.isStudyTimeNull()){
+        if (round.isStudyTimeNull()) {
             // 스터디 약속 시간이 정해진 회차 + 1
             return roundRepository.countByStudyTimeIsNotNull(study) + 1;
-        }else{
+        } else {
             return roundRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
         }
     }
