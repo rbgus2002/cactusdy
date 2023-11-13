@@ -8,7 +8,7 @@ import 'package:group_study_app/widgets/buttons/outline_circle_button.dart';
 import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/line_profiles/old_study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/old_panel.dart';
-import 'package:group_study_app/widgets/round_info_widget.dart';
+import 'package:group_study_app/widgets/old_round_info_widget.dart';
 import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 
 class OldStudyGroupPanel extends StatelessWidget {
@@ -37,7 +37,7 @@ class OldStudyGroupPanel extends StatelessWidget {
                 )),
             OldDesign.padding10,
 
-            RoundInfoWidget(roundSeq: studyInfo.roundSeq, round: studyInfo.round, studyId: studyInfo.study.studyId,),
+            OldRoundInfoWidget(roundSeq: studyInfo.roundSeq, round: studyInfo.round, studyId: studyInfo.study.studyId,),
             OldDesign.padding5,
 
             // task groups
@@ -53,7 +53,10 @@ class OldStudyGroupPanel extends StatelessWidget {
             )
           ],
         ),
-        onTap: () { Util.pushRoute(context, (context) => StudyDetailRoute(studyId: studyInfo.study.studyId,)); },
+        onTap: () { Util.pushRoute(context, (context) =>
+            StudyDetailRoute(
+              study: studyInfo.study,
+            )); },
     );
   }
 }

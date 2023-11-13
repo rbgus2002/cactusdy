@@ -9,12 +9,14 @@ class RectangleTag extends StatelessWidget {
   final Text text;
   final Color color;
   final VoidCallback onTap;
+  final EdgeInsets? padding;
 
   const RectangleTag({
     Key? key,
     required this.text,
     required this.color,
     required this.onTap,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class RectangleTag extends StatelessWidget {
           borderRadius: Design.borderRadiusSmall,
           onTap: onTap,
           child: Container(
-            padding: _rectangleTagPadding,
+            padding: padding??_rectangleTagPadding,
             child: text),),
     );
   }

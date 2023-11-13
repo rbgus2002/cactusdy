@@ -4,6 +4,7 @@ import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/study_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
@@ -55,10 +56,11 @@ class _HomeRouteState extends State<HomeRoute> {
                       context.local.myStudy,
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                     AddButton(
+                      iconData: CustomIcons.plus_square,
                       text: context.local.addStudy,
-                      onTap: () => Util.pushRoute(context, (context) => const GenerateStudyRoute())),
-                  ],
-                ),
+                      onTap: () => Util.pushRoute(context, (context) =>
+                          const GenerateStudyRoute())),
+                  ],),
                 Design.padding12,
 
                 // study panels
@@ -127,7 +129,9 @@ class _StudyPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Panel(
       onTap: () => Util.pushRoute(context, (context) =>
-          StudyDetailRoute(studyId: studyInfo.study.studyId)),
+          StudyDetailRoute(
+            study: studyInfo.study,
+          )),
       child: Column(
         children: [
           StudyProfileWidget(studyInfo: studyInfo),
@@ -150,7 +154,7 @@ class _StudyPanel extends StatelessWidget {
   }
 
   bool _isNotLast(int index) {
-    return (index == studyInfo.taskGroups.length - 1);
+    return (index != studyInfo.taskGroups.length - 1);
   }
 }
 

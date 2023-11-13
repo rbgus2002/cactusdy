@@ -54,12 +54,30 @@
     "myStudy": "나의 스터디",
     "addStudy": "스터디 추가",
     "createStudy": "스터디 만들기",
+    "leaveStudy": "스터디 탈퇴",
+    "editStudy": "스터디 편집",
+
+    "member": "멤버",
+    "rules": "규칙",
+    "writeRule": "규칙 작성",
 
     "task": "과제",
-    "round": "회차",
     "reserved": "예정",
 
+    "round": "회차",
+    "roundList": "회차 리스트",
+    "addRound": "회차 추가",
+    "record": "기록",
+    "recordHint": "자세한 기록을 입력해주세요",
+
+    "attendanceTag": "출석태그",
+    "attend": "참석",
+    "absent": "결석",
+    "late": "지각",
+
+    "place": "장소",
+    "time": "시간",
+
     "undefined": "미정",
-    "undefinedPlace": "장소 미정",
-    "undefinedTime": "시간 미정"
+    "undefinedOf": "{target} 미정"
 }

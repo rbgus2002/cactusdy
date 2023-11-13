@@ -7,12 +7,14 @@ class SquircleWidget extends StatelessWidget {
   final Widget? child;
   final double scale;
   final BorderSide? side;
+  final Color? backgroundColor;
 
   const SquircleWidget({
     Key? key,
     this.child,
     required this.scale,
     this.side,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class SquircleWidget extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: const SquircleBorder(),
         child: Material(
-          color: context.extraColors.inputFieldBackgroundColor,
+          color: backgroundColor??context.extraColors.inputFieldBackgroundColor,
           shape: SquircleBorder(
             side: side??BorderSide(color: context.extraColors.grey200!, width: 2)),
           child: child,)

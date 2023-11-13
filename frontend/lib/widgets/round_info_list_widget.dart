@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
-import 'package:group_study_app/themes/old_app_icons.dart';
-import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/panels/old_panel.dart';
-import 'package:group_study_app/widgets/round_info_widget.dart';
-import 'package:group_study_app/widgets/title_widget.dart';
+import 'package:group_study_app/widgets/buttons/add_button.dart';
+import 'package:group_study_app/widgets/round_summary_widget.dart';
 
 class RoundInfoListWidget extends StatefulWidget {
   final int studyId;
@@ -22,60 +23,72 @@ class RoundInfoListWidget extends StatefulWidget {
 }
 
 class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
-  late final GlobalKey<AnimatedListState> _roundListKey = GlobalKey<AnimatedListState>();
-  late final ListModel<Round> _roundListModel;
+  late GlobalKey<AnimatedListState> _roundListKey;
+  late ListModel<Round> _roundListModel;
+
   @override
   void initState() {
     super.initState();
-    _roundListModel = ListModel<Round>(
-      listKey: _roundListKey,
-    );
+    _initListModel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Round.getRoundInfoResponses(widget.studyId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data != _roundListModel.items) {
-            _roundListModel.setItems(snapshot.data!);
-          }
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              context.local.roundList ,
+              style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
+            AddButton(
+                iconData: CustomIcons.plus_square,
+                text: context.local.addRound,
+                onTap: _addNewRound),
+          ],),
+        Design.padding20,
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TitleWidget(title: "ROUND LIST", icon: OldAppIcons.add, onTap: _addNewRound),
-              AnimatedList(
+        FutureBuilder(
+          future: Round.getRoundInfoResponses(widget.studyId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data != _roundListModel.items) {
+                _initListModel(rounds: snapshot.data!);
+              }
+
+              return AnimatedList(
+                padding: EdgeInsets.zero,
                 key: _roundListKey,
                 shrinkWrap: true,
                 primary: false,
                 scrollDirection: Axis.vertical,
 
                 initialItemCount: _roundListModel.length,
-                itemBuilder: _buildItem,
-              ),
-            ]
-          );
-        }
-        return OldDesign.loadingIndicator;
-      });
+                itemBuilder: _buildItem,);
+            }
+            return Design.loadingIndicator;
+          }),
+      ],
+    );
+  }
+
+  void _initListModel({ List<Round>? rounds }) {
+    _roundListKey = GlobalKey<AnimatedListState>();
+    _roundListModel = ListModel(
+        listKey: _roundListKey,
+        items: rounds??[]);
   }
 
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
     int roundSeq = _roundListModel.length - index;
-    return OldPanel(
-      boxShadows: OldDesign.basicShadows,
-      onTap: () => _viewRound(roundSeq, index),
-      child: SizeTransition(
+    return SizeTransition(
         sizeFactor: animation,
-        child: RoundInfoWidget(
+        child: RoundSummaryWidget(
           roundSeq: roundSeq,
           round: _roundListModel[index],
-          studyId: widget.studyId,
-        ),
-      ),
+          studyId: widget.studyId,),
     );
   }
 
@@ -103,7 +116,6 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
 
   void _addNewRound() {
     _roundListModel.insert(0, Round(
-      roundId: Round.nonAllocatedRoundId,
-    ));
+        roundId: Round.nonAllocatedRoundId,));
   }
 }
