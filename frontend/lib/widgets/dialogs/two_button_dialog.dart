@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
@@ -20,14 +21,18 @@ class TwoButtonDialog {
     required VoidCallback onPressed1,
     required String buttonText2,
     required VoidCallback onPressed2,
+    bool isPrimary1 = false,
+    bool isPrimary2 = true,
   }) {
     return showDialog(
+        barrierColor: context.extraColors.barrierColor!,
         context: context,
         builder: (context) {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
               borderRadius: Design.borderRadiusBig,),
             insetPadding: _padding,
+            backgroundColor: context.extraColors.grey50,
             content: SizedBox(
               width: _innerWidth,
               child: Column(
@@ -36,8 +41,8 @@ class TwoButtonDialog {
                 children: [
                   Design.padding12,
 
-                  SizedBox(
-                    width: _textWidth,
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: _textWidth),
                     child: Text(
                       text,
                       maxLines: 1,
@@ -46,20 +51,30 @@ class TwoButtonDialog {
                           color: context.extraColors.grey900)),),
                   Design.padding32,
 
-                  OutlinedPrimaryButton(
-                    text: buttonText1,
-                    onPressed: () {
-                      Util.popRoute(context);
-                      onPressed1();
-                    }),
+                  (isPrimary1)?
+                    SecondaryButton(
+                      text: buttonText1,
+                      onPressed: () {
+                        Util.popRoute(context);
+                        onPressed1(); }) :
+                    OutlinedPrimaryButton(
+                      text: buttonText1,
+                      onPressed: () {
+                        Util.popRoute(context);
+                        onPressed1(); }),
                   Design.padding12,
 
-                  SecondaryButton(
-                    text: buttonText2,
-                    onPressed: () {
-                      Util.popRoute(context);
-                      onPressed2();
-                    }),
+                  (isPrimary2)?
+                    SecondaryButton(
+                      text: buttonText2,
+                      onPressed: () {
+                        Util.popRoute(context);
+                        onPressed2(); }) :
+                    OutlinedPrimaryButton(
+                      text: buttonText2,
+                      onPressed: () {
+                        Util.popRoute(context);
+                        onPressed2(); }),
                 ],),),
           );
         }
