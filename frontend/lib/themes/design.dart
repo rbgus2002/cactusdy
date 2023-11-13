@@ -15,6 +15,7 @@ class Design {
 
   static const EdgeInsets edge4 = EdgeInsets.all(4.0);
   static const EdgeInsets edge8 = EdgeInsets.all(8.0);
+  static const EdgeInsets edge16 = EdgeInsets.all(16.0);
   static const EdgeInsets edge20 = EdgeInsets.all(20.0);
   static const EdgeInsets edgePadding = edge20;
 
@@ -42,6 +43,13 @@ class Design {
 
   static const EdgeInsets toastPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
   static const double toastHeight = 44.0;
+
+  static final List<BoxShadow> basicShadows = [ BoxShadow(
+    color: Colors.black.withOpacity(0.25),
+    blurRadius: 4,
+    offset: const Offset(0, 4),
+  )];
+
 
   static const Widget loadingIndicator = SizedBox(
       height: 128,

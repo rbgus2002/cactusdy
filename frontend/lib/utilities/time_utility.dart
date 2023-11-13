@@ -6,6 +6,10 @@ class TimeUtility {
   static const String _confirmText = "확인";
   static const String _cancelText = "취소";
 
+  static bool isScheduled(DateTime? date) {
+    return (date != null && date.compareTo(DateTime.now()) > 0);
+  }
+
   static String getElapsedTime(DateTime dateTime) {
     final nowTime = DateTime.now();
     final difference = nowTime.difference(dateTime);

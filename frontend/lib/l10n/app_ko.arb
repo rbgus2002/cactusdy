@@ -75,7 +75,9 @@
     "absent": "결석",
     "late": "지각",
 
+    "place": "장소",
+    "time": "시간",
+
     "undefined": "미정",
-    "undefinedPlace": "장소 미정",
-    "undefinedTime": "시간 미정"
+    "undefinedOf": "{target} 미정"
 }
