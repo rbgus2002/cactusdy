@@ -21,6 +21,7 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
 import ssu.groupstudy.global.util.S3Utils;
@@ -84,10 +85,10 @@ public class AuthService {
     }
 
     private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
-        if(image == null){
+        if (image == null) {
             return;
         }
-        String imageUrl = s3Utils.uploadUserProfileImage(image, user);
+        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
         user.updatePicture(imageUrl);
     }
 
@@ -105,7 +106,7 @@ public class AuthService {
         messageUtils.sendMessage(phoneNumber, verificationMessage);
     }
 
-    public void sendMessageToResetPassword(MessageRequest request){
+    public void sendMessageToResetPassword(MessageRequest request) {
         String phoneNumber = request.getPhoneNumber();
         assertPhoneNumberDoesExistOrThrow(phoneNumber);
 
@@ -132,7 +133,7 @@ public class AuthService {
     public boolean verifyCode(VerifyRequest request) {
         String retrievedPhoneNumber = getPhoneNumberFromCode(request);
         boolean isValidCode = isSamePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
-        if(isValidCode){
+        if (isValidCode) {
             processVerificationSuccess(request.getCode());
         }
         return isValidCode;

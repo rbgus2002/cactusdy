@@ -76,7 +76,7 @@ class AuthServiceTest extends ServiceTest {
             // given
             doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
             doReturn(최규현).when(userRepository).save(any(User.class));
-            doReturn("profileImageUrl").when(s3Utils).uploadUserProfileImage(any(), any(User.class));
+            doReturn("profileImageUrl").when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
 
             // when
             final Long userId = authService.signUp(최규현SignUpRequest, new MockMultipartFile("tmp", new byte[1]));

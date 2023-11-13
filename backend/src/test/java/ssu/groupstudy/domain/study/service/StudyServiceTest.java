@@ -47,7 +47,7 @@ class StudyServiceTest extends ServiceTest {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             final String PROFILE_IMAGE = "profileImage";
-            doReturn(PROFILE_IMAGE).when(s3Utils).uploadStudyProfileImage(any(), any(Study.class));
+            doReturn(PROFILE_IMAGE).when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
 
             // when
             Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
