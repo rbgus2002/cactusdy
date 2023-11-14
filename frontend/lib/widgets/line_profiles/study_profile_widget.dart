@@ -28,8 +28,12 @@ class StudyProfileWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Study Image (Left Part)
-        SquircleWidget(
-          scale: _imageSize,
+        Container(
+          width: _imageSize,
+          height: _imageSize,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Design.radiusValue),),
           child: (studyInfo.study.picture.isNotEmpty) ?
               CachedNetworkImage(
                 imageUrl: studyInfo.study.picture,

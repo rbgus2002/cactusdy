@@ -126,12 +126,16 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
           Positioned(
             left: 20,
             top: 116,
-            child: SquircleWidget(
-              scale: _imageSize,
+            child: Container(
+              width: _imageSize,
+              height: _imageSize,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Design.radiusValue),),
               child: (study.picture.isNotEmpty) ?
-              CachedNetworkImage(
-                  imageUrl: study.picture,
-                  fit: BoxFit.cover) : null,),),
+                  CachedNetworkImage(
+                    imageUrl: study.picture,
+                    fit: BoxFit.cover) : null,),),
 
           Positioned(
             left: 20,
@@ -147,8 +151,10 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   Widget _studyPopupMenu() {
     double iconSize = 32;
     return PopupMenuButton(
-      icon: const Icon(CustomIcons.more_vert),
-      color: context.extraColors.grey900,
+      icon: Icon(
+        CustomIcons.more_vert,
+        color: context.extraColors.grey900),
+      color: context.extraColors.grey000,
       iconSize: iconSize,
       splashRadius: iconSize / 2,
       position: PopupMenuPosition.under,

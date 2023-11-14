@@ -59,7 +59,7 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
             Design.padding(132),
 
             SecondaryButton(
-              text: context.local.start,
+              text: context.local.complete,
               onPressed: _tryResetPassword,),
           ],
         ),
