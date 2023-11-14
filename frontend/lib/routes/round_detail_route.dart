@@ -50,38 +50,41 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              FutureBuilder(
-                future: _getRoundDetail(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    round = snapshot.data;
-                    _detailRecordEditingController.text = round!.detail ?? "";
-
-                    return Container(
-                      padding: Design.edgePadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Round Info
-                          _roundInfo(),
-                          Design.padding20,
-
-                          // Detail Record
-                          Text(
-                            context.local.record,
-                            style: TextStyles.head5.copyWith(
-                                color: context.extraColors.grey900),),
-                          Design.padding8,
-                          _detailRecord(),
-                        ]),
-                    );
-                  }
-                  return Design.loadingIndicator;
-                },),
-
               Container(
-                height: 7,
-                color: context.extraColors.grey50,),
+                decoration: BoxDecoration(
+                  border: Border(bottom:
+                    BorderSide(
+                        color: context.extraColors.grey50!,
+                        width: 7)),),
+                child: FutureBuilder(
+                  future: _getRoundDetail(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      round = snapshot.data;
+                      _detailRecordEditingController.text = round!.detail ?? "";
+
+                      return Container(
+                        padding: Design.edgePadding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Round Info
+                            _roundInfo(),
+                            Design.padding20,
+
+                            // Detail Record
+                            Text(
+                              context.local.record,
+                              style: TextStyles.head5.copyWith(
+                                  color: context.extraColors.grey900),),
+                            Design.padding8,
+                            _detailRecord(),
+                          ]),
+                      );
+                    }
+                    return Design.loadingIndicator;
+                  },),
+              ),
 
               ParticipantInfoListWidget(
                   roundId: widget.roundId,
