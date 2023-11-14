@@ -1,17 +1,19 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
-import 'package:group_study_app/widgets/circle_button_list.dart';
-import 'package:group_study_app/models/user.dart';
+import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class NoticeReactionTag extends StatefulWidget {
   final int noticeId;
+  final bool enabled;
   int checkerNum;
   bool isChecked;
 
@@ -20,6 +22,7 @@ class NoticeReactionTag extends StatefulWidget {
     required this.noticeId,
     required this.isChecked,
     required this.checkerNum,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -27,54 +30,82 @@ class NoticeReactionTag extends StatefulWidget {
 }
 
 class _NoticeReactionTag extends State<NoticeReactionTag> {
-  static const double _height = 21;
-  static const double _padding = 2;
-  static const double _boarderRadius = _height + 2 * _padding;
+  // Widget options
+  static const double _height = 24;
+
+  // Checker profile images options
+  static const double _imageSize = 16;
   static const int _showCountMax = 5;
 
-  List<OldCircleButton> _checkerImages = [];
-  double _width = 0;
+  List<String> _checkerImages = [];
+  double _checkerImageListWidth = 0;
+
   bool _isNeedUpdate = true;
   bool _isExpended = false;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(_boarderRadius),
-      onTap: _switchCheck,
-      onLongPress: _switchExpend,
+    return Ink(
+      height: _height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(_height / 2),
+        border: Border.all(
+            color: (widget.isChecked) ?
+            ColorStyles.mainColor :
+            Colors.transparent),
+        color: (widget.isChecked) ?
+        context.extraColors.inputFieldBackgroundColor :
+        context.extraColors.grey100,),
 
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(_boarderRadius),
-          color: OldColorStyles.grey,
-        ),
-        padding: const EdgeInsets.all(_padding),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(_height / 2),
+        onTap: (widget.enabled) ? _switchCheck : null,
+        onLongPress: (widget.enabled) ? _switchExpend : null,
 
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
 
-          children: [
-            // Check Icon
-            Icon(Icons.check_circle, color: (widget.isChecked)? OldColorStyles.green : OldColorStyles.darkGrey),
+            children: [
+              // Check Icon
+              Icon(
+                  CustomIcons.check,
+                  size: 14,
+                  color: (widget.isChecked) ?
+                    ColorStyles.mainColor :
+                    context.extraColors.grey600),
+              Design.padding(2),
 
-            // User List
-            AnimatedContainer(
-              padding: const EdgeInsets.fromLTRB(_padding, 0, 0, 0),
-              width: _width,
-              duration: AnimationSetting.animationDuration,
-              curve: Curves.fastOutSlowIn,
+              // Checker Num
+              Text(
+                  "${widget.checkerNum}",
+                  style: TextStyles.caption2.copyWith(
+                      color: (widget.isChecked) ?
+                        ColorStyles.mainColor :
+                        context.extraColors.grey600)),
+              Design.padding4,
 
-              child: CircleButtonList(circleButtons: _checkerImages, paddingVertical: _padding * 2),
-            ),
-
-            // checker Num
-            OldDesign.padding5,
-            Text("${widget.checkerNum}"),
-            OldDesign.padding5,
-          ]
-        ),
+              // User List
+              AnimatedContainer(
+                width: _checkerImageListWidth,
+                duration: AnimationSetting.animationDuration,
+                curve: Curves.fastOutSlowIn,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _checkerImages.length,
+                  itemBuilder: (context, index) =>
+                      CircleButton(
+                        url: _checkerImages[index],
+                        size: _imageSize,
+                        borderWidth: 0,),
+                  separatorBuilder: (context, index) =>
+                      Design.padding4,),
+              ),
+            ]),
+          ),
       ),
     );
   }
@@ -107,20 +138,17 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
         _getCheckerImages();
 
         final int showCount = min(widget.checkerNum, _showCountMax);
-        _width = _boarderRadius * showCount;
+        _checkerImageListWidth = (_imageSize + 4) * showCount - 4; // 4: padding size
       }
 
-      else { _width = 0; }
+      else { _checkerImageListWidth = 0; }
     });
   }
 
   void _getCheckerImages() async {
     if (_isNeedUpdate) {
       Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
-        setState(() {
-          _checkerImages = List.generate(profileURIs.length, //< FIXME
-                  (index) => OldCircleButton(url: profileURIs[index])).toList();
-        });
+        setState(() => _checkerImages = profileURIs);
       },);
     }
 

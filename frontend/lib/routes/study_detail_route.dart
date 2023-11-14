@@ -60,7 +60,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                       _profileWidget(snapshot.data!) :
                       _profileWidget(widget.study),),
 
-              // members and
+              // Notices and Members
               Container(
                 padding: Design.edgePadding,
                 child: Column(

@@ -117,7 +117,6 @@ class _Panel extends StatelessWidget {
 }
 
 class _StudyPanel extends StatelessWidget {
-  static const EdgeInsets _margin = EdgeInsets.only(bottom: 20);
   final StudyInfo studyInfo;
 
   const _StudyPanel({

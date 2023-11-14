@@ -129,7 +129,8 @@ class Notice {
       throw Exception("Failed to get Checked User Images");
     } else {
       var responseJson = json.decode(response.body)['data']['userImageList'];
-      return (responseJson as List).map((e) => e as String).toList();
+      return (responseJson as List).map((e) =>
+          (e == null) ? "" : e as String).toList();
     }
   }
 }
