@@ -24,10 +24,10 @@ class NoticeSummaryWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<NoticeSummaryWidget> createState() => _NoticePanel();
+  State<NoticeSummaryWidget> createState() => _NoticeSummaryWidgetState();
 }
 
-class _NoticePanel extends State<NoticeSummaryWidget> {
+class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
   @override
   Widget build(BuildContext context) {
     return Ink(
@@ -38,12 +38,13 @@ class _NoticePanel extends State<NoticeSummaryWidget> {
         child:
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               Design.padding24,
+              // Title and Pin icon
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Title
                   Flexible(child:
                     Text(
                       widget.noticeSummary.title,
@@ -51,6 +52,7 @@ class _NoticePanel extends State<NoticeSummaryWidget> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,),),
 
+                  // Pin Icon
                   IconButton(
                     icon: const Icon(CustomIcons.pin),
                     iconSize: 24,
@@ -63,7 +65,7 @@ class _NoticePanel extends State<NoticeSummaryWidget> {
                 ],),
               Design.padding12,
 
-              // Notice Summary Body
+              // Notice Body Summary
               Text(
                 widget.noticeSummary.contents,
                 style: TextStyles.body1.copyWith(color: context.extraColors.grey600),
@@ -72,39 +74,42 @@ class _NoticePanel extends State<NoticeSummaryWidget> {
                 overflow: TextOverflow.ellipsis,),
               Design.padding16,
 
-              // Reaction Tag
+              // Writing Date and Writer, Reaction Tag, Comment Count
               Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        '${TimeUtility.getElapsedTime(widget.noticeSummary.createDate)}'
-                        ' • ${widget.noticeSummary.writerNickname}',
-                    style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Writing Date & Writer
+                  Text(
+                      '${TimeUtility.getElapsedTime(widget.noticeSummary.createDate)}'
+                      ' • ${widget.noticeSummary.writerNickname}',
+                      style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
 
-                    Row(
-                      children: [
-                        NoticeReactionTag(
-                            noticeId: widget.noticeSummary.noticeId,
-                            isChecked: widget.noticeSummary.read,
-                            checkerNum: widget.noticeSummary.readCount,
-                            enabled: false),
-                        Design.padding8,
+                  // Reaction Tag and Comment count
+                  Row(
+                    children: [
+                      // Reaction Tag
+                      NoticeReactionTag(
+                          noticeId: widget.noticeSummary.noticeId,
+                          isChecked: widget.noticeSummary.read,
+                          checkerNum: widget.noticeSummary.readCount,
+                          enabled: false),
+                      Design.padding8,
 
-                        // Comment
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.mode_comment_outlined,
-                              color: context.extraColors.grey500,
-                              size: 18,),
-                            Design.padding(2),
+                      // Comment Count
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.mode_comment_outlined,
+                            color: context.extraColors.grey500,
+                            size: 18,),
+                          Design.padding(2),
 
-                            Text(
-                              '${widget.noticeSummary.commentCount}',
-                              style: TextStyles.body2.copyWith(color: context.extraColors.grey600!),),
-                          ],),
-                      ],),
-                  ]
+                          Text(
+                            '${widget.noticeSummary.commentCount}',
+                            style: TextStyles.body2.copyWith(color: context.extraColors.grey600!),),
+                        ],),
+                    ],),
+                ]
               ),
               Design.padding20,
             ],
