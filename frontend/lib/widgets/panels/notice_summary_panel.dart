@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/notice_summary.dart';
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/routes/notice_detail_route.dart';
 import 'package:group_study_app/routes/notice_list_route.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
