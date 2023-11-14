@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Design {
-  static const String defaultImagePath = 'assets/images/default_profile.png';
+  static const String defaultProfileImagePath = 'assets/images/default-profile-image.png';
 
   static const double targetWidth = 512;
 
