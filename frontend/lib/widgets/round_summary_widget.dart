@@ -48,42 +48,46 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   Widget build(BuildContext context) {
     _placeEditingController.text = widget.round.studyPlace;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            SquircleWidget(
-              scale: 32,
-              side: BorderSide.none,
-              backgroundColor: ColorStyles.mainColor,
-              child: Center(
-                child: Text(
-                  '${widget.roundSeq}',
-                  style: TextStyles.head5.copyWith(
-                      color: context.extraColors.grey000),),
-              ),),
-
-            const Placeholder( // FIXME
-              child: SizedBox(
-                height: 174,
-                width: 32,),),
-          ],),
-        Design.padding8,
-
-        Flexible(
-          child: Column(
+    return InkWell(
+      onTap: _lookUpRound,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
             children: [
-              Design.padding4,
-              _titleLine(),
-              Design.padding16,
+              SquircleWidget(
+                scale: 32,
+                side: BorderSide.none,
+                backgroundColor: ColorStyles.mainColor,
+                child: Center(
+                  child: Text(
+                    '${widget.roundSeq}',
+                    style: TextStyles.head5.copyWith(
+                        color: context.extraColors.grey000),),),),
 
-              _bodyBox(),
-              Design.padding(36),
-            ],
+              const Placeholder( // FIXME
+                child: SizedBox(
+                  height: 174,
+                  width: 32,),),
+            ],),
+          Design.padding8,
+
+          Flexible(
+            child: Column(
+              children: [
+                Design.padding4,
+                _titleLine(),
+                Design.padding16,
+
+                _bodyBox(),
+                Design.padding(36),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -125,9 +129,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
       decoration: BoxDecoration(
         color: context.extraColors.grey100,
         borderRadius: Design.borderRadiusSmall,),
-      child: InkWell(
-        onTap: _lookUpRound,
-        child: Column(
+      child: Column(
           children: [
             _placeWidget(),
             Design.padding4,
@@ -138,7 +140,6 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             ParticipantListWidget(roundParticipantInfoList:
                 widget.round.roundParticipantInfos),
           ],),
-      ),
     );
   }
 

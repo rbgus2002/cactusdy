@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/round_summary_widget.dart';
 
@@ -101,21 +99,6 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
       listKey: _roundListKey,
       items: rounds,
     );
-  }
-
-  void _viewRound(int roundSeq, int index) async {
-    if (_roundListModel[index].roundId == Round.nonAllocatedRoundId) {
-      await Round.createRound(_roundListModel[index], widget.studyId);
-    }
-
-    if (mounted) {
-      Util.pushRoute(context, (context) =>
-          RoundDetailRoute(
-            roundSeq: roundSeq,
-            roundId: _roundListModel[index].roundId,
-            studyId: widget.studyId,
-            studyColor: widget.studyColor,));
-    }
   }
 
   void _addNewRound() {
