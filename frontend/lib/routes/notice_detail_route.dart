@@ -3,8 +3,11 @@ import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
@@ -54,7 +57,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          shadowColor: Colors.transparent,
+          shape: InputBorder.none,
           actions: [
             _noticePopupMenu(),
           ]
@@ -67,10 +70,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           height: double.maxFinite,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(OldDesign.padding),
             child: Column(
                 children: [
-                  _NoticeBody(futureNotice: futureNotice, focusNode: focusNode),
+                  _noticeBody(),
                   OldDesign.padding15,
 
                   _commentList(),
@@ -104,25 +106,75 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     );
   }
 
+  Widget _noticeBody() {
+    return Container(
+      padding: Design.edgePadding,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: context.extraColors.grey100!,
+            width: 4,),),),
+      child: FutureBuilder(
+        future: futureNotice,
+        builder: (context, snapshot) =>
+          (snapshot.hasData) ?
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Design.padding8,
+
+                // Writing Date and Writer Nickname
+                Text(
+                    '${TimeUtility.getElapsedTime(snapshot.data!.createDate)} '
+                        '${snapshot.data!.writerNickname}',
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
+                Design.padding12,
+
+                // Title
+                SelectableText(
+                  snapshot.data!.title,
+                  style: TextStyles.head3.copyWith(color: context.extraColors.grey900),
+                  textAlign: TextAlign.justify,),
+                Design.padding8,
+
+                // Body
+                SelectableText(
+                  snapshot.data!.contents,
+                  style: TextStyles.body1.copyWith(color: context.extraColors.grey800),
+                  textAlign: TextAlign.justify,),
+                Design.padding16,
+
+                // Reaction Tag
+                NoticeReactionTag(noticeId: snapshot.data!.noticeId,
+                    isChecked: snapshot.data!.read,
+                    checkerNum: snapshot.data!.checkNoticeCount),
+              ],) : Design.loadingIndicator
+        ),
+    );
+  }
+
   Widget _commentList() {
-    return FutureBuilder(
-      future: Comment.getComments(widget.noticeId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          comments = snapshot.data!;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: Design.edgePadding.horizontal, horizontal: 16),
+      child: FutureBuilder(
+        future: Comment.getComments(widget.noticeId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            comments = snapshot.data!;
 
-          return ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) =>
-              CommentWidget(comment: comments[index], index: index,
-                isSelected: (_replyTo == index), setReplyTo: setReplyTo, onDelete: deleteComment),
-          );
+            return ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) =>
+                CommentWidget(comment: comments[index], index: index,
+                  isSelected: (_replyTo == index), setReplyTo: _setReplyTo, onDelete: _deleteComment),
+            );
+          }
+
+          return const SizedBox();
         }
-
-        return const SizedBox();
-      }
+      ),
     );
   }
 
@@ -180,7 +232,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     );
   }
 
-  void setReplyTo(int index) {
+  void _setReplyTo(int index) {
     setState(() {
       // #Case : double check => uncheck
       if (_replyTo == index) {
@@ -226,7 +278,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     });
   }
 
-  void deleteComment(int commentId) {
+  void _deleteComment(int commentId) {
     Comment.deleteComment(commentId).then((result) {
       if (result == false) {
         Toast.showToast(context: context, message: _deleteNoticeFailMessage);
@@ -253,83 +305,5 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     _commentEditor.dispose();
     focusNode.dispose();
     super.dispose();
-  }
-}
-
-class _NoticeBody extends StatelessWidget {
-  static const String _writerText = "작성자";
-
-  final Future<Notice> futureNotice;
-  final FocusNode focusNode;
-
-  const _NoticeBody({
-    required this.futureNotice,
-    required this.focusNode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: futureNotice,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-  
-            children: [
-              // Title
-              SelectableText(snapshot.data!.title,
-                style: OldTextStyles.titleSmall,
-                textAlign: TextAlign.justify,
-              ),
-              OldDesign.padding3,
-  
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(TimeUtility.getElapsedTime(snapshot.data!.createDate),
-                    style: OldTextStyles.bodyMedium,),
-                  Text('$_writerText : ${snapshot.data!.writerNickname}',
-                    style: OldTextStyles.bodyMedium,),
-                ],
-              ),
-              OldDesign.padding10,
-  
-              // Body
-              SelectableText(snapshot.data!.contents,
-                style: OldTextStyles.bodyLarge,
-                textAlign: TextAlign.justify,),
-              OldDesign.padding15,
-  
-              // Reaction Tag
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    NoticeReactionTag(noticeId: snapshot.data!.noticeId,
-                        isChecked: snapshot.data!.read,
-                        checkerNum: snapshot.data!.checkNoticeCount),
-  
-                    InkWell(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                        onTap: focusNode.requestFocus,
-                        child: Row(
-                            children: [
-                              const Icon(Icons.comment, size: 18,),
-                              OldDesign.padding5,
-                              Text('${snapshot.data!.commentCount}'),
-                              OldDesign.padding5
-                            ]
-                        )
-                    )
-                  ]
-              ),
-            ],
-          );
-        }
-        else {
-          return OldDesign.loadingIndicator;
-        }
-      }
-    );
   }
 }

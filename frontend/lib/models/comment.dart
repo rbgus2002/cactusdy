@@ -44,7 +44,7 @@ class Comment {
     return Comment(
       userId: json["userId"],
       nickname: json["nickname"],
-      picture: json["picture"],
+      picture: json["picture"]??"",
       commentId: json["commentId"],
       contents: json["contents"],
       createDate: DateTime.parse(json["createDate"]),
