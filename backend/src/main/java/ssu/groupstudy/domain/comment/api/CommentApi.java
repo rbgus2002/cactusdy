@@ -13,7 +13,6 @@ import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -32,7 +31,7 @@ public class CommentApi {
     @Operation(summary = "공지사항에 작성된 댓글 가져오기")
     @GetMapping
     public ResponseDto viewComments(@RequestParam Long noticeId){
-        List<CommentInfoResponse> comments = commentService.getComments(noticeId);
+        CommentInfoResponse comments = commentService.getComments(noticeId);
         return DataResponseDto.of("comments", comments);
     }
 

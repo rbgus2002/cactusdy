@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.ChildCommentInfoResponse;
+import ssu.groupstudy.domain.comment.dto.response.CommentDto;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
@@ -62,26 +63,28 @@ public class CommentService {
         return dto.toEntity(writer, notice, parent);
     }
 
-    public List<CommentInfoResponse> getComments(Long noticeId) {
+    public CommentInfoResponse getComments(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        int commentCount = commentRepository.countCommentByNotice(notice);
         List<Comment> parentComments = getParentComments(notice);
-        return transformToCommentsWithReplies(parentComments);
+        List<CommentDto> commentDtoList = transformToCommentsWithReplies(parentComments);
+        return CommentInfoResponse.of(commentCount, commentDtoList);
     }
 
     private List<Comment> getParentComments(Notice notice) {
         return commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
     }
 
-    private List<CommentInfoResponse> transformToCommentsWithReplies(List<Comment> parentComments){
+    private List<CommentDto> transformToCommentsWithReplies(List<Comment> parentComments){
         return parentComments.stream()
                 .map(this::transformToCommentsWithReplies)
                 .filter(commentInfo -> !commentInfo.requireRemoved())
                 .collect(Collectors.toList());
     }
 
-    private CommentInfoResponse transformToCommentsWithReplies(Comment comment){
-        CommentInfoResponse commentInfo = CommentInfoResponse.from(comment);
+    private CommentDto transformToCommentsWithReplies(Comment comment){
+        CommentDto commentInfo = CommentDto.from(comment);
         List<Comment> childComments = getChildComments(comment);
         commentInfo.appendReplies(transformToChildComments(childComments));
         return commentInfo;
