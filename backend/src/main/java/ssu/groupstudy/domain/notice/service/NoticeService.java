@@ -109,8 +109,7 @@ public class NoticeService {
     public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        int commentCount = commentRepository.countCommentByNotice(notice);
-        return NoticeInfoResponse.of(notice, user, commentCount);
+        return NoticeInfoResponse.of(notice, user);
     }
 
     @Transactional
