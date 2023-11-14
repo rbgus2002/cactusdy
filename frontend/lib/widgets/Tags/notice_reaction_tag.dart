@@ -62,9 +62,8 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
         onTap: (widget.enabled) ? _switchCheck : null,
         onLongPress: (widget.enabled) ? _switchExpend : null,
 
-        child: Container(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          alignment: Alignment.center,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
