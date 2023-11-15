@@ -11,6 +11,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
@@ -27,19 +28,11 @@ class NoticeDetailRoute extends StatefulWidget {
 }
 
 class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
-  static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?"; //< FIXME
-  static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
-
-  static const String _checkText = "확인";
-  static const String _cancelText = "취소";
-
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
-
   late Future<Notice> futureNotice;
-  late List<Comment> comments;
+  List<Comment> _comments = [];
   int _replyTo = Comment.commentWithNoParent;
-  int _commentCount = 0;
 
   bool _isProcessing = false;
 
@@ -60,27 +53,28 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
       body: Column(
         children: [
           Flexible(
-          fit: FlexFit.tight,
+            fit: FlexFit.tight,
             child: RefreshIndicator(
               onRefresh: () async => setState(() {}),
               child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                      children: [
-                        _noticeBody(),
-                        OldDesign.padding15,
-
-                        _commentList(),
-                      ]
-                  ),
-                ),
-              ),
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    _noticeBody(),
+                    _commentList(),
+                  ]),
+                ),),
           ),
           _writingCommentBox(),
         ],),
       bottomNavigationBar: Design.padding(40),
-
     );
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
   }
 
   List<Widget> _noticePopupMenus() {
@@ -119,10 +113,10 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
                 // Writing Date and Writer Nickname
                 Text(
-                    '${TimeUtility.getElapsedTime(snapshot.data!.createDate)} '
-                        '${snapshot.data!.writerNickname}',
-                    style: TextStyles.body2.copyWith(
-                        color: context.extraColors.grey500)),
+                  '${TimeUtility.getElapsedTime(snapshot.data!.createDate)} '
+                      '${snapshot.data!.writerNickname}',
+                  style: TextStyles.body2.copyWith(
+                      color: context.extraColors.grey500)),
                 Design.padding12,
 
                 // Title
@@ -157,24 +151,27 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         future: Comment.getComments(widget.noticeId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            _commentCount = snapshot.data!['commentCount'];
+            int commentCount = snapshot.data!['commentCount'];
+            _comments = snapshot.data!['commentInfos'];
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Design.padding16,
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    '${context.local.comment} $_commentCount',
+                    '${context.local.comment} $commentCount',
                     style: TextStyles.body2.copyWith(color: context.extraColors.grey900),),),
                 Design.padding12,
 
                 ListView.separated(
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: snapshot.data!['commentInfos'].length,
+                    itemCount: _comments.length,
                     itemBuilder: (context, index) =>
-                        CommentWidget(comment: snapshot.data!['commentInfos'][index],
+                        CommentWidget(comment: _comments[index],
                             index: index,
                             isSelected: (_replyTo == index),
                             setReplyTo: _setReplyTo,
@@ -189,25 +186,18 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   void _showDeleteNoticeDialog(BuildContext context) {
-    Future.delayed(Duration.zero, ()=> showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-          content: const Text(_deleteNoticeCautionMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(_cancelText),),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _deleteNotice();
-              },
-              child: const Text(_checkText),),
-          ],
-        )
-    ));
+    TwoButtonDialog.showProfileDialog(
+        context: context,
+        text: context.local.confirmDeleteNotice,
+
+        buttonText1: context.local.delete,
+        isPrimary1: true,
+        onPressed1: _deleteNotice,
+
+        buttonText2: context.local.cancel,
+        isPrimary2: false,
+        onPressed2: () { }, // Assert to do Nothing
+    );
   }
 
   Widget _writingCommentBox() {
@@ -253,7 +243,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         focusNode.unfocus();
         _replyTo = Comment.commentWithNoParent;
       }
-      // #Case : check
+      // #Case : Single check
       else {
         focusNode.requestFocus();
         _replyTo = index;
@@ -261,36 +251,38 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     });
   }
 
-  void _writeComment() {
+  void _writeComment() async {
     if (_commentEditor.currentState!.validate()) {
       if (!_isProcessing) {
         _isProcessing = true;
 
         try {
-          int? parentCommentId = (_replyTo != Comment.commentWithNoParent) ?
-          comments[_replyTo].commentId : null;
-          Future<int> result = Comment.writeComment(
+          int? parentCommentId = _getParentId();
+          await Comment.writeComment(
               widget.noticeId, _commentEditor.currentState!.text,
-              parentCommentId);
-
-          result.then((newCommentId) {
+              parentCommentId).then((newCommentId) {
             if (newCommentId != Comment.commentCreationError) {
-              Toast.showToast(
-                  context: context,
-                  message: "");
-
               setState(() {
-                // reset writing box and reply target
-                _commentEditor.currentState!.text = "";
+                // Reset writing box and reply target
                 focusNode.unfocus();
+                _commentEditor.currentState!.text = "";
                 _replyTo = Comment.commentWithNoParent;
               });
+
+              // Wait until the keyboard disappears
+              Future.delayed(const Duration(seconds: 1), () =>
+                Toast.showToast(
+                    context: context,
+                    margin: const EdgeInsets.only(bottom: 68),
+                    message: context.local.successToComment));
             }
           });
         } on Exception catch (e) {
-          Toast.showToast(
+          if (context.mounted) {
+            Toast.showToast(
               context: context,
               message: Util.getExceptionMessage(e));
+          }
         }
 
         _isProcessing = false;
@@ -305,31 +297,35 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     }
   }
 
-  void _deleteComment(int commentId) {
-    Comment.deleteComment(commentId).then((result) {
-      if (result == false) {
-        Toast.showToast(context: context, message: _deleteNoticeFailMessage);
+  void _deleteComment(int commentId) async {
+    try {
+      await Comment.deleteComment(commentId).then((result) =>
+          (result)? setState(() {}) : null);
+    } on Exception catch(e) {
+      if (context.mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
       }
-      else {
-        futureNotice.then((value) => --_commentCount); //< FIXME : this is not validated value, see also removeComment
-        setState(() { });
-      }}
-    );
+    }
   }
 
-  void _deleteNotice() {
-    Notice.deleteNotice(widget.noticeId).then((result) {
-        if (result == false) {
-          Toast.showToast(context: context, message: _deleteNoticeFailMessage);
-        }
-        else { Navigator.of(context).pop(); }
-      },
-    );
+  void _deleteNotice() async {
+    try {
+      await Notice.deleteNotice(widget.noticeId).then((result) =>
+        (result)? Navigator.of(context).pop() : null);
+    } on Exception catch(e) {
+      if (context.mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
+  int? _getParentId() {
+    return (_replyTo != Comment.commentWithNoParent) ?
+        _comments[_replyTo].commentId
+        : null;
   }
 }
