@@ -5,7 +5,6 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
@@ -28,11 +27,8 @@ class NoticeDetailRoute extends StatefulWidget {
 }
 
 class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
-  static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?";
+  static const String _deleteNoticeCautionMessage = "해당 게시물을 삭제하시겠어요?"; //< FIXME
   static const String _deleteNoticeFailMessage = "게시물 삭제에 실패했습니다";
-
-  static const String _commentHintMessage = "댓글을 입력해 주세요";
-  static const String _writingFailMessage = "작성에 실패했습니다";
 
   static const String _checkText = "확인";
   static const String _cancelText = "취소";
@@ -81,8 +77,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               ),
           ),
           _writingCommentBox(),
-        ],
-      ),
+        ],),
+      bottomNavigationBar: Design.padding(40),
+
     );
   }
 
@@ -215,7 +212,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   Widget _writingCommentBox() {
     return Container(
-      padding: OldDesign.edge10,
+      padding: Design.edge8,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: context.extraColors.grey200!,
+            width: 1),),),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -227,16 +229,13 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               maxLength: 100,
               focusNode: focusNode,
               hintText: context.local.inputHint1(context.local.comment),
-              validator: _commentValidator,
-            ),),
+              validator: _commentValidator,),),
           IconButton(
             icon: const Icon(CustomIcons.send, size: 24),
             color: ColorStyles.mainColor,
             splashRadius: 16,
-            onPressed: _writeComment,
-          ),
-        ],
-      ),
+            onPressed: _writeComment,),
+        ],),
     );
   }
 

@@ -132,7 +132,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
     );
   }
 
-  // deprecated for #26
+  @Deprecated('deprecated for #26')
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {
