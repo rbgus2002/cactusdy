@@ -96,7 +96,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                         context.local.rules,
                         style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                       AddButton(
-                        iconData: CustomIcons.writing,
+                        iconData: CustomIcons.writing_outline,
                         text: context.local.writeRule,
                         onTap: () {}),
                     ],),
@@ -163,7 +163,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.writing),),
+          icon: const Icon(CustomIcons.writing_outline),),
 
         // setting
         ItemEntry(

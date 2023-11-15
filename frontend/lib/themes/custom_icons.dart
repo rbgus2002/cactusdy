@@ -7,6 +7,8 @@ class CustomIcons {
 
   static const String _fontFamily = 'custom_icons';
 
+  static const IconData check2 = IconData(0xe90d, fontFamily: _fontFamily);
+  static const IconData cactus = IconData(0xe92a, fontFamily: _fontFamily);
   static const IconData add = IconData(0xe900, fontFamily: _fontFamily);
   static const IconData calendar = IconData(0xe901, fontFamily: _fontFamily);
   static const IconData camera = IconData(0xe902, fontFamily: _fontFamily);

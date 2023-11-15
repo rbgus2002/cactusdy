@@ -99,9 +99,9 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                       Row(
                         children: [
                           Icon(
-                            Icons.mode_comment_outlined,
+                            CustomIcons.comment,
                             color: context.extraColors.grey500,
-                            size: 18,),
+                            size: 20,),
                           Design.padding(2),
 
                           Text(

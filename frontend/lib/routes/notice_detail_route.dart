@@ -86,7 +86,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   List<Widget> _noticePopupMenus() {
     return [
       IconButton(
-        icon: const Icon(CustomIcons.writing_square_outline),
+        icon: const Icon(CustomIcons.writing_outline),
         iconSize: 28,
         onPressed: () { },),
 

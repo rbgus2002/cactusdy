@@ -63,19 +63,20 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
         onLongPress: (widget.enabled) ? _switchExpend : null,
 
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
               // Check Icon
               Icon(
-                  CustomIcons.check1,
-                  size: 14,
-                  color: (widget.isChecked) ?
-                    ColorStyles.mainColor :
-                    context.extraColors.grey600),
+                CustomIcons.check2,
+                size: 16,
+                color: (widget.isChecked) ?
+                  ColorStyles.mainColor :
+                  context.extraColors.grey600),
               Design.padding(2),
 
               // Checker Num
@@ -85,7 +86,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
                       color: (widget.isChecked) ?
                         ColorStyles.mainColor :
                         context.extraColors.grey600)),
-              Design.padding4,
+              Design.padding(2),
 
               // User List
               AnimatedContainer(
