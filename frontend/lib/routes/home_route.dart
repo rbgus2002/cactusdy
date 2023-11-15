@@ -56,7 +56,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       context.local.myStudy,
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                     AddButton(
-                      iconData: CustomIcons.plus_square,
+                      iconData: CustomIcons.plus_square_outline,
                       text: context.local.addStudy,
                       onTap: () => Util.pushRoute(context, (context) =>
                           const GenerateStudyRoute())),

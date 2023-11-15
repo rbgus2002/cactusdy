@@ -78,7 +78,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
       // edit profile
       ItemEntry(
         text: context.local.editProfile,
-        icon: const Icon(CustomIcons.write),),
+        icon: const Icon(CustomIcons.writing_square_outline),),
 
       // setting
       ItemEntry(

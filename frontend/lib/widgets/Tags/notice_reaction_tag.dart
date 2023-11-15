@@ -71,7 +71,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
             children: [
               // Check Icon
               Icon(
-                  CustomIcons.check,
+                  CustomIcons.check1,
                   size: 14,
                   color: (widget.isChecked) ?
                     ColorStyles.mainColor :

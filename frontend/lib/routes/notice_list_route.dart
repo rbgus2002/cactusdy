@@ -31,7 +31,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
         title: Text(context.local.notice,),
         actions: [
           IconButton(
-            icon: const Icon(CustomIcons.write_square),
+            icon: const Icon(CustomIcons.writing_square_outline),
             splashRadius: 16,
             onPressed: () {
               Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));

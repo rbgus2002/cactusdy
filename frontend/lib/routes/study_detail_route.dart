@@ -10,7 +10,7 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
-import 'package:group_study_app/widgets/round_info_list_widget.dart';
+import 'package:group_study_app/widgets/round_summary_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   final Study study;
@@ -96,7 +96,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                         context.local.rules,
                         style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                       AddButton(
-                        iconData: CustomIcons.write,
+                        iconData: CustomIcons.writing,
                         text: context.local.writeRule,
                         onTap: () {}),
                     ],),
@@ -105,7 +105,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
               Container(
                 padding: Design.edgePadding,
-                child: RoundInfoListWidget(studyId: widget.study.studyId, studyColor: widget.study.color,),),
+                child: RoundSummaryListWidget(studyId: widget.study.studyId, studyColor: widget.study.color,),),
             ],
           )
         ),
@@ -163,7 +163,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.write),),
+          icon: const Icon(CustomIcons.writing),),
 
         // setting
         ItemEntry(
