@@ -62,7 +62,7 @@ class AppTheme {
 
   static final TextButtonThemeData _textButtonThemeData = TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: ColorStyles.tintColor,
+        foregroundColor: ColorStyles.mainColor,
         textStyle: TextStyles.head5,)
   );
 

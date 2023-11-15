@@ -13,6 +13,9 @@ class InputField extends StatefulWidget {
   final bool obscureText;
   final bool enable;
 
+  final int? maxLine;
+  final int? minLine;
+
   const InputField({
     Key? key,
     this.hintText,
@@ -21,6 +24,8 @@ class InputField extends StatefulWidget {
     this.validator,
     this.maxLength,
     this.enable = true,
+    this.maxLine,
+    this.minLine,
   }) : super(key: key);
 
   @override

@@ -176,7 +176,7 @@ class _AddStudyPanel extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: _circleRadius,
-                backgroundColor: ColorStyles.tintColor.withAlpha(0x33),
+                backgroundColor: ColorStyles.mainColor.withOpacity(0.2),
                 child: const Icon(
                   Icons.add,
                   size: _iconSize,
