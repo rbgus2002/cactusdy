@@ -79,7 +79,8 @@
     "title": "제목",
     "content": "내용",
     "comment": "댓글",
-    "writingComment": "답글쓰기",
+    "writeReply": "답글쓰기",
+    "successToComment": "댓글을 작성했어요",
 
     "attendanceTag": "출석태그",
     "attend": "참석",

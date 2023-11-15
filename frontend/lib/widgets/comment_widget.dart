@@ -21,8 +21,6 @@ class CommentWidget extends StatelessWidget {
   static const String _showProfileText = "프로필 보기";
   static const String _deleteCommentText = "삭제하기";
 
-  static const String _writeReplyText = "답글 달기";
-
   static const double _replyLeftPadding = 50;
 
   static const double _imageSize = 36;
@@ -103,7 +101,7 @@ class CommentWidget extends StatelessWidget {
                           borderRadius: Design.borderRadiusSmall,
                           onTap: () => setReplyTo(index),
                           child: Text(
-                              _writeReplyText,
+                              context.local.writeReply,
                               style: TextStyles.caption1.copyWith(
                                   color: context.extraColors.grey500),),),),
                     ],)

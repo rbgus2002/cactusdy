@@ -10,6 +10,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
@@ -36,13 +37,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   static const String _checkText = "확인";
   static const String _cancelText = "취소";
 
-  late final _commentEditor = TextEditingController();
+  final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
 
   late Future<Notice> futureNotice;
   late List<Comment> comments;
   int _replyTo = Comment.commentWithNoParent;
   int _commentCount = 0;
+
+  bool _isProcessing = false;
 
   int _writerId = -1; //< FIXME
 
@@ -217,37 +220,31 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
-            child: TextField( //< FIXME
-              minLines: 1, maxLines: 5,
+            child: InputField(
+              key: _commentEditor,
+              minLine: 1,
+              maxLine: 5,
               maxLength: 100,
-              style: OldTextStyles.bodyMedium,
-              textAlign: TextAlign.justify,
-              controller: _commentEditor,
               focusNode: focusNode,
-
-              decoration: InputDecoration(
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                hintText: _commentHintMessage,
-                counterText: "",
-              ),
-            ),
-          ),
+              hintText: context.local.inputHint1(context.local.comment),
+              validator: _commentValidator,
+            ),),
           IconButton(
             icon: const Icon(CustomIcons.send, size: 24),
             color: ColorStyles.mainColor,
             splashRadius: 16,
-            onPressed: () {
-              if (_checkValidate()) {
-                _writeComment();
-              }
-            },
+            onPressed: _writeComment,
           ),
         ],
       ),
     );
+  }
+
+  String? _commentValidator(String? input) {
+    if (input == null || input.isEmpty) {
+      return context.local.inputHint1(context.local.comment);
+    }
+    return null;
   }
 
   void _setReplyTo(int index) {
@@ -265,35 +262,48 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     });
   }
 
-  bool _checkValidate() {
-    if (_commentEditor.text.isEmpty) {
-      Toast.showToast(context: context, message: _commentHintMessage);
-      return false;
-    }
-    return true;
-  }
-
   void _writeComment() {
-    int? parentCommentId = (_replyTo != Comment.commentWithNoParent)? comments[_replyTo].commentId : null;
-    Future<int> result = Comment.writeComment(
-        widget.noticeId, _commentEditor.text, parentCommentId);
+    if (_commentEditor.currentState!.validate()) {
+      if (!_isProcessing) {
+        _isProcessing = true;
 
-    result.then((newCommentId) {
-      if (newCommentId != Comment.commentCreationError) {
-        setState(() {
-          // writing box reset
-          _commentEditor.text = "";
-          focusNode.unfocus();
+        try {
+          int? parentCommentId = (_replyTo != Comment.commentWithNoParent) ?
+          comments[_replyTo].commentId : null;
+          Future<int> result = Comment.writeComment(
+              widget.noticeId, _commentEditor.currentState!.text,
+              parentCommentId);
 
-          // commentList reloads
-          futureNotice.then((value) => ++_commentCount); //< FIXME : this is not validated value, see also removeComment
-          _replyTo = Comment.commentWithNoParent;
-        });
+          result.then((newCommentId) {
+            if (newCommentId != Comment.commentCreationError) {
+              Toast.showToast(
+                  context: context,
+                  message: "");
+
+              setState(() {
+                // reset writing box and reply target
+                _commentEditor.currentState!.text = "";
+                focusNode.unfocus();
+                _replyTo = Comment.commentWithNoParent;
+              });
+            }
+          });
+        } on Exception catch (e) {
+          Toast.showToast(
+              context: context,
+              message: Util.getExceptionMessage(e));
+        }
+
+        _isProcessing = false;
       }
-      else {
-        Toast.showToast(context: context, message: _writingFailMessage);
-      }// FIXME catch error
-    });
+    }
+
+    // non-validated
+    else {
+      Toast.showToast(
+          context: context,
+          message: context.local.inputHint1(context.local.comment));
+    }
   }
 
   void _deleteComment(int commentId) {
@@ -320,7 +330,6 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   @override
   void dispose() {
-    _commentEditor.dispose();
     focusNode.dispose();
     super.dispose();
   }
