@@ -8,21 +8,21 @@ import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/round_summary_widget.dart';
 
-class RoundInfoListWidget extends StatefulWidget {
+class RoundSummaryListWidget extends StatefulWidget {
   final int studyId;
   final Color studyColor;
 
-  const RoundInfoListWidget({
+  const RoundSummaryListWidget({
     Key? key,
     required this.studyId,
     required this.studyColor,
   }) : super(key: key);
 
   @override
-  State<RoundInfoListWidget> createState() => RoundInfoListWidgetState();
+  State<RoundSummaryListWidget> createState() => RoundSummaryListWidgetState();
 }
 
-class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
+class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   late GlobalKey<AnimatedListState> _roundListKey;
   late ListModel<Round> _roundListModel;
 
@@ -43,7 +43,7 @@ class RoundInfoListWidgetState extends State<RoundInfoListWidget> {
               context.local.roundList ,
               style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
             AddButton(
-                iconData: CustomIcons.plus_square,
+                iconData: CustomIcons.plus_square_outline,
                 text: context.local.addRound,
                 onTap: _addNewRound),
           ],),

@@ -221,13 +221,19 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     );
   }
 
-  void _lookUpRound() {
-    Util.pushRoute(context, (context) =>
-        RoundDetailRoute(
+  void _lookUpRound() async {
+    if (widget.round.roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(widget.round, widget.studyId);
+    }
+
+    if (context.mounted) {
+      Util.pushRoute(context, (context) =>
+          RoundDetailRoute(
             roundSeq: widget.roundSeq,
             roundId: widget.round.roundId,
             studyId: widget.studyId,
             studyColor: widget.studyColor,));
+    }
   }
 
   void updatePlace() {

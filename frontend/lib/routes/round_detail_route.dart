@@ -57,7 +57,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         color: context.extraColors.grey50!,
                         width: 7)),),
                 child: FutureBuilder(
-                  future: _getRoundDetail(),
+                  future: Round.getDetail(widget.roundId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       round = snapshot.data;
@@ -245,15 +245,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               isPrimary2: false),),
       ],
     );
-  }
-
-  Future<Round> _getRoundDetail() async {
-    if (widget.roundId == Round.nonAllocatedRoundId) {
-      Round newRound = Round(roundId: Round.nonAllocatedRoundId);
-      await Round.createRound(newRound, widget.studyId);
-      return newRound;
-    }
-    return Round.getDetail(widget.roundId);
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
