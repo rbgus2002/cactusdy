@@ -18,7 +18,6 @@ class Notice {
   final int writerId;
   final int checkNoticeCount;
   final DateTime createDate;
-  int commentCount;
   bool read;
 
   Notice({
@@ -29,7 +28,6 @@ class Notice {
     required this.writerId,
     required this.checkNoticeCount,
     required this.createDate,
-    required this.commentCount,
     required this.read,
   });
 
@@ -41,7 +39,6 @@ class Notice {
       writerNickname: json["writerNickname"],
       checkNoticeCount: json["checkNoticeCount"],
       createDate: DateTime.parse(json["createDate"]),
-      commentCount: json["commentCount"],
       writerId: json["writerId"],
       read: json["read"],
     );
@@ -56,7 +53,7 @@ class Notice {
       if (response.statusCode != DatabaseService.successCode) {
         throw Exception("Failed to load notice");
       } else {
-        print(json.decode(utf8.decode(response.bodyBytes)));
+        //print(json.decode(utf8.decode(response.bodyBytes)));
         var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
         return Notice.fromJson(responseJson);
       }

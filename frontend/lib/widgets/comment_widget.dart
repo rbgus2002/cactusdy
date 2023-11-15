@@ -1,13 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
+import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
+import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 class CommentWidget extends StatelessWidget {
@@ -22,7 +23,10 @@ class CommentWidget extends StatelessWidget {
 
   static const String _writeReplyText = "답글 달기";
 
-  static const double _replyLeftPadding = 18;
+  static const double _replyLeftPadding = 50;
+
+  static const double _imageSize = 36;
+  static const double _replayImageSize = 24;
 
   final Comment comment;
   final Function(int) setReplyTo;
@@ -48,52 +52,60 @@ class CommentWidget extends StatelessWidget {
       child: Column (
         children: [
           Container(
-            padding: OldDesign.edge5,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-              color: (isSelected)?OldColorStyles.grey:null,
-              borderRadius: BorderRadius.circular(OldDesign.borderRadius),
-            ),
+              color: (isSelected)?ColorStyles.mainColor.withOpacity(0.05):null,
+              borderRadius: Design.borderRadius),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                OldCircleButton(url: comment.picture, scale: 36,),
-                OldDesign.padding5,
+                SquircleWidget(
+                  scale: (!isReply)? _imageSize : _replayImageSize,
+                  child: (comment.picture.isNotEmpty) ?
+                      CachedNetworkImage(
+                        imageUrl: comment.picture,
+                        fit: BoxFit.cover) : null,),
+                Design.padding12,
+
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(child: Text(comment.nickname, style: OldTextStyles.titleTiny)),
+                          Flexible(
+                            child: Text(
+                              comment.nickname,
+                              style: TextStyles.head6.copyWith(
+                                  color: context.extraColors.grey800),),),
+
                           if (!comment.deleteYn)
-                            SizedBox(
-                              width: 18,
-                              height: 18,
-                              child : _commentPopupMenu(),
-                            ),
-                        ]
-                      ),
-                      OldDesign.padding5,
+                            _commentPopupMenu(context),
+                        ]),
+                      Design.padding4,
 
-                      SelectableText(comment.contents, textAlign: TextAlign.justify,),
-                      OldDesign.padding5,
+                      Text(
+                        TimeUtility.getElapsedTime(comment.createDate),
+                        style: TextStyles.body4.copyWith(color: context.extraColors.grey500),),
+                      Design.padding8,
 
-                      if (!comment.deleteYn)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children : [
-                              Text(TimeUtility.getElapsedTime(comment.createDate), style: OldTextStyles.bodyMedium,),
-                              const Text(" | "),
-                              InkWell(
-                                borderRadius: BorderRadius.circular(3),
-                                onTap: (){setReplyTo(index);},
-                                child: const Text(_writeReplyText, style: OldTextStyles.bodyMedium),
-                              ),
-                            ]
-                          ),
+                      SelectableText(
+                        comment.contents,
+                        style: TextStyles.body1.copyWith(color: context.extraColors.grey800),
+                        textAlign: TextAlign.justify,),
+                      Design.padding8,
+
+                      Visibility(
+                        visible: _isReplyAble(),
+                        child: InkWell(
+                          borderRadius: Design.borderRadiusSmall,
+                          onTap: () => setReplyTo(index),
+                          child: Text(
+                              _writeReplyText,
+                              style: TextStyles.caption1.copyWith(
+                                  color: context.extraColors.grey500),),),),
                     ],)
                 ),
               ]
@@ -108,28 +120,33 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
-  Widget _commentPopupMenu() {
-    return PopupMenuButton(
-      icon: const Icon(Icons.more_vert, size: 18,),
-      splashRadius: 12,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),
-      offset: const Offset(0, 18),
+  Widget _commentPopupMenu(BuildContext context) {
+    return SizedBox(
+        width: 18,
+        height: 18,
+        child: PopupMenuButton(
+          icon: Icon(Icons.more_vert, color: context.extraColors.grey500,),
+          iconSize: 18,
+          splashRadius: 12,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
+          offset: const Offset(0, 18),
 
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
-          onTap: () {
-            Future.delayed(Duration.zero, ()=>
-              UserProfileDialog.showProfileDialog(context, comment.userId)); }
-        ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
+              onTap: () {
+                Future.delayed(Duration.zero, ()=>
+                  UserProfileDialog.showProfileDialog(context, comment.userId)); }
+            ),
 
-        if (comment.userId == Auth.signInfo!.userId)
-        PopupMenuItem(
-          child: const Text(_deleteCommentText, style: OldTextStyles.bodyMedium,),
-          onTap: () => _showDeleteCommentDialog(context),
-        )
-      ],
+            if (comment.userId == Auth.signInfo!.userId)
+            PopupMenuItem(
+              child: const Text(_deleteCommentText, style: OldTextStyles.bodyMedium,),
+              onTap: () => _showDeleteCommentDialog(context),
+            )
+        ],
+      ),
     );
   }
 
@@ -153,5 +170,9 @@ class CommentWidget extends StatelessWidget {
           ],
         )
     ));
+  }
+
+  bool _isReplyAble() {
+    return !(comment.deleteYn || isReply);
   }
 }

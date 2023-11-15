@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/old_text_styles.dart';
@@ -11,7 +11,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/comment_widget.dart';
-import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
+import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
@@ -36,16 +36,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   static const String _checkText = "확인";
   static const String _cancelText = "취소";
 
-  static const String _showProfileText = "프로필 보기";
-  static const String _deleteNoticeText = "삭제하기";
-
   late final _commentEditor = TextEditingController();
   late final focusNode = FocusNode();
 
   late Future<Notice> futureNotice;
   late List<Comment> comments;
   int _replyTo = Comment.commentWithNoParent;
-  int _writerId = User.nonAllocatedUserId;
+  int _commentCount = 0;
+
+  int _writerId = -1; //< FIXME
 
   @override
   void initState() {
@@ -57,57 +56,51 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          shape: InputBorder.none,
-          actions: [
-            _noticePopupMenu(),
-          ]
-      ),
-      bottomNavigationBar: _writingCommentBox(),
+        shape: InputBorder.none,
+        actions: _noticePopupMenus(),),
+      body: Column(
+        children: [
+          Flexible(
+          fit: FlexFit.tight,
+            child: RefreshIndicator(
+              onRefresh: () async => setState(() {}),
+              child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                      children: [
+                        _noticeBody(),
+                        OldDesign.padding15,
 
-      body: RefreshIndicator(
-        onRefresh: () async => setState(() {}),
-        child: SizedBox(
-          height: double.maxFinite,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-                children: [
-                  _noticeBody(),
-                  OldDesign.padding15,
-
-                  _commentList(),
-                ]
-            ),
+                        _commentList(),
+                      ]
+                  ),
+                ),
+              ),
           ),
-        ),
+          _writingCommentBox(),
+        ],
       ),
     );
   }
 
-  Widget _noticePopupMenu() {
-    return PopupMenuButton(
-      icon: const Icon(Icons.more_vert),
-      splashRadius: 16,
-      offset: const Offset(0, 42),
+  List<Widget> _noticePopupMenus() {
+    return [
+      IconButton(
+        icon: const Icon(CustomIcons.writing_square_outline),
+        iconSize: 28,
+        onPressed: () { },),
 
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
-            onTap: () {
-              Future.delayed(Duration.zero, ()=>
-                  UserProfileDialog.showProfileDialog(context, _writerId)); }
-        ),
-        if (Auth.signInfo!.userId == _writerId)
-        PopupMenuItem(
-          child: const Text(_deleteNoticeText, style: OldTextStyles.bodyMedium,),
-          onTap: () => _showDeleteNoticeDialog(context),
-        ),
-      ],
-    );
+      IconButton(
+        icon: const Icon(CustomIcons.trash),
+        iconSize: 28,
+        onPressed: () {
+          _showDeleteNoticeDialog(context); }),
+    ];
   }
 
   Widget _noticeBody() {
     return Container(
+      width: double.maxFinite,
       padding: Design.edgePadding,
       decoration: BoxDecoration(
         border: Border(
@@ -116,9 +109,10 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
             width: 4,),),),
       child: FutureBuilder(
         future: futureNotice,
-        builder: (context, snapshot) =>
-          (snapshot.hasData) ?
-            Column(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            _writerId = snapshot.data!.writerId;
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Design.padding8,
@@ -127,20 +121,23 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
                 Text(
                     '${TimeUtility.getElapsedTime(snapshot.data!.createDate)} '
                         '${snapshot.data!.writerNickname}',
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
+                    style: TextStyles.body2.copyWith(
+                        color: context.extraColors.grey500)),
                 Design.padding12,
 
                 // Title
                 SelectableText(
                   snapshot.data!.title,
-                  style: TextStyles.head3.copyWith(color: context.extraColors.grey900),
+                  style: TextStyles.head3.copyWith(
+                      color: context.extraColors.grey900),
                   textAlign: TextAlign.justify,),
                 Design.padding8,
 
                 // Body
                 SelectableText(
                   snapshot.data!.contents,
-                  style: TextStyles.body1.copyWith(color: context.extraColors.grey800),
+                  style: TextStyles.body1.copyWith(
+                      color: context.extraColors.grey800),
                   textAlign: TextAlign.justify,),
                 Design.padding16,
 
@@ -148,33 +145,46 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
                 NoticeReactionTag(noticeId: snapshot.data!.noticeId,
                     isChecked: snapshot.data!.read,
                     checkerNum: snapshot.data!.checkNoticeCount),
-              ],) : Design.loadingIndicator
-        ),
+              ],);
+          }
+          return Design.loadingIndicator;
+        },),
     );
   }
 
   Widget _commentList() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: Design.edgePadding.horizontal, horizontal: 16),
-      child: FutureBuilder(
+    return FutureBuilder(
         future: Comment.getComments(widget.noticeId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            comments = snapshot.data!;
+            _commentCount = snapshot.data!['commentCount'];
 
-            return ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) =>
-                CommentWidget(comment: comments[index], index: index,
-                  isSelected: (_replyTo == index), setReplyTo: _setReplyTo, onDelete: _deleteComment),
-            );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    '${context.local.comment} $_commentCount',
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey900),),),
+                Design.padding12,
+
+                ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: snapshot.data!['commentInfos'].length,
+                    itemBuilder: (context, index) =>
+                        CommentWidget(comment: snapshot.data!['commentInfos'][index],
+                            index: index,
+                            isSelected: (_replyTo == index),
+                            setReplyTo: _setReplyTo,
+                            onDelete: _deleteComment),
+                    separatorBuilder: (context, index) =>
+                        Design.padding4,),
+              ],);
           }
-
           return const SizedBox();
         }
-      ),
     );
   }
 
@@ -203,23 +213,31 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   Widget _writingCommentBox() {
     return Container(
       padding: OldDesign.edge10,
-      child: TextField(
-        minLines: 1, maxLines: 5,
-        maxLength: 100,
-        style: OldTextStyles.bodyMedium,
-        textAlign: TextAlign.justify,
-        controller: _commentEditor,
-        focusNode: focusNode,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: TextField( //< FIXME
+              minLines: 1, maxLines: 5,
+              maxLength: 100,
+              style: OldTextStyles.bodyMedium,
+              textAlign: TextAlign.justify,
+              controller: _commentEditor,
+              focusNode: focusNode,
 
-        decoration: InputDecoration(
-          isDense: true,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+              decoration: InputDecoration(
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                hintText: _commentHintMessage,
+                counterText: "",
+              ),
+            ),
           ),
-          hintText: _commentHintMessage,
-
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.send, size: 16),
+          IconButton(
+            icon: const Icon(CustomIcons.send, size: 24),
+            color: ColorStyles.mainColor,
             splashRadius: 16,
             onPressed: () {
               if (_checkValidate()) {
@@ -227,7 +245,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               }
             },
           ),
-        ),
+        ],
       ),
     );
   }
@@ -268,7 +286,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           focusNode.unfocus();
 
           // commentList reloads
-          futureNotice.then((value) => ++value.commentCount); //< FIXME : this is not validated value, see also removeComment
+          futureNotice.then((value) => ++_commentCount); //< FIXME : this is not validated value, see also removeComment
           _replyTo = Comment.commentWithNoParent;
         });
       }
@@ -284,7 +302,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         Toast.showToast(context: context, message: _deleteNoticeFailMessage);
       }
       else {
-        futureNotice.then((value) => --value.commentCount); //< FIXME : this is not validated value, see also removeComment
+        futureNotice.then((value) => --_commentCount); //< FIXME : this is not validated value, see also removeComment
         setState(() { });
       }}
     );
