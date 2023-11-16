@@ -44,10 +44,10 @@ public class Study extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public Study(String studyName, String detail, User hostUser) {
+    public Study(String studyName, String detail, String color, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
-        this.participants = Participants.empty(new Participant(hostUser, this));
+        this.participants = Participants.empty(new Participant(hostUser, this), color);
         this.deleteYn = 'N';
     }
 

@@ -18,10 +18,14 @@ public class CreateStudyRequest {
     @NotBlank(message = "설명을 입력하세요")
     private String detail;
 
+    @NotBlank(message = "색상을 입력하세요")
+    private String color;
+
     public Study toEntity(User hostUser){
         return Study.builder()
                 .studyName(this.studyName)
                 .detail(this.detail)
+                .color(this.color)
                 .hostUser(hostUser)
                 .build();
     }

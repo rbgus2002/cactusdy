@@ -41,6 +41,7 @@ class StudyApiTest {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
+                .color("0x00")
                 .build();
     }
 
