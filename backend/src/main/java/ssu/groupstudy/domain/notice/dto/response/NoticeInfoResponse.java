@@ -18,7 +18,7 @@ public class NoticeInfoResponse {
     private Long writerId;
     private boolean read;
 
-    private int checkNoticeCount;
+    private int readCount;
 
     private LocalDateTime createDate;
 
@@ -26,7 +26,7 @@ public class NoticeInfoResponse {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
-        this.checkNoticeCount = notice.getCheckNotices().size();
+        this.readCount = notice.getCheckNotices().size();
         this.createDate = notice.getCreateDate();
         this.writerNickname = notice.getWriter().getNickname();
         this.writerId = notice.getWriter().getUserId();
