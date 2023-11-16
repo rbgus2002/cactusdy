@@ -25,7 +25,8 @@ public class Participants {
     @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
     private final List<Participant> participants = new ArrayList<>();
 
-    public static Participants empty(Participant participant) {
+    public static Participants empty(Participant participant, String color) {
+        participant.setColor(color);
         return new Participants(participant);
     }
 
