@@ -107,7 +107,6 @@ create table if not exists rel_user_study
         primary key,
     create_date   datetime(6)  not null,
     modified_date datetime(6)  not null,
-    banish_yn     char         not null,
     color         varchar(127) not null,
     study_id      bigint       not null,
     user_id       bigint       not null,

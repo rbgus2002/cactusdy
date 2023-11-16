@@ -42,11 +42,19 @@ public class Participants {
         participants.add(participant);
     }
 
-    protected void removeParticipant(Participant participant){
+    protected void removeParticipant(Participant participant) {
         participants.remove(participant);
     }
 
-    protected boolean isHostUser(User user){
+    protected boolean isHostUser(User user) {
         return hostUser.equals(user);
+    }
+
+    protected boolean isGreaterThanOne() {
+        return participants.size() > 1;
+    }
+
+    protected boolean isNoOne(){
+        return participants.isEmpty();
     }
 }

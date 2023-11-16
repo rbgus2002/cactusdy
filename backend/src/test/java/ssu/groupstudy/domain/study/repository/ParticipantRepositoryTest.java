@@ -100,8 +100,10 @@ class ParticipantRepositoryTest {
         void fail_hostUserInvalid() {
             // given, then
             User 최규현 = userRepository.findById(1L).get();
+            User 장재우 = userRepository.findById(2L).get();
             Study 스터디 = studyRepository.findById(1L).get();
             스터디.invite(최규현);
+            스터디.invite(장재우);
 
             // when
             softly.assertThatThrownBy(() -> 스터디.leave(최규현))

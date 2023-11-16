@@ -66,10 +66,13 @@ public class Study extends BaseEntity {
         if(!isParticipated(user)){
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
-        if(isHostUser(user)){
+        if(isHostUser(user) && participants.isGreaterThanOne()){
             throw new CanNotLeaveStudyException(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY);
         }
         participants.removeParticipant(new Participant(user, this));
+        if(participants.isNoOne()){
+            delete();
+        }
     }
 
     public boolean isHostUser(User user){
