@@ -4,7 +4,6 @@ import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
@@ -35,7 +34,6 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   int _replyTo = Comment.commentWithNoParent;
 
   bool _isProcessing = false;
-
   int _writerId = -1; //< FIXME
 
   @override
