@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TaskType {
-    GROUP("그룹"),
-    PERSONAL("개인"),
+    GROUP("그룹 과제"),
+    PERSONAL("개인 과제"),
     ;
 
     private final String detail;
