@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
@@ -42,8 +43,8 @@ class StudyServiceTest extends ServiceTest {
     @Nested
     class 스터디생성 {
         @Test
-        @DisplayName("성공")
-        void 성공() throws IOException {
+        @DisplayName("프로필 사진을 함께 요청하면 스터디를 생성하면서 업로드한다.")
+        void uploadStudyProfileImage() throws IOException {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             final String PROFILE_IMAGE = "profileImage";
@@ -55,6 +56,20 @@ class StudyServiceTest extends ServiceTest {
             // then
             softly.assertThat(studyId).isNotNull();
             softly.assertThat(알고리즘스터디.getPicture()).isEqualTo(PROFILE_IMAGE);
+        }
+
+        @Test
+        @DisplayName("스터디를 생성하면서 스터디 색상을 지정한다.")
+        void setColor() throws IOException {
+            // given
+            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
+
+            // when
+            studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
+
+            // then
+            Participant participant = 알고리즘스터디.getParticipants().get(0);
+            softly.assertThat(participant.getColor()).isEqualTo(알고리즘스터디CreateRequest.getColor());
         }
     }
 
