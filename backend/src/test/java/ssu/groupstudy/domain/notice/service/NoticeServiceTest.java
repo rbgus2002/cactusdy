@@ -14,6 +14,7 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
@@ -70,10 +71,10 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(공지사항1).when(noticeRepository).save(any(Notice.class));
 
             // when
-            Long noticeId = noticeService.createNotice(공지사항1CreateRequest, 최규현);
+            NoticeInfoResponse noticeInfoResponse = noticeService.createNotice(공지사항1CreateRequest, 최규현);
 
             // then
-            assertThat(noticeId).isNotNull();
+            softly.assertThat(noticeInfoResponse.getTitle()).isEqualTo(공지사항1CreateRequest.getTitle());
         }
     }
 

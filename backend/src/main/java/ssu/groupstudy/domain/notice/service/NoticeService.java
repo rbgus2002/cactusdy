@@ -42,7 +42,7 @@ public class NoticeService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public Long createNotice(CreateNoticeRequest dto, User writer) {
+    public NoticeInfoResponse createNotice(CreateNoticeRequest dto, User writer) {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
@@ -50,7 +50,7 @@ public class NoticeService {
         eventPublisher.publishEvent(new NoticeCreationEvent(writer, study));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
-        return notice.getNoticeId();
+        return NoticeInfoResponse.of(notice, writer);
     }
 
     @Transactional

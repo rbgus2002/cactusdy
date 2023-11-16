@@ -17,9 +17,7 @@ public class NoticeInfoResponse {
     private String writerNickname;
     private Long writerId;
     private boolean read;
-
     private int readCount;
-
     private LocalDateTime createDate;
 
     private NoticeInfoResponse(Notice notice, User user) {
