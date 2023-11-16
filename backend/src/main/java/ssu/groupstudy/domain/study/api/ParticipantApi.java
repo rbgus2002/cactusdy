@@ -44,13 +44,6 @@ public class ParticipantApi {
         return DataResponseDto.of("participantSummaryList", participantSummaryResponseList);
     }
 
-    @Operation(summary = "스터디 색상 변경")
-    @PatchMapping("/colors")
-    public ResponseDto modifyColor(@RequestParam Long participantId, @RequestParam String colorCode){ // TODO : userStudyId라고 네이밍 하는 게 맞을지 고민
-        participantsService.modifyColor(participantId, colorCode);
-        return ResponseDto.success();
-    }
-
     @Operation(summary = "스터디 참여자 프로필 상세보기")
     @GetMapping
     public ResponseDto getParticipant(@RequestParam Long userId, @RequestParam Long studyId){
