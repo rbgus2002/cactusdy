@@ -8,7 +8,6 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/profile_images.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
@@ -112,13 +111,13 @@ class StudyProfileWidget extends StatelessWidget {
   }
 
   String _getPlaceAndTimeText(BuildContext context) {
-    String placeText = (studyInfo.round.studyPlace.isEmpty)?
-    studyInfo.round.studyPlace :
-    context.local.undefinedOf(context.local.place);
+    String placeText = (studyInfo.round.studyPlace.isNotEmpty)?
+      studyInfo.round.studyPlace :
+      context.local.undefinedOf(context.local.place);
 
     String timeText = (studyInfo.round.studyTime != null)?
-    TimeUtility.timeToString(studyInfo.round.studyTime!) :
-    context.local.undefinedOf(context.local.time);
+      TimeUtility.timeToString(studyInfo.round.studyTime!) :
+      context.local.undefinedOf(context.local.time);
 
     return '$placeText • $timeText';
   }
