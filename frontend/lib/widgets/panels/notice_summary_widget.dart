@@ -123,8 +123,8 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
             ],
           ),
         onTap: () {
-            Util.pushRoute(context,
-                    (context) => NoticeDetailRoute(noticeId: _noticeRef.noticeId));
+            Util.pushRoute(context, (context) =>
+                NoticeDetailRoute(notice: _noticeRef));
         },
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -15,11 +16,11 @@ import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
-  final int noticeId;
+  final Notice notice;
 
   const NoticeDetailRoute({
     Key? key,
-    required this.noticeId,
+    required this.notice,
   }) : super(key: key);
 
   @override
@@ -29,18 +30,11 @@ class NoticeDetailRoute extends StatefulWidget {
 class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
-  late Future<Notice> futureNotice;
+
   List<Comment> _comments = [];
   int _replyTo = Comment.commentWithNoParent;
 
   bool _isProcessing = false;
-  int _writerId = -1; //< FIXME
-
-  @override
-  void initState() {
-    super.initState();
-    futureNotice = Notice.getNotice(widget.noticeId);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,19 +69,26 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     super.dispose();
   }
 
-  List<Widget> _noticePopupMenus() {
-    return [
-      IconButton(
-        icon: const Icon(CustomIcons.writing_outline),
-        iconSize: 28,
-        onPressed: () { },),
+  List<Widget>? _noticePopupMenus() {
+    if (_isWriter()) {
+      return [
+        IconButton(
+          icon: const Icon(CustomIcons.writing_outline),
+          iconSize: 28,
+          onPressed: () {},),
 
-      IconButton(
-        icon: const Icon(CustomIcons.trash),
-        iconSize: 28,
-        onPressed: () {
-          _showDeleteNoticeDialog(context); }),
-    ];
+        IconButton(
+            icon: const Icon(CustomIcons.trash),
+            iconSize: 28,
+            onPressed: () {
+              _showDeleteNoticeDialog(context);
+            }),
+      ];
+    }
+  }
+
+  bool _isWriter() {
+    return widget.notice.writerId == Auth.signInfo?.userId;
   }
 
   Widget _noticeBody() {
@@ -99,54 +100,46 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           bottom: BorderSide(
             color: context.extraColors.grey100!,
             width: 4,),),),
-      child: FutureBuilder(
-        future: futureNotice,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            _writerId = snapshot.data!.writerId;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Design.padding8,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Design.padding8,
 
-                // Writing Date and Writer Nickname
-                Text(
-                  '${TimeUtility.getElapsedTime(snapshot.data!.createDate)} '
-                      '${snapshot.data!.writerNickname}',
-                  style: TextStyles.body2.copyWith(
-                      color: context.extraColors.grey500)),
-                Design.padding12,
+            // Writing Date and Writer Nickname
+            Text(
+              '${TimeUtility.getElapsedTime(widget.notice.createDate)} '
+                  '${widget.notice.writerNickname}',
+              style: TextStyles.body2.copyWith(
+                  color: context.extraColors.grey500)),
+            Design.padding12,
 
-                // Title
-                SelectableText(
-                  snapshot.data!.title,
-                  style: TextStyles.head3.copyWith(
-                      color: context.extraColors.grey900),
-                  textAlign: TextAlign.justify,),
-                Design.padding8,
+            // Title
+            SelectableText(
+              widget.notice.title,
+              style: TextStyles.head3.copyWith(
+                  color: context.extraColors.grey900),
+              textAlign: TextAlign.justify,),
+            Design.padding8,
 
-                // Body
-                SelectableText(
-                  snapshot.data!.contents,
-                  style: TextStyles.body1.copyWith(
-                      color: context.extraColors.grey800),
-                  textAlign: TextAlign.justify,),
-                Design.padding16,
+            // Body
+            SelectableText(
+              widget.notice.contents,
+              style: TextStyles.body1.copyWith(
+                  color: context.extraColors.grey800),
+              textAlign: TextAlign.justify,),
+            Design.padding16,
 
-                // Reaction Tag
-                NoticeReactionTag(noticeId: snapshot.data!.noticeId,
-                    isChecked: snapshot.data!.read,
-                    checkerNum: snapshot.data!.checkNoticeCount),
-              ],);
-          }
-          return Design.loadingIndicator;
-        },),
+            // Reaction Tag
+            NoticeReactionTag(noticeId: widget.notice.noticeId,
+                isChecked: widget.notice.read,
+                checkerNum: widget.notice.checkNoticeCount),
+          ],),
     );
   }
 
   Widget _commentList() {
     return FutureBuilder(
-        future: Comment.getComments(widget.noticeId),
+        future: Comment.getComments(widget.notice.noticeId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int commentCount = snapshot.data!['commentCount'];
@@ -257,7 +250,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         try {
           int? parentCommentId = _getParentId();
           await Comment.writeComment(
-              widget.noticeId, _commentEditor.currentState!.text,
+              widget.notice.noticeId, _commentEditor.currentState!.text,
               parentCommentId).then((newCommentId) {
             if (newCommentId != Comment.commentCreationError) {
               setState(() {
@@ -310,7 +303,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   void _deleteNotice() async {
     try {
-      await Notice.deleteNotice(widget.noticeId).then((result) =>
+      await Notice.deleteNotice(widget.notice.noticeId).then((result) =>
         (result)? Navigator.of(context).pop() : null);
     } on Exception catch(e) {
       if (context.mounted) {

@@ -106,10 +106,12 @@ class CreateNoticeRoute extends StatelessWidget {
           await Notice.createNotice(_title, _contents, studyId).then((
               newNoticeId) {
             if (newNoticeId != Notice.noticeCreationError) {
-              Navigator.of(context).pop();
-              Util.pushRoute(
-                  context, (context) =>
-                  NoticeDetailRoute(noticeId: newNoticeId));
+              Notice.getNotice(newNoticeId).then((newNotice) {
+                Navigator.of(context).pop();
+                Util.pushRoute(
+                    context, (context) =>
+                    NoticeDetailRoute(notice: newNotice));
+              });
             }
           });
         } on Exception catch (e) {

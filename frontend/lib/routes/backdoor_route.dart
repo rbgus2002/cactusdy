@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/notices/create_notice_route.dart';
 import 'package:group_study_app/routes/design_test_route.dart';
@@ -76,8 +77,9 @@ class BackdoorRoute extends StatelessWidget {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
+                  Notice.getNotice(21).then((notice) =>
                   Util.pushRoute(
-                    context, (context) => NoticeDetailRoute(noticeId: 21),);
+                    context, (context) => NoticeDetailRoute(notice: notice),));
                 },
                   child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(
