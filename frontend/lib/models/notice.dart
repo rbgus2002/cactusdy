@@ -16,8 +16,8 @@ class Notice {
   final String contents;
   final String writerNickname;
   final int writerId;
-  final int checkNoticeCount;
   final DateTime createDate;
+  int checkNoticeCount;
   bool read;
 
   Notice({
@@ -26,8 +26,8 @@ class Notice {
     required this.contents,
     required this.writerNickname,
     required this.writerId,
-    required this.checkNoticeCount,
     required this.createDate,
+    required this.checkNoticeCount,
     required this.read,
   });
 
@@ -37,7 +37,7 @@ class Notice {
       title: json["title"],
       contents: json["contents"],
       writerNickname: json["writerNickname"],
-      checkNoticeCount: json["checkNoticeCount"],
+      checkNoticeCount: json["readCount"]??0,
       createDate: DateTime.parse(json["createDate"]),
       writerId: json["writerId"],
       read: json["read"],

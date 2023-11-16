@@ -28,6 +28,14 @@ class NoticeSummaryWidget extends StatefulWidget {
 }
 
 class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
+  late final Notice _noticeRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _noticeRef = widget.noticeSummary.notice;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Ink(
@@ -47,7 +55,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                   // Title
                   Flexible(child:
                     Text(
-                      widget.noticeSummary.title,
+                      _noticeRef.title,
                       style: TextStyles.head4.copyWith(color: context.extraColors.grey900),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,),),
@@ -67,7 +75,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
 
               // Notice Body Summary
               Text(
-                widget.noticeSummary.contents,
+                _noticeRef.contents,
                 style: TextStyles.body1.copyWith(color: context.extraColors.grey600),
                 textAlign: TextAlign.justify,
                 maxLines: 2,
@@ -80,8 +88,8 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                 children: [
                   // Writing Date & Writer
                   Text(
-                      '${TimeUtility.getElapsedTime(widget.noticeSummary.createDate)}'
-                      ' • ${widget.noticeSummary.writerNickname}',
+                      '${TimeUtility.getElapsedTime(_noticeRef.createDate)}'
+                      ' • ${_noticeRef.writerNickname}',
                       style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
 
                   // Reaction Tag and Comment count
@@ -89,9 +97,9 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                     children: [
                       // Reaction Tag
                       NoticeReactionTag(
-                          noticeId: widget.noticeSummary.noticeId,
-                          isChecked: widget.noticeSummary.read,
-                          checkerNum: widget.noticeSummary.readCount,
+                          noticeId: _noticeRef.noticeId,
+                          isChecked: _noticeRef.read,
+                          checkerNum: _noticeRef.checkNoticeCount,
                           enabled: false),
                       Design.padding8,
 
@@ -116,7 +124,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
           ),
         onTap: () {
             Util.pushRoute(context,
-                    (context) => NoticeDetailRoute(noticeId: widget.noticeSummary.noticeId));
+                    (context) => NoticeDetailRoute(noticeId: _noticeRef.noticeId));
         },
       ),
     );
@@ -127,7 +135,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
     setState(() { widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn; } );
 
     // Call API and Verify State
-    NoticeSummary.switchNoticePin(widget.noticeSummary.noticeId).then((pinYn) =>
+    NoticeSummary.switchNoticePin(_noticeRef.noticeId).then((pinYn) =>
         setState(() { widget.noticeSummary.pinYn = pinYn; })
     );
   }
@@ -136,16 +144,16 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {
-      widget.noticeSummary.read = !widget.noticeSummary.read;
-      (widget.noticeSummary.read)? ++widget.noticeSummary.readCount: --widget.noticeSummary.readCount;
+      _noticeRef.read = !_noticeRef.read;
+      (_noticeRef.read)? ++_noticeRef.checkNoticeCount: --_noticeRef.checkNoticeCount;
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeSummary.noticeId).then((value) {
-      if (value != widget.noticeSummary.read) {
+    Notice.switchCheckNotice(_noticeRef.noticeId).then((value) {
+      if (value != _noticeRef.read) {
         setState(() {
-          (widget.noticeSummary.read)? --widget.noticeSummary.readCount: ++widget.noticeSummary.readCount;
-          widget.noticeSummary.read = value;
+          (_noticeRef.read)? --_noticeRef.checkNoticeCount: ++_noticeRef.checkNoticeCount;
+          _noticeRef.read = value;
         });
       }
     });

@@ -39,7 +39,7 @@ class NoticeSummaryPanel extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               for (int i = 0; i < snapshot.data!.length; ++i) {
-                contents[i] = snapshot.data![i].title;
+                contents[i] = snapshot.data![i].notice.title;
               }
 
               return Text(
