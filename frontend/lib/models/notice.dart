@@ -59,31 +59,25 @@ class Notice {
       }
   }
 
-  static Future<int> createNotice(String title, String contents, int studyId) async {
-    try {
-      Map<String, dynamic> data = {
-        'title': title,
-        'contents': contents,
-        'studyId': studyId,
-      };
+  static Future<Notice> createNotice(String title, String contents, int studyId) async {
+    Map<String, dynamic> data = {
+      'title': title,
+      'contents': contents,
+      'studyId': studyId,
+    };
 
-      final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}api/notices'),
-        headers: DatabaseService.getAuthHeader(),
-        body: json.encode(data),
-      );
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/notices'),
+      headers: DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
 
-      if (response.statusCode != DatabaseService.successCode) {
-        throw Exception("Failed to create new notice");
-      } else {
-        int newStudyId = json.decode(response.body)['data']['noticeId'];
-        print("New notice is created successfully");
-        return newStudyId;
-      }
-    }
-    catch (e) {
-      print(e);
-      return noticeCreationError;
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Failed to create new notice");
+    } else {
+      print("success to create New notice");
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
+      return Notice.fromJson(responseJson);
     }
   }
 

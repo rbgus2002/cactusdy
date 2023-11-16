@@ -101,19 +101,14 @@ class CreateNoticeRoute extends StatelessWidget {
   void _writeNotice(BuildContext context) async {
     if (_fromKey.currentState!.validate()) {
       if (!_isProcessing) {
+        _isProcessing = true;
         try {
-          _isProcessing = true;
-          await Notice.createNotice(_title, _contents, studyId).then((
-              newNoticeId) {
-            if (newNoticeId != Notice.noticeCreationError) {
-              Notice.getNotice(newNoticeId).then((newNotice) {
-                Navigator.of(context).pop();
-                Util.pushRoute(
-                    context, (context) =>
-                    NoticeDetailRoute(notice: newNotice));
-              });
-            }
-          });
+          await Notice.createNotice(_title, _contents, studyId).then((newNotice) {
+              Navigator.of(context).pop();
+              Util.pushRoute(
+                  context, (context) =>
+                  NoticeDetailRoute(notice: newNotice));
+            });
         } on Exception catch (e) {
           if (context.mounted) {
             Toast.showToast(

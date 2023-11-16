@@ -85,6 +85,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
             }),
       ];
     }
+    return null;
   }
 
   bool _isWriter() {
