@@ -29,8 +29,8 @@ public class NoticeApi {
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping
     public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto, @AuthenticationPrincipal CustomUserDetails userDetails){
-        Long noticeId = noticeService.createNotice(dto, userDetails.getUser());
-        return DataResponseDto.of("noticeId", noticeId);
+        NoticeInfoResponse noticeInfoResponse = noticeService.createNotice(dto, userDetails.getUser());
+        return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
 
     @Operation(summary = "id를 통한 공지사항 조회")
