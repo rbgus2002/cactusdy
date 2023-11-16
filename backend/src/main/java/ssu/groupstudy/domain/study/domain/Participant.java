@@ -58,7 +58,7 @@ public class Participant extends BaseEntity {
         return Objects.hash(user.getUserId(), study.getStudyId());
     }
 
-    // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
+    // TODO : 스터디 색상 API 삭제 후 스터디 생성 및 수정에 로직 추가
     private String generateColor() {
         return "0x00";
     }
