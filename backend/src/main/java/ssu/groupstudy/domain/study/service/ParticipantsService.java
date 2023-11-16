@@ -9,6 +9,7 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
+import ssu.groupstudy.domain.study.dto.StudyColorInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
@@ -63,11 +64,11 @@ public class ParticipantsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
-        List<String> studyNames = participantRepository.findStudyNamesByUser(user);
-        List<StatusTagInfo> statusTagInfo = handleStatusTagInfo(study, user);
+        List<StudyColorInfo> studyColorInfoList = participantRepository.findStudyNamesByUser(user);
+        List<StatusTagInfo> statusTagInfoList = handleStatusTagInfo(study, user);
         DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
 
-        return ParticipantResponse.of(user, studyNames, statusTagInfo, doneCount);
+        return ParticipantResponse.of(user, studyColorInfoList, statusTagInfoList, doneCount);
     }
 
     private List<StatusTagInfo> handleStatusTagInfo(Study study, User user) {
