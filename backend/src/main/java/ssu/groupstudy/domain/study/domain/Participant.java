@@ -36,15 +36,11 @@ public class Participant extends BaseEntity {
     @Column(nullable = false)
     private String color;
 
-    @Column(nullable = false) // TODO : 강퇴 칼럼 삭제 검토
-    private char banishYn;
-
     @Builder
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;
-        this.color = generateColor(); // TODO : 초기 색상 결정 정책 논의하기
-        this.banishYn = 'N';
+        this.color = generateColor();
     }
 
     @Override
