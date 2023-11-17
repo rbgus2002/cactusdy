@@ -56,4 +56,11 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime IS NOT NULL")
     Long countByStudyTimeIsNotNull(Study study);
+
+    /**
+     * 시각 기준으로 남은 회차들 가져오기
+     * StudyTime이 null인 회차 + StudyTime이 현재 시각보다 큰 회차
+     */
+    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND (r.appointment.studyTime IS NULL OR r.appointment.studyTime > :time)")
+    List<Round> findFutureRounds(Study study, LocalDateTime time);
 }

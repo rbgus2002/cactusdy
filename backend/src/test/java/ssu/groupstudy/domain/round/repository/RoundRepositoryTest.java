@@ -152,4 +152,17 @@ class RoundRepositoryTest{
         softly.assertThat(count).isEqualTo(2);
 
     }
+
+    @Test
+    @DisplayName("현재 시각 기준으로 남은 회차들을 가져온다")
+    void findFutureRounds(){
+        // given
+        Study 스터디 = studyRepository.findById(1L).get();
+
+        // when
+        List<Round> futureRounds = roundRepository.findFutureRounds(스터디, LocalDateTime.now());
+
+        // then
+        softly.assertThat(futureRounds.size()).isGreaterThanOrEqualTo(1);
+    }
 }
