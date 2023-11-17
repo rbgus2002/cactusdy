@@ -37,6 +37,7 @@ public class UserApi {
         return ResponseDto.success();
     }
 
+    @Deprecated
     @Operation(summary = "프로필 사진 업로드")
     @PostMapping("/profile/images")
     public ResponseDto updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody MultipartFile profileImage) throws IOException {
