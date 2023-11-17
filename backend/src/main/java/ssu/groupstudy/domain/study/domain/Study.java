@@ -90,4 +90,8 @@ public class Study extends BaseEntity {
     public void updatePicture(String picture) {
         this.picture = picture;
     }
+
+    public Long getHostUserId(){
+        return this.participants.getHostUser().getUserId();
+    }
 }
