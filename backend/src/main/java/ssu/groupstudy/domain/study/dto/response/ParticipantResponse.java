@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParticipantResponse {
     private Long userId;
+    private String nickname;
     private String profileImage;
     private String statusMessage;
     private List<StudyColorInfo> studyColorInfoList;
@@ -24,6 +25,7 @@ public class ParticipantResponse {
 
     private ParticipantResponse(User user, List<StudyColorInfo> studyColorInfoList, List<StatusTagInfo> statusTagInfoList, DoneCount doneCount) {
         this.userId = user.getUserId();
+        this.nickname = user.getNickname();
         this.profileImage = user.getPicture();
         this.statusMessage = user.getStatusMessage();
         this.studyColorInfoList = studyColorInfoList;
