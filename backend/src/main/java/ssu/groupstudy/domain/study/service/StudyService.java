@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
@@ -26,6 +27,7 @@ import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,13 +43,24 @@ public class StudyService {
     private final RoundParticipantRepository roundParticipantRepository;
     private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
+    private final String DEFAULT_STUDY_PLACE = "강남역 스타벅스";
+    private final LocalDateTime DEFAULT_STUDY_TIME = LocalDateTime.now().plusDays(3L);
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         Study study = studyRepository.save(dto.toEntity(user));
         handleUploadProfileImage(study, image);
+        createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
+    }
+
+    private void createDefaultRound(Study study) {
+        AppointmentRequest appointment = AppointmentRequest.builder()
+                .studyPlace(DEFAULT_STUDY_PLACE)
+                .studyTime(DEFAULT_STUDY_TIME)
+                .build();
+        roundRepository.save(appointment.toEntity(study));
     }
 
     private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {

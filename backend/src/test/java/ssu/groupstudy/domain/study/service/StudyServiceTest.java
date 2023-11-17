@@ -71,6 +71,17 @@ class StudyServiceTest extends ServiceTest {
             Participant participant = 알고리즘스터디.getParticipants().get(0);
             softly.assertThat(participant.getColor()).isEqualTo(알고리즘스터디CreateRequest.getColor());
         }
+
+        @Test
+        @DisplayName("자동으로 회차가 하나 생성된다.")
+        void createDefaultRound() {
+            // given
+
+            // when
+
+            // then
+
+        }
     }
 
     @Nested
