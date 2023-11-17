@@ -66,7 +66,6 @@ public class StudyService {
         return StudySummaryResponse.from(study, participant);
     }
 
-    // TODO : Batch Size 설정 후 DB query 횟수 비교 (최적화 잘 되는지 확인)
     public List<StudyInfoResponse> getStudies(User user) {
         List<Participant> participants = participantRepository.findByUserOrderByCreateDate(user);
         return participants.stream()
