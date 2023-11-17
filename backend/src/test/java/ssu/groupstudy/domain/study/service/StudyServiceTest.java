@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
@@ -35,10 +36,11 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private ParticipantRepository participantRepository;
     @Mock
+    private RoundRepository roundRepository;
+    @Mock
     private ApplicationEventPublisher eventPublisher;
     @Mock
     private S3Utils s3Utils;
-
 
     @Nested
     class 스터디생성 {
