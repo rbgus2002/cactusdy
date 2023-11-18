@@ -7,12 +7,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +30,10 @@ class StudyInviteServiceTest extends ServiceTest {
     private StudyInviteService studyInviteService;
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private RoundRepository roundRepository;
+    @Mock
+    private RoundParticipantRepository roundParticipantRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
@@ -62,6 +70,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
 
             // when
             studyInviteService.inviteUser(장재우, -1L);
