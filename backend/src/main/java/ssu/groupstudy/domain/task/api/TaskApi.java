@@ -25,8 +25,8 @@ public class TaskApi {
 
     @Operation(summary = "회차의 태스크 목록 조회", description = "특정 회차에 태스크 목록을 모두 가져온다.")
     @GetMapping
-    public ResponseDto getTasks(@RequestParam Long roundId){
-        List<TaskResponse> tasks = taskService.getTasks(roundId);
+    public ResponseDto getTasks(@RequestParam Long roundId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        List<TaskResponse> tasks = taskService.getTasks(roundId, userDetails.getUser());
         return DataResponseDto.of("tasks", tasks);
     }
 
