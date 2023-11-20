@@ -34,9 +34,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
           // User Profile Image
           SquircleWidget(
             scale: _height,
-            child: (widget.user.picture.isNotEmpty) ?
+            child: (widget.user.profileImage.isNotEmpty) ?
                 CachedNetworkImage(
-                    imageUrl: widget.user.picture,
+                    imageUrl: widget.user.profileImage,
                     fit: BoxFit.cover) : null,),
           Design.padding12,
 

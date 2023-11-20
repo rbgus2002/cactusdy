@@ -26,7 +26,7 @@ class ParticipantLineProfileWidget extends StatelessWidget {
 
     return LineProfileWidget(
       circleButton: PercentCircleButton(
-        url: user.picture,
+        url: user.profileImage,
         scale: _scale,
         percentInfos: [ PercentInfo(percent: taskProgress, color: progressColor)],
         onTap: () => UserProfileDialog.showProfileDialog(context, user.userId),

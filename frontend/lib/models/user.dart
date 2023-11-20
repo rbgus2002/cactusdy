@@ -16,21 +16,21 @@ class User{
   final int userId;
   final String nickname;
   final String statusMessage;
-  final String picture;
+  final String profileImage;
 
   User({
     required this.userId,
     required this.nickname,
     required this.statusMessage,
-    required this.picture,
+    required this.profileImage,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         userId: json['userId'],
-        nickname: json['nickname'],
-        statusMessage: json['statusMessage'],
-        picture: json['picture']??"", //< FIXME : null handling
+        nickname: json['nickname']??"",
+        statusMessage: json['statusMessage']??"",
+        profileImage: json['profileImage']??"", //< FIXME : null handling
     );
   }
 

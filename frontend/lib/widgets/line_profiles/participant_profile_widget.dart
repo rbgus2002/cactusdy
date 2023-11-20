@@ -38,9 +38,9 @@ class ParticipantProfileWidget extends StatelessWidget {
         // Study Image (Left Part)
         SquircleWidget(
           scale: _imageSize,
-          child: (user.picture.isNotEmpty) ?
+          child: (user.profileImage.isNotEmpty) ?
           CachedNetworkImage(
-              imageUrl: user.picture,
+              imageUrl: user.profileImage,
               fit: BoxFit.cover) : null,),
         Design.padding12,
 
