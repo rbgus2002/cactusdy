@@ -38,17 +38,17 @@ public class Round extends BaseEntity {
     private final List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="studyId", nullable = false)
+    @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
     @Column(nullable = false)
     private char deleteYn;
 
     @Builder
-    public Round(Study study, String studyPlace, LocalDateTime studyTime){
+    public Round(Study study, String studyPlace, LocalDateTime studyTime) {
         addParticipants(study.getParticipants());
         this.study = study;
-        this.appointment = new Appointment(studyPlace, studyTime);
+        this.appointment = Appointment.of(studyPlace, studyTime);
         this.deleteYn = 'N';
     }
 
@@ -56,40 +56,47 @@ public class Round extends BaseEntity {
         this.appointment = appointment;
     }
 
-    private void addParticipants(List<Participant> participants){
+    private void addParticipants(List<Participant> participants) {
         participants.stream()
                 .map(participant -> new RoundParticipant(participant.getUser(), this))
                 .forEach(roundParticipants::add);
     }
 
-    public void updateAppointment(Appointment appointment){
+    public void updateAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
 
-    public void updateDetail(String detail){
+    public void updateDetail(String detail) {
         this.detail = detail;
     }
 
-    public void deleteRound(User user){
+    public void deleteRound(User user) {
         validateDelete(user);
         this.deleteYn = 'Y';
     }
 
     private void validateDelete(User user) {
-        if(!study.isHostUser(user)){
+        if (!study.isHostUser(user)) {
             throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
         }
     }
 
-    public LocalDateTime getStudyTime(){
-        return this.appointment.getStudyTime();
+    public Appointment getAppointment() {
+        if(this.appointment == null){
+            return Appointment.empty();
+        }
+        return this.appointment;
     }
 
-    public boolean isStudyTimeNull(){
-        return this.appointment.getStudyTime() == null;
+    public LocalDateTime getStudyTime() {
+        return getAppointment().getStudyTime();
     }
 
-    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite(){
+    public boolean isStudyTimeNull() {
+        return getAppointment().getStudyTime() == null;
+    }
+
+    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite() {
         return this.roundParticipants.stream()
                 .sorted(Comparator.comparing(RoundParticipant::getId))
                 .collect(Collectors.toList());

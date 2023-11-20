@@ -21,13 +21,13 @@ import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +43,6 @@ public class StudyService {
     private final RoundParticipantRepository roundParticipantRepository;
     private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
-    private final String DEFAULT_STUDY_PLACE = "강남역 스타벅스";
-    private final LocalDateTime DEFAULT_STUDY_TIME = LocalDateTime.now().plusDays(3L);
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
@@ -57,10 +55,19 @@ public class StudyService {
 
     private void createDefaultRound(Study study) {
         AppointmentRequest appointment = AppointmentRequest.builder()
-                .studyPlace(DEFAULT_STUDY_PLACE)
-                .studyTime(DEFAULT_STUDY_TIME)
+                .studyPlace(null)
+                .studyTime(null)
                 .build();
-        roundRepository.save(appointment.toEntity(study));
+        Round defaultRound = roundRepository.save(appointment.toEntity(study));
+        createDefaultTask(defaultRound);
+    }
+
+    private void createDefaultTask(Round defaultRound) {
+        List<RoundParticipant> roundParticipants = defaultRound.getRoundParticipants();
+        roundParticipants.forEach(roundParticipant -> {
+            roundParticipant.createTask(TaskType.PERSONAL.getDetail(), TaskType.PERSONAL);
+            roundParticipant.createTask(TaskType.GROUP.getDetail(), TaskType.GROUP);
+        });
     }
 
     private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {
