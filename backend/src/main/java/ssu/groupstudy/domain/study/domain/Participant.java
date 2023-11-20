@@ -40,7 +40,7 @@ public class Participant extends BaseEntity {
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;
-        this.color = generateColor();
+        this.color = getDefaultColor();
     }
 
     @Override
@@ -58,9 +58,8 @@ public class Participant extends BaseEntity {
         return Objects.hash(user.getUserId(), study.getStudyId());
     }
 
-    // TODO : 스터디 색상 API 삭제 후 스터디 생성 및 수정에 로직 추가
-    private String generateColor() {
-        return "0x00";
+    private String getDefaultColor() {
+        return "0xFFE8F5E9";
     }
 
     public void setColor(String color) {
