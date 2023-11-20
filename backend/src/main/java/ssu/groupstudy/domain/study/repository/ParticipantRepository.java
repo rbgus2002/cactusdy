@@ -12,6 +12,13 @@ import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
     Optional<Participant> findByUserAndStudy(User user, Study study);
+
+
+    @Query("SELECT p " +
+            "FROM Participant p " +
+            "WHERE p.user = :user " +
+            "AND p.study.deleteYn = 'N' " +
+            "ORDER BY p.createDate ASC")
     List<Participant> findByUserOrderByCreateDate(User user);
 
     @Query("SELECT new ssu.groupstudy.domain.study.dto.ParticipantInfo(s.studyName, p.color, s.picture) " +
