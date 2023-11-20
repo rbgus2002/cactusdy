@@ -35,13 +35,13 @@ public class TaskService {
     private final RoundParticipantRepository roundParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-
-    public List<TaskResponse> getTasks(Long roundId) {
+    public List<TaskResponse> getTasks(Long roundId, User user) {
         Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
         return round.getRoundParticipants().stream()
-                .sorted(Comparator.comparing(RoundParticipant::getId))
+                .sorted(Comparator.comparing((RoundParticipant rp) -> !rp.getUser().equals(user))
+                        .thenComparing(RoundParticipant::getId))
                 .map(TaskResponse::from)
                 .collect(Collectors.toList());
     }
@@ -57,9 +57,9 @@ public class TaskService {
     }
 
     private Long handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        if(taskType.isPersonalType()){
+        if (taskType.isPersonalType()) {
             return processTaskCreation(roundParticipant, detail, taskType);
-        }else{
+        } else {
             return handleGroupTaskCreation(roundParticipant, detail, taskType);
         }
     }
@@ -116,7 +116,7 @@ public class TaskService {
     }
 
     private void processNotification(Task task, User user) {
-        if(task.isDone()){
+        if (task.isDone()) {
             eventPublisher.publishEvent(new TaskDoneEvent(user, task.getStudy()));
         }
     }
