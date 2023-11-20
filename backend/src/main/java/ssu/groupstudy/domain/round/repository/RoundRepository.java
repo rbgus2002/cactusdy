@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoundRepository extends JpaRepository<Round, Long> {
-    Round save(Round round);
-
     @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
 
@@ -22,7 +20,6 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC, r.roundId DESC")
     List<Round> findRoundsByStudyOrderByStudyTime(Study study);
 
-    // TODO : QueryDSL 사용을 통한 refactoring 필요
     /**
      * 스터디가 보여줄 가장 최신의 회차를 하나 가져온다.
      * Priority

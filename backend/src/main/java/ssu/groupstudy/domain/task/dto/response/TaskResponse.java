@@ -36,7 +36,6 @@ public class TaskResponse {
                 .collect(Collectors.toList());
     }
 
-    // TODO : 객체 이름을 어떻게 하면 좋을지 더 고민해보기
     public static TaskResponse from(RoundParticipant roundParticipant){
         return new TaskResponse(roundParticipant);
     }

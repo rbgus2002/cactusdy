@@ -22,11 +22,11 @@ public class AppointmentRequest {
         return Round.builder()
                 .study(study)
                 .studyPlace(this.studyPlace)
-                .studyTime(studyTime)
+                .studyTime(this.studyTime)
                 .build();
     }
 
     public Appointment toAppointment(){
-        return new Appointment(this.studyPlace, this.studyTime);
+        return Appointment.of(this.studyPlace, this.studyTime);
     }
 }

@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -51,6 +52,9 @@ class StudyServiceTest extends ServiceTest {
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             final String PROFILE_IMAGE = "profileImage";
             doReturn(PROFILE_IMAGE).when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
+            doReturn(Round.builder()
+                    .study(알고리즘스터디)
+                    .build()).when(roundRepository).save(any(Round.class));
 
             // when
             Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
@@ -65,6 +69,9 @@ class StudyServiceTest extends ServiceTest {
         void setColor() throws IOException {
             // given
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
+            doReturn(Round.builder()
+                    .study(알고리즘스터디)
+                    .build()).when(roundRepository).save(any(Round.class));
 
             // when
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
@@ -80,6 +87,7 @@ class StudyServiceTest extends ServiceTest {
             // given
 
             // when
+
 
             // then
 

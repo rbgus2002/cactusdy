@@ -22,7 +22,6 @@ import java.io.IOException;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "인증 API")
-// TODO : AuthAPI는 인증가 필터 안타도록 처리 필요함 (불필요한 query)
 public class AuthApi {
     private final AuthService authService;
 

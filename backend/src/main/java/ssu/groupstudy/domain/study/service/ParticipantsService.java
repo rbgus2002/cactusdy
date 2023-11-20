@@ -8,11 +8,10 @@ import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.DoneCount;
-import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.ParticipantInfo;
+import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
-import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -24,7 +23,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.*;
+import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
+import static ssu.groupstudy.global.constant.ResultCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -49,13 +49,6 @@ public class ParticipantsService {
         return study.getParticipants().stream()
                 .sorted(Comparator.comparing(Participant::getCreateDate))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void modifyColor(Long participantId, String colorCode) {
-        Participant participant = participantRepository.findById(participantId)
-                .orElseThrow(() -> new ParticipantNotFoundException(PARTICIPANT_NOT_FOUND));
-        participant.setColor(colorCode);
     }
 
     public ParticipantResponse getParticipant(Long userId, Long studyId) {

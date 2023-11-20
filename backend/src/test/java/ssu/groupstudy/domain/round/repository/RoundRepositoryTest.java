@@ -76,8 +76,6 @@ class RoundRepositoryTest{
             Appointment 회차3 = rounds.get(3).getAppointment();
 
             // then
-            softly.assertThatThrownBy(() -> 회차1_studyTime_null.getAppointment().getStudyTime())
-                            .isInstanceOf(NullPointerException.class);
             softly.assertThat(회차2.getStudyTime()).isAfter(회차3.getStudyTime());
         }
 

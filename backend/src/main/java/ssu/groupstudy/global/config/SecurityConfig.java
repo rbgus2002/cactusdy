@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 // 쿠키 기반이 아닌 JWT 기반이므로 사용하지 않음
                 .csrf().disable()
-                .cors(c -> { // TODO : CORSConfig 클래스 따로 분리
+                .cors(c -> {
                             CorsConfigurationSource source = request -> {
                                 // Cors 허용 패턴
                                 CorsConfiguration config = new CorsConfiguration();
