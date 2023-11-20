@@ -3,19 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class StatusTag {
+  static const String none = 'NONE';
+  static const String attendanceExcepted = 'ATTENDANCE_EXPECTED';
+  static const String attendance = 'ATTENDANCE';
+  static const String late = 'LATE';
+  static const String absent = 'ABSENT';
+
   static Color getColor(String status, BuildContext context) {
     switch (status) {
-      case 'NONE':
+      case none:
         return Colors.transparent;
 
-      case 'ATTENDANCE_EXPECTED':
-      case 'ATTENDANCE':
+      case attendanceExcepted:
+      case attendance:
         return context.extraColors.green!;
 
-      case 'LATE':
+      case late:
         return context.extraColors.purple!;
 
-      case 'ABSENT':
+      case absent:
         return context.extraColors.pink!;
 
       default:
@@ -27,19 +33,19 @@ class StatusTag {
 
   static String getText(String status, BuildContext context) {
     switch (status) {
-      case 'NONE':
+      case none:
         return "";
 
-      case 'ATTENDANCE_EXPECTED':
+      case attendanceExcepted:
         return context.local.reserved;
 
-      case 'ATTENDANCE':
+      case attendance:
         return context.local.attend;
 
-      case 'LATE':
+      case late:
         return context.local.late;
 
-      case 'ABSENT':
+      case absent:
         return context.local.absent;
 
       default:

@@ -93,6 +93,7 @@
     "reserved": "예정",
     "taskAchievementRateIs": "과제를 {rate}% 달성했어요",
     "achievement": "달성",
+    "count": "회",
 
     "round": "회차",
     "roundList": "회차 리스트",

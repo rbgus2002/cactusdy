@@ -9,7 +9,7 @@ import 'package:group_study_app/models/user.dart';
 class ParticipantProfile {
   final User participant;
   final List<StudyTag> studyTags;
-  final List attendanceRate;
+  final Map<String, int> attendanceRate;
   final int doneRate;
 
   ParticipantProfile({
@@ -20,12 +20,16 @@ class ParticipantProfile {
   });
 
   factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
-    print(json['statusTagInfoList']);
+    Map<String, int> attendanceRate = {};
+    for (var status in json['statusTagInfoList']) {
+      attendanceRate[status['statusTag']] = status['count'];
+    }
+
     return ParticipantProfile(
       participant: User.fromJson(json),
-      studyTags: (json['studyColorInfoList'] as List).map((studyTag) =>
+      studyTags: (json['participantInfoList'] as List).map((studyTag) =>
           StudyTag.fromJson(studyTag)).toList(),
-      attendanceRate: json['statusTagInfoList'],
+      attendanceRate: attendanceRate,
       doneRate: json['doneRate'],
     );
   }
@@ -41,6 +45,7 @@ class ParticipantProfile {
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
       print('success to get participant profile');
+      print(responseJson);
       return ParticipantProfile.fromJson(responseJson);
     }
   }
