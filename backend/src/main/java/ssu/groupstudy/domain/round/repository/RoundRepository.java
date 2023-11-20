@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoundRepository extends JpaRepository<Round, Long> {
-    Round save(Round round);
-
     @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
 
