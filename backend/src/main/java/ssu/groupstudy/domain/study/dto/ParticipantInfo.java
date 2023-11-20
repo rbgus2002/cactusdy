@@ -5,12 +5,14 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class StudyColorInfo {
+public class ParticipantInfo {
     private String name;
     private String color;
+    private String studyProfileImage;
 
-    public StudyColorInfo(String name, String color) {
+    public ParticipantInfo(String name, String color, String studyProfileImage) {
         this.name = name;
         this.color = color;
+        this.studyProfileImage = studyProfileImage;
     }
 }

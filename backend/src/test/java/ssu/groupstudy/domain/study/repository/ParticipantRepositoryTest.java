@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.StudyColorInfo;
+import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
@@ -172,9 +172,9 @@ class ParticipantRepositoryTest {
                 .build());
 
         // when
-        List<StudyColorInfo> studyColorInfoList = participantRepository.findStudyNamesByUser(최규현);
+        List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(최규현);
 
         // then
-        softly.assertThat(studyColorInfoList.size()).isEqualTo(2);
+        softly.assertThat(participantInfoList.size()).isEqualTo(2);
     }
 }
