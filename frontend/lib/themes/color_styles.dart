@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 
 class ColorStyles {
@@ -109,6 +110,48 @@ class ColorStyles {
     systemOverlayStyle: SystemUiOverlayStyle.light,
     shape: const Border(bottom: BorderSide(color: _white200)),
   );
+
+  static final ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        padding: Design.buttonPadding,
+        disabledBackgroundColor: _disabledPrimaryButtonColor,
+        disabledForegroundColor: _black000,
+        shape: const RoundedRectangleBorder(
+            borderRadius: Design.borderRadius),)
+  );
+
+  static final ElevatedButtonThemeData elevatedButtonDarkThemeData = ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        padding: Design.buttonPadding,
+        disabledBackgroundColor: _disabledPrimaryButtonColor,
+        disabledForegroundColor: _white000,
+        shape: const RoundedRectangleBorder(
+            borderRadius: Design.borderRadius),)
+  );
+
+
+  static final OutlinedButtonThemeData outlinedButtonThemeData = OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: Design.buttonPadding,
+        foregroundColor: _black900,
+        disabledForegroundColor: _black300,
+        shape: const RoundedRectangleBorder(
+            borderRadius: Design.borderRadius),)
+  );
+
+
+  static final OutlinedButtonThemeData outlinedButtonDarkThemeData = OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: Design.buttonPadding,
+        foregroundColor: _white900,
+        disabledForegroundColor: _white300,
+        shape: const RoundedRectangleBorder(
+            borderRadius: Design.borderRadius),)
+  );
+
+
 }
 
 class ExtraColors extends ThemeExtension<ExtraColors> {

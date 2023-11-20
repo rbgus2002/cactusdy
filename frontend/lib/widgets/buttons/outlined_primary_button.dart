@@ -19,8 +19,7 @@ class OutlinedPrimaryButton extends PrimaryButton {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: context.extraColors.grey900,
-          disabledForegroundColor: context.extraColors.grey300,
-        ),
+          disabledForegroundColor: context.extraColors.grey300,),
         child: Container(
           width: width,
           height: Design.buttonContentHeight,

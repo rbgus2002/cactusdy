@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/buttons/secondary_button.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
 
 class TwoButtonDialog {
   static const double _innerWidth = 260;
@@ -52,7 +51,7 @@ class TwoButtonDialog {
                   Design.padding32,
 
                   (isPrimary1)?
-                    SecondaryButton(
+                    PrimaryButton(
                       text: buttonText1,
                       onPressed: () {
                         Util.popRoute(context);
@@ -65,7 +64,7 @@ class TwoButtonDialog {
                   Design.padding12,
 
                   (isPrimary2)?
-                    SecondaryButton(
+                    PrimaryButton(
                       text: buttonText2,
                       onPressed: () {
                         Util.popRoute(context);

@@ -30,9 +30,7 @@ class PrimaryButton extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             text,
-            style: TextStyles.head4,
-          ),
-        ),
+            style: TextStyles.head4,),),
       );
   }
 }

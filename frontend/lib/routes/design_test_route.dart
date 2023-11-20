@@ -9,7 +9,6 @@ import 'package:group_study_app/utilities/test.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/buttons/secondary_button.dart';
 import 'package:group_study_app/widgets/custom_checkbox.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/task_list_title.dart';
@@ -84,11 +83,6 @@ class DesignTestRoute extends StatelessWidget {
             ),
 
             OldDesign.padding15,
-            SecondaryButton(
-                text: '버튼',
-                onPressed: () { Toast.showToast(context: context, message: "테스트 우해해"); }
-            ),
-
             OldDesign.padding15,
             OutlinedPrimaryButton(
                 text: '버튼',
@@ -101,10 +95,6 @@ class DesignTestRoute extends StatelessWidget {
             ),
 
             OldDesign.padding15,
-            SecondaryButton(
-              text: '버튼',
-              //onPressed: Test.onTabTest,
-            ),
 
             OldDesign.padding15,
             OutlinedPrimaryButton(
