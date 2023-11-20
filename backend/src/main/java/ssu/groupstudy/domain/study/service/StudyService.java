@@ -96,7 +96,7 @@ public class StudyService {
     private StudyInfoResponse createStudyInfo(Participant participant) {
         Study study = participant.getStudy();
 
-        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null); // FIXME : 정상적으로 가져와지는데 LIMIT 1만 걸면 이상하게 studyTime이 null인 회차는 createDate 순으로 안가져옴
+        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
         RoundParticipant roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 

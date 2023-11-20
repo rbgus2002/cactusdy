@@ -19,7 +19,6 @@ import java.io.IOException;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "사용자 API")
-@CrossOrigin(maxAge = 3600) // TODO : 삭제 여부 검토 (Flutter cors 에러 해결)
 public class UserApi {
     private final UserService userService;
 
