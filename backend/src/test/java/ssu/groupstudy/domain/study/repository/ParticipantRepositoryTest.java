@@ -136,14 +136,8 @@ class ParticipantRepositoryTest {
         User 최규현 = userRepository.findById(1L).get();
         User 장재우 = userRepository.findById(2L).get();
         Study 스터디 = studyRepository.findById(1L).get();
-        participantRepository.save(Participant.builder()
-                .user(최규현)
-                .study(스터디)
-                .build());
-        participantRepository.save(Participant.builder()
-                .user(장재우)
-                .study(스터디)
-                .build());
+        participantRepository.save(new Participant(최규현, 스터디));
+        participantRepository.save(new Participant(장재우, 스터디));
 
         // when
         List<Participant> participants = 스터디.getParticipants().stream()
@@ -162,14 +156,8 @@ class ParticipantRepositoryTest {
         User 최규현 = userRepository.findById(1L).get();
         Study 알고스터디 = studyRepository.findById(1L).get();
         Study 영어스터디 = studyRepository.findById(2L).get();
-        participantRepository.save(Participant.builder()
-                .user(최규현)
-                .study(알고스터디)
-                .build());
-        participantRepository.save(Participant.builder()
-                .user(최규현)
-                .study(영어스터디)
-                .build());
+        participantRepository.save(new Participant(최규현, 알고스터디));
+        participantRepository.save(new Participant(최규현, 영어스터디));
 
         // when
         List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(최규현);

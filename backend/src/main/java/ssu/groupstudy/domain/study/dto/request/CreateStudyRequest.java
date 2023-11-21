@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.dto.reuqest;
+package ssu.groupstudy.domain.study.dto.request;
 
 import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -22,11 +22,6 @@ public class CreateStudyRequest {
     private String color;
 
     public Study toEntity(User hostUser){
-        return Study.builder()
-                .studyName(this.studyName)
-                .detail(this.detail)
-                .color(this.color)
-                .hostUser(hostUser)
-                .build();
+        return Study.init(this.studyName, this.detail, this.color, hostUser);
     }
 }

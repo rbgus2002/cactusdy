@@ -58,4 +58,8 @@ public class Participants {
     protected boolean isNoOne(){
         return participants.isEmpty();
     }
+
+    protected void updateHostUser(User user) {
+        this.hostUser = user;
+    }
 }

@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.study.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
@@ -43,12 +42,24 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    @Builder
-    public Study(String studyName, String detail, String color, User hostUser) {
+    private Study(String studyName, String detail, String color, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants = Participants.empty(new Participant(hostUser, this), color);
         this.deleteYn = 'N';
+    }
+
+    private Study(String studyName, String detail) {
+        this.studyName = studyName;
+        this.detail = detail;
+    }
+
+    public static Study init(String studyName, String detail, String color, User hostUser){
+        return new Study(studyName, detail, color, hostUser);
+    }
+
+    public static Study create(String studyName, String detail){
+        return new Study(studyName, detail);
     }
 
     public boolean isParticipated(User user) {
@@ -93,5 +104,11 @@ public class Study extends BaseEntity {
 
     public User getHostUser(){
         return this.participants.getHostUser();
+    }
+
+    public void edit(String studyName, String detail, User hostUser){
+        this.studyName = studyName;
+        this.detail = detail;
+        this.participants.updateHostUser(hostUser);
     }
 }

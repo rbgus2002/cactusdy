@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.study.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
@@ -36,7 +35,6 @@ public class Participant extends BaseEntity {
     @Column(nullable = false)
     private String color;
 
-    @Builder
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;

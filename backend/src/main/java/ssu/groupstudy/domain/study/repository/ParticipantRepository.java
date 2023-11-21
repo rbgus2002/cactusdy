@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+    @Query("SELECT p " +
+            "FROM Participant p " +
+            "WHERE p.user = :user " +
+            "AND p.study = :study " +
+            "AND p.study.deleteYn = 'N' " +
+            "AND p.user.deleteYn = 'N'")
     Optional<Participant> findByUserAndStudy(User user, Study study);
 
 
