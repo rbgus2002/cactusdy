@@ -17,10 +17,12 @@ import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
   final Notice notice;
+  final int studyId;
 
   const NoticeDetailRoute({
     Key? key,
     required this.notice,
+    required this.studyId,
   }) : super(key: key);
 
   @override
@@ -163,7 +165,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
                     primary: false,
                     itemCount: _comments.length,
                     itemBuilder: (context, index) =>
-                        CommentWidget(comment: _comments[index],
+                        CommentWidget(
+                            comment: _comments[index],
+                            studyId: widget.studyId,
                             index: index,
                             isSelected: (_replyTo == index),
                             setReplyTo: _setReplyTo,

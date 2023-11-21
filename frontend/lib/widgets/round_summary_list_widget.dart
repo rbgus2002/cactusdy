@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -9,13 +10,11 @@ import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/round_summary_widget.dart';
 
 class RoundSummaryListWidget extends StatefulWidget {
-  final int studyId;
-  final Color studyColor;
+  final Study study;
 
   const RoundSummaryListWidget({
     Key? key,
-    required this.studyId,
-    required this.studyColor,
+    required this.study
   }) : super(key: key);
 
   @override
@@ -50,7 +49,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         Design.padding20,
 
         FutureBuilder(
-          future: Round.getRoundInfoResponses(widget.studyId),
+          future: Round.getRoundInfoResponses(widget.study.studyId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data != _roundListModel.items) {
@@ -88,13 +87,12 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         child: RoundSummaryWidget(
           roundSeq: roundSeq,
           round: _roundListModel[index],
-          studyId: widget.studyId,
-          studyColor: widget.studyColor,),
+        study: widget.study,),
     );
   }
 
   Future<ListModel<Round>> getRound() async {
-    List<Round> rounds = await Round.getRoundInfoResponses(widget.studyId);
+    List<Round> rounds = await Round.getRoundInfoResponses(widget.study.studyId);
     return ListModel(
       listKey: _roundListKey,
       items: rounds,

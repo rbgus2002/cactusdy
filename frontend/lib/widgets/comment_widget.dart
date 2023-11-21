@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/routes/user_profile_route.dart';
@@ -11,10 +10,9 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/dialogs/user_profile_dialog.dart';
 
 class CommentWidget extends StatelessWidget {
-  static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?";
+  static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?"; //< FIXME
   static const String _deleteNoticeFailMessage = "댓글 삭제에 실패했습니다";
 
   static const String _confirmText = "확인";
@@ -29,6 +27,7 @@ class CommentWidget extends StatelessWidget {
   static const double _replayImageSize = 24;
 
   final Comment comment;
+  final int studyId;
   final Function(int) setReplyTo;
   final Function onDelete;
   final bool isReply;
@@ -38,6 +37,7 @@ class CommentWidget extends StatelessWidget {
   CommentWidget({
     Key? key,
     required this.comment,
+    required this.studyId,
     required this.index,
     required this.setReplyTo,
     required this.onDelete,
@@ -111,7 +111,13 @@ class CommentWidget extends StatelessWidget {
 
         if (comment.replies.isNotEmpty)
           for (var reply in comment.replies)
-            CommentWidget(comment: reply, isReply: true, index: index, setReplyTo: setReplyTo, onDelete: onDelete,),
+            CommentWidget(
+              comment: reply,
+              studyId: studyId,
+              isReply: true,
+              index: index,
+              setReplyTo: setReplyTo,
+              onDelete: onDelete,),
         ]
       ),
     );
@@ -134,7 +140,8 @@ class CommentWidget extends StatelessWidget {
               child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
               onTap: () {
                 Future.delayed(Duration.zero, ()=>
-                  Util.pushRoute(context, (context) => UserProfileRoute(userId: 1, studyId: 1))); //< FIXME
+                  Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+                      UserProfileRoute(userId: comment.userId, studyId: studyId)));
               }
             ),
 

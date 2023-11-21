@@ -5,22 +5,20 @@ import 'package:group_study_app/routes/notices/notice_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_color_styles.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeSummaryWidget extends StatefulWidget {
   final NoticeSummary noticeSummary;
+  final int studyId;
 
   const NoticeSummaryWidget({
     Key? key,
     required this.noticeSummary,
+    required this.studyId,
   }) : super(key: key);
 
   @override
@@ -124,7 +122,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
           ),
         onTap: () {
             Util.pushRoute(context, (context) =>
-                NoticeDetailRoute(notice: _noticeRef));
+                NoticeDetailRoute(notice: _noticeRef, studyId: widget.studyId,));
         },
       ),
     );

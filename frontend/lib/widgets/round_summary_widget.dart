@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -16,15 +17,13 @@ import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 class RoundSummaryWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
-  final int studyId;
-  final Color studyColor;
+  final Study study;
 
   const RoundSummaryWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
-    required this.studyId,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -137,8 +136,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             _timeWidget(),
             Design.padding16,
 
-            ParticipantListWidget(roundParticipantInfoList:
-                widget.round.roundParticipantInfos),
+            ParticipantListWidget(
+              roundParticipantInfoList: widget.round.roundParticipantInfos,
+              studyId: widget.study.studyId,),
           ],),
     );
   }
@@ -223,16 +223,14 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   void _lookUpRound() async {
     if (widget.round.roundId == Round.nonAllocatedRoundId) {
-      await Round.createRound(widget.round, widget.studyId);
+      await Round.createRound(widget.round, widget.study.studyId);
     }
 
     if (context.mounted) {
       Util.pushRoute(context, (context) =>
           RoundDetailRoute(
             roundSeq: widget.roundSeq,
-            roundId: widget.round.roundId,
-            studyId: widget.studyId,
-            studyColor: widget.studyColor,));
+            roundId: widget.round.roundId, study: widget.study,));
     }
   }
 
@@ -258,7 +256,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   void updateRound(Round round) {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      Round.createRound(round, widget.studyId);
+      Round.createRound(round, widget.study.studyId);
     }
     else {
       Round.updateAppointment(round);

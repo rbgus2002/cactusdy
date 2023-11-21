@@ -3,33 +3,25 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_info.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/line_profiles/participant_line_profile_widget.dart';
 import 'package:group_study_app/widgets/line_profiles/participant_profile_widget.dart';
-import 'package:group_study_app/widgets/tags/rounded_tag.dart';
-import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
 class ParticipantInfoWidget extends StatefulWidget {
   final ParticipantInfo participantInfo;
   final Function(String, int, Function(Task)) subscribe;
   final Function(String, int, Task) notify;
-  final Color studyColor;
+  final Study study;
 
   const ParticipantInfoWidget({
     Key? key,
     required this.participantInfo,
     required this.subscribe,
     required this.notify,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -63,6 +55,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
       children: [
         ParticipantProfileWidget(
           user: widget.participantInfo.participant,
+          studyId: widget.study.studyId,
           taskProgress: _progress,),
         Design.padding24,
 
@@ -75,7 +68,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
           itemBuilder: (context, index) =>
               TaskGroupWidget(
                 taskGroup: widget.participantInfo.taskGroups[index],
-                studyColor: widget.studyColor,),
+                studyColor: widget.study.color,),
           separatorBuilder: (context, index) => Design.padding20,
         ),
       ],

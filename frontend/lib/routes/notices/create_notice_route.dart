@@ -3,8 +3,6 @@ import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/routes/notices/notice_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
@@ -105,9 +103,8 @@ class CreateNoticeRoute extends StatelessWidget {
         try {
           await Notice.createNotice(_title, _contents, studyId).then((newNotice) {
               Navigator.of(context).pop();
-              Util.pushRoute(
-                  context, (context) =>
-                  NoticeDetailRoute(notice: newNotice));
+              Util.pushRoute(context, (context) =>
+                  NoticeDetailRoute(notice: newNotice, studyId: studyId,));
             });
         } on Exception catch (e) {
           if (context.mounted) {

@@ -79,7 +79,7 @@ class BackdoorRoute extends StatelessWidget {
                 ElevatedButton(onPressed: () {
                   Notice.getNotice(21).then((notice) =>
                   Util.pushRoute(
-                    context, (context) => NoticeDetailRoute(notice: notice),));
+                    context, (context) => NoticeDetailRoute(notice: notice, studyId: 1,),));
                 },
                   child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(
@@ -108,8 +108,7 @@ class BackdoorRoute extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             RoundDetailRoute(
-                                roundSeq: -1, roundId: 1, studyId: testStudyId,
-                            studyColor: Colors.red,)),
+                                roundSeq: -1, roundId: 1, study: Study(studyId: 1, studyName: "TEST", color: Colors.red, detail: "idk", picture: ""))),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(

@@ -79,8 +79,7 @@ class StudyProfileWidget extends StatelessWidget {
                         RoundDetailRoute(
                             roundSeq: studyInfo.roundSeq,
                             roundId: studyInfo.round.roundId,
-                            studyId: studyInfo.study.studyId,
-                            studyColor: studyInfo.study.color,)),),
+                            study: studyInfo.study,)),),
                   Design.padding4,
 
                   // Scheduled Tag
@@ -99,8 +98,8 @@ class StudyProfileWidget extends StatelessWidget {
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
-                              studyId: studyInfo.study.studyId,
-                              studyColor: studyInfo.study.color,)),),),
+                              study: studyInfo.study,),),
+                    ),),
                   const Spacer(),
 
                   ProfileImages(participantSummaries: studyInfo.participantSummaries),

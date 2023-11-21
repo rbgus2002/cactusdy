@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -15,15 +16,13 @@ import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
   final int roundId;
-  final int studyId;
-  final Color studyColor;
+  final Study study;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
     required this.roundId,
-    required this.studyId,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -88,7 +87,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
               ParticipantInfoListWidget(
                   roundId: widget.roundId,
-                  studyColor: widget.studyColor,),
+                  study: widget.study,),
             ],
           ),
         ),
@@ -108,7 +107,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       width: 46,
       height: 56,
       decoration: BoxDecoration(
-        color: widget.studyColor.withOpacity(0.2),
+        color: widget.study.color.withOpacity(0.2),
         borderRadius: Design.borderRadiusSmall,),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

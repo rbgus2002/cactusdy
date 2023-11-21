@@ -1,10 +1,8 @@
-import 'package:group_study_app/models/notice_summary.dart';
-
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/routes/notices/create_notice_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -53,7 +51,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
                     primary: false,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) =>
-                      NoticeSummaryWidget(noticeSummary: snapshot.data![index],),
+                      NoticeSummaryWidget(noticeSummary: snapshot.data![index], studyId: widget.studyId,),
                 );
               }
 

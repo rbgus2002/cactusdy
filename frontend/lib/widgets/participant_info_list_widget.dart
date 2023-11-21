@@ -1,20 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/participant_info_widget.dart';
-import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
-  final Color studyColor;
+  final Study study;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -55,7 +54,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
                     participantInfo: participantInfoList[index],
                     subscribe: addListener,
                     notify: notify,
-                    studyColor: widget.studyColor,)
+                    study: widget.study,)
               );
             },);
         }

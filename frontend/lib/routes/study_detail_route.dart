@@ -105,7 +105,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
               Container(
                 padding: Design.edgePadding,
-                child: RoundSummaryListWidget(studyId: widget.study.studyId, studyColor: widget.study.color,),),
+                child: RoundSummaryListWidget(study: widget.study,),),
             ],
           )
         ),
