@@ -91,7 +91,7 @@ public class Study extends BaseEntity {
         this.picture = picture;
     }
 
-    public Long getHostUserId(){
-        return this.participants.getHostUser().getUserId();
+    public User getHostUser(){
+        return this.participants.getHostUser();
     }
 }

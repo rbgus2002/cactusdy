@@ -22,7 +22,7 @@ public class StudySummaryResponse {
         this.detail = study.getDetail();
         this.picture = study.getPicture();
         this.color = participant.getColor();
-        this.hostUserId = study.getHostUserId();
+        this.hostUserId = study.getHostUser().getUserId();
     }
 
     public static StudySummaryResponse from(Study study, Participant participant){
