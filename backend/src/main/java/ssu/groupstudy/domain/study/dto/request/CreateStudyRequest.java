@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.dto.reuqest;
+package ssu.groupstudy.domain.study.dto.request;
 
 import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
