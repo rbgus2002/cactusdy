@@ -137,10 +137,7 @@ public class ServiceTest {
     }
 
     private void initParticipant() {
-        스터디참여자_최규현 = Participant.builder()
-                .user(최규현)
-                .study(알고리즘스터디)
-                .build();
+        스터디참여자_최규현 = new Participant(최규현, 알고리즘스터디);
     }
 
     private void initNotice() {

@@ -14,15 +14,18 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
@@ -37,6 +40,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyService {
+    private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
@@ -113,5 +117,25 @@ public class StudyService {
         } else {
             return roundRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
         }
+    }
+
+    @Transactional
+    public Long editStudy(Long studyId, EditStudyRequest dto, MultipartFile image, User user) throws IOException {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        Participant participant = participantRepository.findByUserAndStudy(user, study)
+                .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
+        User newHostUser = userRepository.findById(dto.getHostUserId())
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+
+        handleUploadProfileImage(study, image);
+        processEdit(dto, study, participant, newHostUser);
+
+        return study.getStudyId();
+    }
+
+    private void processEdit(EditStudyRequest dto, Study study, Participant participant, User newHostUser) {
+        study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
+        participant.setColor(dto.getColor());
     }
 }
