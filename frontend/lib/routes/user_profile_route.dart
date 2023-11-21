@@ -10,8 +10,8 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/tags/study_tag_widget.dart';
 
@@ -30,35 +30,33 @@ class UserProfileRoute extends StatefulWidget {
 }
 
 class _UserProfileRouteState extends State<UserProfileRoute> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // Close button
+        leading: IconButton(
+          icon: const Icon(CustomIcons.close),
+          iconSize: 32,
+          onPressed: () => Util.popRoute(context)),
         shape: InputBorder.none,),
       body: FutureBuilder(
           future: ParticipantProfile.getParticipantProfile(widget.userId, widget.studyId),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView(
-                  children: [
-                    Design.padding4,
-
-                    _userProfileBox(snapshot.data!.participant),
-                    _studyListBox(snapshot.data!.studyTags),
-                    _attendanceRateBox(snapshot.data!.attendanceRate),
-                    _taskAchievementRate(snapshot.data!.doneRate),
-                    _kickAndStabButtons(),
-                  ],
-              );
-            }
-            return Design.loadingIndicator;
-          }
-      ),
+          builder: (context, snapshot) =>
+            (snapshot.hasData)?
+              ListView(
+                children: [
+                  _userProfileWidget(snapshot.data!.participant),
+                  _studyListWidget(snapshot.data!.studyTags),
+                  _attendanceRateWidget(snapshot.data!.attendanceRate),
+                  _achievementRateWidget(snapshot.data!.doneRate),
+                  _kickAndStabButton(),
+                ],) :
+              Design.loadingIndicator,),
     );
   }
 
-  Widget _userProfileBox(User participant) {
+  Widget _userProfileWidget(User participant) {
     return Container(
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(
@@ -67,32 +65,34 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Design.padding4,
+
           SquircleWidget(
             scale: 100,
             child: (participant.profileImage.isNotEmpty) ?
               CachedNetworkImage(
-                  imageUrl: participant.profileImage,
-                  fit: BoxFit.cover) : null,),
+                imageUrl: participant.profileImage,
+                fit: BoxFit.cover) : null,),
           Design.padding20,
 
           Text(
             participant.nickname,
-            style: TextStyles.head2.copyWith(color:
-            context.extraColors.grey800),),
+            style: TextStyles.head2.copyWith(
+              color: context.extraColors.grey800),),
           Design.padding4,
 
           Text(
             (participant.statusMessage.isEmpty) ?
                 participant.statusMessage :
                 context.local.inputHint2(context.local.statusMessage),
-            style: TextStyles.body1.copyWith(color:
-              context.extraColors.grey500),),
+            style: TextStyles.body1.copyWith(
+              color: context.extraColors.grey500),),
           Design.padding32,
         ],),
     );
   }
 
-  Widget _studyListBox(List<StudyTag> studyTags) {
+  Widget _studyListWidget(List<StudyTag> studyTags) {
     return Container(
       padding: Design.edgePadding,
       decoration: BoxDecoration(
@@ -121,13 +121,14 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
     );
   }
 
-  Widget _attendanceRateBox(Map<String, int> attendanceRate) {
+  Widget _attendanceRateWidget(Map<String, int> attendanceRate) {
     return Container(
       padding: Design.edgePadding,
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(
           color: context.extraColors.grey200!,),),),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Design.padding8,
 
@@ -137,23 +138,27 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
                 color: context.extraColors.grey800),),
           Design.padding16,
 
-          _AttendanceRateWidget(
+          // Stacked Bar Chart
+          _AttendanceRateChartWidget(
             attendanceCount: attendanceRate[StatusTag.attendance]??0,
             lateCount: attendanceRate[StatusTag.late]??0,
             absentCount: attendanceRate[StatusTag.absent]??0,),
           Design.padding(36),
-          
-          _AttendanceWidget(
+
+          // Attendance
+          _StatusSummaryWidget(
               status: StatusTag.attendance,
               count: attendanceRate[StatusTag.attendance]??0),
           Design.padding32,
 
-          _AttendanceWidget(
+          // Late
+          _StatusSummaryWidget(
               status: StatusTag.late,
               count: attendanceRate[StatusTag.late]??0),
           Design.padding32,
 
-          _AttendanceWidget(
+          // Absent
+          _StatusSummaryWidget(
               status: StatusTag.absent,
               count: attendanceRate[StatusTag.absent]??0),
           Design.padding24,
@@ -162,7 +167,7 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
     );
   }
 
-  Widget _taskAchievementRate(int rate) {
+  Widget _achievementRateWidget(int rate) {
     return Container(
       padding: Design.edgePadding,
       child: Column(
@@ -170,6 +175,7 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
         children: [
           Design.padding8,
 
+          // Achievement Rate Text
           Text(
             context.local.taskAchievementRateIs(rate),
             style: TextStyles.head3.copyWith(
@@ -180,13 +186,15 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _AchievementBarWidget(
+              // Attendance Rate Graph
+              _GraphBarWidget(
                 percent: rate,
                 color: ColorStyles.mainColor,
                 headTag: context.local.achievement),
               Design.padding(52),
 
-              _AchievementBarWidget(
+              // non-Attendance Rate Graph
+              _GraphBarWidget(
                 percent: 100 - rate,
                 color: context.extraColors.grey100!,
                 textColor: context.extraColors.grey500!,),
@@ -196,60 +204,51 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButtons() {
+  Widget _kickAndStabButton() {
     return Container(
       padding: Design.edgePadding,
       height: 92,
       child: Row(
         children: [
-          OutlinedPrimaryButton(
-              text: context.local.kick,
-          width: 100,),
-          Design.padding4,
+          // Kick button
+          Expanded(
+            child: OutlinedPrimaryButton(
+              onPressed: () { },  //< FIXME
+              text: context.local.kick,),),
+          Design.padding8,
 
-          _primaryButtonWithIcon(
-              text: context.local.stab,
-              icon: Icon(CustomIcons.cactus,),
-              onTap: () { }),
-        ],
-
-      ),
-    );
-  }
-
-  Widget _primaryButtonWithIcon({
-    required String text,
-    required Icon icon,
-    required VoidCallback onTap}) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: context.extraColors.disabledPrimaryButtonColor,
-          disabledForegroundColor: context.extraColors.grey000),
-      child: Container(
-        height: Design.buttonContentHeight,
-        alignment: Alignment.center,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              icon,
-              Design.padding4,
-              Text(
-                text,
-                style: TextStyles.head4,),
-            ],),
-      ),
+          // Stab button (with Cactus Icon)
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () =>
+                  User.notifyParticipant(widget.userId, widget.studyId),
+              child: Container(
+                width: double.maxFinite,
+                height: Design.buttonContentHeight,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(CustomIcons.cactus, size: 20,),
+                    Design.padding4,
+                    Text(
+                      context.local.stab,
+                      style: TextStyles.head4,),
+                  ],),
+              ),),),
+        ],),
     );
   }
 }
 
-class _AttendanceWidget extends StatelessWidget {
+/// Show status's color, name, and count as Row
+class _StatusSummaryWidget extends StatelessWidget {
   static const double _height = 24;
 
   final String status;
   final int count;
 
-  const _AttendanceWidget({
+  const _StatusSummaryWidget({
     Key? key,
     required this.status,
     required this.count,
@@ -282,13 +281,18 @@ class _AttendanceWidget extends StatelessWidget {
   }
 }
 
-class _AchievementBarWidget extends StatelessWidget {
+/// Vertical Percentage Bar (with Tag)
+class _GraphBarWidget extends StatelessWidget {
+  static const double _widgetWidth = 76;
+  static const double _widgetHeight = 200;
+  static const double _graphMaxHeightRatio = 1.2; // 1.2 * 100 = 120
+
   final Color color;
   final Color? textColor;
   final int percent;
   final String headTag;
 
-  const _AchievementBarWidget({
+  const _GraphBarWidget({
     Key? key,
     required this.color,
     required this.percent,
@@ -299,12 +303,14 @@ class _AchievementBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 76,
-      height: 200,
+      width: _widgetWidth,
+      height: _widgetHeight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(),
+
+          // Head Tag (such like 'Achieve')
           Visibility(
             visible: (headTag.isNotEmpty),
             child: Container(
@@ -318,32 +324,34 @@ class _AchievementBarWidget extends StatelessWidget {
                     color: textColor??color),),),),
           Design.padding12,
 
+          // Percentage Graph
           Container(
             width: 76,
-            height: 1.2 * percent, // MAX_HEIGHT : 120
+            height: _graphMaxHeightRatio * percent, // MAX_HEIGHT : 1.2 * 100 = 120
             decoration: BoxDecoration(
               color: color,
               borderRadius: Design.borderRadius,),),
           Design.padding8,
 
+          // Percentage Text
           Text(
             "$percent%",
             style: TextStyles.head3.copyWith(
               color: textColor??color,),),
-        ],
-      ),
+        ],),
     );
   }
 }
 
-class _AttendanceRateWidget extends StatelessWidget {
+/// Attendance Rate will be showed as Stacked Bar Chart
+class _AttendanceRateChartWidget extends StatelessWidget {
   static const double _height = 30;
 
   final int attendanceCount;
   final int lateCount;
   final int absentCount;
 
-  const _AttendanceRateWidget({
+  const _AttendanceRateChartWidget({
     Key? key,
     required this.attendanceCount,
     required this.lateCount,
@@ -357,7 +365,7 @@ class _AttendanceRateWidget extends StatelessWidget {
       height: _height,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
-          color: (isEmpty())? context.extraColors.grey100! : null,
+          color: (_isEmpty())? context.extraColors.grey100! : null,
           borderRadius: Design.borderRadiusSmall),
       child: Row(
         children: [
@@ -383,12 +391,11 @@ class _AttendanceRateWidget extends StatelessWidget {
             flex: absentCount,
             child: Container(
               color: StatusTag.getColor(StatusTag.absent, context),),),
-        ],
-      ),
+        ],),
     );
   }
 
-  bool isEmpty() {
+  bool _isEmpty() {
     return (attendanceCount + absentCount + lateCount <= 0);
   }
 }
