@@ -1,10 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 
+extension ThemeModeStringExtension on ThemeMode {
+  static const String _light = 'light';
+  static const String _dark = 'dark';
+  static const String _system = 'system';
 
-class AppTheme {
+  static const Map<String, ThemeMode> themes = {
+    _light: ThemeMode.light,
+    _dark: ThemeMode.dark,
+    _system: ThemeMode.system,
+  };
+
+  String toStr() {
+    switch(this) {
+      case ThemeMode.light:
+        return _light;
+      case ThemeMode.dark:
+        return _dark;
+      case ThemeMode.system:
+        return _system;
+    }
+  }
+}
+
+class AppTheme with ChangeNotifier {
+  static ValueNotifier<ThemeMode> themeMode = ValueNotifier(ThemeMode.system);
+
+  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+  static const String _themeKey = 'theme';
+
+  static void initTheme() {
+    _readThemeSetting();
+  }
+
+  static void setTheme(ThemeMode newThemeMode) {
+    themeMode.value = newThemeMode;
+    _saveThemeSetting();
+  }
+
+  static void _readThemeSetting() async {
+    String? themeStr = await _storage.read(key: _themeKey);
+
+    if (themeStr != null) {
+      themeMode.value = ThemeModeStringExtension.themes[themeStr]??ThemeMode.system;
+    }
+  }
+
+  static void _saveThemeSetting() async {
+    await _storage.write(
+        key: _themeKey,
+        value: themeMode.value.toStr());
+  }
+
   static final ThemeData themeData = ThemeData(
       fontFamily: TextStyles.mainFont,
       textTheme: TextStyles.textTheme,
