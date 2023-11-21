@@ -142,16 +142,13 @@ class CommentWidget extends StatelessWidget {
                 Future.delayed(Duration.zero, ()=>
                   Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
                       UserProfileRoute(userId: comment.userId, studyId: studyId)));
-              }
-            ),
+              }),
 
             if (comment.userId == Auth.signInfo!.userId)
             PopupMenuItem(
               child: const Text(_deleteCommentText, style: OldTextStyles.bodyMedium,),
-              onTap: () => _showDeleteCommentDialog(context),
-            )
-        ],
-      ),
+              onTap: () => _showDeleteCommentDialog(context),),
+        ],),
     );
   }
 
@@ -162,13 +159,11 @@ class CommentWidget extends StatelessWidget {
           content: const Text(_deleteNoticeCautionMessage),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Util.popRoute(context),
               child: const Text(_cancelText),),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Util.popRoute(context);
                 onDelete(comment.commentId);
               },
               child: const Text(_confirmText),),
