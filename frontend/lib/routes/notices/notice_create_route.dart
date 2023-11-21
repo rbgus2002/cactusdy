@@ -8,7 +8,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 
-class CreateNoticeRoute extends StatelessWidget {
+class NoticeCreateRoute extends StatelessWidget {
   final _fromKey = GlobalKey<FormState>();
 
   final int studyId;
@@ -18,7 +18,7 @@ class CreateNoticeRoute extends StatelessWidget {
 
   bool _isProcessing = false;
 
-  CreateNoticeRoute({
+  NoticeCreateRoute({
     Key? key,
     required this.studyId,
   }) : super(key: key);

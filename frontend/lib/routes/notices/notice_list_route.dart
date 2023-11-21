@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice_summary.dart';
-import 'package:group_study_app/routes/notices/create_notice_route.dart';
+import 'package:group_study_app/routes/notices/notice_create_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/old_design.dart';
@@ -32,7 +32,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
             icon: const Icon(CustomIcons.writing_square_outline),
             splashRadius: 16,
             onPressed: () {
-              Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: widget.studyId));
+              Util.pushRoute(context, (context) => NoticeCreateRoute(studyId: widget.studyId));
             },
           )
         ],

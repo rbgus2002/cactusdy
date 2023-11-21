@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
-import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/old_circle_button.dart';

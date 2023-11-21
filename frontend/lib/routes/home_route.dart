@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
-import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/routes/notices/create_notice_route.dart';
+import 'package:group_study_app/routes/notices/notice_create_route.dart';
 import 'package:group_study_app/routes/design_test_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
@@ -11,7 +11,7 @@ import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
-import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/utilities/util.dart';
 
@@ -133,7 +133,7 @@ class BackdoorRoute extends StatelessWidget {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
-                  Util.pushRoute(context, (context) => CreateNoticeRoute(studyId: testStudyId,));
+                  Util.pushRoute(context, (context) => NoticeCreateRoute(studyId: testStudyId,));
                 }, style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 50),
                   backgroundColor: Colors.grey,
