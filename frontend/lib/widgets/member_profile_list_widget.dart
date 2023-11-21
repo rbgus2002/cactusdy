@@ -40,12 +40,9 @@ class MemberProfileListWidget extends StatelessWidget {
                       clipBehavior: Clip.none,
                       children: [
                         InkWell(
-                          child: SquircleWidget(
+                          child: SquircleImageWidget(
                             scale: scale,
-                            child: (snapshot.data![index].picture.isNotEmpty) ?
-                              CachedNetworkImage(
-                                  imageUrl: snapshot.data![index].picture,
-                                  fit: BoxFit.cover) : null,),
+                            url: snapshot.data![index].picture),
                           onTap: () => UserProfileDialog.showProfileDialog(
                               context,
                               snapshot.data![index].userId),),

@@ -32,12 +32,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // User Profile Image
-          SquircleWidget(
-            scale: _height,
-            child: (widget.user.profileImage.isNotEmpty) ?
-                CachedNetworkImage(
-                    imageUrl: widget.user.profileImage,
-                    fit: BoxFit.cover) : null,),
+          SquircleImageWidget(
+              scale: _height,
+              url: widget.user.profileImage),
           Design.padding12,
 
           // User nickname & status message

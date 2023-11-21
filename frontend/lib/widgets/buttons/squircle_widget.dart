@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
@@ -36,4 +37,19 @@ class SquircleWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class SquircleImageWidget extends SquircleWidget {
+  SquircleImageWidget({
+    Key? key,
+    required super.scale,
+    required String url,
+  }) : super(
+      key: key,
+      child: (url.isNotEmpty) ?
+        CachedNetworkImage(
+          imageUrl: url,
+          fit: BoxFit.cover) :
+        null,
+  );
 }

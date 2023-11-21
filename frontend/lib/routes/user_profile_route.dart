@@ -30,6 +30,8 @@ class UserProfileRoute extends StatefulWidget {
 }
 
 class _UserProfileRouteState extends State<UserProfileRoute> {
+  static const double _profileImageSize = 100;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,12 +69,9 @@ class _UserProfileRouteState extends State<UserProfileRoute> {
         children: [
           Design.padding4,
 
-          SquircleWidget(
-            scale: 100,
-            child: (participant.profileImage.isNotEmpty) ?
-              CachedNetworkImage(
-                imageUrl: participant.profileImage,
-                fit: BoxFit.cover) : null,),
+          SquircleImageWidget(
+            scale: _profileImageSize,
+            url: participant.profileImage),
           Design.padding20,
 
           Text(

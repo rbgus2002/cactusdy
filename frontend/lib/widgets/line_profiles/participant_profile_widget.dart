@@ -36,12 +36,9 @@ class ParticipantProfileWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Study Image (Left Part)
-        SquircleWidget(
-          scale: _imageSize,
-          child: (user.profileImage.isNotEmpty) ?
-          CachedNetworkImage(
-              imageUrl: user.profileImage,
-              fit: BoxFit.cover) : null,),
+        SquircleImageWidget(
+            scale: _imageSize,
+            url: user.profileImage),
         Design.padding12,
 
         // User nickname & status message

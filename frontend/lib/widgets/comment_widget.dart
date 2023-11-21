@@ -60,12 +60,9 @@ class CommentWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                SquircleWidget(
-                  scale: (!isReply)? _imageSize : _replayImageSize,
-                  child: (comment.picture.isNotEmpty) ?
-                      CachedNetworkImage(
-                        imageUrl: comment.picture,
-                        fit: BoxFit.cover) : null,),
+                SquircleImageWidget(
+                    scale: (!isReply)? _imageSize : _replayImageSize,
+                    url: comment.picture),
                 Design.padding12,
 
                 Flexible(

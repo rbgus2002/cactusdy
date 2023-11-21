@@ -31,12 +31,8 @@ class ParticipantListWidget extends StatelessWidget {
   }
 
   Widget _builder(BuildContext context, int index) {
-    return SquircleWidget(
+    return SquircleImageWidget(
       scale: size,
-      child: (roundParticipantInfoList[index].picture.isNotEmpty) ?
-        CachedNetworkImage(
-            imageUrl: roundParticipantInfoList[index].picture,
-            fit: BoxFit.cover) : null,
-    );
+      url: roundParticipantInfoList[index].picture);
   }
 }
