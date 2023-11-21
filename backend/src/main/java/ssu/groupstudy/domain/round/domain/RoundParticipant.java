@@ -43,7 +43,7 @@ public class RoundParticipant {
     public RoundParticipant(User user, Round round) {
         this.user = user;
         this.round = round;
-        this.statusTag = StatusTag.NONE;
+        this.statusTag = StatusTag.ATTENDANCE_EXPECTED;
     }
 
     @Override
@@ -78,6 +78,10 @@ public class RoundParticipant {
         long doneTaskCount = tasks.stream().filter(Task::isDone).count();
         double progress = (double) doneTaskCount / totalTaskCount;
         return Math.round(progress * 100.0) / 100.0;
+    }
+
+    public boolean isAttendedOrExpectedOrLate(){
+        return (this.statusTag == StatusTag.ATTENDANCE) || (this.statusTag == StatusTag.ATTENDANCE_EXPECTED) || (this.statusTag == StatusTag.LATE);
     }
 }
 

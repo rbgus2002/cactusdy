@@ -8,8 +8,8 @@ import lombok.Getter;
 public enum StatusTag {
 
     NONE("미정"),
-    ATTENDANCE("출석"),
     ATTENDANCE_EXPECTED("출석예정"),
+    ATTENDANCE("출석"),
     LATE("지각"),
     ABSENT("결석"),
     ;
