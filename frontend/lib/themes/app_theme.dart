@@ -15,8 +15,8 @@ class AppTheme {
       scaffoldBackgroundColor: ColorStyles.backgroundColor,
       focusColor: Colors.transparent,
 
-      elevatedButtonTheme: _elevatedButtonThemeData,
-      outlinedButtonTheme: _outlinedButtonThemeData,
+      elevatedButtonTheme: ColorStyles.elevatedButtonThemeData,
+      outlinedButtonTheme: ColorStyles.outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
 
@@ -35,8 +35,8 @@ class AppTheme {
       scaffoldBackgroundColor: ColorStyles.backgroundColorDark,
       focusColor: Colors.transparent,
 
-      elevatedButtonTheme: _elevatedButtonThemeData,
-      outlinedButtonTheme: _outlinedButtonThemeData,
+      elevatedButtonTheme: ColorStyles.elevatedButtonDarkThemeData,
+      outlinedButtonTheme: ColorStyles.outlinedButtonDarkThemeData,
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
 
@@ -45,24 +45,9 @@ class AppTheme {
       ]
   );
 
-  static final ElevatedButtonThemeData _elevatedButtonThemeData = ElevatedButtonThemeData(
-     style: ElevatedButton.styleFrom(
-       elevation: 0,
-       padding: Design.buttonPadding,
-       shape: const RoundedRectangleBorder(
-           borderRadius: Design.borderRadius),)
-  );
-
-  static final OutlinedButtonThemeData _outlinedButtonThemeData = OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        padding: Design.buttonPadding,
-        shape: const RoundedRectangleBorder(
-            borderRadius: Design.borderRadius),)
-  );
-
   static final TextButtonThemeData _textButtonThemeData = TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: ColorStyles.tintColor,
+        foregroundColor: ColorStyles.mainColor,
         textStyle: TextStyles.head5,)
   );
 

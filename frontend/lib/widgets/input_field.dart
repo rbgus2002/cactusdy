@@ -9,7 +9,10 @@ class InputField extends StatefulWidget {
   final String? hintText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
+  final FocusNode? focusNode;
   final int? maxLength;
+  final int? maxLine;
+  final int? minLine;
   final bool obscureText;
   final bool enable;
 
@@ -18,8 +21,11 @@ class InputField extends StatefulWidget {
     this.hintText,
     this.obscureText = false,
     this.onChanged,
+    this.focusNode,
     this.validator,
     this.maxLength,
+    this.maxLine,
+    this.minLine,
     this.enable = true,
   }) : super(key: key);
 
@@ -50,8 +56,11 @@ class InputFieldState extends State<InputField> {
       controller: _textEditingController,
       style: TextStyles.body1,
       maxLength: widget.maxLength,
-      maxLines: 1,
+      minLines: widget.minLine,
+      maxLines: widget.maxLine??1,
       obscureText: widget.obscureText,
+      textAlign: TextAlign.justify,
+      focusNode: widget.focusNode,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         contentPadding: Design.textFieldPadding,

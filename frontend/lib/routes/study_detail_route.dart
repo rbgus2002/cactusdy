@@ -10,7 +10,7 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
-import 'package:group_study_app/widgets/round_info_list_widget.dart';
+import 'package:group_study_app/widgets/round_summary_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   final Study study;
@@ -60,7 +60,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                       _profileWidget(snapshot.data!) :
                       _profileWidget(widget.study),),
 
-              // members and
+              // Notices and Members
               Container(
                 padding: Design.edgePadding,
                 child: Column(
@@ -96,7 +96,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                         context.local.rules,
                         style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                       AddButton(
-                        iconData: CustomIcons.write,
+                        iconData: CustomIcons.writing_outline,
                         text: context.local.writeRule,
                         onTap: () {}),
                     ],),
@@ -105,7 +105,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
               Container(
                 padding: Design.edgePadding,
-                child: RoundInfoListWidget(studyId: widget.study.studyId, studyColor: widget.study.color,),),
+                child: RoundSummaryListWidget(study: widget.study,),),
             ],
           )
         ),
@@ -126,12 +126,16 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
           Positioned(
             left: 20,
             top: 116,
-            child: SquircleWidget(
-              scale: _imageSize,
+            child: Container(
+              width: _imageSize,
+              height: _imageSize,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Design.radiusValue),),
               child: (study.picture.isNotEmpty) ?
-              CachedNetworkImage(
-                  imageUrl: study.picture,
-                  fit: BoxFit.cover) : null,),),
+                  CachedNetworkImage(
+                    imageUrl: study.picture,
+                    fit: BoxFit.cover) : null,),),
 
           Positioned(
             left: 20,
@@ -147,8 +151,10 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   Widget _studyPopupMenu() {
     double iconSize = 32;
     return PopupMenuButton(
-      icon: const Icon(CustomIcons.more_vert),
-      color: context.extraColors.grey900,
+      icon: Icon(
+        CustomIcons.more_vert,
+        color: context.extraColors.grey900),
+      color: context.extraColors.grey000,
       iconSize: iconSize,
       splashRadius: iconSize / 2,
       position: PopupMenuPosition.under,
@@ -157,7 +163,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.write),),
+          icon: const Icon(CustomIcons.writing_outline),),
 
         // setting
         ItemEntry(

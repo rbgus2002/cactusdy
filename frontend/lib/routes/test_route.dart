@@ -24,7 +24,7 @@ class _TestRoute extends State<TestRouteState> {
           decoration: BoxDecoration(
             border: Border.all(color: context.extraColors.grey200!, width: 2),
           ),
-          child: UserLineProfileWidget(user: User(statusMessage: "Additional Comment", userId: 2, nickname: "채령", picture: ""),),
+          child: UserLineProfileWidget(user: User(statusMessage: "Additional Comment", userId: 2, nickname: "채령", profileImage: ""),),
             padding: OldDesign.edge15,
         )
     );

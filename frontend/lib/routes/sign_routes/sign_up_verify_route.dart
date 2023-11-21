@@ -12,7 +12,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/buttons/secondary_button.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 
 class SignUpRoute extends StatefulWidget {
@@ -84,7 +84,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                           onChanged: (input) => _inputCode = input,),
                         Design.padding48,
 
-                        SecondaryButton(
+                        PrimaryButton(
                           text: context.local.complete,
                           onPressed: _verifyCode,),
                       ],

@@ -59,7 +59,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TaskListTitle(
-              title: widget.taskGroup.taskType,
+              title: widget.taskGroup.taskTypeName,
               onTap: () => _addTask(Task())),
           Design.padding12,
 

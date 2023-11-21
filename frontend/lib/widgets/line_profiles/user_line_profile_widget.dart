@@ -32,12 +32,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // User Profile Image
-          SquircleWidget(
-            scale: _height,
-            child: (widget.user.picture.isNotEmpty) ?
-                CachedNetworkImage(
-                    imageUrl: widget.user.picture,
-                    fit: BoxFit.cover) : null,),
+          SquircleImageWidget(
+              scale: _height,
+              url: widget.user.profileImage),
           Design.padding12,
 
           // User nickname & status message
@@ -78,7 +75,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
       // edit profile
       ItemEntry(
         text: context.local.editProfile,
-        icon: const Icon(CustomIcons.write),),
+        icon: const Icon(CustomIcons.writing_square_outline),),
 
       // setting
       ItemEntry(

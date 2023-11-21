@@ -1,52 +1,28 @@
 import 'dart:convert';
+import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class NoticeSummary {
-  final int noticeId;
-  final String title;
-  final String contents;
-  final String writerNickname;
-  final DateTime createDate;
+  final Notice notice;
   final int commentCount;
-  int readCount;
-  bool read;
   bool pinYn;
 
   NoticeSummary({
-    required this.noticeId,
-    required this.title,
-    required this.contents,
-    required this.writerNickname,
-    required this.createDate,
+    required this.notice,
     required this.commentCount,
-    required this.readCount,
-    required this.read,
     required this.pinYn,
   });
 
   factory NoticeSummary.fromJson(Map<String, dynamic> json) {
     return NoticeSummary(
-      noticeId: json['noticeId'],
-      title: json['title'],
-      contents: json['contents'],
-      writerNickname: json['writerNickname'],
-      createDate: DateTime.parse(json['createDate']),
-      commentCount: json['commentCount']??0,
-      readCount: json['readCount'],
-      read: json['read'],
+      notice: Notice.fromJson(json),
+      commentCount: json['commentCount'],
       pinYn: (json['pinYn'] == 'Y'),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'title': title,
-    'contents': contents,
-    'writerNickname': writerNickname,
-    'createDate' : createDate,
-  };
 
   static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId, int offset, int pageSize) async {
     final response = await http.get(

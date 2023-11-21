@@ -1,5 +1,7 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/diagrams/squircle.dart';
 
@@ -26,11 +28,28 @@ class SquircleWidget extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: const SquircleBorder(),
         child: Material(
-          color: backgroundColor??context.extraColors.inputFieldBackgroundColor,
+          color: backgroundColor??context.extraColors.grey200,
           shape: SquircleBorder(
             side: side??BorderSide(color: context.extraColors.grey200!, width: 2)),
-          child: child,)
+          child: child??Image.asset(
+              Design.defaultProfileImagePath,
+              color: context.extraColors.grey300),)
       ),
     );
   }
+}
+
+class SquircleImageWidget extends SquircleWidget {
+  SquircleImageWidget({
+    Key? key,
+    required super.scale,
+    required String url,
+  }) : super(
+      key: key,
+      child: (url.isNotEmpty) ?
+        CachedNetworkImage(
+          imageUrl: url,
+          fit: BoxFit.cover) :
+        null,
+  );
 }

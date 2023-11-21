@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
+import 'package:group_study_app/routes/user_profile_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -20,11 +21,13 @@ class ParticipantProfileWidget extends StatelessWidget {
   static const double _imageSize = 48;
 
   final User user;
+  final int studyId;
   final double taskProgress;
 
   const ParticipantProfileWidget({
     Key? key,
     required this.user,
+    required this.studyId,
     required this.taskProgress,
   }) : super(key: key);
 
@@ -35,13 +38,16 @@ class ParticipantProfileWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Study Image (Left Part)
-        SquircleWidget(
-          scale: _imageSize,
-          child: (user.picture.isNotEmpty) ?
-          CachedNetworkImage(
-              imageUrl: user.picture,
-              fit: BoxFit.cover) : null,),
+        // Participant Profile Image (Left Part)
+        InkWell(
+          onTap: () => Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+            UserProfileRoute(
+                userId: user.userId,
+                studyId: studyId),),
+          child: SquircleImageWidget(
+              scale: _imageSize,
+              url: user.profileImage),
+        ),
         Design.padding12,
 
         // User nickname & status message

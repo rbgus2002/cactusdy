@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -15,15 +16,13 @@ import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
   final int roundId;
-  final int studyId;
-  final Color studyColor;
+  final Study study;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
     required this.roundId,
-    required this.studyId,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -50,42 +49,45 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              FutureBuilder(
-                future: _getRoundDetail(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    round = snapshot.data;
-                    _detailRecordEditingController.text = round!.detail ?? "";
-
-                    return Container(
-                      padding: Design.edgePadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Round Info
-                          _roundInfo(),
-                          Design.padding20,
-
-                          // Detail Record
-                          Text(
-                            context.local.record,
-                            style: TextStyles.head5.copyWith(
-                                color: context.extraColors.grey900),),
-                          Design.padding8,
-                          _detailRecord(),
-                        ]),
-                    );
-                  }
-                  return Design.loadingIndicator;
-                },),
-
               Container(
-                height: 7,
-                color: context.extraColors.grey50,),
+                decoration: BoxDecoration(
+                  border: Border(bottom:
+                    BorderSide(
+                        color: context.extraColors.grey50!,
+                        width: 7)),),
+                child: FutureBuilder(
+                  future: Round.getDetail(widget.roundId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      round = snapshot.data;
+                      _detailRecordEditingController.text = round!.detail ?? "";
+
+                      return Container(
+                        padding: Design.edgePadding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Round Info
+                            _roundInfo(),
+                            Design.padding20,
+
+                            // Detail Record
+                            Text(
+                              context.local.record,
+                              style: TextStyles.head5.copyWith(
+                                  color: context.extraColors.grey900),),
+                            Design.padding8,
+                            _detailRecord(),
+                          ]),
+                      );
+                    }
+                    return Design.loadingIndicator;
+                  },),
+              ),
 
               ParticipantInfoListWidget(
                   roundId: widget.roundId,
-                  studyColor: widget.studyColor,),
+                  study: widget.study,),
             ],
           ),
         ),
@@ -105,7 +107,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       width: 46,
       height: 56,
       decoration: BoxDecoration(
-        color: widget.studyColor.withOpacity(0.2),
+        color: widget.study.color.withOpacity(0.2),
         borderRadius: Design.borderRadiusSmall,),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -242,15 +244,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               isPrimary2: false),),
       ],
     );
-  }
-
-  Future<Round> _getRoundDetail() async {
-    if (widget.roundId == Round.nonAllocatedRoundId) {
-      Round newRound = Round(roundId: Round.nonAllocatedRoundId);
-      await Round.createRound(newRound, widget.studyId);
-      return newRound;
-    }
-    return Round.getDetail(widget.roundId);
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {

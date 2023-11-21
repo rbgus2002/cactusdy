@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class CircleButton extends StatelessWidget {
   final double size;
+  final double borderWidth;
   final String url;
   final Function? onTap;
 
@@ -12,6 +13,7 @@ class CircleButton extends StatelessWidget {
     Key? key,
     required this.url,
     this.size = 20.0,
+    this.borderWidth = 1.5,
     this.onTap,
   }) : super(key: key);
 
@@ -21,16 +23,19 @@ class CircleButton extends StatelessWidget {
       radius: size / 2,
       backgroundColor: context.extraColors.grey000,
       child: Container(
-        height: size,
-        width: size,
-        padding: const EdgeInsets.all(1.5),
+        height: size - borderWidth * 2,
+        width: size - borderWidth * 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: context.extraColors.grey200,),
         child: ClipOval(
-          child: (url.isNotEmpty)?
+          child:(url.isNotEmpty)?
             CachedNetworkImage(
                 imageUrl: url,
                 fit: BoxFit.cover) :
             Image.asset(
-                OldDesign.defaultImagePath,
+                Design.defaultProfileImagePath,
+                color: context.extraColors.grey300,
                 fit: BoxFit.cover),),),
     );
   }

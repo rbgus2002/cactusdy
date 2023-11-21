@@ -56,7 +56,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       context.local.myStudy,
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                     AddButton(
-                      iconData: CustomIcons.plus_square,
+                      iconData: CustomIcons.plus_square_outline,
                       text: context.local.addStudy,
                       onTap: () => Util.pushRoute(context, (context) =>
                           const GenerateStudyRoute())),
@@ -117,7 +117,6 @@ class _Panel extends StatelessWidget {
 }
 
 class _StudyPanel extends StatelessWidget {
-  static const EdgeInsets _margin = EdgeInsets.only(bottom: 20);
   final StudyInfo studyInfo;
 
   const _StudyPanel({
@@ -177,7 +176,7 @@ class _AddStudyPanel extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: _circleRadius,
-                backgroundColor: ColorStyles.tintColor.withAlpha(0x33),
+                backgroundColor: ColorStyles.mainColor.withOpacity(0.2),
                 child: const Icon(
                   Icons.add,
                   size: _iconSize,

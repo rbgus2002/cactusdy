@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -16,15 +17,13 @@ import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 class RoundSummaryWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
-  final int studyId;
-  final Color studyColor;
+  final Study study;
 
   const RoundSummaryWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
-    required this.studyId,
-    required this.studyColor,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -48,42 +47,46 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   Widget build(BuildContext context) {
     _placeEditingController.text = widget.round.studyPlace;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            SquircleWidget(
-              scale: 32,
-              side: BorderSide.none,
-              backgroundColor: ColorStyles.mainColor,
-              child: Center(
-                child: Text(
-                  '${widget.roundSeq}',
-                  style: TextStyles.head5.copyWith(
-                      color: context.extraColors.grey000),),
-              ),),
-
-            const Placeholder( // FIXME
-              child: SizedBox(
-                height: 174,
-                width: 32,),),
-          ],),
-        Design.padding8,
-
-        Flexible(
-          child: Column(
+    return InkWell(
+      onTap: _lookUpRound,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
             children: [
-              Design.padding4,
-              _titleLine(),
-              Design.padding16,
+              SquircleWidget(
+                scale: 32,
+                side: BorderSide.none,
+                backgroundColor: ColorStyles.mainColor,
+                child: Center(
+                  child: Text(
+                    '${widget.roundSeq}',
+                    style: TextStyles.head5.copyWith(
+                        color: context.extraColors.grey000),),),),
 
-              _bodyBox(),
-              Design.padding(36),
-            ],
+              const Placeholder( // FIXME
+                child: SizedBox(
+                  height: 174,
+                  width: 32,),),
+            ],),
+          Design.padding8,
+
+          Flexible(
+            child: Column(
+              children: [
+                Design.padding4,
+                _titleLine(),
+                Design.padding16,
+
+                _bodyBox(),
+                Design.padding(36),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -125,9 +128,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
       decoration: BoxDecoration(
         color: context.extraColors.grey100,
         borderRadius: Design.borderRadiusSmall,),
-      child: InkWell(
-        onTap: _lookUpRound,
-        child: Column(
+      child: Column(
           children: [
             _placeWidget(),
             Design.padding4,
@@ -135,10 +136,10 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             _timeWidget(),
             Design.padding16,
 
-            ParticipantListWidget(roundParticipantInfoList:
-                widget.round.roundParticipantInfos),
+            ParticipantListWidget(
+              roundParticipantInfoList: widget.round.roundParticipantInfos,
+              studyId: widget.study.studyId,),
           ],),
-      ),
     );
   }
 
@@ -220,13 +221,17 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     );
   }
 
-  void _lookUpRound() {
-    Util.pushRoute(context, (context) =>
-        RoundDetailRoute(
+  void _lookUpRound() async {
+    if (widget.round.roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(widget.round, widget.study.studyId);
+    }
+
+    if (context.mounted) {
+      Util.pushRoute(context, (context) =>
+          RoundDetailRoute(
             roundSeq: widget.roundSeq,
-            roundId: widget.round.roundId,
-            studyId: widget.studyId,
-            studyColor: widget.studyColor,));
+            roundId: widget.round.roundId, study: widget.study,));
+    }
   }
 
   void updatePlace() {
@@ -251,7 +256,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   void updateRound(Round round) {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      Round.createRound(round, widget.studyId);
+      Round.createRound(round, widget.study.studyId);
     }
     else {
       Round.updateAppointment(round);

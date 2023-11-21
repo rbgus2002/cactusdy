@@ -28,6 +28,26 @@ class Util {
     Navigator.of(context).pop();
   }
 
+  static SlideTransition _slideDown(BuildContext context, Animation<double> animation,  Animation<double> secondaryAnimation, Widget child) {
+    Offset top = const Offset(0.0, -1.0);
+    Offset center = Offset.zero;
+
+    var tween = Tween(begin: top, end: center).chain(CurveTween(curve: Curves.ease));
+
+    return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+    );
+  }
+
+  static pushRouteWithSlideDown(BuildContext context, RoutePageBuilder builder) {
+    return Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: builder,
+          transitionsBuilder: _slideDown,)
+    );
+  }
+
   static Color progressToColor(double taskProgress) {
     Color color = (taskProgress > 0.8)? OldColorStyles.green :
     (taskProgress > 0.5)? OldColorStyles.orange : OldColorStyles.red;

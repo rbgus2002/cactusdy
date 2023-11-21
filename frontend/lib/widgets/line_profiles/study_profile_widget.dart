@@ -8,7 +8,6 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/profile_images.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
@@ -28,8 +27,12 @@ class StudyProfileWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Study Image (Left Part)
-        SquircleWidget(
-          scale: _imageSize,
+        Container(
+          width: _imageSize,
+          height: _imageSize,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Design.radiusValue),),
           child: (studyInfo.study.picture.isNotEmpty) ?
               CachedNetworkImage(
                 imageUrl: studyInfo.study.picture,
@@ -76,8 +79,7 @@ class StudyProfileWidget extends StatelessWidget {
                         RoundDetailRoute(
                             roundSeq: studyInfo.roundSeq,
                             roundId: studyInfo.round.roundId,
-                            studyId: studyInfo.study.studyId,
-                            studyColor: studyInfo.study.color,)),),
+                            study: studyInfo.study,)),),
                   Design.padding4,
 
                   // Scheduled Tag
@@ -96,8 +98,8 @@ class StudyProfileWidget extends StatelessWidget {
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
-                              studyId: studyInfo.study.studyId,
-                              studyColor: studyInfo.study.color,)),),),
+                              study: studyInfo.study,),),
+                    ),),
                   const Spacer(),
 
                   ProfileImages(participantSummaries: studyInfo.participantSummaries),
@@ -108,13 +110,13 @@ class StudyProfileWidget extends StatelessWidget {
   }
 
   String _getPlaceAndTimeText(BuildContext context) {
-    String placeText = (studyInfo.round.studyPlace.isEmpty)?
-    studyInfo.round.studyPlace :
-    context.local.undefinedOf(context.local.place);
+    String placeText = (studyInfo.round.studyPlace.isNotEmpty)?
+      studyInfo.round.studyPlace :
+      context.local.undefinedOf(context.local.place);
 
     String timeText = (studyInfo.round.studyTime != null)?
-    TimeUtility.timeToString(studyInfo.round.studyTime!) :
-    context.local.undefinedOf(context.local.time);
+      TimeUtility.timeToString(studyInfo.round.studyTime!) :
+      context.local.undefinedOf(context.local.time);
 
     return '$placeText • $timeText';
   }

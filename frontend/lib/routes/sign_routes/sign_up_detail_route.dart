@@ -9,7 +9,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/secondary_button.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 import 'package:image_picker/image_picker.dart';
@@ -81,7 +81,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
               onChanged: (input) => _nickname = input,),
             Design.padding(64),
 
-            SecondaryButton(
+            PrimaryButton(
               text: context.local.signUp,
               onPressed: _tryToSignUp,),
           ],

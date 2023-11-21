@@ -5,9 +5,16 @@
     "confirm": "확인",
     "cancel": "취소",
     "complete": "완료",
+    "close": "닫기",
 
     "modify": "수정하기",
     "delete": "삭제하기",
+    "doneModify": "수정 완료",
+
+    "themeMode": "화면 스타일",
+    "lightMode": "밝은 모드",
+    "darkMode": "어두운 모드",
+    "systemMode": "기기 설정과 같이",
 
     "year": "년",
     "month": "월",
@@ -17,8 +24,12 @@
     "sec": "초",
     "date": "날짜",
 
+    "undefined": "미정",
+
+    "undefinedOf": "{target} 미정",
     "inputHint1": "{target}을 입력해주세요.",
     "inputHint2": "{target}를 입력해주세요.",
+    "ensureToDo": "정말 {action} 하시겠어요?",
 
     "unknownException": "알 수 없는 문제가 발생하였어요.",
 
@@ -51,6 +62,7 @@
     "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
     "name": "이름",
     "nickname": "닉네임",
+    "statusMessage": "상태 메세지",
     "editProfile": "프로필 편집",
     "setting": "설정",
 
@@ -60,30 +72,50 @@
     "createStudy": "스터디 만들기",
     "leaveStudy": "스터디 탈퇴",
     "editStudy": "스터디 편집",
+    "joinedStudy": "활동 스터디",
+    "studyName": "스터디 이름",
+    "studyDetail": "상세 설명",
+    "studyColor": "스터디 색상",
+    "studyColorHint": "색상은 개인별로 설정이 가능해요",
+
+    "admin": "방장",
+    "choseAdmin": "방장 선택",
+    "choseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
 
     "member": "멤버",
+    "kick": "내보내기",
+    "stab": "찌르기",
+
     "rules": "규칙",
     "writeRule": "규칙 작성",
 
     "task": "과제",
     "reserved": "예정",
+    "taskAchievementRateIs": "과제를 {rate}% 달성했어요",
+    "achievement": "달성",
+    "count": "회",
 
     "round": "회차",
     "roundList": "회차 리스트",
     "addRound": "회차 추가",
     "deleteRound": "회차 삭제",
-
     "record": "기록",
     "recordHint": "자세한 기록을 적어주세요",
 
+    "notice": "공지사항",
+    "title": "제목",
+    "content": "내용",
+    "comment": "댓글",
+    "writeReply": "답글쓰기",
+    "successToComment": "댓글을 작성했어요",
+    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+
+    "attendanceRate": "참석률",
     "attendanceTag": "출석태그",
     "attend": "참석",
     "absent": "결석",
     "late": "지각",
 
     "place": "장소",
-    "time": "시간",
-
-    "undefined": "미정",
-    "undefinedOf": "{target} 미정"
+    "time": "시간"
 }

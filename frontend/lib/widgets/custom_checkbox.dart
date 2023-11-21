@@ -52,8 +52,8 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           child: (_value)?
               Icon(
                 color: context.extraColors.grey000,
-                CustomIcons.check,
-                size: widget.size * 0.7) : null,
+                CustomIcons.check2,
+                size: widget.size) : null,
         ),
       onTap: () {
         setState(() => _value = !_value);

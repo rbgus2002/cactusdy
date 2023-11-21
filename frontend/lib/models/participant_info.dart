@@ -13,14 +13,8 @@ class ParticipantInfo {
   });
 
   factory ParticipantInfo.fromJson(Map<String, dynamic> json) {
-    User participant = User(
-        userId: json['userId'],
-        nickname: json['nickname'],
-        statusMessage: "",
-        picture: json['profileImage']??"");
-
     return ParticipantInfo(
-      participant: participant,
+      participant: User.fromJson(json),
       taskGroups: (json['taskGroups'] as List).map((t)
         => TaskGroup.fromJson(t, json['roundParticipantId'])).toList(),
     );

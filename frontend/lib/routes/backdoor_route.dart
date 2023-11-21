@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/routes/create_notice_route.dart';
+import 'package:group_study_app/routes/notices/create_notice_route.dart';
 import 'package:group_study_app/routes/design_test_route.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/notice_detail_route.dart';
-import 'package:group_study_app/routes/notice_list_route.dart';
+import 'package:group_study_app/routes/notices/notice_detail_route.dart';
+import 'package:group_study_app/routes/notices/notice_list_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_detail_route.dart';
@@ -76,8 +77,9 @@ class BackdoorRoute extends StatelessWidget {
 
                 Container(height: 15,),
                 ElevatedButton(onPressed: () {
+                  Notice.getNotice(21).then((notice) =>
                   Util.pushRoute(
-                    context, (context) => NoticeDetailRoute(noticeId: 21),);
+                    context, (context) => NoticeDetailRoute(notice: notice, studyId: 1,),));
                 },
                   child: const Text('Notice Detail Screen')
                   , style: ElevatedButton.styleFrom(
@@ -106,8 +108,7 @@ class BackdoorRoute extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) =>
                             RoundDetailRoute(
-                                roundSeq: -1, roundId: 1, studyId: testStudyId,
-                            studyColor: Colors.red,)),
+                                roundSeq: -1, roundId: 1, study: Study(studyId: 1, studyName: "TEST", color: Colors.red, detail: "idk", picture: ""))),
                   );
                 }, child: const Text('Round Detail Screen')
                   , style: ElevatedButton.styleFrom(
