@@ -8,12 +8,18 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
 class MemberProfileListWidget extends StatelessWidget {
   final int studyId;
+  final int hostId;
   final double scale;
+  final Function(ParticipantSummary)? onTap;
+  final double paddingSize;
 
   const MemberProfileListWidget({
     Key? key,
     required this.studyId,
+    required this.hostId,
     this.scale = 40.0,
+    this.paddingSize = 8,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -27,7 +33,7 @@ class MemberProfileListWidget extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length + 1, // add 1 for last add button
-              separatorBuilder: (context, index) => Design.padding8,
+              separatorBuilder: (context, index) => Design.padding(paddingSize),
               itemBuilder: (context, index) =>
                 _isLast(index, snapshot.data!.length) ?
                     // last => Add Participant Button
@@ -41,13 +47,20 @@ class MemberProfileListWidget extends StatelessWidget {
                           child: SquircleImageWidget(
                             scale: scale,
                             url: snapshot.data![index].picture),
-                          onTap: () => Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
-                            UserProfileRoute(
-                              userId: snapshot.data![index].userId,
-                              studyId: studyId),),),
+                          onTap: () {
+                            if (onTap != null) {
+                              onTap!(snapshot.data![index]);
+                            } else {
+                              // View Profile
+                              Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+                                  UserProfileRoute(
+                                      userId: snapshot.data![index].userId,
+                                      studyId: studyId));
+                            }
+                          },),
 
-                        if (index == 0)
-                          _adminBadge(),
+                        if (snapshot.data![index].userId == hostId)
+                          _adminBadge(context),
                       ],),
                     ),
           ) : SizedBox(height: scale,),
@@ -60,6 +73,8 @@ class MemberProfileListWidget extends StatelessWidget {
 
   Widget _addButton(BuildContext context) {
     return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       child: SquircleWidget(
         scale: scale,
         backgroundColor:Colors.transparent,
@@ -70,18 +85,18 @@ class MemberProfileListWidget extends StatelessWidget {
       onTap: () {});
   }
 
-  Widget _adminBadge() {
+  Widget _adminBadge(BuildContext context) {
     return Positioned(
         left: -4,
         top: 24,
         child: Container(
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: Design.basicShadows,),
+            color: context.extraColors.grey000,
+            shape: BoxShape.circle,),
           child: Image.asset(
             'assets/images/crown.png',
-            height: 18,
-            width: 18,),),
+            height: 17,
+            width: 17,),),
     );
   }
 }

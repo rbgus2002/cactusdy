@@ -123,9 +123,11 @@ class _TaskWidget extends State<TaskWidget> {
           text: widget.task.detail,
 
           buttonText1: context.local.modify,
+          isOutlined1: true,
           onPressed1: () => _focusNode.requestFocus(),
 
           buttonText2: context.local.delete,
+          isOutlined2: false,
           onPressed2: () => widget.onDeleteTask(widget.task, widget.index),),),
     );
   }

@@ -13,6 +13,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/dialogs/bottom_sheets.dart';
 import 'package:group_study_app/widgets/profile_images.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 import 'package:group_study_app/widgets/tags/rounded_tag.dart';
@@ -46,8 +47,7 @@ class ParticipantProfileWidget extends StatelessWidget {
                 studyId: studyId),),
           child: SquircleImageWidget(
               scale: _imageSize,
-              url: user.profileImage),
-        ),
+              url: user.profileImage),),
         Design.padding12,
 
         // User nickname & status message
@@ -77,84 +77,10 @@ class ParticipantProfileWidget extends StatelessWidget {
             style: TextStyles.caption1.copyWith(
               color: context.extraColors.grey700,),),
           color: context.extraColors.pink!,
-          onTap: () => noName(context)), //< FIXME
+          onTap: () => BottomSheets.statusTagPickerBottomSheet(
+              context: context,
+              onChose: (){})),//< FIXME
       ],
     );
-  }
-
-  void noName(BuildContext context) {
-    showModalBottomSheet(
-      barrierColor: context.extraColors.barrierColor!,
-      backgroundColor: context.extraColors.grey000,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),),),
-      context: context,
-      builder: (context) {
-        return Container(
-          height: 256,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Design.padding12,
-
-              // Design Bar
-              Center(
-                child: Container(
-                  width: 100,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: context.extraColors.grey300,
-                    borderRadius: Design.borderRadiusSmall,),),),
-              Design.padding32,
-
-              Text(
-                context.local.attendanceTag,
-                style: TextStyles.head3.copyWith(color: context.extraColors.grey900),),
-              Design.padding24,
-
-              Row(
-                children: [
-                  RoundedTag(
-                    width: 60,
-                    height: 36,
-                    color: context.extraColors.pink!,
-                    text: Text(
-                      context.local.attend,
-                      style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                    onTap: () {},),
-                  Design.padding16,
-
-                  RoundedTag(
-                    width: 60,
-                    height: 36,
-                    color: context.extraColors.green!,
-                    text: Text(
-                      context.local.late,
-                      style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                    onTap: () {},),
-                  Design.padding16,
-
-                  RoundedTag(
-                    width: 60,
-                    height: 36,
-                    color: context.extraColors.mint!,
-                    text: Text(
-                      context.local.absent,
-                      style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                    onTap: () {},),
-                ],),
-              Design.padding24,
-
-              OutlinedPrimaryButton(
-                text: context.local.confirm,
-                onPressed: () => Util.popRoute(context),),],
-          ),
-        );
-
-
-      },);
   }
 }

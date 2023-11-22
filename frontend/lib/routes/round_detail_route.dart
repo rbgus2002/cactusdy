@@ -9,6 +9,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
+import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
@@ -30,7 +31,7 @@ class RoundDetailRoute extends StatefulWidget {
 }
 
 class _RoundDetailRouteState extends State<RoundDetailRoute> {
-  final _detailRecordEditingController = TextEditingController();
+  final GlobalKey<InputFieldState> _detailEditor = GlobalKey();
   final _focusNode = FocusNode();
 
   Round? round;
@@ -60,7 +61,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       round = snapshot.data;
-                      _detailRecordEditingController.text = round!.detail ?? "";
 
                       return Container(
                         padding: Design.edgePadding,
@@ -97,7 +97,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   @override
   void dispose() {
-    _detailRecordEditingController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -114,13 +113,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         mainAxisSize: MainAxisSize.min,
         children: [
           // if there are studyTime => [ Month, Day ]
-          // else => [ Date, - ]
+          // else => [ -Mon, - ]
 
           // Month (or date)
           Text(
             (round?.studyTime != null)?
             '${round!.studyTime!.month}${context.local.month}' :
-            context.local.date,
+            '-${context.local.month}',
             style: TextStyles.body2.copyWith(
                 color: context.extraColors.grey800),),
 
@@ -201,6 +200,19 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _detailRecord() {
+    return InputField(
+      initText: round!.detail,
+      hintText: context.local.recordHint,
+      minLines: 4,
+      maxLines: 7,
+      maxLength: Round.detailMaxLength,
+      focusNode: _focusNode,
+      backgroundColor: context.extraColors.grey50,
+      onChanged: (input) { _isEdited = true; },
+      onTapOutSide: _updateDetail,
+      counter: true,
+    );
+/*
     return TextField(
       minLines: 4, maxLines: 7,
       maxLength: Round.detailMaxLength,
@@ -219,6 +231,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       onChanged: (value) { _isEdited = true; },
       onTapOutside: _updateDetail,
     );
+
+ */
   }
 
   Widget _roundPopupMenu() {
@@ -237,18 +251,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
               buttonText1: context.local.delete,
               onPressed1: () => _deleteRound(context),
-              isPrimary1: true,
 
               buttonText2: context.local.cancel,
-              onPressed2: () { }, // Assert to do nothing
-              isPrimary2: false),),
+              onPressed2: () { },),),
       ],
     );
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
     if (_isEdited) {
-      Round.updateDetail(widget.roundId, _detailRecordEditingController.text);
+      Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
     }
     _focusNode.unfocus();

@@ -34,7 +34,6 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
 
   String _name = "";
   String _nickname = "";
-  String _phoneModel = "string";
   XFile? _profileImage;
 
   bool _isProcessing = false;
@@ -138,10 +137,9 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
           await Auth.signUp(
               name: _name,
               nickname: _nickname,
-              phoneModel: _phoneModel,          // FIXME
-              picture: "",                      // FIXME
               phoneNumber: widget.phoneNumber,
-              password: widget.password).then((value) {
+              password: widget.password,
+              profileImage: _profileImage).then((value) {
             if (value) {
               Toast.showToast(context: context, message: context.local.successToSignUp);
               Util.pushRouteAndPopUntil(context, (context) => const StartRoute());

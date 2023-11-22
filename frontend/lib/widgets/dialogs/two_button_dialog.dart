@@ -16,12 +16,13 @@ class TwoButtonDialog {
   static Future<dynamic> showProfileDialog({
     required BuildContext context,
     required String text,
+    int maxLines = 1,
     required String buttonText1,
     required VoidCallback onPressed1,
+    bool isOutlined1 = false,
     required String buttonText2,
     required VoidCallback onPressed2,
-    bool isPrimary1 = false,
-    bool isPrimary2 = true,
+    bool isOutlined2 = true,
   }) {
     return showDialog(
         barrierColor: context.extraColors.barrierColor!,
@@ -44,32 +45,33 @@ class TwoButtonDialog {
                     constraints: const BoxConstraints(maxWidth: _textWidth),
                     child: Text(
                       text,
-                      maxLines: 1,
+                      maxLines: maxLines,
                       overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                       style: TextStyles.head3.copyWith(
                           color: context.extraColors.grey900)),),
                   Design.padding32,
 
-                  (isPrimary1)?
-                    PrimaryButton(
+                  (isOutlined1)?
+                    OutlinedPrimaryButton(
                       text: buttonText1,
                       onPressed: () {
                         Util.popRoute(context);
                         onPressed1(); }) :
-                    OutlinedPrimaryButton(
-                      text: buttonText1,
-                      onPressed: () {
-                        Util.popRoute(context);
-                        onPressed1(); }),
+                    PrimaryButton(
+                        text: buttonText1,
+                        onPressed: () {
+                          Util.popRoute(context);
+                          onPressed1(); }),
                   Design.padding12,
 
-                  (isPrimary2)?
-                    PrimaryButton(
+                  (isOutlined2)?
+                    OutlinedPrimaryButton(
                       text: buttonText2,
                       onPressed: () {
                         Util.popRoute(context);
                         onPressed2(); }) :
-                    OutlinedPrimaryButton(
+                    PrimaryButton(
                       text: buttonText2,
                       onPressed: () {
                         Util.popRoute(context);

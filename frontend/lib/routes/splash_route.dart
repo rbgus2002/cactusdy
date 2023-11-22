@@ -31,6 +31,7 @@ class _SplashRouteState extends State<SplashRoute> {
         Util.pushRoute(context, (context) => const StartRoute());
       }
       else {
+        print(Auth.signInfo!.token); //< FIXME
         Util.pushRoute(context, (context) => const BackdoorRoute());
       }
     });

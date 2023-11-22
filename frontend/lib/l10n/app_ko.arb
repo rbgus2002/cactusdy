@@ -7,6 +7,7 @@
     "complete": "완료",
     "close": "닫기",
 
+    "editing": "수정",
     "modify": "수정하기",
     "delete": "삭제하기",
     "doneModify": "수정 완료",
@@ -30,6 +31,7 @@
     "inputHint1": "{target}을 입력해주세요.",
     "inputHint2": "{target}를 입력해주세요.",
     "ensureToDo": "정말 {action} 하시겠어요?",
+    "successToDo": "성공적으로 {action}했어요",
 
     "unknownException": "알 수 없는 문제가 발생하였어요.",
 
@@ -79,8 +81,9 @@
     "studyColorHint": "색상은 개인별로 설정이 가능해요",
 
     "admin": "방장",
-    "choseAdmin": "방장 선택",
-    "choseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
+    "chooseAdmin": "방장 선택",
+    "chooseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
+    "ensureToGiveAdminTo": "{nickname}에게\n방장을 위임할까요?",
 
     "member": "멤버",
     "kick": "내보내기",

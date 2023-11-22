@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
-import 'package:group_study_app/routes/study_detail_route.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/old_design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
@@ -21,8 +21,8 @@ class OldStudyGroupPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<OldCircleButton> userImages = studyInfo.participantSummaries.map((participant) =>
-        OutlineCircleButton(scale: 24, url: participant.picture, stroke: 2,),).toList();
+    List<OldCircleButton> userImages = studyInfo.profileImages.map((participant) =>
+        OutlineCircleButton(scale: 24, url: participant, stroke: 2,),).toList();
     return OldPanel(
         boxShadows: OldDesign.basicShadows,
         child: Column(
