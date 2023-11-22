@@ -39,12 +39,6 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   bool _isProcessing = false;
 
   @override
-  void initState() {
-    super.initState();
-    //getPhoneModel();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -88,30 +82,6 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
       )
     );
   }
-
-  /*
-  void getPhoneModel() async {
-    final deviceInfo = DeviceInfoPlugin();
-    //< FIXME : Not Works...
-    return;
-    if (Platform.isAndroid) {
-      deviceInfo.androidInfo.then((build) => _phoneModel = build.device,);
-    }
-    else if (Platform.isIOS) {
-      deviceInfo.iosInfo.then((build) => _phoneModel = build.model);
-    }
-    else if (Platform.isMacOS) {
-      deviceInfo.macOsInfo.then((build) => _phoneModel = build.model);
-    }
-    else {
-      _phoneModel = "OTHER";
-    }
-    //final deviceInfo = await deviceInfoPlugin.deviceInfo;
-    //_phoneModel = deviceInfo.data['name'];
-    print(_phoneModel);
-  }
-
-   */
 
   String? _nameValidator(String? input) {
     if (input == null || input.isEmpty) {

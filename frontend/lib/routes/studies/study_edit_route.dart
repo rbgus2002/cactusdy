@@ -82,7 +82,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           alignment: Alignment.center,
           child: ImagePickerWidget(
             url: widget.study.picture,
-            backgroundColor: widget.study.color.withOpacity(0.2),
+            backgroundColor: widget.study.color.withOpacity(0.4),
             shape: RoundedRectangleBorder(
               borderRadius: Design.borderRadius,
               side: BorderSide(color: context.extraColors.grey200!, width: 2),),
@@ -101,9 +101,9 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           initText: _study.studyName,
           hintText: context.local.inputHint1(context.local.studyName),
           maxLength: Study.studyNameMaxLength,
+          counter: true,
           validator: _studyNameValidator,
-          onChanged: (input) => _study.studyName = input,
-          counter: true),
+          onChanged: (input) => _study.studyName = input,),
         Design.padding12,
 
         // Study Detail
@@ -118,11 +118,11 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           initText: _study.detail,
           hintText: context.local.inputHint1(context.local.studyDetail),
           maxLength: Study.studyDetailMaxLength,
-          minLines: 2,
+          minLines: 1,
           maxLines: 3,
+          counter: true,
           validator: _studyDetailValidator,
-          onChanged: (input) => _study.detail = input,
-          counter: true,),
+          onChanged: (input) => _study.detail = input,),
         Design.padding(32),
 
         // Study Color
