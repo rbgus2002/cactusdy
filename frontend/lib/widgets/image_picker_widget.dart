@@ -45,13 +45,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         InkWell(
           borderRadius: BorderRadius.circular(_size / 2),
           onTap: () => pickImage(),
-          child: SquircleWidget(
-            scale: _size,
-            child: _loadImage(),),),
-
-        InkWell(
-          borderRadius: BorderRadius.circular(_size / 2),
-          onTap: () => pickImage(),
           child: SizedBox(
             width: _size,
             height: _size,
