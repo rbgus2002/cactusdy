@@ -5,6 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:group_study_app/models/sign_info.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Auth {
   static const int phoneNumberMaxLength = 255;
@@ -15,28 +17,33 @@ class Auth {
   static Future<bool> signUp({
       required String name,
       required String nickname,
-      required String phoneModel,
-      required String picture,
       required String phoneNumber,
       required String password,
+      XFile? profileImage,
     }) async {
-    return true;
+
+    final request = http.MultipartRequest('Post',
+        Uri.parse('${DatabaseService.serverUrl}auth/signUp'),);
+
+    request.headers.addAll(DatabaseService.header);
+
     Map<String, dynamic> data = {
       'name': name,
       'nickname': nickname,
-      'phoneModel': phoneModel,
-      'picture': picture,
       'phoneNumber': phoneNumber,
       'password': password,
     };
 
-    final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/signUp'),
-      headers: DatabaseService.header,
-      body: json.encode(data),
-    );
+    request.files.add(http.MultipartFile.fromString(
+      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
-    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
+    }
+
+    final response = await request.send();
+    final responseJson = jsonDecode(await response.stream.bytesToString());
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
