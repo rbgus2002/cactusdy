@@ -4,8 +4,10 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/widgets/text_counter.dart';
 
 class InputField extends StatefulWidget {
+  final String? initText;
   final String? hintText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
@@ -15,9 +17,11 @@ class InputField extends StatefulWidget {
   final int? minLine;
   final bool obscureText;
   final bool enable;
+  final bool counter;
 
   const InputField({
     Key? key,
+    this.initText,
     this.hintText,
     this.obscureText = false,
     this.onChanged,
@@ -27,6 +31,7 @@ class InputField extends StatefulWidget {
     this.maxLine,
     this.minLine,
     this.enable = true,
+    this.counter = false,
   }) : super(key: key);
 
   @override
@@ -46,44 +51,72 @@ class InputFieldState extends State<InputField> {
     borderRadius: Design.borderRadius,
     borderSide: BorderSide(color: ColorStyles.errorColor),);
 
-  final TextEditingController _textEditingController = TextEditingController();
+  late final TextEditingController _textEditingController;
+
   String? _errorText;
 
   @override
+  void initState() {
+    super.initState();
+    _textEditingController = TextEditingController(text: widget.initText??"");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return TextField(
-      enabled: widget.enable,
-      controller: _textEditingController,
-      style: TextStyles.body1,
-      maxLength: widget.maxLength,
-      minLines: widget.minLine,
-      maxLines: widget.maxLine??1,
-      obscureText: widget.obscureText,
-      textAlign: TextAlign.justify,
-      focusNode: widget.focusNode,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        contentPadding: Design.textFieldPadding,
+    return Column(
+      children: [
+        TextField(
+          enabled: widget.enable,
+          controller: _textEditingController,
+          style: TextStyles.body1,
+          maxLength: widget.maxLength,
+          minLines: widget.minLine,
+          maxLines: widget.maxLine??1,
+          obscureText: widget.obscureText,
+          textAlign: TextAlign.justify,
+          focusNode: widget.focusNode,
+          onChanged: onChange,
+          decoration: InputDecoration(
+            contentPadding: Design.textFieldPadding,
 
-        hintText: widget.hintText,
-        hintStyle: TextStyles.body1.copyWith(
-          color: context.extraColors.grey400,),
+            hintText: widget.hintText,
+            hintStyle: TextStyles.body1.copyWith(
+              color: context.extraColors.grey400,),
 
-        filled: true,
-        fillColor: (_isError())? context.extraColors.inputFieldBackgroundErrorColor : context.extraColors.inputFieldBackgroundColor,
+            filled: true,
+            fillColor: (_isError())? context.extraColors.inputFieldBackgroundErrorColor : context.extraColors.inputFieldBackgroundColor,
 
-        border: _defaultBorder,
-        disabledBorder: _defaultBorder,
-        errorBorder: _defaultBorder,
-        focusedBorder: (_isError())? _errorBorderSide : _focusedBorderSide,
-        focusedErrorBorder: _errorBorderSide,
+            border: _defaultBorder,
+            disabledBorder: _defaultBorder,
+            errorBorder: _defaultBorder,
+            focusedBorder: (_isError())? _errorBorderSide : _focusedBorderSide,
+            focusedErrorBorder: _errorBorderSide,
 
-        counterText: "",
-        error: (_isError())? Transform.translate(
-            offset: Offset(-Design.buttonPadding.left, 0),
-            child: Text(errorText!, style: TextStyles.body1.copyWith(color: ColorStyles.errorColor),)) : null,
-      ),
+            counterText: "",
+            error: (_isError())? Transform.translate(
+                offset: Offset(-Design.buttonPadding.left, 0),
+                child: Text(errorText!, style: TextStyles.body1.copyWith(color: ColorStyles.errorColor),)) : null,
+          ),),
+
+        // Counter
+        Visibility(
+          visible: (widget.counter && (widget.maxLength != null)),
+          child: TextCounter(
+            length: _textEditingController.text.length,
+            maxLength: widget.maxLength!,),),
+      ],
     );
+  }
+
+  void onChange(String input) {
+    if (widget.onChanged != null) {
+      widget.onChanged!(input);
+    }
+
+    // For Counter
+    if (widget.counter) {
+      setState(() {});
+    }
   }
 
   @override
