@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 @Getter
 public class StudyInfoResponse {
     private Long studyId;
+    private Long hostUserId;
     private String studyName;
     private String picture;
     private String color;
@@ -34,6 +35,7 @@ public class StudyInfoResponse {
     public StudyInfoResponse(Participant participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
         Study study = participant.getStudy();
         this.studyId = study.getStudyId();
+        this.hostUserId = study.getHostUser().getUserId();
         this.studyName = study.getStudyName();
         this.picture = study.getPicture();
         this.color = participant.getColor();

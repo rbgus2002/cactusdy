@@ -4,16 +4,20 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParticipantSummaryResponse {
     private Long userId;
     private String picture;
+    private String nickname;
 
     private ParticipantSummaryResponse(Participant participant) {
-        this.userId = participant.getUser().getUserId();
-        this.picture = participant.getUser().getPicture();
+        User user = participant.getUser();
+        this.userId = user.getUserId();
+        this.picture = user.getPicture();
+        this.nickname = user.getNickname();
     }
 
     public static ParticipantSummaryResponse from(Participant participant){
