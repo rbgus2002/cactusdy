@@ -187,11 +187,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         text: context.local.confirmDeleteNotice,
 
         buttonText1: context.local.delete,
-        isPrimary1: true,
         onPressed1: _deleteNotice,
 
         buttonText2: context.local.cancel,
-        isPrimary2: false,
         onPressed2: () { }, // Assert to do Nothing
     );
   }
@@ -210,8 +208,8 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           Flexible(
             child: InputField(
               key: _commentEditor,
-              minLine: 1,
-              maxLine: 5,
+              minLines: 1,
+              maxLines: 5,
               maxLength: 100,
               focusNode: focusNode,
               hintText: context.local.inputHint1(context.local.comment),

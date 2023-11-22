@@ -11,13 +11,15 @@ class InputField extends StatefulWidget {
   final String? hintText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
+  final TapRegionCallback? onTapOutSide;
   final FocusNode? focusNode;
   final int? maxLength;
-  final int? maxLine;
-  final int? minLine;
+  final int? maxLines;
+  final int? minLines;
   final bool obscureText;
   final bool enable;
   final bool counter;
+  final Color? backgroundColor;
 
   const InputField({
     Key? key,
@@ -25,13 +27,15 @@ class InputField extends StatefulWidget {
     this.hintText,
     this.obscureText = false,
     this.onChanged,
+    this.onTapOutSide,
     this.focusNode,
     this.validator,
     this.maxLength,
-    this.maxLine,
-    this.minLine,
+    this.maxLines,
+    this.minLines,
     this.enable = true,
     this.counter = false,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -70,12 +74,13 @@ class InputFieldState extends State<InputField> {
           controller: _textEditingController,
           style: TextStyles.body1,
           maxLength: widget.maxLength,
-          minLines: widget.minLine,
-          maxLines: widget.maxLine??1,
+          minLines: widget.minLines,
+          maxLines: widget.maxLines??1,
           obscureText: widget.obscureText,
           textAlign: TextAlign.justify,
           focusNode: widget.focusNode,
           onChanged: onChange,
+          onTapOutside: widget.onTapOutSide,
           decoration: InputDecoration(
             contentPadding: Design.textFieldPadding,
 
@@ -84,7 +89,9 @@ class InputFieldState extends State<InputField> {
               color: context.extraColors.grey400,),
 
             filled: true,
-            fillColor: (_isError())? context.extraColors.inputFieldBackgroundErrorColor : context.extraColors.inputFieldBackgroundColor,
+            fillColor: (_isError())?
+                context.extraColors.inputFieldBackgroundErrorColor :
+                widget.backgroundColor??context.extraColors.inputFieldBackgroundColor,
 
             border: _defaultBorder,
             disabledBorder: _defaultBorder,

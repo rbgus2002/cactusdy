@@ -7,16 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/diagrams/squircle.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWidget extends StatefulWidget {
   final Function(XFile)? onPicked;
-  final String? url;
+  final ShapeBorder? shape;
+  final String url;
+  final Color? backgroundColor;
 
   const ImagePickerWidget({
     Key? key,
-    this.url,
     required this.onPicked,
+    this.backgroundColor,
+    this.shape,
+    this.url = "",
   }) : super(key: key);
 
   @override
@@ -34,32 +39,49 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-          alignment: Alignment.topLeft,
-          clipBehavior: Clip.none,
-          children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(_size / 2),
-              onTap: () => pickImage(),
-              child: SquircleWidget(
-                scale: _size,
-                child: _loadImage(),),),
+      alignment: Alignment.topLeft,
+      clipBehavior: Clip.none,
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(_size / 2),
+          onTap: () => pickImage(),
+          child: SquircleWidget(
+            scale: _size,
+            child: _loadImage(),),),
 
-            Positioned(
-              left: 58,
-              top: 47,
-              child: Container(
-                width: _overlaySize,
-                height: _overlaySize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.extraColors.grey000,
-                  border: Border.all(color: context.extraColors.grey200!, width: 2),),
-                child: Icon(
-                  CustomIcons.camera,
-                  color: context.extraColors.grey400,
-                  size: _iconSize,),),)
-          ],
-        );
+        InkWell(
+          borderRadius: BorderRadius.circular(_size / 2),
+          onTap: () => pickImage(),
+          child: SizedBox(
+            width: _size,
+            height: _size,
+            child: ClipPath.shape(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: widget.shape??const SquircleBorder(),
+                child: Material(
+                  color: widget.backgroundColor??context.extraColors.grey200,
+                  shape: widget.shape?? SquircleBorder(
+                      side: BorderSide(color: context.extraColors.grey200!, width: 2)),
+                  child: _loadImage(),
+                )),
+          )),
+
+        Positioned(
+          left: 58,
+          top: 47,
+          child: Container(
+            width: _overlaySize,
+            height: _overlaySize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: context.extraColors.grey000,
+              border: Border.all(color: context.extraColors.grey200!, width: 2),),
+            child: Icon(
+              CustomIcons.camera,
+              color: context.extraColors.grey400,
+              size: _iconSize,),),)
+      ],
+    );
   }
 
   Widget? _loadImage() {
@@ -69,9 +91,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         fit: BoxFit.cover,
       );
     }
-    else if (widget.url != null) {
+    else if (widget.url.isNotEmpty) {
       return CachedNetworkImage(
-        imageUrl: widget.url!,
+        imageUrl: widget.url,
         fit: BoxFit.cover);
     }
 

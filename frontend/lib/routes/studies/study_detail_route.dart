@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/studies/study_edit_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
-import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
+import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/round_summary_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
@@ -26,13 +27,12 @@ class StudyDetailRoute extends StatefulWidget {
 
 class _StudyDetailRouteState extends State<StudyDetailRoute> {
   static const double _imageSize = 80;
-
-  late Future<Study> _futureStudy;
+  late Study _study;
 
   @override
   void initState() {
     super.initState();
-    _futureStudy = Study.getStudySummary(widget.study.studyId);
+    _study = widget.study;
   }
 
   @override
@@ -40,11 +40,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: widget.study.color,
+        backgroundColor: _study.color,
         actions: [ _studyPopupMenu() ],
         shape: InputBorder.none,),
+
       body: RefreshIndicator(
-        onRefresh: () async => setState(() {}),
+        onRefresh: refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
 
@@ -53,12 +54,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Study Image and Appbar
-              FutureBuilder(
-                future: _futureStudy,
-                builder: (context, snapshot) =>
-                      (snapshot.hasData)?
-                      _profileWidget(snapshot.data!) :
-                      _profileWidget(widget.study),),
+              _profileWidget(_study),
 
               // Notices and Members
               Container(
@@ -67,7 +63,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Notice Summary Panel
-                    NoticeSummaryPanel(studyId: widget.study.studyId,),
+                    NoticeSummaryPanel(studyId: _study.studyId,),
                     Design.padding24,
 
                     // Member Images
@@ -77,7 +73,9 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                         context.extraColors.grey800),),
                     Design.padding16,
 
-                    MemberProfileListWidget(studyId: widget.study.studyId),
+                    MemberProfileListWidget(
+                      studyId: _study.studyId,
+                      hostId: _study.hostId,),
                     Design.padding32,
                 ]),
               ),
@@ -105,11 +103,9 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
               Container(
                 padding: Design.edgePadding,
-                child: RoundSummaryListWidget(study: widget.study,),),
-            ],
-          )
-        ),
-      )
+                child: RoundSummaryListWidget(study: _study,),),
+            ],),
+        ),),
     );
   }
 
@@ -163,12 +159,19 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.writing_outline),),
+          icon: const Icon(CustomIcons.writing_outline),
+          onTap: () => Util.pushRoute(context, (context) =>
+              StudyEditRoute(study: _study,)),),
 
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
           icon: const Icon(CustomIcons.setting_outline,),),
       ],);
+  }
+
+  Future<void> refresh() async {
+    Study.getStudySummary(_study.studyId).then((study) =>
+      setState(() => _study = study));
   }
 }

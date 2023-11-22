@@ -161,14 +161,12 @@ class _SettingRouteState extends State<SettingRoute> {
       text: context.local.ensureToDo(context.local.signOut),
 
       buttonText1: context.local.signOut,
-      isPrimary1: true,
       onPressed1: () {
         Auth.signOut();
         Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
       },
 
       buttonText2: context.local.close,
-      isPrimary2: false,
       onPressed2: () {}, // Assert to do nothing
     );
   }

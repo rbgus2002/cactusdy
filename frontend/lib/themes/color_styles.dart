@@ -63,7 +63,40 @@ class ColorStyles {
   static const Color _fillErrorBackground       = Color(0x19FF4747);
 
   /// Button colors
-  static const Color _disabledPrimaryButtonColor = Color(0xFFD0DDFF);
+  static const Color _disabledPrimaryButtonColor = Color(0x4D04C781); // opacity 30% : 4D
+
+
+  static const List<Color> studyColors = [
+    Color(0xFFFFC600),
+    Color(0xFFFF9F47),
+    Color(0xFFFF740F),
+    Color(0xFFFFABCE),
+    Color(0xFFFF8989),
+    Color(0xFFFF6060),
+
+    Color(0xFFFF6AB2),
+    Color(0xFFEA67FF),
+    Color(0xFFAF70FF),
+    Color(0xFF8987FF),
+    Color(0xFF5760B1),
+    Color(0xFF1C2043),
+
+    Color(0xFF52DE71),
+    Color(0xFF00E0B8),
+    Color(0xFF63D7A6),
+    Color(0xFF20D2D2),
+    Color(0xFF5ECCC5),
+    Color(0xFF4D9F5F),
+
+    Color(0xFFA6DAFF),
+    Color(0xFF6CBFEE),
+    Color(0xFF70A0FF),
+    Color(0xFF41BBFF),
+    Color(0xFF4B5DFF),
+    Color(0xFF2C3798),
+  ];
+
+
 
   static const ColorScheme colorScheme = ColorScheme(
       brightness: Brightness.light,
