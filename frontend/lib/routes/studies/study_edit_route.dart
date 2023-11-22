@@ -34,15 +34,17 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   final GlobalKey<InputFieldState> _studyNameEditor = GlobalKey();
   final GlobalKey<InputFieldState> _studyDetailEditor = GlobalKey();
 
+  late final bool _isHost;
   late Study _study;
-  XFile? _studyImage;
 
+  XFile? _studyImage;
   bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
     _study = widget.study;
+    _isHost = (_study.hostId == Auth.signInfo?.userId);
   }
 
   @override
@@ -52,7 +54,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         title: Text(context.local.editStudy),),
       body: SingleChildScrollView(
           padding: Design.edgePadding,
-          child: (_isHost()) ?
+          child: (_isHost) ?
             _adminView() :
             _userView(),),
       bottomNavigationBar: _doneModifyButton(),
@@ -189,7 +191,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   void _changeAdmin(ParticipantSummary newAdmin) {
     TwoButtonDialog.showProfileDialog(
         context: context,
-        text: context.local.ensureToGiveAdminTo("NICKNAME"),  //< FIXME
+        text: context.local.ensureToGiveAdminTo(newAdmin.nickname),
         maxLines: 4,
 
         buttonText1: context.local.confirm,
@@ -200,16 +202,12 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
     );
   }
 
-  bool _isHost() {
-    return (_study.hostId == Auth.signInfo?.userId);
-  }
-
   void _changeColor(Color newColor) {
     setState(() => _study.color = newColor);
   }
 
   void _updateStudy() async {
-    if (!_isHost() || _studyNameEditor.currentState!.validate() &&
+    if (!_isHost || _studyNameEditor.currentState!.validate() &&
         _studyDetailEditor.currentState!.validate()) {
       if (!_isProcessing) {
         _isProcessing = true;

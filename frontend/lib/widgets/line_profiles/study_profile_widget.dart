@@ -102,7 +102,7 @@ class StudyProfileWidget extends StatelessWidget {
                     ),),
                   const Spacer(),
 
-                  ProfileImages(participantSummaries: studyInfo.participantSummaries),
+                  StackedProfileImages(profileImages: studyInfo.profileImages),
                 ],)
             ],),
         )],

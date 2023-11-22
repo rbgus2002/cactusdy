@@ -12,14 +12,14 @@ import 'package:http/http.dart' as http;
 class StudyInfo {
   final Study study;
   final List<TaskGroup> taskGroups;
-  final List<ParticipantSummary> participantSummaries;
+  final List<String> profileImages; //< FIXME : { picture, statusTag } -> picture only API modify
   final int roundSeq;
   final Round round;
   
   const StudyInfo({
     required this.study,
     required this.taskGroups,
-    required this.participantSummaries,
+    required this.profileImages,
     required this.roundSeq,
     required this.round,
   });
@@ -29,8 +29,8 @@ class StudyInfo {
       study: Study.fromJson(json),
       taskGroups: ((json['taskGroups']??[]) as List).map((t)
         => TaskGroup.fromJson(t, json['roundParticipantId'])).toList(),
-      participantSummaries: ((json['profiles']??[]) as List).map((p)
-        => ParticipantSummary.fromJson(p)).toList(),
+      profileImages: ((json['profiles']??[]) as List).map((p)
+        => (p['picture']??"") as String).toList(),
       roundSeq: json['roundSeq'],
       round: Round.fromJson(json),
     );
