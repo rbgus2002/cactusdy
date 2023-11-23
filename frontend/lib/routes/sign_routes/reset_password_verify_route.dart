@@ -24,8 +24,6 @@ class ResetPasswordVerifyRoute extends StatefulWidget {
 }
 
 class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
-  static const int _verificationCodeLength = 6;
-
   final GlobalKey<InputFieldState> _phoneNumberEditor = GlobalKey();
   final GlobalKey<InputFieldState> _verificationCodeEditor = GlobalKey();
 
@@ -75,7 +73,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
                   InputField(
                     key: _verificationCodeEditor,
                     hintText: context.local.verificationCodeHint,
-                    maxLength: _verificationCodeLength,
+                    maxLength: Auth.verificationCodeLength,
                     validator: _verificationCodeValidator,
                     onChanged: (input) => _inputCode = input,),
                   Design.padding48,
@@ -105,7 +103,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
   }
 
   String? _verificationCodeValidator(String? input) {
-    if (input == null || input.length < _verificationCodeLength) {
+    if (input == null || input.length < Auth.verificationCodeLength) {
       return context.local.wrongVerificationCode;
     }
     return null;

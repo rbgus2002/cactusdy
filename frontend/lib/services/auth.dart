@@ -12,6 +12,8 @@ class Auth {
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
+  static const int verificationCodeLength = 6;
+
   static SignInfo? signInfo;
 
   static Future<bool> signUp({

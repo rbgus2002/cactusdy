@@ -12,6 +12,8 @@ class Study {
   static const int studyNameMaxLength = 30;
   static const int studyDetailMaxLength = 40;
 
+  static const int invitingCodeLength = 6;
+
   final int studyId;
   String studyName;
   String detail;
