@@ -32,10 +32,10 @@ class Study {
     return Study(
       studyId: json['studyId'],
       studyName: json['studyName'],
-      detail: json['detail']??"Test",//< FIXME detail never be null
+      detail: json['detail'],
       picture: json['picture']??"",
       color : Color(int.parse((json['color'] as String).substring(2), radix: 16)),
-      hostId: json['hostId']??json['hostUserId'],//< FIXME merge
+      hostId: json['hostUserId'],
     );
   }
 
@@ -50,6 +50,41 @@ class Study {
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studySummary'];
       return Study.fromJson(responseJson);
+    }
+  }
+
+  static Future<bool> createStudy({
+    required String studyName,
+    required String studyDetail,
+    required Color studyColor,
+    required XFile? studyImage
+  }) async {
+    final request = http.MultipartRequest('POST',
+      Uri.parse('${DatabaseService.serverUrl}api/studies'),);
+
+    request.headers.addAll(DatabaseService.getAuthHeader());
+
+    Map<String, dynamic> data = {
+      'studyName': studyName,
+      'detail': studyDetail,
+      'color': '0x${studyColor.value.toRadixString(16).toUpperCase()}',
+    };
+
+    request.files.add(http.MultipartFile.fromString(
+      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
+
+    if (studyImage != null) {
+      request.files.add(await http.MultipartFile.fromPath('profileImage', studyImage.path));
+    }
+
+    final response = await request.send();
+    final responseJson = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      print('sucess to create study');
+      return responseJson['success'];
     }
   }
 
