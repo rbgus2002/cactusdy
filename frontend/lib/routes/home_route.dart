@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/generate_study_route.dart';
+import 'package:group_study_app/routes/studies/study_create_route.dart';
 import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -59,7 +60,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       iconData: CustomIcons.plus_square_outline,
                       text: context.local.addStudy,
                       onTap: () => Util.pushRoute(context, (context) =>
-                          const GenerateStudyRoute())),
+                          const StudyCreateRoute())),
                   ],),
                 Design.padding12,
 
@@ -78,7 +79,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       Design.loadingIndicator,),
 
                 // add study panel
-                _AddStudyPanel(onTap: () {})
+                _AddStudyPanel(),
               ]),
           )
       ),
@@ -128,9 +129,7 @@ class _StudyPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Panel(
       onTap: () => Util.pushRoute(context, (context) =>
-          StudyDetailRoute(
-            study: studyInfo.study,
-          )),
+          StudyDetailRoute(study: studyInfo.study,),),
       child: Column(
         children: [
           StudyProfileWidget(studyInfo: studyInfo),
@@ -158,17 +157,15 @@ class _AddStudyPanel extends StatelessWidget {
   static const double _iconSize = 18;
   static const double _height = 256;
 
-  final VoidCallback onTap;
-
   const _AddStudyPanel({
     Key? key,
-    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _Panel(
-        onTap: onTap,
+        onTap: () => Util.pushRoute(context, (context) =>
+            const StudyCreateRoute()),
         child: SizedBox(
           height: _height,
           child: Column(
