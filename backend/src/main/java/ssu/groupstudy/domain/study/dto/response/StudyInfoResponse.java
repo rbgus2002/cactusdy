@@ -21,6 +21,7 @@ public class StudyInfoResponse {
     private Long studyId;
     private Long hostUserId;
     private String studyName;
+    private String detail;
     private String picture;
     private String color;
 
@@ -37,6 +38,7 @@ public class StudyInfoResponse {
         this.studyId = study.getStudyId();
         this.hostUserId = study.getHostUser().getUserId();
         this.studyName = study.getStudyName();
+        this.detail = study.getDetail();
         this.picture = study.getPicture();
         this.color = participant.getColor();
 
