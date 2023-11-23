@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 
 class User{
   // string length limits
+  static const int nameMaxLength = 255;
+  static const int nicknameMaxLength = 255;
   static const int statusMessageMaxLength = 255;
 
   // state code
@@ -14,22 +15,22 @@ class User{
 
   final int userId;
   final String nickname;
-  String statusMessage;
-  final String picture;
+  final String statusMessage;
+  final String profileImage;
 
   User({
     required this.userId,
     required this.nickname,
     required this.statusMessage,
-    required this.picture,
+    required this.profileImage,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
         userId: json['userId'],
-        nickname: json['nickname'],
-        statusMessage: json['statusMessage'],
-        picture: json['picture'],
+        nickname: json['nickname']??"",
+        statusMessage: json['statusMessage']??"",
+        profileImage: json['profileImage']??"", //< FIXME : null handling
     );
   }
 

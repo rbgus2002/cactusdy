@@ -16,9 +16,8 @@ class Notice {
   final String contents;
   final String writerNickname;
   final int writerId;
-  final int checkNoticeCount;
   final DateTime createDate;
-  int commentCount;
+  int checkNoticeCount;
   bool read;
 
   Notice({
@@ -27,9 +26,8 @@ class Notice {
     required this.contents,
     required this.writerNickname,
     required this.writerId,
-    required this.checkNoticeCount,
     required this.createDate,
-    required this.commentCount,
+    required this.checkNoticeCount,
     required this.read,
   });
 
@@ -39,9 +37,8 @@ class Notice {
       title: json["title"],
       contents: json["contents"],
       writerNickname: json["writerNickname"],
-      checkNoticeCount: json["checkNoticeCount"],
+      checkNoticeCount: json["readCount"]??0,
       createDate: DateTime.parse(json["createDate"]),
-      commentCount: json["commentCount"],
       writerId: json["writerId"],
       read: json["read"],
     );
@@ -56,37 +53,31 @@ class Notice {
       if (response.statusCode != DatabaseService.successCode) {
         throw Exception("Failed to load notice");
       } else {
-        print(json.decode(utf8.decode(response.bodyBytes)));
+        //print(json.decode(utf8.decode(response.bodyBytes)));
         var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
         return Notice.fromJson(responseJson);
       }
   }
 
-  static Future<int> createNotice(String title, String contents, int studyId) async {
-    try {
-      Map<String, dynamic> data = {
-        'title': title,
-        'contents': contents,
-        'studyId': studyId,
-      };
+  static Future<Notice> createNotice(String title, String contents, int studyId) async {
+    Map<String, dynamic> data = {
+      'title': title,
+      'contents': contents,
+      'studyId': studyId,
+    };
 
-      final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}api/notices'),
-        headers: DatabaseService.getAuthHeader(),
-        body: json.encode(data),
-      );
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/notices'),
+      headers: DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
 
-      if (response.statusCode != DatabaseService.successCode) {
-        throw Exception("Failed to create new notice");
-      } else {
-        int newStudyId = json.decode(response.body)['data']['noticeId'];
-        print("New notice is created successfully");
-        return newStudyId;
-      }
-    }
-    catch (e) {
-      print(e);
-      return noticeCreationError;
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Failed to create new notice");
+    } else {
+      print("success to create New notice");
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
+      return Notice.fromJson(responseJson);
     }
   }
 
@@ -129,7 +120,8 @@ class Notice {
       throw Exception("Failed to get Checked User Images");
     } else {
       var responseJson = json.decode(response.body)['data']['userImageList'];
-      return (responseJson as List).map((e) => e as String).toList();
+      return (responseJson as List).map((e) =>
+          (e == null) ? "" : e as String).toList();
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
@@ -20,7 +20,7 @@ class TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Flexible(fit: FlexFit.tight,child: Text(title, style: TextStyles.titleSmall),),
+        Flexible(fit: FlexFit.tight,child: Text(title, style: OldTextStyles.titleSmall),),
         IconButton(
           icon: icon,
           splashRadius: 16,

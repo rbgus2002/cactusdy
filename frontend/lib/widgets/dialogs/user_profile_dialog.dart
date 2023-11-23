@@ -2,13 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
-import 'package:group_study_app/widgets/charts/bar_chart.dart';
-import 'package:group_study_app/widgets/charts/chart.dart';
-import 'package:group_study_app/widgets/tags/study_group_tag.dart';
 
 class UserProfileDialog {
   static const double borderRadius = 30;
@@ -21,7 +17,7 @@ class UserProfileDialog {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          insetPadding: Design.edge15,
+          insetPadding: OldDesign.edge15,
           content: Container(
             child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -29,14 +25,14 @@ class UserProfileDialog {
                 children: [
                   Row(
                     children: [
-                      CircleButton(url: "", onTap: null, scale: 70), //< FIXME
-                      Design.padding15,
+                      CircleButton(url: "", onTap: null, size: 70), //< FIXME
+                      OldDesign.padding15,
                       Flexible(child:
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("NickName", style: TextStyles.titleLarge,),
-                          Text("Adittional comment", style: TextStyles.bodyLarge),
+                          Text("NickName", style: OldTextStyles.titleLarge,),
+                          Text("Adittional comment", style: OldTextStyles.bodyLarge),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
 
@@ -55,7 +51,7 @@ class UserProfileDialog {
                       )
                     ]
                   ),
-                  Design.padding15,
+                  OldDesign.padding15,
 
                   /*
                   const Text("HomeWork Rate", style: TextStyles.titleSmall, textAlign: TextAlign.start),
@@ -79,13 +75,13 @@ class UserProfileDialog {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       OutlinedButton(onPressed: () => User.notifyParticipant(userId, studyId),
-                        child: Text("Stab!", style: TextStyles.titleLarge,), style: OutlinedButton.styleFrom(
+                        child: Text("Stab!", style: OldTextStyles.titleLarge,), style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius),),
                           minimumSize: const Size(120, borderRadius),
                           foregroundColor: Colors.black,//< FIXME
                       ),),
                       OutlinedButton(onPressed: (){},
-                        child: Text("Kick!", style: TextStyles.titleLarge,), style: OutlinedButton.styleFrom(
+                        child: Text("Kick!", style: OldTextStyles.titleLarge,), style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
                           minimumSize: const Size(120, borderRadius),
                           //foregroundColor: < FIXME

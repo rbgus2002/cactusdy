@@ -3,23 +3,25 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_info.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/widgets/line_profiles/participant_line_profile_widget.dart';
+import 'package:group_study_app/widgets/line_profiles/participant_profile_widget.dart';
 import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
 class ParticipantInfoWidget extends StatefulWidget {
   final ParticipantInfo participantInfo;
   final Function(String, int, Function(Task)) subscribe;
   final Function(String, int, Task) notify;
+  final Study study;
 
   const ParticipantInfoWidget({
     Key? key,
     required this.participantInfo,
     required this.subscribe,
     required this.notify,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -51,20 +53,24 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ParticipantLineProfileWidget(
+        ParticipantProfileWidget(
           user: widget.participantInfo.participant,
-          taskProgress: _progress,
-        ),
-        Design.padding10,
+          studyId: widget.study.studyId,
+          taskProgress: _progress,),
+        Design.padding24,
 
-        ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            padding: EdgeInsets.zero,
-            
-            itemCount: widget.participantInfo.taskGroups.length,
-            itemBuilder: _buildTaskGroup,
-        )
+        ListView.separated(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          primary: false,
+
+          itemCount: widget.participantInfo.taskGroups.length,
+          itemBuilder: (context, index) =>
+              TaskGroupWidget(
+                taskGroup: widget.participantInfo.taskGroups[index],
+                studyColor: widget.study.color,),
+          separatorBuilder: (context, index) => Design.padding20,
+        ),
       ],
     );
   }
@@ -73,18 +79,6 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
   void dispose() {
     _progressController.dispose();
     super.dispose();
-  }
-
-  Widget _buildTaskGroup(BuildContext context, int index) {
-    return Container(
-      padding: Design.bottom15,
-      child: TaskGroupWidget(
-          taskGroup: widget.participantInfo.taskGroups[index],
-          updateProgress: updateProgress,
-          notify: widget.notify,
-          subscribe: widget.subscribe,
-      )
-    );
   }
 
   void updateProgress() {

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/app_icons.dart';
+import 'package:group_study_app/themes/old_app_icons.dart';
 import 'package:group_study_app/widgets/title_widget.dart';
 
 class RuleListWidget extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleWidget(title: "RULE", icon: AppIcons.edit,
+          TitleWidget(title: "RULE", icon: OldAppIcons.edit,
             onTap: ()=> null,),
           Text("Asd\n"),
         ],

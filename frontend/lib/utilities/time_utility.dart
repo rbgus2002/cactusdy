@@ -6,6 +6,14 @@ class TimeUtility {
   static const String _confirmText = "확인";
   static const String _cancelText = "취소";
 
+  static bool isScheduled(DateTime? date) {
+    return (date != null && date.compareTo(DateTime.now()) > 0);
+  }
+
+  static String getTime(DateTime dateTime) {
+    return DateFormat('a HH:mm', 'ko_KR').format(dateTime);
+  }
+
   static String getElapsedTime(DateTime dateTime) {
     final nowTime = DateTime.now();
     final difference = nowTime.difference(dateTime);
@@ -37,10 +45,10 @@ class TimeUtility {
     final nowTime = DateTime.now();
 
     if (dateTime.year == nowTime.year) {
-      return DateFormat("MM/dd HH:mm").format(dateTime);
+      return DateFormat('MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
     }
 
-    return DateFormat("yy/MM/dd HH:mm").format(dateTime);
+    return DateFormat('yy/MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
   }
 
   static String secondToString(int sec) {

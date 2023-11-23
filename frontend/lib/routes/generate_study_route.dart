@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/widgets/dialogs/color_picker_dialog.dart';
 
 class GenerateStudyRoute extends StatefulWidget {
@@ -33,12 +33,12 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = (isAuthorized) ?
-    ColorStyles.lightGrey : ColorStyles.grey;
+    OldColorStyles.lightGrey : OldColorStyles.grey;
 
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent,),
       body: Container(
-        padding: Design.edgePadding,
+        padding: OldDesign.edgePadding,
         child: Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.always,
@@ -49,22 +49,22 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Design.padding10,
+                      OldDesign.padding10,
                       if (!isAuthorized)
                         Container(
-                          padding: Design.edgePadding,
-                          margin: Design.bottom15,
-                          color: ColorStyles.grey,
+                          padding: OldDesign.edgePadding,
+                          margin: OldDesign.bottom15,
+                          color: OldColorStyles.grey,
                           child: const Text(
                             "스터디 방장만이 '스터디 이름', '상세 설명', '스터디 프로필 이미지'를 변경할 수 있어요.",
-                            style: TextStyles.bodyMedium,
+                            style: OldTextStyles.bodyMedium,
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                      Design.padding5,
+                      OldDesign.padding5,
 
-                      const Text("STUDY NAME", style: TextStyles.titleSmall),
-                      Design.padding5,
+                      const Text("STUDY NAME", style: OldTextStyles.titleSmall),
+                      OldDesign.padding5,
                       TextFormField(
                         enabled: isAuthorized,
                         maxLength: Study.studyNameMaxLength,
@@ -76,10 +76,10 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                           hintText: _studyNameHintText,
                         ),
                       ),
-                      Design.padding15,
+                      OldDesign.padding15,
 
-                      const Text("DETAIL", style: TextStyles.titleSmall),
-                      Design.padding5,
+                      const Text("DETAIL", style: OldTextStyles.titleSmall),
+                      OldDesign.padding5,
                       TextFormField(
                         enabled: isAuthorized,
 
@@ -92,10 +92,10 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                           hintText: _studyDetailHintText,
                         ),
                       ),
-                      Design.padding15,
+                      OldDesign.padding15,
 
-                      const Text("IMAGE", style: TextStyles.titleSmall),
-                      Design.padding5,
+                      const Text("IMAGE", style: OldTextStyles.titleSmall),
+                      OldDesign.padding5,
                       TextFormField(
                         enabled: isAuthorized,
                         maxLength: Study.studyNameMaxLength,
@@ -107,12 +107,12 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                           hintText: _studyDetailHintText,
                         ),
                       ),
-                      Design.padding15,
+                      OldDesign.padding15,
 
-                      const Text("STUDY COLOR", style: TextStyles.titleSmall),
+                      const Text("STUDY COLOR", style: OldTextStyles.titleSmall),
                       Text("스터디 색상은 개인별로 설정할 수 있어요",
-                        style: TextStyles.bodySmall,),
-                      Design.padding5,
+                        style: OldTextStyles.bodySmall,),
+                      OldDesign.padding5,
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _color,
@@ -126,8 +126,8 @@ class _GenerateStudyRouteState extends State<GenerateStudyRoute> {
                           child: null),
                     ],
                   ),
-                  Design.padding15,
-                  Design.padding15,
+                  OldDesign.padding15,
+                  OldDesign.padding15,
 
                   ElevatedButton(
                       onPressed: () {

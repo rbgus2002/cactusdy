@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 import 'package:group_study_app/widgets/charts/donut_chart.dart';
 
-class PercentCircleButton extends CircleButton {
+class PercentCircleButton extends OldCircleButton {
   final List<PercentInfo> percentInfos;
 
   const PercentCircleButton({

@@ -44,7 +44,7 @@ class Comment {
     return Comment(
       userId: json["userId"],
       nickname: json["nickname"],
-      picture: json["picture"],
+      picture: json["picture"]??"",
       commentId: json["commentId"],
       contents: json["contents"],
       createDate: DateTime.parse(json["createDate"]),
@@ -53,7 +53,7 @@ class Comment {
     );
   }
 
-  static Future<List<Comment>> getComments(int noticeId) async {
+  static Future<Map<String, dynamic>> getComments(int noticeId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/comments?noticeId=$noticeId'),
       headers: DatabaseService.getAuthHeader(),
@@ -63,7 +63,13 @@ class Comment {
       throw Exception("Failed to load comment");
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['comments'];
-      return (responseJson as List).map((e) => Comment.fromJson(e)).toList();
+
+      Map<String, dynamic> data = {
+        'commentCount': responseJson['commentCount'],
+        'commentInfos': (responseJson['commentInfos'] as List).map((e) => Comment.fromJson(e)).toList()
+      };
+
+      return data;
     }
   }
 

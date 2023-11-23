@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:group_study_app/themes/old_design.dart';
+import 'package:group_study_app/widgets/buttons/old_circle_button.dart';
 
 class LineProfileWidget extends StatelessWidget {
   final Widget circleButton;
@@ -25,7 +25,7 @@ class LineProfileWidget extends StatelessWidget {
       children: [
         circleButton,
 
-        Design.padding5,
+        OldDesign.padding5,
         Flexible(
           fit: FlexFit.tight,
           child: Column(

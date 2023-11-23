@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/routes/setting_route.dart';
+import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
-import 'package:group_study_app/widgets/line_profiles/line_profile_widget.dart';
+import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/item_entry.dart';
 
 class UserLineProfileWidget extends StatefulWidget {
   final User user;
@@ -22,68 +23,67 @@ class UserLineProfileWidget extends StatefulWidget {
 }
 
 class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
-  static const String _statusMessageHintText = "상태 메세지를 입력해 주세요";
-  static const double _scale = 50;
-
-  late final TextEditingController _statusMessageEditingController;
-  bool _isEdited = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _statusMessageEditingController =
-        TextEditingController(text: widget.user.statusMessage);
-  }
+  static const double _height = 48;
+  static const double _iconSize = 32;
 
   @override
   Widget build(BuildContext context) {
-    return LineProfileWidget(
-      circleButton: CircleButton(
-        scale: _scale,
-        url: widget.user.picture,
-        onTap: () => Test.onTabTest(),
-      ),
+    return SizedBox(
+      height: _height,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // User Profile Image
+          SquircleImageWidget(
+              scale: _height,
+              url: widget.user.profileImage),
+          Design.padding12,
 
-      topWidget: Text(widget.user.nickname, maxLines: 1, style: TextStyles.titleMedium,),
-      bottomWidget: TextField(
-        maxLength: User.statusMessageMaxLength,
-        maxLines: 1,
-        style: TextStyles.bodyMedium,
+          // User nickname & status message
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    widget.user.nickname,
+                    style: TextStyles.head3.copyWith(color: context.extraColors.grey800)),
+                Text(
+                    widget.user.statusMessage,
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
+              ],),
+          ),
 
-        controller: _statusMessageEditingController,
-        decoration: const InputDecoration(
-          hintText: _statusMessageHintText,
-          hintStyle: TextStyles.roundHintTextStyle,
-          isDense: true,
-          contentPadding: EdgeInsets.zero,
-
-          border: InputBorder.none,
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ColorStyles.taskTextColor)),
-          counterText: "",
-        ),
-
-        onChanged: (value) => _isEdited = true,
-        onTapOutside: (event) => updateStatusMessage(),
-        onSubmitted: (value) => updateStatusMessage(),
-      ),
-
-      suffixWidget: (widget.user.userId != Auth.signInfo!.userId)? null : IconButton(
-        icon: AppIcons.edit,
-        splashRadius: 16,
-        padding: EdgeInsets.zero,
-        constraints: const BoxConstraints(),
-        iconSize: 18,
-        onPressed: (){},
-      ),
+          // Popup button to edit profile and setting
+          SizedBox(
+            // for sizing down of PopupMenuButton
+            width: 20, // HomeRoute.specialPadding: 16 + 4
+            height: _iconSize,
+            child: PopupMenuButton(
+              icon: Icon(
+                  CustomIcons.more_vert,
+                  color: context.extraColors.grey500,
+                  size: _iconSize,),
+              splashRadius: _iconSize / 2,
+              padding: EdgeInsets.zero,
+              itemBuilder: _popupMenuBuilder,
+              constraints: const BoxConstraints(minWidth: Design.popupWidth),),),
+        ],)
     );
   }
 
-  void updateStatusMessage() {
-    if (_isEdited) {
-      widget.user.statusMessage = _statusMessageEditingController.text;
-      User.updateStatusMessage(widget.user);
-      _isEdited = false;
-    }
-    setState(() {});
+  List<PopupMenuEntry> _popupMenuBuilder(BuildContext context) {
+    return [
+      // edit profile
+      ItemEntry(
+        text: context.local.editProfile,
+        icon: const Icon(CustomIcons.writing_square_outline),),
+
+      // setting
+      ItemEntry(
+        text: context.local.setting,
+        icon: const Icon(CustomIcons.setting_outline,),
+        onTap: () => Util.pushRoute(context, (context) => const SettingRoute())),
+    ];
   }
 }

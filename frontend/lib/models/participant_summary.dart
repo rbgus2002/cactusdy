@@ -7,19 +7,19 @@ import 'package:http/http.dart' as http;
 class ParticipantSummary {
   final int userId;
   final String picture;
-  final String statusTag;
+  final String nickname;
 
   ParticipantSummary({
     required this.userId,
     required this.picture,
-    required this.statusTag,
+    required this.nickname,
   });
   
   factory ParticipantSummary.fromJson(Map<String, dynamic> json) {
     return ParticipantSummary(
         userId: json['userId']??User.nonAllocatedUserId,
-        picture: json['picture'],
-        statusTag: json['statusTag']??"NONE",
+        picture: json['picture']??"",
+        nickname: json['nickname']??"",
     );
   }
 

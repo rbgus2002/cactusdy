@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:group_study_app/themes/old_color_styles.dart';
 import 'package:group_study_app/widgets/charts/chart.dart';
 
 class DonutChart extends Chart {
@@ -42,7 +42,7 @@ class _DonutChartPaint extends CustomPainter {
 
   _DonutChartPaint({
     required this.percentInfos,
-    this.backgroundColor = ColorStyles.grey,
+    this.backgroundColor = OldColorStyles.grey,
     this.stroke = 15,
   });
 

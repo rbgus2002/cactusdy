@@ -1,16 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/design.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/participant_info_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
+  final Study study;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
+    required this.study,
   }) : super(key: key);
 
   @override
@@ -33,24 +36,28 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
       future: Task.getTasks(widget.roundId),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List participantInfos = snapshot.data!;
+          List participantInfoList = snapshot.data!;
           return ListView.builder(
             shrinkWrap: true,
             primary: false,
 
-            itemCount: participantInfos.length,
+            itemCount: participantInfoList.length,
             itemBuilder: (context, index) {
               return Container(
-                  padding: Design.bottom10,
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                  decoration: BoxDecoration(
+                    border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: context.extraColors.grey100!,
+                          width: 1,),),),
                   child: ParticipantInfoWidget(
-                    participantInfo: participantInfos[index],
+                    participantInfo: participantInfoList[index],
                     subscribe: addListener,
                     notify: notify,
-                  )
+                    study: widget.study,)
               );
             },);
         }
-
         return Design.loadingIndicator;
       },
     );

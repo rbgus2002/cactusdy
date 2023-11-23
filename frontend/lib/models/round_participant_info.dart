@@ -18,7 +18,7 @@ class RoundParticipantInfo {
     return RoundParticipantInfo(
         roundParticipantId: json['roundParticipantId'],
         userId: json['userId'],
-        picture: json['picture'],
+        picture: json['picture']??"",
         statusTag: json['statusTag'],
         taskProgress: json['taskProgress'],
     );
