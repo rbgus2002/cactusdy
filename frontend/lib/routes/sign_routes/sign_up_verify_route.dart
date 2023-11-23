@@ -25,8 +25,6 @@ class SignUpRoute extends StatefulWidget {
 }
 
 class _SignUpRouteState extends State<SignUpRoute> {
-  static const int _verificationCodeLength = 6;
-
   final GlobalKey<InputFieldState> _phoneNumberEditor = GlobalKey();
   final GlobalKey<InputFieldState> _verificationCodeEditor = GlobalKey();
 
@@ -79,7 +77,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                         InputField(
                           key: _verificationCodeEditor,
                           hintText: context.local.verificationCodeHint,
-                          maxLength: _verificationCodeLength,
+                          maxLength: Auth.verificationCodeLength,
                           validator: _verificationCodeValidator,
                           onChanged: (input) => _inputCode = input,),
                         Design.padding48,
@@ -109,7 +107,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
   }
 
   String? _verificationCodeValidator(String? input) {
-    if (input == null || input.length < _verificationCodeLength) {
+    if (input == null || input.length < Auth.verificationCodeLength) {
       return context.local.wrongVerificationCode;
     }
     return null;
