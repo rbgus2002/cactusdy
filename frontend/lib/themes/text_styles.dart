@@ -27,7 +27,9 @@ class TextStyles {
   static const TextStyle caption1 = TextStyle(fontSize: 14, letterSpacing: -0.28, height: 1.2857, fontWeight: semiBold);
   static const TextStyle caption2 = TextStyle(fontSize: 12, letterSpacing: -0.22, height: 1.1667, fontWeight: semiBold);
 
+  static const TextStyle startTitle = TextStyle(fontSize: 28, letterSpacing: -0.48, height: 1.4286, fontWeight: bold);
   static const TextStyle task = TextStyle(fontSize: 15, letterSpacing: -0.45, fontWeight: semiBold);
+
 
   static const TextTheme textTheme = TextTheme(
     displayLarge: head1,
