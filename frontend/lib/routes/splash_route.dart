@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/backdoor_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/logo.dart';
 
@@ -39,9 +40,11 @@ class _SplashRouteState extends State<SplashRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Logo(),
+        child: Image.asset(
+          Design.splashImagePath,
+          width: 134,),
       ),
     );
   }
