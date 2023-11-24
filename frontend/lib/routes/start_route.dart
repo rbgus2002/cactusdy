@@ -18,38 +18,71 @@ class StartRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: Design.edgePadding,
         alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            // logo
-            const Expanded(child: Logo()),
+            // Character
+            Positioned(
+              top: 260,
+              child: Image.asset(
+                Design.characterImagePath,
+                scale: 2,),),
 
-            // start(sing up) button
-            PrimaryButton(
-              text: context.local.start,
-              onPressed: () => Util.pushRoute(context, (context) => const SignUpRoute()),
-            ),
-            Design.padding4,
+            // Cloud
+            Positioned(
+              top: 488,
+              child: Image.asset(
+                Design.cloudImagePath,
+                color: context.extraColors.inputFieldBackgroundColor,
+                scale: 2,),),
+            Container(
+              margin: const EdgeInsets.only(top: 604),
+              color: context.extraColors.inputFieldBackgroundColor,
+              width: 420,
+              height: 600,),
 
-            // sing in button
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  context.local.alreadyHaveAnAccount,
-                  style: TextStyles.head5.copyWith(color: context.extraColors.grey500),),
+            // Text And Button
+            Container(
+              padding: Design.edgePadding,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Design.padding(92),
 
-                TextButton(
-                  onPressed: () => Util.pushRoute(context, (context) => const SignInRoute()),
-                  child : Text(context.local.signIn),),
-              ],),
+                  // Title Text
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Text(
+                      context.local.appDescription,
+                      style: TextStyles.startTitle,),),
+                  const Spacer(),
 
-            Design.padding28,
-          ],
-        )
+                  // start(sing up) button
+                  PrimaryButton(
+                    text: context.local.start,
+                    onPressed: () => Util.pushRoute(context, (context) =>
+                    const SignUpRoute()),),
+                  Design.padding4,
+
+                  // sing in button
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        context.local.alreadyHaveAnAccount,
+                        style: TextStyles.head5.copyWith(color: context.extraColors.grey500),),
+
+                      TextButton(
+                        onPressed: () => Util.pushRoute(context, (context) => const SignInRoute()),
+                        child : Text(context.local.signIn),),
+                    ],),
+
+                  // bottom margin
+                  Design.padding28,
+                ],),),
+          ],)
       ),
     );
   }

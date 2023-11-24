@@ -2,6 +2,9 @@
     "@@locale": "ko",
     "helloWorld": "Hello World!",
 
+    "appName": "뜨끔",
+    "appDescription": "스터디 그룹에서\n친구에게 뜨끔하게 찔리기..",
+
     "confirm": "확인",
     "cancel": "취소",
     "complete": "완료",

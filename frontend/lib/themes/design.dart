@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Design {
+  static const String splashImagePath = 'assets/images/splash.png';
+  static const String characterImagePath = 'assets/images/cactus.png';
+  static const String cloudImagePath = 'assets/images/cloud.png';
+
   static const String defaultProfileImagePath = 'assets/images/default-profile-image.png';
 
   static const double targetWidth = 512;
