@@ -14,6 +14,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("SELECT s FROM Study s WHERE s.studyId = :studyId AND s.deleteYn = 'N'")
     Optional<Study> findById(Long studyId);
 
+    @Query("SELECT s FROM Study s WHERE s.inviteCode = :inviteCode AND s.deleteYn = 'N'")
+    Optional<Study> findByInviteCode(String inviteCode);
+
     @Query("SELECT new ssu.groupstudy.domain.study.dto.StatusTagInfo(rp.statusTag, COUNT(r.roundId)) " +
             "FROM Study s " +
             "JOIN Round r ON s.studyId = r.study.studyId " +

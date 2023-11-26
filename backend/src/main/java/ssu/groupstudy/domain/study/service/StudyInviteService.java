@@ -30,12 +30,13 @@ public class StudyInviteService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public void inviteUser(User user, Long studyId) {
-        Study study = studyRepository.findById(studyId)
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+    public Long inviteUser(User user, String inviteCode) {
+        Study study = studyRepository.findByInviteCode(inviteCode)
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
         study.invite(user);
         addUserToFutureRounds(study, user);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
+        return study.getStudyId();
     }
 
     private void addUserToFutureRounds(Study study, User user) {
