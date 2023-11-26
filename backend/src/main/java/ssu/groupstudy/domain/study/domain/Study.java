@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.study.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
@@ -12,8 +13,6 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
-
-import static ssu.groupstudy.domain.study.domain.InviteCode.generate;
 
 @Entity
 @Getter
@@ -33,8 +32,8 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private String picture;
 
-    @Embedded
-    private final InviteCode inviteCode = generate();
+    @Column(nullable = false, unique = true, length = 6)
+    private String inviteCode;
 
     @Embedded
     private Participants participants;
@@ -46,6 +45,7 @@ public class Study extends BaseEntity {
         this.studyName = studyName;
         this.detail = detail;
         this.participants = Participants.empty(new Participant(hostUser, this), color);
+        this.inviteCode = RandomStringUtils.randomNumeric(6);
         this.deleteYn = 'N';
     }
 
@@ -54,11 +54,11 @@ public class Study extends BaseEntity {
         this.detail = detail;
     }
 
-    public static Study init(String studyName, String detail, String color, User hostUser){
+    public static Study init(String studyName, String detail, String color, User hostUser) {
         return new Study(studyName, detail, color, hostUser);
     }
 
-    public static Study create(String studyName, String detail){
+    public static Study create(String studyName, String detail) {
         return new Study(studyName, detail);
     }
 
@@ -74,27 +74,27 @@ public class Study extends BaseEntity {
     }
 
     public void leave(User user) {
-        if(!isParticipated(user)){
+        if (!isParticipated(user)) {
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
-        if(isHostUser(user) && participants.isGreaterThanOne()){
+        if (isHostUser(user) && participants.isGreaterThanOne()) {
             throw new CanNotLeaveStudyException(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY);
         }
         participants.removeParticipant(new Participant(user, this));
-        if(participants.isNoOne()){
+        if (participants.isNoOne()) {
             delete();
         }
     }
 
-    public boolean isHostUser(User user){
+    public boolean isHostUser(User user) {
         return participants.isHostUser(user);
     }
 
-    public List<Participant> getParticipants(){
+    public List<Participant> getParticipants() {
         return this.participants.getParticipants();
     }
 
-    public void delete(){
+    public void delete() {
         this.deleteYn = 'Y';
     }
 
@@ -102,11 +102,11 @@ public class Study extends BaseEntity {
         this.picture = picture;
     }
 
-    public User getHostUser(){
+    public User getHostUser() {
         return this.participants.getHostUser();
     }
 
-    public void edit(String studyName, String detail, User hostUser){
+    public void edit(String studyName, String detail, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants.updateHostUser(hostUser);
