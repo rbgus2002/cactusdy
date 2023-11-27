@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.11'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "io.sentry.jvm.gradle" version "3.14.0"
 }
 
 group = 'ssu'
@@ -70,8 +71,18 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    // sentry
+    implementation 'io.sentry:sentry-spring-boot-starter:6.34.0'
 }
 
 test {
     useJUnitPlatform()
+}
+
+sentry {
+    includeSourceContext = true
+    org = "groupstudy"
+    projectName = "java-spring-boot"
+    authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
