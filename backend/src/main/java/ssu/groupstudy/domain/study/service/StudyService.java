@@ -19,6 +19,7 @@ import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
+import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
@@ -49,15 +50,27 @@ public class StudyService {
     private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
     private final int INVITE_CODE_LENGTH = 6;
+    private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
-        String inviteCode = generateUniqueInviteCode();
-        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
+        canCreateNewStudy(user);
+        Study study = createNewStudy(dto, user);
         handleUploadProfileImage(study, image);
         createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
+    }
+
+    private void canCreateNewStudy(User user) {
+        if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
+            throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
+        }
+    }
+
+    private Study createNewStudy(CreateStudyRequest dto, User user) {
+        String inviteCode = generateUniqueInviteCode();
+        return studyRepository.save(dto.toEntity(user, inviteCode));
     }
 
     private String generateUniqueInviteCode() {

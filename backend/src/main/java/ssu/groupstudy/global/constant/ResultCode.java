@@ -24,6 +24,7 @@ public enum ResultCode {
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다."),
     USER_NOT_PARTICIPATED(400, "스터디에 참여중인 사용자가 아닙니다."),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "스터디원이 존재하면 방장은 스터디에 탈퇴할 수 없습니다."),
+    USER_CAN_NOT_CREATE_STUDY(400, "생성할 수 있는 스터디의 개수가 초과되었어요."),
     INVALID_TASK_ACCESS(400, "본인이 생성한 태스크만 접근이 가능합니다"),
     HOST_USER_ONLY_CAN_DELETE_ROUND(400, "방장만 회차를 삭제할 수 있습니다."),
 
