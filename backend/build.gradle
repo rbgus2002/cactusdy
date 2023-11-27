@@ -82,7 +82,7 @@ test {
 
 sentry {
     includeSourceContext = true
-//    org = "groupstudy"
-    projectName = "java-spring-boot"
+    org = "groupstudy"
+    projectName = "groupstudy-dev"
     authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
