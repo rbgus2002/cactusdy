@@ -21,7 +21,7 @@ public class CreateStudyRequest {
     @NotBlank(message = "색상을 입력하세요")
     private String color;
 
-    public Study toEntity(User hostUser){
-        return Study.init(this.studyName, this.detail, this.color, hostUser);
+    public Study toEntity(User hostUser, String inviteCode){
+        return Study.init(this.studyName, this.detail, this.color, hostUser, inviteCode);
     }
 }

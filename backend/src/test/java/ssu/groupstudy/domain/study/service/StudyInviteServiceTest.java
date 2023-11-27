@@ -43,12 +43,12 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findByInviteCode(any(String.class));
 
             // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(null, -1L))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(null, "000000"))
                     .isInstanceOf(StudyNotFoundException.class)
-                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+                    .hasMessage(ResultCode.STUDY_INVITE_CODE_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -56,11 +56,11 @@ class StudyInviteServiceTest extends ServiceTest {
         void inviteAlreadyExist() {
             // given
             // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
             알고리즘스터디.invite(장재우);
 
             // then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, -1L))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, "000000"))
                     .isInstanceOf(InviteAlreadyExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_INVITE_USER.getMessage());
         }
@@ -69,11 +69,11 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
             doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
 
             // when
-            studyInviteService.inviteUser(장재우, -1L);
+            studyInviteService.inviteUser(장재우, "000000");
 
             // then
             softly.assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2);

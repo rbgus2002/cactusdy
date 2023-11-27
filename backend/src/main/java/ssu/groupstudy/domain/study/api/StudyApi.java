@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
@@ -32,8 +33,8 @@ public class StudyApi {
     public ResponseDto register(@Valid @RequestPart("dto") CreateStudyRequest dto,
                                 @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
-        final Long studyId = studyService.createStudy(dto, profileImage, userDetails.getUser());
-        return DataResponseDto.of("studyId", studyId);
+        final StudyCreateResponse study = studyService.createStudy(dto, profileImage, userDetails.getUser());
+        return DataResponseDto.of("study", study);
     }
 
     @Operation(summary = "스터디 간단한 정보 가져오기")

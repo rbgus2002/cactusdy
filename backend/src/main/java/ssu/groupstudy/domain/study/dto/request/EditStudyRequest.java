@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.dto.request;
 
 import lombok.Getter;
 import lombok.ToString;
-import ssu.groupstudy.domain.study.domain.Study;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,8 +19,4 @@ public class EditStudyRequest {
 
     @NotNull(message = "방장을 입력하세요")
     private Long hostUserId;
-
-    public Study toEntity() {
-        return Study.create(studyName, detail);
-    }
 }

@@ -25,9 +25,9 @@ public class ParticipantApi {
 
     @Operation(summary = "스터디에 회원 초대")
     @PostMapping
-    public ResponseDto inviteUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long studyId){
-        studyInviteService.inviteUser(userDetails.getUser(), studyId);
-        return ResponseDto.success();
+    public ResponseDto inviteUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String inviteCode){
+        final Long studyId = studyInviteService.inviteUser(userDetails.getUser(), inviteCode);
+        return DataResponseDto.of("studyId", studyId);
     }
 
     @Operation(summary = "스터디에서 회원 탈퇴")

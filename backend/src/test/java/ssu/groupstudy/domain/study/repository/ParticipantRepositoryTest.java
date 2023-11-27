@@ -165,4 +165,25 @@ class ParticipantRepositoryTest {
         // then
         softly.assertThat(participantInfoList.size()).isEqualTo(2);
     }
+
+    @Test
+    @DisplayName("사용자가 참여중인 스터디의 개수를 가져온다")
+    void countParticipationStudy(){
+        // given
+        User 최규현 = userRepository.findById(1L).get();
+        Study 알고스터디 = studyRepository.findById(1L).get();
+        Study 영어스터디 = studyRepository.findById(2L).get();
+
+        // when
+        알고스터디.invite(최규현);
+        영어스터디.invite(최규현);
+        final int participationStudyBeforeDelete = participantRepository.countParticipationStudy(최규현);
+
+        영어스터디.delete();
+        final int participationStudyAfterDelete = participantRepository.countParticipationStudy(최규현);
+
+        // then
+        softly.assertThat(participationStudyBeforeDelete).isEqualTo(2);
+        softly.assertThat(participationStudyAfterDelete).isEqualTo(participationStudyBeforeDelete - 1);
+    }
 }
