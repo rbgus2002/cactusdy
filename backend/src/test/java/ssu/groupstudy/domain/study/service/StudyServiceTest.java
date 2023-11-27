@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -57,10 +58,10 @@ class StudyServiceTest extends ServiceTest {
                     .build()).when(roundRepository).save(any(Round.class));
 
             // when
-            Long studyId = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
+            StudyCreateResponse studyCreateResponse = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
 
             // then
-            softly.assertThat(studyId).isNotNull();
+            softly.assertThat(studyCreateResponse.getStudyId()).isNotNull();
             softly.assertThat(알고리즘스터디.getPicture()).isEqualTo(PROFILE_IMAGE);
         }
 

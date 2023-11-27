@@ -17,6 +17,7 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
+import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
@@ -53,13 +54,13 @@ public class StudyService {
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
-    public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
+    public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         canCreateNewStudy(user);
         Study study = createNewStudy(dto, user);
         handleUploadProfileImage(study, image);
         createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
-        return study.getStudyId();
+        return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
 
     private void canCreateNewStudy(User user) {
