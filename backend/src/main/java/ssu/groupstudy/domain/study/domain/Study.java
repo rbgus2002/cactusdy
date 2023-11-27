@@ -3,7 +3,6 @@ package ssu.groupstudy.domain.study.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
@@ -41,11 +40,11 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    private Study(String studyName, String detail, String color, User hostUser) {
+    private Study(String studyName, String detail, String color, User hostUser, String inviteCode) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants = Participants.empty(new Participant(hostUser, this), color);
-        this.inviteCode = RandomStringUtils.randomNumeric(6);
+        this.inviteCode = inviteCode;
         this.deleteYn = 'N';
     }
 
@@ -54,8 +53,8 @@ public class Study extends BaseEntity {
         this.detail = detail;
     }
 
-    public static Study init(String studyName, String detail, String color, User hostUser) {
-        return new Study(studyName, detail, color, hostUser);
+    public static Study init(String studyName, String detail, String color, User hostUser, String inviteCode) {
+        return new Study(studyName, detail, color, hostUser, inviteCode);
     }
 
     public static Study create(String studyName, String detail) {

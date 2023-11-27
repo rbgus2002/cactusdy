@@ -121,9 +121,9 @@ public class ServiceTest {
     }
 
     private void initStudy() {
-        알고리즘스터디 = 알고리즘스터디CreateRequest.toEntity(최규현);
+        알고리즘스터디 = 알고리즘스터디CreateRequest.toEntity(최규현, "000000");
         ReflectionTestUtils.setField(알고리즘스터디, "studyId", 3L);
-        영어스터디 = 영어스터디CreateRequest.toEntity(최규현);
+        영어스터디 = 영어스터디CreateRequest.toEntity(최규현, "000000");
         ReflectionTestUtils.setField(영어스터디, "studyId", 4L);
 
     }

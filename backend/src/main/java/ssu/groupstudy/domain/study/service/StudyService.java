@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,10 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
 import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
-import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
@@ -47,14 +48,25 @@ public class StudyService {
     private final RoundParticipantRepository roundParticipantRepository;
     private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
+    private final int INVITE_CODE_LENGTH = 6;
 
     @Transactional
     public Long createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
-        Study study = studyRepository.save(dto.toEntity(user));
+        String inviteCode = generateUniqueInviteCode();
+        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
         handleUploadProfileImage(study, image);
         createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
+    }
+
+    private String generateUniqueInviteCode() {
+        String newInviteCode;
+        do {
+            newInviteCode = RandomStringUtils.randomNumeric(INVITE_CODE_LENGTH);
+        } while (studyRepository.findByInviteCode(newInviteCode).isPresent());
+
+        return newInviteCode;
     }
 
     private void createDefaultRound(Study study) {
