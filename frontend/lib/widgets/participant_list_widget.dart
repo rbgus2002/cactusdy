@@ -19,8 +19,6 @@ class ParticipantListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //return _builder(context, 0);
-
     return SizedBox(
       height: size,
 

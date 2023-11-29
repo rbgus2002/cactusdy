@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
+import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/round_summary_widget.dart';
 
 class RoundSummaryListWidget extends StatefulWidget {
@@ -68,6 +70,9 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
             }
             return Design.loadingIndicator;
           }),
+        
+        _studyStart(),
+        Design.padding48,
       ],
     );
   }
@@ -88,6 +93,29 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
           roundSeq: roundSeq,
           round: _roundListModel[index],
         study: widget.study,),
+    );
+  }
+
+  Widget _studyStart() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SquircleWidget(
+          scale: 32,
+          side: BorderSide.none,
+          backgroundColor: ColorStyles.mainColor,
+          child: Center(
+            child: Icon(
+              CustomIcons.cactus,
+              size: 16,
+              color: context.extraColors.grey000,),),),
+        Design.padding8,
+
+        Text(
+          context.local.studyStart,
+          style: TextStyles.head5.copyWith(
+            color: ColorStyles.mainColor)),
+      ],
     );
   }
 

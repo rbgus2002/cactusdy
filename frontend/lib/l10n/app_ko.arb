@@ -84,6 +84,7 @@
     "studyName": "스터디 이름",
     "studyDetail": "상세 설명",
     "studyColor": "스터디 색상",
+    "studyStart": "스터디 시작!",
 
     "studyColorHint": "색상은 개인별로 설정이 가능해요",
     "setStudyInfo": "스터디 정보를 설정해 주세요",
