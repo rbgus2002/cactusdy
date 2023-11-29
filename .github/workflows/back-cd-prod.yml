@@ -41,7 +41,9 @@ jobs:
             mkdir -p ./src/main/resources
           fi
           touch ./src/main/resources/application.yml
-          echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_FOR_PROD }}" > ./src/main/resources/application.yml
+          touch ./src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
