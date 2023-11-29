@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableAspectJAutoProxy
 @Slf4j
 public class GroupstudyApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(GroupstudyApplication.class, args);
     }
