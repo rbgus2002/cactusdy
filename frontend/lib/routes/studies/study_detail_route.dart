@@ -37,6 +37,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -115,9 +116,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
-            height: 160,
-            color: study.color),
+          Positioned(
+            top: -160,
+            child: Container(
+              height: 320,
+              width: double.maxFinite,
+              color: study.color),),
 
           Positioned(
             left: 20,
