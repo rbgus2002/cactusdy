@@ -3,7 +3,6 @@ name: groupstudy CD
 on:
   push:
     branches:
-      - main
       - dev/back
     paths: 'backend/**'
 
@@ -14,7 +13,7 @@ env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: groupstudy-jar
   CODE_DEPLOY_APPLICATION_NAME: groupstudy-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-application-group
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-application-dev
   APPLICATION: ${{ secrets.APPLICATION }}
   wd: ./backend
 
