@@ -10,4 +10,4 @@ TIME_NOW=$(date +%c)
 cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
 # jar 파일 실행
-nohup env GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/groupstudy/credential/studygroup-fcm.json java --illegal-access=warn -Dcom.amazonaws.sdk.disableEc2Metadata=true -jar $JAR_FILE > $DEPLOY_LOG 2> $DEPLOY_LOG &
+nohup env GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/groupstudy/credential/studygroup-fcm.json java --illegal-access=warn -Dcom.amazonaws.sdk.disableEc2Metadata=true -jar -Dspring.profiles.active=prod $JAR_FILE > $DEPLOY_LOG 2> $DEPLOY_LOG &
