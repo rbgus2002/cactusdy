@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/routes/generate_study_route.dart';
 import 'package:group_study_app/routes/studies/study_create_route.dart';
 import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
@@ -45,8 +44,8 @@ class _HomeRouteState extends State<HomeRoute> {
                     future: User.getUserProfileSummary(),
                     builder: (context, snapshot) =>
                       (snapshot.hasData) ?
-                      UserLineProfileWidget(user: snapshot.data!) :
-                      Container(height: 48,)),
+                        UserLineProfileWidget(user: snapshot.data!) :
+                        Container(height: 48,)),
                 Design.padding(44),
 
                 // title line

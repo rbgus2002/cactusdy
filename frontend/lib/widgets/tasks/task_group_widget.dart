@@ -72,9 +72,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
             initialItemCount: _taskListModel.length,
             itemBuilder: _buildTask,),
-
-          //if (_taskListModel.length <= 0)
-          //  const Text(_taskEmptyMessage),  //< FIXME : Empty Tasks Message
         ]
     );
   }
