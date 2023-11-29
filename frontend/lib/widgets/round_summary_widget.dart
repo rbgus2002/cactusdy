@@ -11,7 +11,6 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/charts/dash_line_chart_widget.dart';
 import 'package:group_study_app/widgets/diagrams/dash_line.dart';
 import 'package:group_study_app/widgets/participant_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
@@ -20,12 +19,14 @@ class RoundSummaryWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
   final Study study;
+  final Function(int) onRemove;
 
   const RoundSummaryWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
     required this.study,
+    required this.onRemove,
   }) : super(key: key);
 
   @override
@@ -83,11 +84,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
                 _bodyBox(),
                 Design.padding(32),
-              ],
-            ),
-          ),
-        ],
-      ),
+              ],),),
+        ],),
     );
   }
 
@@ -231,7 +229,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
       Util.pushRoute(context, (context) =>
           RoundDetailRoute(
             roundSeq: widget.roundSeq,
-            roundId: widget.round.roundId, study: widget.study,));
+            roundId: widget.round.roundId, study: widget.study,
+            onRemove: () => widget.onRemove(widget.roundSeq),));
     }
   }
 

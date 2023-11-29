@@ -41,7 +41,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              context.local.roundList ,
+              context.local.roundList,
               style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
             AddButton(
                 iconData: CustomIcons.plus_square_outline,
@@ -71,7 +71,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
             return Design.loadingIndicator;
           }),
         
-        _studyStart(),
+        _studyStartFlagWidget(),
         Design.padding48,
       ],
     );
@@ -81,22 +81,52 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     _roundListKey = GlobalKey<AnimatedListState>();
     _roundListModel = ListModel(
         listKey: _roundListKey,
-        items: rounds??[]);
+        items: rounds??[],
+        removedItemBuilder: _buildRemovedItem);
+  }
+
+  Widget _buildRemovedItem(
+      Round round, BuildContext context, Animation<double> animation) {
+
+    // remove => end -> begin
+    var slideToLeft = animation.drive(Tween(
+        begin: const Offset(-1.0,0.0),
+        end: const Offset(0.0,0.0)));
+
+    return SlideTransition(
+      position: slideToLeft,
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: RoundSummaryWidget(
+          roundSeq: 0,
+          round: round,
+          study: widget.study,
+          onRemove: _removeRound,),),
+    );
   }
 
   Widget _buildItem(
       BuildContext context, int index, Animation<double> animation) {
     int roundSeq = _roundListModel.length - index;
-    return SizeTransition(
-        sizeFactor: animation,
-        child: RoundSummaryWidget(
-          roundSeq: roundSeq,
-          round: _roundListModel[index],
-        study: widget.study,),
+
+    // build => begin -> end
+    var slideFromLeft = animation.drive(Tween(
+        begin: const Offset(-1.0,0.0),
+        end: const Offset(0.0,0.0)));
+
+    return SlideTransition(
+        position: slideFromLeft,
+        child: SizeTransition(
+          sizeFactor: animation,
+          child: RoundSummaryWidget(
+              roundSeq: roundSeq,
+              round: _roundListModel[index],
+              study: widget.study,
+              onRemove: _removeRound,),),
     );
   }
 
-  Widget _studyStart() {
+  Widget _studyStartFlagWidget() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -119,7 +149,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     );
   }
 
-  Future<ListModel<Round>> getRound() async {
+  Future<ListModel<Round>> _getRound() async {
     List<Round> rounds = await Round.getRoundInfoResponses(widget.study.studyId);
     return ListModel(
       listKey: _roundListKey,
@@ -130,5 +160,10 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   void _addNewRound() {
     _roundListModel.insert(0, Round(
         roundId: Round.nonAllocatedRoundId,));
+  }
+
+  void _removeRound(int roundSeq) {
+    int index = _roundListModel.length - roundSeq;
+    _roundListModel.removeAt(index);
   }
 }

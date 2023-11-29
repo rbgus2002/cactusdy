@@ -23,9 +23,7 @@ class BarChart extends Chart {
           painter: _BarChartPaint(
               percentInfos: percentInfos,
               backgroundColor: backgroundColor,
-              stroke: stroke
-          ),
-        )
+              stroke: stroke),),
     );
   }
 }
