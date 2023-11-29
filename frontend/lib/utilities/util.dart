@@ -9,6 +9,10 @@ class Util {
   static const int _exceptionTextLength = "Exception: ".length;
   static const Duration textEditingWaitingTime = Duration(milliseconds: 12);
 
+  static Function doNothing() {
+    return () {};
+  }
+
   static Future<void> pushRoute(BuildContext context, WidgetBuilder builder) async {
     await Navigator.push(
       context,

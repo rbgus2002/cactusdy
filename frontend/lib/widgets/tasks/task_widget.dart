@@ -4,24 +4,21 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/custom_checkbox.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 
 class TaskWidget extends StatefulWidget {
-  final int index;
   final Task task;
   final Color color;
-  final Animation<double> animation;
   final Function(Task) onUpdateTaskDetail;
-  final Function(Task, int) onDeleteTask;
+  final Function(Task) onDeleteTask;
   final Function? onCheckTask;
 
   const TaskWidget({
     super.key,
-    required this.index,
     required this.task,
     required this.color,
-    required this.animation,
     required this.onUpdateTaskDetail,
     required this.onDeleteTask,
     this.onCheckTask,
@@ -32,43 +29,31 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidget extends State<TaskWidget> {
-  late final TextEditingController _textEditingController;
-  late final FocusNode _focusNode;
+  final _textEditingController = TextEditingController();
+  final _focusNode = FocusNode();
 
   bool _isEdited = false;
 
   @override
-  void initState() {
-    _textEditingController = TextEditingController(text: widget.task.detail);
-    _focusNode = FocusNode();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     _textEditingController.text = widget.task.detail;
-    return SizeTransition(
-      sizeFactor: widget.animation,
-      child: Ink(
-        height: 36,
-        child: InkWell(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomCheckBox(
-                value: widget.task.isDone,
-                activeColor: widget.color,
-                onChanged: _onChecked),
-              Design.padding12,
+    return Ink(
+      height: 36,
+      child: InkWell(
+        onTap: Util.doNothing, // For prevent miss touch
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomCheckBox(
+              value: widget.task.isDone,
+              activeColor: widget.color,
+              onChanged: _onChecked),
+            Design.padding12,
 
-              _taskDetail(),
-              _taskPopupMenu(),
-            ],
-          ),
-          onTap: () {},
-        ),
-
+            _taskDetail(),
+            _taskPopupMenu(),
+          ],),
       ),
     );
   }
@@ -128,7 +113,7 @@ class _TaskWidget extends State<TaskWidget> {
 
           buttonText2: context.local.delete,
           isOutlined2: false,
-          onPressed2: () => widget.onDeleteTask(widget.task, widget.index),),),
+          onPressed2: () => widget.onDeleteTask(widget.task),),),
     );
   }
 

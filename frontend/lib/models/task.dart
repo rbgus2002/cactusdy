@@ -100,7 +100,7 @@ class Task {
       throw Exception("Failed to update task detail");
     } else {
       bool success = json.decode(response.body)['success'];
-      if(success) print("Success to update task detail"); //< FIXME
+      if (success) print("Success to update task detail"); //< FIXME
       return success;
     }
   }
