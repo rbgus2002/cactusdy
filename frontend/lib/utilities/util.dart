@@ -9,15 +9,15 @@ class Util {
   static const int _exceptionTextLength = "Exception: ".length;
   static const Duration textEditingWaitingTime = Duration(milliseconds: 12);
 
-  static void pushRoute(BuildContext context, WidgetBuilder builder) {
-    Navigator.push(
+  static Future<void> pushRoute(BuildContext context, WidgetBuilder builder) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: builder),
     );
   }
 
-  static void pushRouteAndPopUntil(BuildContext context, WidgetBuilder builder) {
-    Navigator.pushAndRemoveUntil(
+  static Future<void> pushRouteAndPopUntil(BuildContext context, WidgetBuilder builder) async {
+    await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: builder),
         (route) => false
@@ -40,8 +40,8 @@ class Util {
     );
   }
 
-  static pushRouteWithSlideDown(BuildContext context, RoutePageBuilder builder) {
-    return Navigator.of(context).push(
+  static pushRouteWithSlideDown(BuildContext context, RoutePageBuilder builder) async {
+    return await Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: builder,
           transitionsBuilder: _slideDown,)

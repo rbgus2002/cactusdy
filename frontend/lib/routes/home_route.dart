@@ -31,7 +31,7 @@ class _HomeRouteState extends State<HomeRoute> {
     return Scaffold(
       backgroundColor: context.extraColors.baseBackgroundColor,
       body: RefreshIndicator(
-          onRefresh: () async => setState(() {}),
+          onRefresh: _refresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: _specialPadding,
@@ -74,15 +74,25 @@ class _HomeRouteState extends State<HomeRoute> {
                         primary: false,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) =>
-                            _StudyPanel(studyInfo: snapshot.data![index]),) :
+                            _StudyPanel(
+                                studyInfo: snapshot.data![index],
+                                onRefresh: _refresh),
+
+
+                      ) :
                       Design.loadingIndicator,),
 
                 // add study panel
-                _AddStudyPanel(),
+                _AddStudyPanel(
+                  onRefresh: _refresh),
               ]),
           )
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    return setState(() {});
   }
 }
 
@@ -118,20 +128,24 @@ class _Panel extends StatelessWidget {
 
 class _StudyPanel extends StatelessWidget {
   final StudyInfo studyInfo;
+  final Function onRefresh;
 
   const _StudyPanel({
     Key? key,
     required this.studyInfo,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _Panel(
       onTap: () => Util.pushRoute(context, (context) =>
-          StudyDetailRoute(study: studyInfo.study,),),
+          StudyDetailRoute(study: studyInfo.study,),).then((value) => onRefresh()),
       child: Column(
         children: [
-          StudyProfileWidget(studyInfo: studyInfo),
+          StudyProfileWidget(
+              studyInfo: studyInfo,
+              onRefresh: onRefresh,),
           Design.padding24,
 
           // task groups
@@ -156,15 +170,18 @@ class _AddStudyPanel extends StatelessWidget {
   static const double _iconSize = 18;
   static const double _height = 256;
 
+  final Function onRefresh;
+
   const _AddStudyPanel({
     Key? key,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _Panel(
         onTap: () => Util.pushRoute(context, (context) =>
-            const StudyCreateRoute()),
+            const StudyCreateRoute()).then((value) => onRefresh()),
         child: SizedBox(
           height: _height,
           child: Column(
@@ -182,8 +199,7 @@ class _AddStudyPanel extends StatelessWidget {
               Text(
                 context.local.createStudy,
                 style: TextStyles.head4.copyWith(color: ColorStyles.mainColor)),
-            ],
-          ),
+            ],),
         )
     );
   }

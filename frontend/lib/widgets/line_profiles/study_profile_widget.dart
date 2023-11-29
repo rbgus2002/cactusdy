@@ -15,10 +15,12 @@ class StudyProfileWidget extends StatelessWidget {
   static const double _imageSize = 88;
 
   final StudyInfo studyInfo;
+  final Function onRefresh;
 
   const StudyProfileWidget({
     Key? key,
     required this.studyInfo,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -79,7 +81,8 @@ class StudyProfileWidget extends StatelessWidget {
                         RoundDetailRoute(
                             roundSeq: studyInfo.roundSeq,
                             roundId: studyInfo.round.roundId,
-                            study: studyInfo.study,)),),
+                            study: studyInfo.study,
+                            onRemove: () => onRefresh(),)),),
                   Design.padding4,
 
                   // Scheduled Tag

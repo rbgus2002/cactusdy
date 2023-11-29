@@ -149,14 +149,6 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     );
   }
 
-  Future<ListModel<Round>> _getRound() async {
-    List<Round> rounds = await Round.getRoundInfoResponses(widget.study.studyId);
-    return ListModel(
-      listKey: _roundListKey,
-      items: rounds,
-    );
-  }
-
   void _addNewRound() {
     _roundListModel.insert(0, Round(
         roundId: Round.nonAllocatedRoundId,));
