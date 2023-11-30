@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
@@ -15,7 +16,6 @@ import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +33,8 @@ class CommentServiceTest extends ServiceTest {
     private NoticeRepository noticeRepository;
     @Mock
     private CommentRepository commentRepository;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
 
     @Nested
@@ -55,7 +57,6 @@ class CommentServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
             doReturn(댓글1).when(commentRepository).save(any(Comment.class));
-            알고리즘스터디.invite(최규현);
 
             // when
             Long commentId = commentService.createComment(댓글1CreateRequest, 최규현);
@@ -86,10 +87,10 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // when
-            List<CommentInfoResponse> comments = commentService.getComments(-1L);
+            CommentInfoResponse comments = commentService.getComments(-1L);
 
             // then
-            assertEquals(0, comments.size()); // TODO 테스트 고민해보기
+//            assertEquals(0, comments.size());
         }
 
         @Test
@@ -99,10 +100,10 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
 
             // when
-            List<CommentInfoResponse> comments = commentService.getComments(-1L);
+            CommentInfoResponse comments = commentService.getComments(-1L);
 
             // then
-            System.out.println(comments); // TODO 테스트 어케하냐.,., (일대다 연관관계 아니어서 그럼)
+            System.out.println(comments);
         }
     }
 

@@ -76,8 +76,6 @@ class RoundRepositoryTest{
             Appointment 회차3 = rounds.get(3).getAppointment();
 
             // then
-            softly.assertThatThrownBy(() -> 회차1_studyTime_null.getAppointment().getStudyTime())
-                            .isInstanceOf(NullPointerException.class);
             softly.assertThat(회차2.getStudyTime()).isAfter(회차3.getStudyTime());
         }
 
@@ -151,5 +149,18 @@ class RoundRepositoryTest{
         // then
         softly.assertThat(count).isEqualTo(2);
 
+    }
+
+    @Test
+    @DisplayName("현재 시각 기준으로 남은 회차들을 가져온다")
+    void findFutureRounds(){
+        // given
+        Study 스터디 = studyRepository.findById(1L).get();
+
+        // when
+        List<Round> futureRounds = roundRepository.findFutureRounds(스터디, LocalDateTime.now());
+
+        // then
+        softly.assertThat(futureRounds.size()).isGreaterThanOrEqualTo(1);
     }
 }

@@ -15,12 +15,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "notice")
 @Where(clause = "delete_yn = 'N'")
 public class Notice extends BaseEntity {
     @Id
@@ -43,12 +43,12 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "userId", nullable = false)
     private User writer;
 
-    @ManyToOne(fetch = EAGER) // FIXME : EAGER 필수 (this.study issue 관련)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
     @OneToMany(mappedBy = "notice", cascade = ALL, orphanRemoval = true)
-    private Set<CheckNotice> checkNotices = new HashSet<>();
+    private final Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder
     public Notice(String title, String contents, User writer, Study study) {

@@ -35,6 +35,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter-api')
     testImplementation('org.mockito:mockito-core')
     testImplementation('org.mockito:mockito-junit-jupiter')
+    testImplementation('org.mockito:mockito-inline:2.13.0')
     testImplementation('org.hamcrest:hamcrest')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
     testImplementation 'com.h2database:h2'
@@ -66,6 +67,9 @@ dependencies {
 
     // aws
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 test {

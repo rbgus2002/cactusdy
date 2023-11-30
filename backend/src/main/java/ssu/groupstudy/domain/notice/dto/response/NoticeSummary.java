@@ -12,6 +12,7 @@ public class NoticeSummary {
     private String title;
     private String contents;
     private String writerNickname;
+    private Long writerId;
     private char pinYn;
     private LocalDateTime createDate;
     private int commentCount;
@@ -23,6 +24,7 @@ public class NoticeSummary {
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.writerNickname = notice.getWriter().getNickname();
+        this.writerId = notice.getWriter().getUserId();
         this.pinYn = notice.getPinYn();
         this.createDate = notice.getCreateDate();
         this.commentCount = commentCount;

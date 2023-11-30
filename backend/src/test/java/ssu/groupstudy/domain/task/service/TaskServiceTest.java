@@ -85,7 +85,7 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(roundRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.getTasks(-1L))
+            assertThatThrownBy(() -> taskService.getTasks(-1L, 최규현))
                     .isInstanceOf(RoundNotFoundException.class)
                     .hasMessage(ROUND_NOT_FOUND.getMessage());
         }
@@ -147,7 +147,7 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L))
+            assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
         }

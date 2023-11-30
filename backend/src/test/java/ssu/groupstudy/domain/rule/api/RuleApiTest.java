@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.service.RuleService;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
@@ -44,8 +44,8 @@ class RuleApiTest {
     private CreateStudyRequest getRegisterStudyRequest() {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
-                .picture("")
                 .detail("알고문풀")
+                .color("0x00")
                 .build();
     }
 
@@ -59,8 +59,6 @@ class RuleApiTest {
                 .name("최규현")
                 .phoneNumber("rbgus200@@naver.com")
                 .nickname("규규")
-                .phoneModel("")
-                .picture("")
                 .build();
     }
 

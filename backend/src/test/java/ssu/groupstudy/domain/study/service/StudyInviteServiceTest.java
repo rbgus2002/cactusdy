@@ -5,14 +5,18 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,12 +28,14 @@ import static org.mockito.Mockito.doReturn;
 class StudyInviteServiceTest extends ServiceTest {
     @InjectMocks
     private StudyInviteService studyInviteService;
-
-    @Mock
-    private UserRepository userRepository;
-
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private RoundRepository roundRepository;
+    @Mock
+    private RoundParticipantRepository roundParticipantRepository;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @Nested
     class inviteUser {
@@ -37,12 +43,12 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyRepository).findByInviteCode(any(String.class));
 
             // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(null, -1L))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(null, "000000"))
                     .isInstanceOf(StudyNotFoundException.class)
-                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+                    .hasMessage(ResultCode.STUDY_INVITE_CODE_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -50,11 +56,11 @@ class StudyInviteServiceTest extends ServiceTest {
         void inviteAlreadyExist() {
             // given
             // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            알고리즘스터디.invite(최규현);
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
+            알고리즘스터디.invite(장재우);
 
             // then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, -1L))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, "000000"))
                     .isInstanceOf(InviteAlreadyExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_INVITE_USER.getMessage());
         }
@@ -63,16 +69,16 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
+            doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
 
             // when
-            studyInviteService.inviteUser(최규현, -1L);
+            studyInviteService.inviteUser(장재우, "000000");
 
             // then
-            assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2),
-                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
-            );
+            softly.assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2);
+            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(최규현, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)));
         }
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
@@ -100,8 +101,10 @@ class ParticipantRepositoryTest {
         void fail_hostUserInvalid() {
             // given, then
             User 최규현 = userRepository.findById(1L).get();
+            User 장재우 = userRepository.findById(2L).get();
             Study 스터디 = studyRepository.findById(1L).get();
             스터디.invite(최규현);
+            스터디.invite(장재우);
 
             // when
             softly.assertThatThrownBy(() -> 스터디.leave(최규현))
@@ -133,14 +136,8 @@ class ParticipantRepositoryTest {
         User 최규현 = userRepository.findById(1L).get();
         User 장재우 = userRepository.findById(2L).get();
         Study 스터디 = studyRepository.findById(1L).get();
-        participantRepository.save(Participant.builder()
-                .user(최규현)
-                .study(스터디)
-                .build());
-        participantRepository.save(Participant.builder()
-                .user(장재우)
-                .study(스터디)
-                .build());
+        participantRepository.save(new Participant(최규현, 스터디));
+        participantRepository.save(new Participant(장재우, 스터디));
 
         // when
         List<Participant> participants = 스터디.getParticipants().stream()
@@ -150,5 +147,43 @@ class ParticipantRepositoryTest {
         // then
         softly.assertThat(participants.size()).isEqualTo(2);
         softly.assertThat(participants.get(0).getCreateDate()).isBefore(participants.get(1).getCreateDate());
+    }
+
+    @Test
+    @DisplayName("사용자가 참여중인 스터디의 이름들을 가져온다")
+    void findStudyNamesByUser(){
+        // given
+        User 최규현 = userRepository.findById(1L).get();
+        Study 알고스터디 = studyRepository.findById(1L).get();
+        Study 영어스터디 = studyRepository.findById(2L).get();
+        participantRepository.save(new Participant(최규현, 알고스터디));
+        participantRepository.save(new Participant(최규현, 영어스터디));
+
+        // when
+        List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(최규현);
+
+        // then
+        softly.assertThat(participantInfoList.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("사용자가 참여중인 스터디의 개수를 가져온다")
+    void countParticipationStudy(){
+        // given
+        User 최규현 = userRepository.findById(1L).get();
+        Study 알고스터디 = studyRepository.findById(1L).get();
+        Study 영어스터디 = studyRepository.findById(2L).get();
+
+        // when
+        알고스터디.invite(최규현);
+        영어스터디.invite(최규현);
+        final int participationStudyBeforeDelete = participantRepository.countParticipationStudy(최규현);
+
+        영어스터디.delete();
+        final int participationStudyAfterDelete = participantRepository.countParticipationStudy(최규현);
+
+        // then
+        softly.assertThat(participationStudyBeforeDelete).isEqualTo(2);
+        softly.assertThat(participationStudyAfterDelete).isEqualTo(participationStudyBeforeDelete - 1);
     }
 }

@@ -1,6 +1,5 @@
 package ssu.groupstudy.domain.user.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
 import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +23,7 @@ class UserServiceTest extends ServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private AmazonS3 amazonS3;
+    private S3Utils s3Utils;
 
     @Test
     @DisplayName("프로필 상태메세지를 업데이트한다")
@@ -44,7 +44,7 @@ class UserServiceTest extends ServiceTest {
     void updateProfileImage() throws IOException {
         // given
         URL newPicture = new URL("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/groupstudy-user-profile-1");
-        doReturn(newPicture).when(amazonS3).getUrl(any(), any(String.class));
+        doReturn(newPicture.toString()).when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
 
         // when
         MultipartFile mock = new MockMultipartFile("tmp", new byte[1]);

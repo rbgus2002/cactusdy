@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.study.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
@@ -36,23 +35,20 @@ public class Participant extends BaseEntity {
     @Column(nullable = false)
     private String color;
 
-    @Column(nullable = false) // TODO : 강퇴 칼럼 삭제 검토
-    private char banishYn;
-
-    @Builder
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;
-        this.color = generateColor(); // TODO : 초기 색상 결정 정책 논의하기
-        this.banishYn = 'N';
+        this.color = getDefaultColor();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Participant)) {
+            return false;
+        }
         Participant that = (Participant) o;
-        return Objects.equals(user.getUserId(), that.user.getUserId()) && Objects.equals(study.getStudyId(), that.study.getStudyId());
+        return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.study.getStudyId(), that.getStudy().getStudyId());
     }
 
     @Override
@@ -60,19 +56,18 @@ public class Participant extends BaseEntity {
         return Objects.hash(user.getUserId(), study.getStudyId());
     }
 
-    // TODO : 초기에 색상 자동 결정 (초기에 선택 불가)
-    private String generateColor() {
-        return "0x00";
+    private String getDefaultColor() {
+        return "0xFFE8F5E9";
     }
 
-    public void setColor(String color){
+    public void setColor(String color) {
         validateHex(color);
         this.color = color;
     }
 
     private void validateHex(String color) {
         boolean isHex = color.matches("^(0[xX])?[0-9a-fA-F]+$");
-        if(!isHex){
+        if (!isHex) {
             throw new InvalidColorException(ResultCode.INVALID_COLOR);
         }
     }

@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -36,12 +39,18 @@ public class NoticeService {
     private final StudyRepository studyRepository;
     private final NoticeRepository noticeRepository;
     private final CommentRepository commentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public Long createNotice(CreateNoticeRequest dto, User writer) {
+    public NoticeInfoResponse createNotice(CreateNoticeRequest dto, User writer) {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        return noticeRepository.save(dto.toEntity(writer, study)).getNoticeId();
+        Notice notice = noticeRepository.save(dto.toEntity(writer, study));
+
+        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study));
+        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+
+        return NoticeInfoResponse.of(notice, writer);
     }
 
     @Transactional
@@ -100,8 +109,7 @@ public class NoticeService {
     public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        int commentCount = commentRepository.countCommentByNotice(notice);
-        return NoticeInfoResponse.of(notice, user, commentCount);
+        return NoticeInfoResponse.of(notice, user);
     }
 
     @Transactional

@@ -3,7 +3,9 @@ package ssu.groupstudy.domain.task.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
 import ssu.groupstudy.domain.task.dto.response.TaskResponse;
@@ -23,8 +25,8 @@ public class TaskApi {
 
     @Operation(summary = "회차의 태스크 목록 조회", description = "특정 회차에 태스크 목록을 모두 가져온다.")
     @GetMapping
-    public ResponseDto getTasks(@RequestParam Long roundId){
-        List<TaskResponse> tasks = taskService.getTasks(roundId);
+    public ResponseDto getTasks(@RequestParam Long roundId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        List<TaskResponse> tasks = taskService.getTasks(roundId, userDetails.getUser());
         return DataResponseDto.of("tasks", tasks);
     }
 
@@ -51,8 +53,8 @@ public class TaskApi {
 
     @Operation(summary = "태스크 수행 여부 변경", description = "태스크 수행 여부를 체크하거나 언체크한다")
     @PatchMapping("/check")
-    public ResponseDto switchTask(@RequestParam Long taskId){
-        char doneYn = taskService.switchTask(taskId);
+    public ResponseDto switchTask(@RequestParam Long taskId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        char doneYn = taskService.switchTask(taskId, userDetails.getUser());
         return DataResponseDto.of("doneYn", doneYn);
     }
 

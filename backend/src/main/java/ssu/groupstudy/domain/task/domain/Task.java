@@ -6,14 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
+import ssu.groupstudy.domain.study.domain.Study;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 import static ssu.groupstudy.global.constant.ResultCode.INVALID_TASK_ACCESS;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "task")
 @Getter
 public class Task{
     @Id
@@ -31,7 +33,7 @@ public class Task{
     @Column(nullable = false)
     private char doneYn;
 
-    @ManyToOne(fetch = EAGER) // TODO : EAGER로 하지 않으면 equals&hash 안먹음
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_round_id", nullable = false)
     private RoundParticipant roundParticipant;
 
@@ -52,7 +54,7 @@ public class Task{
     }
 
     public void validateAccess(RoundParticipant roundParticipant){
-        if(!roundParticipant.equals(this.roundParticipant)){
+        if(!this.roundParticipant.equals(roundParticipant)){
             throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }
     }
@@ -81,5 +83,9 @@ public class Task{
 
     public boolean isDone(){
         return doneYn == 'Y';
+    }
+
+    public Study getStudy(){
+        return getRoundParticipant().getRound().getStudy();
     }
 }

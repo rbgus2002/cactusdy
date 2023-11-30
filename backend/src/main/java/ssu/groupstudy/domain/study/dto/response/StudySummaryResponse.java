@@ -14,6 +14,7 @@ public class StudySummaryResponse {
     private String detail;
     private String picture;
     private String color;
+    private Long hostUserId;
 
     private StudySummaryResponse(Study study, Participant participant){
         this.studyId = study.getStudyId();
@@ -21,6 +22,7 @@ public class StudySummaryResponse {
         this.detail = study.getDetail();
         this.picture = study.getPicture();
         this.color = participant.getColor();
+        this.hostUserId = study.getHostUser().getUserId();
     }
 
     public static StudySummaryResponse from(Study study, Participant participant){

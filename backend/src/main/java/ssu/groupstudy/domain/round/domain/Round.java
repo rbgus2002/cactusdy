@@ -13,8 +13,8 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -22,6 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "round")
 public class Round extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,20 +35,20 @@ public class Round extends BaseEntity {
     private Appointment appointment;
 
     @OneToMany(mappedBy = "round", cascade = PERSIST)
-    private Set<RoundParticipant> roundParticipants = new HashSet<>();
+    private final List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="studyId", nullable = false)
+    @JoinColumn(name = "studyId", nullable = false)
     private Study study;
 
     @Column(nullable = false)
     private char deleteYn;
 
     @Builder
-    public Round(Study study, String studyPlace, LocalDateTime studyTime){
+    public Round(Study study, String studyPlace, LocalDateTime studyTime) {
         addParticipants(study.getParticipants());
         this.study = study;
-        this.appointment = new Appointment(studyPlace, studyTime);
+        this.appointment = Appointment.of(studyPlace, studyTime);
         this.deleteYn = 'N';
     }
 
@@ -55,36 +56,50 @@ public class Round extends BaseEntity {
         this.appointment = appointment;
     }
 
-    private void addParticipants(Set<Participant> participants){
+    private void addParticipants(List<Participant> participants) {
         participants.stream()
                 .map(participant -> new RoundParticipant(participant.getUser(), this))
                 .forEach(roundParticipants::add);
     }
 
-    public void updateAppointment(Appointment appointment){
+    public void updateAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
 
-    public void updateDetail(String detail){
+    public void updateDetail(String detail) {
         this.detail = detail;
     }
 
-    public void deleteRound(User user){
+    public void deleteRound(User user) {
         validateDelete(user);
         this.deleteYn = 'Y';
     }
 
     private void validateDelete(User user) {
-        if(!study.isHostUser(user)){
+        if (!study.isHostUser(user)) {
             throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
         }
     }
 
-    public LocalDateTime getStudyTime(){
-        return this.appointment.getStudyTime();
+    public Appointment getAppointment() {
+        if(this.appointment == null){
+            return Appointment.empty();
+        }
+        return this.appointment;
     }
 
-    public boolean isStudyTimeNull(){
-        return this.appointment.getStudyTime() == null;
+    public LocalDateTime getStudyTime() {
+        return getAppointment().getStudyTime();
+    }
+
+    public boolean isStudyTimeNull() {
+        return getAppointment().getStudyTime() == null;
+    }
+
+    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite() {
+        return this.roundParticipants.stream()
+                .filter(RoundParticipant::isAttendedOrExpectedOrLate)
+                .sorted(Comparator.comparing(RoundParticipant::getId))
+                .collect(Collectors.toList());
     }
 }

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.Optional;
@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static ssu.groupstudy.domain.round.domain.StatusTag.*;
+import static ssu.groupstudy.domain.round.domain.StatusTag.ATTENDANCE_EXPECTED;
+import static ssu.groupstudy.domain.round.domain.StatusTag.NONE;
 
 class RoundParticipantServiceTest extends ServiceTest {
     @InjectMocks
@@ -35,8 +36,8 @@ class RoundParticipantServiceTest extends ServiceTest {
 
             // when, then
             assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, NONE))
-                    .isInstanceOf(UserNotFoundException.class)
-                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
+                    .isInstanceOf(RoundParticipantNotFoundException.class)
+                    .hasMessage(ResultCode.ROUND_PARTICIPANT_NOT_FOUND.getMessage());
         }
 
         @Test

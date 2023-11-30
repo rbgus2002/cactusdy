@@ -7,7 +7,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.notice.service.NoticeService;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
@@ -29,7 +29,7 @@ class NoticeApiTest extends ApiTest {
         return CreateStudyRequest.builder()
                 .studyName("AlgorithmSSU")
                 .detail("알고문풀")
-                .picture("")
+                .color("0x00")
                 .build();
     }
 
@@ -43,8 +43,6 @@ class NoticeApiTest extends ApiTest {
                 .name("최규현")
                 .phoneNumber("rbgus200@@naver.com")
                 .nickname("규규")
-                .phoneModel("")
-                .picture("")
                 .build();
     }
 

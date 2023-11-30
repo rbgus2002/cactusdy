@@ -6,8 +6,6 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
@@ -18,7 +16,7 @@ import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.reuqest.CreateStudyRequest;
+import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.user.domain.User;
@@ -91,26 +89,21 @@ public class ServiceTest {
         최규현SignUpRequest = SignUpRequest.builder()
                 .name("최규현")
                 .phoneNumber("rbgus200@naver.com")
-                .password("password")
+                .password("valid")
                 .nickname("규규")
-                .phoneModel("")
-                .picture("")
                 .build();
         장재우SignUpRequest = SignUpRequest.builder()
                 .name("장재우")
                 .phoneNumber("arkady@naver.com")
                 .password("password")
                 .nickname("킹적화")
-                .phoneModel("")
-                .picture("")
                 .build();
     }
 
     private void initUser() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        최규현 = 최규현SignUpRequest.toEntity(passwordEncoder);
+        최규현 = 최규현SignUpRequest.toEntity("password");
         ReflectionTestUtils.setField(최규현, "userId", 1L);
-        장재우 = 장재우SignUpRequest.toEntity(passwordEncoder);
+        장재우 = 장재우SignUpRequest.toEntity("password");
         ReflectionTestUtils.setField(장재우, "userId", 2L);
     }
 
@@ -118,19 +111,19 @@ public class ServiceTest {
         알고리즘스터디CreateRequest = CreateStudyRequest.builder()
                 .studyName("알고리즘")
                 .detail("내용1")
-                .picture("")
+                .color("0x00")
                 .build();
         영어스터디CreateRequest = CreateStudyRequest.builder()
                 .studyName("영어")
                 .detail("내용2")
-                .picture("")
+                .color("0x00")
                 .build();
     }
 
     private void initStudy() {
-        알고리즘스터디 = 알고리즘스터디CreateRequest.toEntity(최규현);
+        알고리즘스터디 = 알고리즘스터디CreateRequest.toEntity(최규현, "000000");
         ReflectionTestUtils.setField(알고리즘스터디, "studyId", 3L);
-        영어스터디 = 영어스터디CreateRequest.toEntity(최규현);
+        영어스터디 = 영어스터디CreateRequest.toEntity(최규현, "000000");
         ReflectionTestUtils.setField(영어스터디, "studyId", 4L);
 
     }
@@ -144,10 +137,7 @@ public class ServiceTest {
     }
 
     private void initParticipant() {
-        스터디참여자_최규현 = Participant.builder()
-                .user(최규현)
-                .study(알고리즘스터디)
-                .build();
+        스터디참여자_최규현 = new Participant(최규현, 알고리즘스터디);
     }
 
     private void initNotice() {

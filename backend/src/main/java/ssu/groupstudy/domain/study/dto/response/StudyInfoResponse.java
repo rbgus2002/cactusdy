@@ -19,7 +19,9 @@ import java.util.stream.Stream;
 @Getter
 public class StudyInfoResponse {
     private Long studyId;
+    private Long hostUserId;
     private String studyName;
+    private String detail;
     private String picture;
     private String color;
 
@@ -34,7 +36,9 @@ public class StudyInfoResponse {
     public StudyInfoResponse(Participant participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
         Study study = participant.getStudy();
         this.studyId = study.getStudyId();
+        this.hostUserId = study.getHostUser().getUserId();
         this.studyName = study.getStudyName();
+        this.detail = study.getDetail();
         this.picture = study.getPicture();
         this.color = participant.getColor();
 
@@ -48,10 +52,12 @@ public class StudyInfoResponse {
                     .sorted(Comparator.comparing(RoundParticipant::getId))
                     .map(ParticipantProfileResponse::from)
                     .collect(Collectors.toList());
-            this.roundParticipantId = roundParticipant.getId();
-            this.taskGroups = Stream.of(TaskType.values())
-                    .map(taskType -> TaskGroup.of(taskType, roundParticipant))
-                    .collect(Collectors.toList());
+            if(roundParticipant != null){
+                this.roundParticipantId = roundParticipant.getId();
+                this.taskGroups = Stream.of(TaskType.values())
+                        .map(taskType -> TaskGroup.of(taskType, roundParticipant))
+                        .collect(Collectors.toList());
+            }
         }
     }
 

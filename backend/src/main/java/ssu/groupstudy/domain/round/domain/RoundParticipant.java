@@ -26,11 +26,11 @@ public class RoundParticipant {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="userId", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="roundId", nullable = false)
+    @JoinColumn(name = "roundId", nullable = false)
     private Round round;
 
     @Enumerated(EnumType.STRING)
@@ -38,33 +38,36 @@ public class RoundParticipant {
     private StatusTag statusTag;
 
     @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
-    private Set<Task> tasks = new HashSet<>();
+    private final Set<Task> tasks = new HashSet<>();
 
-    public RoundParticipant(User user, Round round){
+    public RoundParticipant(User user, Round round) {
         this.user = user;
         this.round = round;
-        this.statusTag = StatusTag.NONE;
+        this.statusTag = StatusTag.ATTENDANCE_EXPECTED;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoundParticipant roundParticipant = (RoundParticipant) o;
-        return Objects.equals(user, roundParticipant.user) && Objects.equals(round, roundParticipant.round);
-//        return Objects.equals(user.getUserId(), roundParticipant.user.getUserId()) && Objects.equals(round.getRoundId(), roundParticipant.round.getRoundId());
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RoundParticipant)) {
+            return false;
+        }
+        RoundParticipant that = (RoundParticipant) o;
+        return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.round.getRoundId(), that.getRound().getRoundId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, round);
+        return Objects.hash(user.getUserId(), round.getRoundId());
     }
 
-    public void updateStatus(StatusTag statusTag){
+    public void updateStatus(StatusTag statusTag) {
         this.statusTag = statusTag;
     }
 
-    public Task createTask(String detail, TaskType type){
+    public Task createTask(String detail, TaskType type) {
         Task task = Task.of(detail, type, this);
         tasks.add(task);
         return task;
@@ -75,6 +78,10 @@ public class RoundParticipant {
         long doneTaskCount = tasks.stream().filter(Task::isDone).count();
         double progress = (double) doneTaskCount / totalTaskCount;
         return Math.round(progress * 100.0) / 100.0;
+    }
+
+    public boolean isAttendedOrExpectedOrLate(){
+        return (this.statusTag == StatusTag.ATTENDANCE) || (this.statusTag == StatusTag.ATTENDANCE_EXPECTED) || (this.statusTag == StatusTag.LATE);
     }
 }
 

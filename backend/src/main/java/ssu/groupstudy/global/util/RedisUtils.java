@@ -3,11 +3,11 @@ package ssu.groupstudy.global.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class RedisUtils {
     private final StringRedisTemplate redisTemplate;
@@ -19,7 +19,7 @@ public class RedisUtils {
     }
 
     // (key, value) 저장
-    public void setData(String key, String value, Long duration){
+    public void setData(String key, String value){
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(key, value);
     }

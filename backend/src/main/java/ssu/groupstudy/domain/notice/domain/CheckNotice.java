@@ -14,6 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "check_notice")
 public class CheckNotice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +34,15 @@ public class CheckNotice {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o)
+    public boolean equals(Object o) {
+        if (this == o){
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (!(o instanceof CheckNotice)) {
             return false;
-
-        final CheckNotice that = (CheckNotice) o;
-        return Objects.equals(notice.getNoticeId(), that.notice.getNoticeId()) && Objects.equals(user.getUserId(), that.user.getUserId());
+        }
+        CheckNotice that = (CheckNotice) o;
+        return Objects.equals(this.notice.getNoticeId(), that.getNotice().getNoticeId()) && Objects.equals(this.user.getUserId(), that.getUser().getUserId());
     }
 
     @Override

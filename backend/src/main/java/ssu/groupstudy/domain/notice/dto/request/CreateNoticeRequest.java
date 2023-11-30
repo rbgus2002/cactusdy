@@ -11,13 +11,12 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class CreateNoticeRequest {
     @NotBlank
     private String title;
-
     @NotBlank
     private String contents;
-
     @NotNull
     private Long studyId;
 

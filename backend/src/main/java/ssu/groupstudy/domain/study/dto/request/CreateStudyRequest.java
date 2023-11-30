@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.dto.reuqest;
+package ssu.groupstudy.domain.study.dto.request;
 
 import lombok.*;
 import ssu.groupstudy.domain.study.domain.Study;
@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class CreateStudyRequest {
     @NotBlank(message = "이름을 입력하세요")
     private String studyName;
@@ -17,15 +18,10 @@ public class CreateStudyRequest {
     @NotBlank(message = "설명을 입력하세요")
     private String detail;
 
-    private String picture;
+    @NotBlank(message = "색상을 입력하세요")
+    private String color;
 
-
-    public Study toEntity(User hostUser){
-        return Study.builder()
-                .studyName(this.studyName)
-                .detail(this.detail)
-                .picture(this.picture)
-                .hostUser(hostUser)
-                .build();
+    public Study toEntity(User hostUser, String inviteCode){
+        return Study.init(this.studyName, this.detail, this.color, hostUser, inviteCode);
     }
 }

@@ -8,14 +8,19 @@ INSERT INTO authority (authority_id, role_name, user_id) VALUES (1, 'ROLE_USER',
 INSERT INTO authority (authority_id, role_name, user_id) VALUES (2, 'ROLE_USER', 2);
 
 -- study
-INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, host_user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '알고리즘스터디', 1);
-INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_qr_code, invite_link, picture, study_name, host_user_id) VALUES (2, '2023-09-01 21:06:28.140570', '2023-09-01 21:06:28.140570', 'N', '화이팅', 'not yet', 'not yet', 'string', '영어스터디', 1);
+INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_code, picture, study_name, host_user_id) VALUES (1, '2023-09-04 21:06:28.140570', '2023-09-04 21:06:28.140570', 'N', '화이팅', '123123', 'string', '알고리즘스터디', 1);
+INSERT INTO study (study_id, create_date, modified_date, delete_yn, detail, invite_code, picture, study_name, host_user_id) VALUES (2, '2023-09-01 21:06:28.140570', '2023-09-01 21:06:28.140570', 'N', '화이팅', '232423', 'string', '영어스터디', 1);
 
 -- notice
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (1, '2023-09-07 00:09:20.247088', '2023-09-07 00:10:34.784027', '상세내용1', 'N', 'N', '공지사항1', 1, 1);
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (2, '2023-09-08 00:09:20.247088', '2023-09-08 00:10:34.784027', '상세내용2', 'N', 'N', '공지사항2', 1, 1);
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (3, '2023-09-09 00:09:20.247088', '2023-09-09 00:10:34.784027', '상세내용3', 'N', 'N', '공지사항3', 1, 1);
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (4, '2023-09-10 00:09:20.247088', '2023-09-10 00:10:34.784027', '상세내용4', 'N', 'N', '공지사항4', 1, 1);
+
+-- check_notice
+INSERT INTO check_notice (id, notice_id, user_id) VALUES (1, 4, 1);
+INSERT INTO check_notice (id, notice_id, user_id) VALUES (2, 4, 2);
+
 
 -- comment
 INSERT INTO comment (comment_id, create_date, modified_date, contents, delete_yn, notice_id, parent_comment_id, user_id) VALUES (1, '2023-09-08 21:08:38.757307', '2023-09-08 21:08:38.757307', '댓글1', 'N', 1, null, 1);
@@ -34,9 +39,21 @@ INSERT INTO round (round_id, create_date, modified_date, study_place, study_time
 INSERT INTO round (round_id, create_date, modified_date, study_place, study_time, delete_yn, detail, study_id) VALUES (6, '2023-09-04 21:07:57.208247', '2023-09-06 23:02:09.487730', null, null, 'N', 'detail', 2);
 
 -- user_round
-INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'NONE', 1, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (1, 'ATTENDANCE', 1, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (2, 'ATTENDANCE', 3, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (3, 'ATTENDANCE', 4, 1);
+INSERT INTO rel_user_round (user_round_id, status_tag, round_id, user_id) VALUES (4, 'ATTENDANCE', 5, 1);
 
--- user_study
+-- task
+INSERT INTO task (task_id, detail, done_yn, task_type, user_round_id) VALUES (1, '과제1', 'Y', 'GROUP', 1);
+INSERT INTO task (task_id, detail, done_yn, task_type, user_round_id) VALUES (2, '과제2', 'Y', 'GROUP', 1);
+INSERT INTO task (task_id, detail, done_yn, task_type, user_round_id) VALUES (3, '과제3', 'Y', 'GROUP', 1);
+
+-- rule
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (1, '2023-10-22 21:34:31.260542', '2023-10-22 21:34:31.260542', 'N', '규칙1', 1);
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (2, '2023-10-22 21:47:42.022930', '2023-10-22 21:47:42.022930', 'N', '규칙2', 1);
+INSERT INTO rule (rule_id, create_date, modified_date, delete_yn, detail, study_id) VALUES (3, '2023-10-22 21:49:03.605070', '2023-10-22 21:49:03.605070', 'Y', '삭제된 규칙3', 1);
+
 
 
 

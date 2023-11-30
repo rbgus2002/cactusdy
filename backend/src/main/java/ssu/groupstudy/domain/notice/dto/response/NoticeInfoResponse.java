@@ -17,25 +17,21 @@ public class NoticeInfoResponse {
     private String writerNickname;
     private Long writerId;
     private boolean read;
-
-    private int checkNoticeCount;
-    private int commentCount;
-
+    private int readCount;
     private LocalDateTime createDate;
 
-    private NoticeInfoResponse(Notice notice, User user, int commentCount) {
+    private NoticeInfoResponse(Notice notice, User user) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
-        this.checkNoticeCount = notice.getCheckNotices().size();
+        this.readCount = notice.getCheckNotices().size();
         this.createDate = notice.getCreateDate();
         this.writerNickname = notice.getWriter().getNickname();
         this.writerId = notice.getWriter().getUserId();
-        this.commentCount = commentCount;
         this.read = notice.isRead(user);
     }
 
-    public static NoticeInfoResponse of(Notice notice, User user, int commentCount){
-        return new NoticeInfoResponse(notice, user, commentCount);
+    public static NoticeInfoResponse of(Notice notice, User user){
+        return new NoticeInfoResponse(notice, user);
     }
 }

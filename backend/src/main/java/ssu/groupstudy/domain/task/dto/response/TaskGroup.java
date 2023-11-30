@@ -12,10 +12,12 @@ import java.util.stream.Collectors;
 @Getter
 public class TaskGroup {
     private TaskType taskType;
+    private String taskTypeName;
     private List<TaskInfo> tasks;
 
     private TaskGroup(TaskType taskType, RoundParticipant roundParticipant) {
         this.taskType = taskType;
+        this.taskTypeName = taskType.getDetail();
         this.tasks = roundParticipant.getTasks().stream()
                 .filter(task -> task.isSameTypeOf(taskType))
                 .sorted(Comparator.comparing(Task::getDoneYn)

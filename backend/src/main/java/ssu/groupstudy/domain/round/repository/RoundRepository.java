@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoundRepository extends JpaRepository<Round, Long> {
-    Round save(Round round);
-
     @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
 
@@ -19,10 +17,16 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
      * 스터디의 회차 목록 가져오기
      * order by studyTime (null 값 우선)
      */
-    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' ORDER BY CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, r.appointment.studyTime DESC, r.roundId DESC")
+    @Query("SELECT r " +
+            "FROM Round r " +
+            "WHERE r.study = :study " +
+            "AND r.deleteYn = 'N' " +
+            "ORDER BY " +
+            "CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, " +
+            "r.appointment.studyTime DESC, " +
+            "r.roundId DESC")
     List<Round> findRoundsByStudyOrderByStudyTime(Study study);
 
-    // TODO : QueryDSL 사용을 통한 refactoring 필요
     /**
      * 스터디가 보여줄 가장 최신의 회차를 하나 가져온다.
      * Priority
@@ -56,4 +60,11 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime IS NOT NULL")
     Long countByStudyTimeIsNotNull(Study study);
+
+    /**
+     * 시각 기준으로 남은 회차들 가져오기
+     * StudyTime이 null인 회차 + StudyTime이 현재 시각보다 큰 회차
+     */
+    @Query("SELECT r FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND (r.appointment.studyTime IS NULL OR r.appointment.studyTime > :time)")
+    List<Round> findFutureRounds(Study study, LocalDateTime time);
 }

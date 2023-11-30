@@ -2,17 +2,21 @@ package ssu.groupstudy.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.comment.dto.response.ChildCommentInfoResponse;
+import ssu.groupstudy.domain.comment.dto.response.CommentDto;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 
@@ -28,14 +32,17 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Long createComment(CreateCommentRequest dto, User writer) {
         Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
-
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
+
+        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice));
+        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
         return commentRepository.save(comment).getCommentId();
     }
 
@@ -56,26 +63,28 @@ public class CommentService {
         return dto.toEntity(writer, notice, parent);
     }
 
-    public List<CommentInfoResponse> getComments(Long noticeId) {
+    public CommentInfoResponse getComments(Long noticeId) {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        int commentCount = commentRepository.countCommentByNotice(notice);
         List<Comment> parentComments = getParentComments(notice);
-        return transformToCommentsWithReplies(parentComments);
+        List<CommentDto> commentDtoList = transformToCommentsWithReplies(parentComments);
+        return CommentInfoResponse.of(commentCount, commentDtoList);
     }
 
     private List<Comment> getParentComments(Notice notice) {
         return commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
     }
 
-    private List<CommentInfoResponse> transformToCommentsWithReplies(List<Comment> parentComments){
+    private List<CommentDto> transformToCommentsWithReplies(List<Comment> parentComments){
         return parentComments.stream()
                 .map(this::transformToCommentsWithReplies)
                 .filter(commentInfo -> !commentInfo.requireRemoved())
                 .collect(Collectors.toList());
     }
 
-    private CommentInfoResponse transformToCommentsWithReplies(Comment comment){
-        CommentInfoResponse commentInfo = CommentInfoResponse.from(comment);
+    private CommentDto transformToCommentsWithReplies(Comment comment){
+        CommentDto commentInfo = CommentDto.from(comment);
         List<Comment> childComments = getChildComments(comment);
         commentInfo.appendReplies(transformToChildComments(childComments));
         return commentInfo;
