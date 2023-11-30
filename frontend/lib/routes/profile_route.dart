@@ -15,21 +15,21 @@ import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/tags/study_tag_widget.dart';
 
-class UserProfileRoute extends StatefulWidget {
+class ProfileRoute extends StatefulWidget {
   final int userId;
   final int studyId;
 
-  const UserProfileRoute({
+  const ProfileRoute({
     Key? key,
     required this.userId,
     required this.studyId,
   }) : super(key: key);
 
   @override
-  State<UserProfileRoute> createState() => _UserProfileRouteState();
+  State<ProfileRoute> createState() => _ProfileRouteState();
 }
 
-class _UserProfileRouteState extends State<UserProfileRoute> {
+class _ProfileRouteState extends State<ProfileRoute> {
   static const double _profileImageSize = 100;
 
   @override
