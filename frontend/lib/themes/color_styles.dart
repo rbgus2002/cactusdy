@@ -65,7 +65,6 @@ class ColorStyles {
   /// Button colors
   static const Color _disabledPrimaryButtonColor = Color(0x4D04C781); // opacity 30% : 4D
 
-
   static const List<Color> studyColors = [
     Color(0xFFFFC600),
     Color(0xFFFF9F47),
@@ -183,8 +182,6 @@ class ColorStyles {
         shape: const RoundedRectangleBorder(
             borderRadius: Design.borderRadius),)
   );
-
-
 }
 
 class ExtraColors extends ThemeExtension<ExtraColors> {

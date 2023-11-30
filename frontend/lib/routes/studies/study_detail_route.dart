@@ -31,6 +31,7 @@ class StudyDetailRoute extends StatefulWidget {
 
 class _StudyDetailRouteState extends State<StudyDetailRoute> {
   static const double _imageSize = 80;
+  static const double _iconSize = 32;
   late Study _study;
 
   @override
@@ -149,15 +150,13 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   Widget _studyPopupMenu() {
-    double iconSize = 32;
     return PopupMenuButton(
       icon: Icon(
         CustomIcons.more_vert,
-        color: context.extraColors.grey900),
-      color: context.extraColors.grey000,
-      iconSize: iconSize,
-      splashRadius: iconSize / 2,
-      position: PopupMenuPosition.under,
+        color: context.extraColors.grey900,
+        size: _iconSize,),
+      splashRadius: _iconSize / 2,
+      padding: EdgeInsets.zero,
       constraints: const BoxConstraints(minWidth: Design.popupWidth),
       itemBuilder: (context) => [
         // edit profile
@@ -170,7 +169,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
-          icon: const Icon(CustomIcons.exit_outline,),
+          icon: const Icon(CustomIcons.exit_outline),
           onTap: _showLeaveStudyDialog,),
       ],);
   }
