@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/backdoor_route.dart';
+import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/logo.dart';
 
 class SplashRoute extends StatefulWidget {
   const SplashRoute({
@@ -33,7 +32,7 @@ class _SplashRouteState extends State<SplashRoute> {
       }
       else {
         print(Auth.signInfo!.token); //< FIXME
-        Util.pushRoute(context, (context) => const BackdoorRoute());
+        Util.pushRoute(context, (context) => const HomeRoute());
       }
     });
   }
