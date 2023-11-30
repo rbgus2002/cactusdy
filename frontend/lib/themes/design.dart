@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Design {
+  static const String splashLottiePath = 'assets/lotties/splash.json';
   static const String splashImagePath = 'assets/images/splash.png';
   static const String characterImagePath = 'assets/images/cactus.png';
   static const String cloudImagePath = 'assets/images/cloud.png';
