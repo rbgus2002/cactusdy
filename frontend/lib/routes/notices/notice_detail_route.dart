@@ -190,7 +190,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         onPressed1: _deleteNotice,
 
         buttonText2: context.local.cancel,
-        onPressed2: () { }, // Assert to do Nothing
+        onPressed2: Util.doNothing,
     );
   }
 

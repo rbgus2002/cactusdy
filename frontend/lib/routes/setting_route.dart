@@ -164,7 +164,7 @@ class _SettingRouteState extends State<SettingRoute> {
       onPressed1: _signOut,
 
       buttonText2: context.local.close,
-      onPressed2: () {}, // Assert to do nothing
+      onPressed2: Util.doNothing,
     );
   }
 
