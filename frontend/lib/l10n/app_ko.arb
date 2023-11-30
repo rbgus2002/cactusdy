@@ -110,6 +110,7 @@
 
     "rules": "규칙",
     "writeRule": "규칙 작성",
+    "ruleIsLimitedTo": "규칙은 최대 {count}개 만들 수 있어요",
 
     "task": "과제",
     "reserved": "예정",

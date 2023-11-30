@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/rule.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/studies/study_edit_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -7,11 +8,11 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/round_summary_list_widget.dart';
+import 'package:group_study_app/widgets/rules/rule_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   final Study study;
@@ -81,27 +82,22 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                 ]),
               ),
 
+              // Study Rules
               Container(
                 padding: Design.edgePadding,
                 decoration: BoxDecoration(
                   border: Border.symmetric(
                       horizontal: BorderSide(color: context.extraColors.grey100!)),),
-                child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.local.rules,
-                        style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
-                      AddButton(
-                        iconData: CustomIcons.writing_outline,
-                        text: context.local.writeRule,
-                        onTap: () {}),
-                    ],),
-                ]),
-              ),
+                child: FutureBuilder(
+                  future: Rule.getRules(widget.study.studyId),
+                    builder: (context, snapshot) =>
+                      (snapshot.hasData)?
+                        RuleListWidget(
+                          rules: snapshot.data!,
+                          studyId: widget.study.studyId,) :
+                        Design.loadingIndicator,),),
 
+              // Study Rounds
               Container(
                 padding: Design.edgePadding,
                 child: RoundSummaryListWidget(study: _study,),),
