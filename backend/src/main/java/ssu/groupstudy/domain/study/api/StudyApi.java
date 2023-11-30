@@ -27,7 +27,6 @@ import java.util.List;
 public class StudyApi {
     private final StudyService studyService;
 
-    // TODO : 사용자 당 가질 수 있는 스터디 10개 제한 구현
     @Operation(summary = "새로운 스터디 생성")
     @PostMapping
     public ResponseDto register(@Valid @RequestPart("dto") CreateStudyRequest dto,

@@ -56,6 +56,6 @@ public enum ResultCode {
     INTERNAL_SERVER_ERROR(500, "서버에서 문제가 발생했습니다."),
     ;
 
-    private final int statusCode; // TODO : HttpStatus 타입으로 리팩토링
+    private final int statusCode;
     private final String message;
 }
