@@ -5,6 +5,7 @@ import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -34,6 +35,7 @@ class StudyProfileWidget extends StatelessWidget {
           height: _imageSize,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: BoxDecoration(
+            color: ColorUtil.addColor(studyInfo.study.color, context.extraColors.grey000!, 0.4),
             borderRadius: BorderRadius.circular(Design.radiusValue),),
           child: (studyInfo.study.picture.isNotEmpty) ?
               CachedNetworkImage(

@@ -7,6 +7,7 @@ import 'package:group_study_app/routes/studies/study_edit_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
@@ -129,6 +130,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
               height: _imageSize,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               decoration: BoxDecoration(
+                color: ColorUtil.addColor(widget.study.color, context.extraColors.grey000!, 0.4),
                 borderRadius: BorderRadius.circular(Design.radiusValue),),
               child: (study.picture.isNotEmpty) ?
                   CachedNetworkImage(
