@@ -23,6 +23,7 @@ public class StudyInfoResponse {
     private String studyName;
     private String detail;
     private String picture;
+    private String inviteCode;
     private String color;
 
     private Long roundSeq;
@@ -40,6 +41,7 @@ public class StudyInfoResponse {
         this.studyName = study.getStudyName();
         this.detail = study.getDetail();
         this.picture = study.getPicture();
+        this.inviteCode = study.getInviteCode();
         this.color = participant.getColor();
 
         this.roundSeq = roundSeq;

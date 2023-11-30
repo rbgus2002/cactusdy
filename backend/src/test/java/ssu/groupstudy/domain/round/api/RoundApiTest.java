@@ -9,10 +9,6 @@ import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.round.service.RoundService;
 import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-
 class RoundApiTest extends ApiTest {
     @InjectMocks
     private RoundApi roundApi;
@@ -27,7 +23,6 @@ class RoundApiTest extends ApiTest {
                 .build();
     }
 
-    // TODO : Gson을 통해 LocalDateTime을 Json으로 만들기 위해선 따로 TypeAdapter 생성해주어야 함
     @Nested
     class 회차생성 {
 //        @Test
