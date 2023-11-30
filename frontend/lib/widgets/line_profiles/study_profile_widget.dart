@@ -5,6 +5,7 @@ import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -15,10 +16,12 @@ class StudyProfileWidget extends StatelessWidget {
   static const double _imageSize = 88;
 
   final StudyInfo studyInfo;
+  final Function onRefresh;
 
   const StudyProfileWidget({
     Key? key,
     required this.studyInfo,
+    required this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -32,6 +35,7 @@ class StudyProfileWidget extends StatelessWidget {
           height: _imageSize,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: BoxDecoration(
+            color: ColorUtil.addColor(studyInfo.study.color, context.extraColors.grey000!, 0.4),
             borderRadius: BorderRadius.circular(Design.radiusValue),),
           child: (studyInfo.study.picture.isNotEmpty) ?
               CachedNetworkImage(
@@ -79,7 +83,8 @@ class StudyProfileWidget extends StatelessWidget {
                         RoundDetailRoute(
                             roundSeq: studyInfo.roundSeq,
                             roundId: studyInfo.round.roundId,
-                            study: studyInfo.study,)),),
+                            study: studyInfo.study,
+                            onRemove: () => onRefresh(),)),),
                   Design.padding4,
 
                   // Scheduled Tag

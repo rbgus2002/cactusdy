@@ -11,6 +11,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/diagrams/dash_line.dart';
 import 'package:group_study_app/widgets/participant_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
@@ -18,12 +19,14 @@ class RoundSummaryWidget extends StatefulWidget {
   final int roundSeq;
   final Round round;
   final Study study;
+  final Function(int) onRemove;
 
   const RoundSummaryWidget({
     Key? key,
     required this.roundSeq,
     required this.round,
     required this.study,
+    required this.onRemove,
   }) : super(key: key);
 
   @override
@@ -66,10 +69,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
                     style: TextStyles.head5.copyWith(
                         color: context.extraColors.grey000),),),),
 
-              const Placeholder( // FIXME
-                child: SizedBox(
-                  height: 174,
-                  width: 32,),),
+              (TimeUtility.isHeld(widget.round.studyTime))?
+                  const DashLine(color: ColorStyles.mainColor, bold: true,) :
+                  DashLine(color: context.extraColors.grey500!,),
             ],),
           Design.padding8,
 
@@ -81,12 +83,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
                 Design.padding16,
 
                 _bodyBox(),
-                Design.padding(36),
-              ],
-            ),
-          ),
-        ],
-      ),
+                Design.padding(32),
+              ],),),
+        ],),
     );
   }
 
@@ -230,7 +229,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
       Util.pushRoute(context, (context) =>
           RoundDetailRoute(
             roundSeq: widget.roundSeq,
-            roundId: widget.round.roundId, study: widget.study,));
+            roundId: widget.round.roundId, study: widget.study,
+            onRemove: () => widget.onRemove(widget.roundSeq),));
     }
   }
 

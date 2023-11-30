@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
+import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class CustomCheckBox extends StatefulWidget {
@@ -28,6 +29,7 @@ class CustomCheckBox extends StatefulWidget {
 }
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
+  static const double _iconSize = 14;
   bool _value = false;
 
   @override
@@ -40,9 +42,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(widget.size),
-      child: Container(
+      child: AnimatedContainer(
           width: widget.size,
           height: widget.size,
+          duration: AnimationSetting.animationDurationShort,
+          curve: Curves.easeOutCubic,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: (_value)?
@@ -51,9 +55,9 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
             borderRadius: BorderRadius.circular(widget.size),),
           child: (_value)?
               Icon(
-                color: context.extraColors.grey000,
                 CustomIcons.check2,
-                size: widget.size) : null,
+                color: context.extraColors.grey000,
+                size: _iconSize) : null,
         ),
       onTap: () {
         setState(() => _value = !_value);

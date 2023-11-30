@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/routes/studies/study_inviting_route.dart';
-import 'package:group_study_app/routes/user_profile_route.dart';
+import 'package:group_study_app/routes/profile_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -54,7 +54,7 @@ class MemberProfileListWidget extends StatelessWidget {
                             } else {
                               // View Profile
                               Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
-                                  UserProfileRoute(
+                                  ProfileRoute(
                                       userId: snapshot.data![index].userId,
                                       studyId: studyId));
                             }

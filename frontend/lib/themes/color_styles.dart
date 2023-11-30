@@ -7,7 +7,7 @@ import 'package:group_study_app/themes/text_styles.dart';
 class ColorStyles {
   /// [mainColor] & [secondColor]
   static const Color mainColor    = Color(0xFF04C781);
-  static const Color secondColor  = Color(0xFF04C781);
+  static const Color secondColor  = Color(0xFF212C43);
 
   static const Color errorColor = Color(0xFFFF4747);
   static const Color dimDark    = Color(0xB3000000);  // opacity 70% : B3
@@ -64,7 +64,6 @@ class ColorStyles {
 
   /// Button colors
   static const Color _disabledPrimaryButtonColor = Color(0x4D04C781); // opacity 30% : 4D
-
 
   static const List<Color> studyColors = [
     Color(0xFFFFC600),
@@ -183,8 +182,6 @@ class ColorStyles {
         shape: const RoundedRectangleBorder(
             borderRadius: Design.borderRadius),)
   );
-
-
 }
 
 class ExtraColors extends ThemeExtension<ExtraColors> {

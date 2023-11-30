@@ -45,6 +45,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
         body: SingleChildScrollView(
             padding: Design.edgePadding,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   context.local.inputPhoneNumber,

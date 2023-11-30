@@ -72,9 +72,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
             initialItemCount: _taskListModel.length,
             itemBuilder: _buildTask,),
-
-          //if (_taskListModel.length <= 0)
-          //  const Text(_taskEmptyMessage),  //< FIXME : Empty Tasks Message
         ]
     );
   }
@@ -100,27 +97,29 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   Widget _buildRemovedItem(
       Task task, BuildContext context, Animation<double> animation) {
-    return TaskWidget(
-      index: 0,
-      task: task,
-      color: widget.studyColor,
-      animation: animation,
-      onUpdateTaskDetail: _updateTaskDetail,
-      onDeleteTask: _deleteTask,
-      onCheckTask: widget.updateProgress,
+    return SizeTransition(
+      sizeFactor: animation,
+      child: TaskWidget(
+        task: task,
+        color: widget.studyColor,
+        onUpdateTaskDetail: _updateTaskDetail,
+        onDeleteTask: (task) => _deleteTask(task, -1),
+        onCheckTask: widget.updateProgress,
+      ),
     );
   }
 
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
-    return TaskWidget(
-      index: index,
-      task: _taskListModel[index],
-      color: widget.studyColor,
-      animation: animation,
-      onUpdateTaskDetail: _updateTaskDetail,
-      onDeleteTask: _deleteTask,
-      onCheckTask: widget.updateProgress,
+    return SizeTransition(
+      sizeFactor: animation,
+      child: TaskWidget(
+        task: _taskListModel[index],
+        color: widget.studyColor,
+        onUpdateTaskDetail: _updateTaskDetail,
+        onDeleteTask: (task) => _deleteTask(task, index),
+        onCheckTask: widget.updateProgress,
+      ),
     );
   }
 
@@ -147,6 +146,8 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   void _deleteTask(Task task, int index) {
+    if (!_isValidIndex(index)) return;
+
     if (task.taskId != Task.nonAllocatedTaskId) {
       Task.deleteTask(task.taskId, widget.taskGroup.roundParticipantId);
     }
@@ -154,5 +155,9 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     setState(() { });
 
     if (widget.updateProgress != null) widget.updateProgress!();
+  }
+
+  bool _isValidIndex(int index) {
+    return (index >= 0 && index < _taskListModel.length);
   }
 }

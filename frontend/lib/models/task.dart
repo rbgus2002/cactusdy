@@ -77,6 +77,7 @@ class Task {
       throw Exception("Fail to delete task");
     } else {
       bool result = json.decode(response.body)['success'];
+      if (result) print('success to delete task');
       return result;
     }
   }
@@ -100,7 +101,7 @@ class Task {
       throw Exception("Failed to update task detail");
     } else {
       bool success = json.decode(response.body)['success'];
-      if(success) print("Success to update task detail"); //< FIXME
+      if (success) print("Success to update task detail"); //< FIXME
       return success;
     }
   }

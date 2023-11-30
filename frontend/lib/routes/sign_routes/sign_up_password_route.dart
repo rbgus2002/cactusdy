@@ -33,6 +33,7 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               context.local.inputPassword,

@@ -18,12 +18,14 @@ class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
   final int roundId;
   final Study study;
+  final Function? onRemove;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
     required this.roundId,
     required this.study,
+    this.onRemove,
   }) : super(key: key);
 
   @override
@@ -195,7 +197,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         context.local.reserved,
         style: TextStyles.caption2.copyWith(
           color: context.extraColors.grey000,),),
-      onTap: () { },  // Assert to do nothing.
+      onTap: Util.doNothing,
     );
   }
 
@@ -269,7 +271,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   void _deleteRound(BuildContext context) async {
     try {
       await Round.deleteRound(round!.roundId).then((result) {
-        if (result) Navigator.of(context).pop();
+        if (result) {
+          Navigator.of(context).pop();
+
+          if (widget.onRemove != null) {
+            widget.onRemove!();
+          }
+        }
       });
     } on Exception catch(e) {
       if (mounted) {

@@ -1,17 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/rule.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/studies/study_edit_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/add_button.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
 import 'package:group_study_app/widgets/round_summary_list_widget.dart';
+import 'package:group_study_app/widgets/rules/rule_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {
   final Study study;
@@ -27,6 +31,7 @@ class StudyDetailRoute extends StatefulWidget {
 
 class _StudyDetailRouteState extends State<StudyDetailRoute> {
   static const double _imageSize = 80;
+  static const double _iconSize = 32;
   late Study _study;
 
   @override
@@ -37,6 +42,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -45,7 +51,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         shape: InputBorder.none,),
 
       body: RefreshIndicator(
-        onRefresh: refresh,
+        onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
 
@@ -80,27 +86,22 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                 ]),
               ),
 
+              // Study Rules
               Container(
                 padding: Design.edgePadding,
                 decoration: BoxDecoration(
                   border: Border.symmetric(
                       horizontal: BorderSide(color: context.extraColors.grey100!)),),
-                child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.local.rules,
-                        style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
-                      AddButton(
-                        iconData: CustomIcons.writing_outline,
-                        text: context.local.writeRule,
-                        onTap: () {}),
-                    ],),
-                ]),
-              ),
+                child: FutureBuilder(
+                  future: Rule.getRules(widget.study.studyId),
+                    builder: (context, snapshot) =>
+                      (snapshot.hasData)?
+                        RuleListWidget(
+                          rules: snapshot.data!,
+                          studyId: widget.study.studyId,) :
+                        Design.loadingIndicator,),),
 
+              // Study Rounds
               Container(
                 padding: Design.edgePadding,
                 child: RoundSummaryListWidget(study: _study,),),
@@ -115,9 +116,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
-            height: 160,
-            color: study.color),
+          Positioned(
+            top: -160,
+            child: Container(
+              height: 320,
+              width: double.maxFinite,
+              color: study.color),),
 
           Positioned(
             left: 20,
@@ -127,6 +131,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
               height: _imageSize,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               decoration: BoxDecoration(
+                color: ColorUtil.addColor(widget.study.color, context.extraColors.grey000!, 0.4),
                 borderRadius: BorderRadius.circular(Design.radiusValue),),
               child: (study.picture.isNotEmpty) ?
                   CachedNetworkImage(
@@ -145,15 +150,13 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   Widget _studyPopupMenu() {
-    double iconSize = 32;
     return PopupMenuButton(
       icon: Icon(
         CustomIcons.more_vert,
-        color: context.extraColors.grey900),
-      color: context.extraColors.grey000,
-      iconSize: iconSize,
-      splashRadius: iconSize / 2,
-      position: PopupMenuPosition.under,
+        color: context.extraColors.grey900,
+        size: _iconSize,),
+      splashRadius: _iconSize / 2,
+      padding: EdgeInsets.zero,
       constraints: const BoxConstraints(minWidth: Design.popupWidth),
       itemBuilder: (context) => [
         // edit profile
@@ -166,12 +169,31 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
-          icon: const Icon(CustomIcons.setting_outline,),),
+          icon: const Icon(CustomIcons.exit_outline),
+          onTap: _showLeaveStudyDialog,),
       ],);
   }
 
-  Future<void> refresh() async {
+  Future<void> _refresh() async {
     Study.getStudySummary(_study.studyId).then((study) =>
       setState(() => _study = study));
+  }
+
+  void _showLeaveStudyDialog() {
+    TwoButtonDialog.showProfileDialog(
+        context: context,
+        text: context.local.ensureToDo(context.local.leave),
+
+        buttonText1: context.local.no,
+        onPressed1: Util.doNothing,
+
+        buttonText2: context.local.willDo(context.local.leave),
+        onPressed2: _leaveStudy);
+  }
+
+  void _leaveStudy() {
+    Study.leaveStudy(widget.study).then((value) {
+      Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
+    });
   }
 }

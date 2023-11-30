@@ -90,6 +90,21 @@ class Study {
     }
   }
 
+  static Future<bool> leaveStudy(Study study) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?studyId=${study.studyId}'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Fail to leave study");
+    } else {
+      bool result = json.decode(response.body)['success'];
+      if (result) print("success to leave study");
+      return result;
+    }
+  }
+
   static Future<bool> updateStudy(Study updatedStudy, XFile? studyImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/studies/${updatedStudy.studyId}'),);

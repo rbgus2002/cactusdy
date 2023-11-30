@@ -52,7 +52,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 shape: widget.shape??const SquircleBorder(),
                 child: Material(
-                  color: widget.backgroundColor??context.extraColors.grey200,
+                  color: widget.backgroundColor??context.extraColors.inputFieldBackgroundColor,
                   shape: widget.shape?? SquircleBorder(
                       side: BorderSide(color: context.extraColors.grey200!, width: 2)),
                   child: _loadImage(),

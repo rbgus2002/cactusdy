@@ -9,7 +9,6 @@ import 'package:group_study_app/widgets/circle_button_list.dart';
 import 'package:group_study_app/widgets/line_profiles/old_study_line_profile_widget.dart';
 import 'package:group_study_app/widgets/panels/old_panel.dart';
 import 'package:group_study_app/widgets/old_round_info_widget.dart';
-import 'package:group_study_app/widgets/tasks/old_task_group_widget.dart';
 
 class OldStudyGroupPanel extends StatelessWidget {
   final StudyInfo studyInfo;
@@ -48,8 +47,7 @@ class OldStudyGroupPanel extends StatelessWidget {
               itemBuilder: (context, index) => 
                 Container(
                   padding: OldDesign.bottom10,
-                  child: OldTaskGroupWidget(taskGroup: studyInfo.taskGroups[index]),
-                ),
+                  child: null,),
             )
           ],
         ),
