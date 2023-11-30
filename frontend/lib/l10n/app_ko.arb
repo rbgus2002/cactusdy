@@ -10,6 +10,7 @@
     "complete": "완료",
     "close": "닫기",
     "next": "다음",
+    "no": "아니요",
 
     "editing": "수정",
     "modify": "수정하기",
@@ -34,10 +35,12 @@
     "undefinedOf": "{target} 미정",
     "inputHint1": "{target}을 입력해주세요.",
     "inputHint2": "{target}를 입력해주세요.",
-    "ensureToDo": "정말 {action} 하시겠어요?",
-    "successToDo": "성공적으로 {action}했어요",
     "copyText1": "{target}이 복사되었어요",
     "copyText2": "{target}가 복사되었어요",
+    "ensureToDo": "정말 {action} 하시겠어요?",
+    "successToDo": "성공적으로 {action}했어요",
+    "willDo": "{action}할래요",
+
 
     "unknownException": "알 수 없는 문제가 발생하였어요.",
 
@@ -107,6 +110,7 @@
     "kick": "내보내기",
     "stab": "찌르기",
     "participateByCode": "코드로 참여하기",
+    "leave": "탈퇴",
 
     "rules": "규칙",
     "writeRule": "규칙 작성",

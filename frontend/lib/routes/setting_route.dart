@@ -98,7 +98,7 @@ class _SettingRouteState extends State<SettingRoute> {
             color: context.extraColors.grey200!,),),),
       child: InkWell(
         splashColor: Colors.transparent,
-          onTap: _showProfile,
+          onTap: _showSignOutDialog,
           child: Container(
             width: double.maxFinite,
             height: 40,
@@ -155,19 +155,21 @@ class _SettingRouteState extends State<SettingRoute> {
     AppTheme.setTheme(_modes[index].mode);
   }
 
-  void _showProfile() {
+  void _showSignOutDialog() {
     TwoButtonDialog.showProfileDialog(
       context: context,
       text: context.local.ensureToDo(context.local.signOut),
 
       buttonText1: context.local.signOut,
-      onPressed1: () {
-        Auth.signOut();
-        Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
-      },
+      onPressed1: _signOut,
 
       buttonText2: context.local.close,
       onPressed2: () {}, // Assert to do nothing
     );
+  }
+
+  void _signOut() {
+    Auth.signOut();
+    Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
   }
 }

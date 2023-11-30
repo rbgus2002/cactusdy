@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/rule.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/studies/study_edit_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
 import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
@@ -47,7 +49,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         shape: InputBorder.none,),
 
       body: RefreshIndicator(
-        onRefresh: refresh,
+        onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
 
@@ -166,12 +168,31 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
-          icon: const Icon(CustomIcons.setting_outline,),),
+          icon: const Icon(CustomIcons.exit_outline,),
+          onTap: _showLeaveStudyDialog,),
       ],);
   }
 
-  Future<void> refresh() async {
+  Future<void> _refresh() async {
     Study.getStudySummary(_study.studyId).then((study) =>
       setState(() => _study = study));
+  }
+
+  void _showLeaveStudyDialog() {
+    TwoButtonDialog.showProfileDialog(
+        context: context,
+        text: context.local.ensureToDo(context.local.leave),
+
+        buttonText1: context.local.no,
+        onPressed1: Util.doNothing,
+
+        buttonText2: context.local.willDo(context.local.leave),
+        onPressed2: _leaveStudy);
+  }
+
+  void _leaveStudy() {
+    Study.leaveStudy(widget.study).then((value) {
+      Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
+    });
   }
 }

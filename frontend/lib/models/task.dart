@@ -77,6 +77,7 @@ class Task {
       throw Exception("Fail to delete task");
     } else {
       bool result = json.decode(response.body)['success'];
+      if (result) print('success to delete task');
       return result;
     }
   }
