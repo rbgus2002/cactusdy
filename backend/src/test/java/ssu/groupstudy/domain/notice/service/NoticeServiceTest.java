@@ -215,7 +215,6 @@ class NoticeServiceTest extends ServiceTest {
             }
         }
 
-        // FIXME
         @Test
         @DisplayName("공지사항에 체크 표시를 한 사용자 프로필 사진 리스트를 불러온다")
         void getCheckUserImageListByNoticeId() {

@@ -117,7 +117,7 @@ public class AuthService {
     private String generateVerificationMessage(String phoneNumber) {
         String code = RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
         saveCodeToRedis(code, phoneNumber);
-        return String.format("[GroupStudy] 인증번호 : %s", code); // TODO : 대괄호 안 문구 앱 이름으로 변경
+        return String.format("[뜨끔] 인증번호 : %s", code);
     }
 
     private void assertPhoneNumberDoesExistOrThrow(String phoneNumber) {
