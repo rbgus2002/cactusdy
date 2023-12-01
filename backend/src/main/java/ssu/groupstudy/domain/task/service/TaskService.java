@@ -117,7 +117,7 @@ public class TaskService {
 
     private void processNotification(Task task, User user) {
         if (task.isDone()) {
-            eventPublisher.publishEvent(new TaskDoneEvent(user, task.getStudy()));
+            eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }
     }
 }
