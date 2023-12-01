@@ -41,6 +41,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     _initListModel();
 
     if (_isNeedToSubscribe()) {
+      print("sub!!");
       widget.subscribe!(
           widget.taskGroup.taskType,
           widget.taskGroup.roundParticipantId,
@@ -77,7 +78,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   bool _isNeedToSubscribe() {
-    return widget.subscribe != null && widget.taskGroup.isShared;
+    return (widget.subscribe != null && widget.taskGroup.isShared);
   }
 
   void _initListModel() {

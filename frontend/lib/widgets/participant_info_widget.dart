@@ -68,6 +68,9 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
           itemBuilder: (context, index) =>
               TaskGroupWidget(
                 taskGroup: widget.participantInfo.taskGroups[index],
+                subscribe: widget.subscribe,
+                notify: widget.notify,
+                updateProgress: _updateProgress,
                 studyColor: widget.study.color,),
           separatorBuilder: (context, index) => Design.padding20,
         ),
@@ -81,7 +84,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
     super.dispose();
   }
 
-  void updateProgress() {
+  void _updateProgress() {
     _nextProgress = widget.participantInfo.getTaskProgress();
     if (_progressController.isCompleted) {
       _progressController.reset();
