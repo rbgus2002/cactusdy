@@ -18,7 +18,9 @@ public class NotificationApi {
 
     @Operation(summary = "스터디 참여자 콕찌르기")
     @GetMapping
-    public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long targetUserId, @RequestParam Long studyId) {
+    public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                         @RequestParam Long targetUserId,
+                                         @RequestParam Long studyId) {
         notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId);
         return ResponseDto.success();
     }
