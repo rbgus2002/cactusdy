@@ -10,7 +10,7 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 
 class StudyCreatePage3 extends StatefulWidget {
-  final int inviteCode;
+  final String inviteCode;
 
   const StudyCreatePage3({
     Key? key,
@@ -60,7 +60,7 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${widget.inviteCode}',
+                widget.inviteCode,
                 style: TextStyles.head3.copyWith(
                   color: ColorStyles.mainColor,
                   letterSpacing: 4),),
@@ -77,7 +77,7 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
   }
 
   void _copyCodeToClipboard() {
-    Clipboard.setData(ClipboardData(text: '${widget.inviteCode}'));
+    Clipboard.setData(ClipboardData(text: widget.inviteCode));
     Toast.showToast(
         context: context,
         message: context.local.copyText2(context.local.invitingCode));

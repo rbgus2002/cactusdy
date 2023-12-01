@@ -1,11 +1,17 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/participant_profile.dart';
+import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/studies/study_create_page3.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/toast.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 
@@ -55,10 +61,27 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
     );
   }
 
-  void _participateStudy() {
+  void _participateStudy() async {
     if (_invitingCodeEditor.currentState!.validate()) {
       if (!_isProcessing) {
         _isProcessing = true;
+        String inputCode = _invitingCodeEditor.currentState!.text;
+        try {
+          await ParticipantSummary.joinStudyByInvitingCode(inputCode).then((studyId) =>
+            Study.getStudySummary(studyId).then((study) {
+              Util.pushRouteAndPopUntil(
+                context, (context) => const HomeRoute());
+              Util.pushRoute(
+                context, (context) => StudyDetailRoute(study: study),);
+            }),
+          );
+        } on Exception catch(e) {
+          if (context.mounted) {
+            Toast.showToast(
+                context: context,
+                message: Util.getExceptionMessage(e));
+          }
+        }
 
         _isProcessing = false;
       }

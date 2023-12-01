@@ -84,7 +84,7 @@ class MemberProfileListWidget extends StatelessWidget {
             Icons.add,
             color: context.extraColors.grey400,),),
       onTap: () => Util.pushRoute(context, (context) =>
-          const StudyInvitingRoute()));
+          StudyInvitingRoute(studyId: studyId,)));
   }
 
   Widget _adminBadge(BuildContext context) {
