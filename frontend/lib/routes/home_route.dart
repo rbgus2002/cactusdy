@@ -144,7 +144,10 @@ class _StudyPanel extends StatelessWidget {
           StudyProfileWidget(
               studyInfo: studyInfo,
               onRefresh: onRefresh,),
-          Design.padding24,
+          
+          Visibility(
+              visible: studyInfo.taskGroups.isNotEmpty,
+              child: Design.padding24),
 
           // task groups
           ListView.separated(
