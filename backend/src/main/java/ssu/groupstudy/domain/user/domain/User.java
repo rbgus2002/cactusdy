@@ -100,10 +100,6 @@ public class User extends BaseEntity {
         this.activateDate = LocalDateTime.now();
     }
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
     public void updatePicture(String picture) {
         this.picture = picture;
     }
@@ -125,6 +121,11 @@ public class User extends BaseEntity {
         return fcmTokens.stream()
                 .map(FcmToken::getToken)
                 .collect(Collectors.toList());
+    }
+
+    public void edit(String nickname, String statusMessage) {
+        this.nickname = nickname;
+        this.statusMessage = statusMessage;
     }
 }
 

@@ -1,14 +1,11 @@
 package ssu.groupstudy.domain.user.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
-public class StatusMessageRequest {
+public class EditUserRequest {
+    private String nickname;
     private String statusMessage;
 }
