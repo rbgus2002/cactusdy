@@ -9,7 +9,6 @@ import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
 @Component
@@ -35,8 +34,8 @@ public class PushListener {
 
     @EventListener
     public void handleTaskDoneEvent(TaskDoneEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 과제를 완료했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
+        StringBuilder body = new StringBuilder();
+        body.append("'").append(event.getNickname()).append("'").append("님이 과제를 완료했어요: ").append(event.getTaskDetail());
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId());
     }
 }
