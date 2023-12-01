@@ -74,7 +74,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
   void notify(String taskType, int notifierKey, Task newTask) {
     if (listeners[taskType] != null) {
       for (var callback in listeners[taskType]!) {
-        // exclude self
+        // exclude it's self
         if (callback.key != notifierKey) {
           callback.addTask(newTask);
         }

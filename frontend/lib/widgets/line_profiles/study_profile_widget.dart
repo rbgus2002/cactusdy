@@ -68,23 +68,26 @@ class StudyProfileWidget extends StatelessWidget {
               Row(
                 children: [
                   // Round Sequence Tag
-                  RectangleTag(
-                    width: 48,
-                    height: 26,
-                    text: Text(
-                      '${studyInfo.roundSeq}${context.local.round}',
-                      style: TextStyle(
-                        height: 1.1,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: context.extraColors.grey700,),),
-                    color: context.extraColors.blue!,
-                    onTap: () => Util.pushRoute(context, (context) =>
-                        RoundDetailRoute(
-                            roundSeq: studyInfo.roundSeq,
-                            roundId: studyInfo.round.roundId,
-                            study: studyInfo.study,
-                            onRemove: () => onRefresh(),)),),
+                  Visibility(
+                    visible: _isRoundIdNotZero(),
+                    child: RectangleTag(
+                      width: 48,
+                      height: 26,
+                      text: Text(
+                        '${studyInfo.roundSeq}${context.local.round}',
+                        style: TextStyle(
+                          height: 1.1,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: context.extraColors.grey700,),),
+                      color: context.extraColors.blue!,
+                      onTap: () => Util.pushRoute(context, (context) =>
+                          RoundDetailRoute(
+                              roundSeq: studyInfo.roundSeq,
+                              roundId: studyInfo.round.roundId,
+                              study: studyInfo.study,
+                              onRemove: () => onRefresh(),)),),
+                  ),
                   Design.padding4,
 
                   // Scheduled Tag
@@ -124,5 +127,9 @@ class StudyProfileWidget extends StatelessWidget {
       context.local.undefinedOf(context.local.time);
 
     return '$placeText • $timeText';
+  }
+
+  bool _isRoundIdNotZero() {
+    return studyInfo.roundSeq != 0;
   }
 }

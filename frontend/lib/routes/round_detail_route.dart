@@ -203,6 +203,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Widget _detailRecord() {
     return InputField(
+      key: _detailEditor,
       initText: round!.detail,
       hintText: context.local.recordHint,
       minLines: 4,
@@ -210,31 +211,10 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       maxLength: Round.detailMaxLength,
       focusNode: _focusNode,
       backgroundColor: context.extraColors.grey50,
-      onChanged: (input) { _isEdited = true; },
+      onChanged: (input) => _isEdited = true,
       onTapOutSide: _updateDetail,
       counter: true,
     );
-/*
-    return TextField(
-      minLines: 4, maxLines: 7,
-      maxLength: Round.detailMaxLength,
-      controller: _detailRecordEditingController,
-      style: TextStyles.body1.copyWith(color: context.extraColors.grey900),
-      focusNode: _focusNode,
-      decoration: InputDecoration(
-        hintText: context.local.recordHint,
-        hintStyle: TextStyles.body1.copyWith(color: context.extraColors.grey400),
-        filled: true,
-        fillColor: context.extraColors.grey50,
-        border: const OutlineInputBorder(
-          borderRadius: Design.borderRadius,
-          borderSide: BorderSide.none,
-          gapPadding: 16,)),
-      onChanged: (value) { _isEdited = true; },
-      onTapOutside: _updateDetail,
-    );
-
- */
   }
 
   Widget _roundPopupMenu() {

@@ -1,10 +1,10 @@
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_profile.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/models/user.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -81,7 +81,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
           Design.padding4,
 
           Text(
-            (participant.statusMessage.isEmpty) ?
+            (participant.statusMessage.isNotEmpty) ?
                 participant.statusMessage :
                 context.local.inputHint2(context.local.statusMessage),
             style: TextStyles.body1.copyWith(
@@ -204,38 +204,41 @@ class _ProfileRouteState extends State<ProfileRoute> {
   }
 
   Widget _kickAndStabButton() {
-    return Container(
-      padding: Design.edgePadding,
-      height: 92,
-      child: Row(
-        children: [
-          // Kick button
-          Expanded(
-            child: OutlinedPrimaryButton(
-              onPressed: () { },  //< FIXME
-              text: context.local.kick,),),
-          Design.padding8,
+    return Visibility(
+      visible: (widget.userId != Auth.signInfo?.userId),
+      child: Container(
+        padding: Design.edgePadding,
+        height: 92,
+        child: Row(
+          children: [
+            // Kick button
+            Expanded(
+              child: OutlinedPrimaryButton(
+                onPressed: () { },  //< FIXME
+                text: context.local.kick,),),
+            Design.padding8,
 
-          // Stab button (with Cactus Icon)
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () =>
-                  User.notifyParticipant(widget.userId, widget.studyId),
-              child: Container(
-                width: double.maxFinite,
-                height: Design.buttonContentHeight,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(CustomIcons.cactus, size: 20,),
-                    Design.padding4,
-                    Text(
-                      context.local.stab,
-                      style: TextStyles.head4,),
-                  ],),
-              ),),),
-        ],),
+            // Stab button (with Cactus Icon)
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () =>
+                    User.notifyParticipant(widget.userId, widget.studyId),
+                child: Container(
+                  width: double.maxFinite,
+                  height: Design.buttonContentHeight,
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(CustomIcons.cactus, size: 20,),
+                      Design.padding4,
+                      Text(
+                        context.local.stab,
+                        style: TextStyles.head4,),
+                    ],),
+                ),),),
+          ],),
+      ),
     );
   }
 }

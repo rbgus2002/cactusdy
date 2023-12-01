@@ -9,38 +9,46 @@ class TaskListTitle extends StatelessWidget {
 
   final String title;
   final VoidCallback onTap;
+  final bool enable;
 
   const TaskListTitle({
     Key? key,
     required this.title,
     required this.onTap,
+    required this.enable,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: Design.borderRadiusSmall,
-      onTap: onTap,
-      child: Container(
+    return (enable) ?
+      InkWell(
+        borderRadius: Design.borderRadiusSmall,
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: Design.borderRadiusSmall,
+            color: context.extraColors.grey100,
+          ),
+          padding: _padding,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+              children : [
+                Text(title, style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
+                Design.padding8,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: Design.borderRadiusSmall,
+                    color: context.extraColors.grey000,
+                  ),
+                  child: Icon(Icons.add, color: context.extraColors.grey600,)
+                ),
+              ]),
+        ),) :
+      Container(
+        padding: _padding,
         decoration: BoxDecoration(
           borderRadius: Design.borderRadiusSmall,
-          color: context.extraColors.grey100,
-        ),
-        padding: _padding,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-            children : [
-              Text(title, style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-              Design.padding8,
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: Design.borderRadiusSmall,
-                  color: context.extraColors.grey000,
-                ),
-                child: Icon(Icons.add, color: context.extraColors.grey600,)
-              ),
-            ]),
-      ),
-    );
+          color: context.extraColors.grey100,),
+        child: Text(title, style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),);
   }
 }

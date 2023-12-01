@@ -31,7 +31,7 @@ class ParticipantInfo {
       }
     }
 
-    if (taskCount == 0) return 1;
+    if (taskCount == 0) return 0;
 
     return (doneCount / taskCount);
   }

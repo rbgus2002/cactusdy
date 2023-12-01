@@ -5,8 +5,8 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/custom_checkbox.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
+import 'package:group_study_app/widgets/task_check_box.dart';
 
 class TaskWidget extends StatefulWidget {
   final Task task;
@@ -38,15 +38,17 @@ class _TaskWidget extends State<TaskWidget> {
   Widget build(BuildContext context) {
     _textEditingController.text = widget.task.detail;
     return Ink(
-      height: 36,
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap: Util.doNothing, // For prevent miss touch
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomCheckBox(
-              value: widget.task.isDone,
+            TaskCheckBox(
+              task: widget.task,
               activeColor: widget.color,
               onChanged: _onChecked),
             Design.padding12,
@@ -69,17 +71,22 @@ class _TaskWidget extends State<TaskWidget> {
     return Flexible(
       fit: FlexFit.tight,
       child: TextField(
-        maxLines: 1,
+        minLines: 1,
+        maxLines: 10,
         maxLength: Task.taskMaxLength,
         style: TextStyles.task.copyWith(
-            color: context.extraColors.grey900),
+            color: context.extraColors.grey900,),
+        strutStyle: const StrutStyle(
+          leading: 0.6,),
 
         focusNode: _focusNode,
         controller: _textEditingController,
+        textAlign: TextAlign.justify,
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
           isDense: true,
           hintText: context.local.inputHint2(context.local.task),
-          contentPadding: const EdgeInsets.symmetric(vertical: 4),
+          contentPadding: EdgeInsets.zero,
           counterText: "",
           border: InputBorder.none,
           focusedBorder: UnderlineInputBorder(
@@ -94,11 +101,11 @@ class _TaskWidget extends State<TaskWidget> {
 
   Widget _taskPopupMenu() {
     return SizedBox(
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
       child: IconButton(
         icon: const Icon(CustomIcons.more_horiz),
-        iconSize: 20,
+        iconSize: 24,
         color: context.extraColors.grey500,
         splashRadius: 10,
         padding: EdgeInsets.zero,
@@ -117,15 +124,18 @@ class _TaskWidget extends State<TaskWidget> {
     );
   }
 
-  void _onChecked(bool? value) {
+  void _onChecked() {
     if (widget.task.taskId == Task.nonAllocatedTaskId) return;
 
     // Fast Unsafe State Update
-    widget.task.isDone = value!;
+    setState(() => widget.task.isDone = !widget.task.isDone);
 
     // Call API and Verify State
-    Task.switchTask(widget.task.taskId).then((result) =>
-    widget.task.isDone = result);
+    Task.switchTask(widget.task.taskId).then((result) {
+      if (result != widget.task.isDone) {
+        setState(() => widget.task.isDone = result);
+      }
+    });
 
     if (widget.onCheckTask != null) {
       widget.onCheckTask!();
@@ -135,12 +145,16 @@ class _TaskWidget extends State<TaskWidget> {
   void _updateTask() {
     if (_isEdited) {
       widget.task.detail = _textEditingController.text;
-      widget.onUpdateTaskDetail(widget.task);
+
+      if (widget.task.detail.isNotEmpty) {
+        widget.onUpdateTaskDetail(widget.task);
+      } else {
+        widget.onDeleteTask(widget.task);
+      }
       _isEdited = false;
     }
 
     _focusNode.unfocus();
     setState(() { });
   }
-
 }

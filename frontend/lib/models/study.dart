@@ -96,8 +96,9 @@ class Study {
       headers: DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to leave study");
+      throw Exception(responseJson['message']);
     } else {
       bool result = json.decode(response.body)['success'];
       if (result) print("success to leave study");

@@ -9,6 +9,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
@@ -164,7 +165,8 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
           text: context.local.editStudy,
           icon: const Icon(CustomIcons.writing_outline),
           onTap: () => Util.pushRoute(context, (context) =>
-              StudyEditRoute(study: _study,)),),
+              StudyEditRoute(study: _study,)).then((value) =>
+                _refresh(),),),
 
         // setting
         ItemEntry(
@@ -191,9 +193,17 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         onPressed2: _leaveStudy);
   }
 
-  void _leaveStudy() {
-    Study.leaveStudy(widget.study).then((value) {
-      Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
-    });
+  void _leaveStudy() async {
+    try {
+      await Study.leaveStudy(widget.study).then((value) {
+        Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
+      });
+    } on Exception catch(e) {
+      if (context.mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 }

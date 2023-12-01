@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/task.dart';
 
 typedef RemovedItemBuilder<T> = Widget Function(
     T item, BuildContext context, Animation<double> animation);

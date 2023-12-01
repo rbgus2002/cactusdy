@@ -16,6 +16,8 @@ class TaskGroupWidget extends StatefulWidget {
   final Function(String, int, Function(Task))? subscribe;
   final Function(String, int, Task)? notify;
 
+  final bool addable;
+
   const TaskGroupWidget({
     Key? key,
     required this.taskGroup,
@@ -24,6 +26,7 @@ class TaskGroupWidget extends StatefulWidget {
     this.updateProgress,
     this.subscribe,
     this.notify,
+    this.addable = false,
   }) : super(key: key);
 
   @override
@@ -59,6 +62,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TaskListTitle(
+              enable: widget.addable,
               title: widget.taskGroup.taskTypeName,
               onTap: () => _addTask(Task())),
           Design.padding12,
@@ -77,7 +81,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   bool _isNeedToSubscribe() {
-    return widget.subscribe != null && widget.taskGroup.isShared;
+    return (widget.subscribe != null && widget.taskGroup.isShared);
   }
 
   void _initListModel() {
@@ -89,8 +93,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   void _addTask(Task task) {
-    _taskListModel.add(task);
-    setState(() { });
+    _taskListModel.insert(0, Task());
 
     if (widget.updateProgress != null) widget.updateProgress!();
   }

@@ -32,11 +32,11 @@ class Util {
     Navigator.of(context).pop();
   }
 
-  static SlideTransition _slideDown(BuildContext context, Animation<double> animation,  Animation<double> secondaryAnimation, Widget child) {
-    Offset top = const Offset(0.0, -1.0);
+  static SlideTransition _slideUp(BuildContext context, Animation<double> animation,  Animation<double> secondaryAnimation, Widget child) {
+    Offset down = const Offset(0.0, 1.0);
     Offset center = Offset.zero;
 
-    var tween = Tween(begin: top, end: center).chain(CurveTween(curve: Curves.ease));
+    var tween = Tween(begin: down, end: center).chain(CurveTween(curve: Curves.ease));
 
     return SlideTransition(
         position: animation.drive(tween),
@@ -48,7 +48,27 @@ class Util {
     return await Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: builder,
-          transitionsBuilder: _slideDown,)
+          transitionsBuilder: _slideUp,)
+    );
+  }
+
+  static Future<void> replaceRouteWithFade(BuildContext context, RoutePageBuilder builder) {
+    return Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: builder,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          double begin = 0.0;
+          double end = 1.0;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeIn));
+
+          return FadeTransition(
+            opacity: animation.drive(tween),
+            child: child,
+          );
+        },
+      )
     );
   }
 
