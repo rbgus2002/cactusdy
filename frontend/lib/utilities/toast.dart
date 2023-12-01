@@ -8,13 +8,24 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class Toast {
-  static const duration = Duration(seconds: 2);
+  Toast._();
+
+  static const durationSeconds = 2;
+  static const duration = Duration(seconds: durationSeconds);
+
+  // For prevent duplication
+  static String lastMessage = "";
+  static DateTime lastTime = DateTime.now();
 
   static void showToast( {
     required BuildContext context,
     required String message,
     EdgeInsets? margin,
   }) {
+    if (_isPlaying(message)) return;
+    
+    _setPlaying(message);
+
     FToast fToast = FToast();
     fToast.init(context);
 
@@ -39,5 +50,15 @@ class Toast {
         toastDuration: duration,
         gravity: ToastGravity.BOTTOM,
     );
+  }
+
+  static bool _isPlaying(String message) {
+    return ((lastMessage == message) &&
+        (DateTime.now().difference(lastTime).inSeconds < durationSeconds));
+  }
+
+  static void _setPlaying(String message) {
+    lastMessage = message;
+    lastTime = DateTime.now();
   }
 }
