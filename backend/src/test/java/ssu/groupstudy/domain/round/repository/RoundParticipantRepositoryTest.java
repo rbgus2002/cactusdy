@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 
-import static ssu.groupstudy.domain.round.domain.StatusTag.ATTENDANCE_EXPECTED;
+import static ssu.groupstudy.domain.round.domain.StatusTag.ATTENDANCE;
 
 @CustomRepositoryTest
 class RoundParticipantRepositoryTest {
@@ -28,10 +28,10 @@ class RoundParticipantRepositoryTest {
             RoundParticipant 회차_최규현 = roundParticipantRepository.findById(1L).get();
 
             // when
-            회차_최규현.updateStatus(ATTENDANCE_EXPECTED);
+            회차_최규현.updateStatus(ATTENDANCE);
 
             // then
-            softly.assertThat(회차_최규현.getStatusTag()).isEqualTo(ATTENDANCE_EXPECTED);
+            softly.assertThat(회차_최규현.getStatusTag()).isEqualTo(ATTENDANCE);
         }
     }
 

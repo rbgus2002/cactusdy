@@ -135,7 +135,7 @@ public class StudyService {
 
     private Long handleRoundSeq(Study study, Round round) {
         if (round == null) {
-            return 1L;
+            return 0L;
         }
         if (round.isStudyTimeNull()) {
             // 스터디 약속 시간이 정해진 회차 + 1
