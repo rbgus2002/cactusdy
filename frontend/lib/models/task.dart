@@ -18,6 +18,11 @@ class Task {
     this.isDone = false,
   });
 
+  @override
+  String toString() {
+    return '$detail $isDone';
+  }
+
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       taskId: json['taskId'],

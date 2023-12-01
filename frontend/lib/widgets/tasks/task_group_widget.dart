@@ -41,7 +41,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     _initListModel();
 
     if (_isNeedToSubscribe()) {
-      print("sub!!");
       widget.subscribe!(
           widget.taskGroup.taskType,
           widget.taskGroup.roundParticipantId,
@@ -90,8 +89,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   void _addTask(Task task) {
-    _taskListModel.add(task);
-    setState(() { });
+    _taskListModel.insert(0, Task());
 
     if (widget.updateProgress != null) widget.updateProgress!();
   }
@@ -112,6 +110,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
+    print('$index ${_taskListModel[index].detail} ${_taskListModel[index].isDone}');
     return SizeTransition(
       sizeFactor: animation,
       child: TaskWidget(
