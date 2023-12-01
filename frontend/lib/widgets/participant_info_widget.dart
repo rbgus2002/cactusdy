@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/participant_info.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/widgets/line_profiles/participant_profile_widget.dart';
@@ -67,6 +68,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
           itemCount: widget.participantInfo.taskGroups.length,
           itemBuilder: (context, index) =>
               TaskGroupWidget(
+                addable: _isAddable(),
                 taskGroup: widget.participantInfo.taskGroups[index],
                 subscribe: widget.subscribe,
                 notify: widget.notify,
@@ -91,5 +93,9 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
     }
 
     _progressController.forward();
+  }
+
+  bool _isAddable() {
+    return (widget.participantInfo.participant.userId == Auth.signInfo?.userId);
   }
 }

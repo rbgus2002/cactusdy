@@ -16,6 +16,8 @@ class TaskGroupWidget extends StatefulWidget {
   final Function(String, int, Function(Task))? subscribe;
   final Function(String, int, Task)? notify;
 
+  final bool addable;
+
   const TaskGroupWidget({
     Key? key,
     required this.taskGroup,
@@ -24,6 +26,7 @@ class TaskGroupWidget extends StatefulWidget {
     this.updateProgress,
     this.subscribe,
     this.notify,
+    this.addable = false,
   }) : super(key: key);
 
   @override
@@ -59,6 +62,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TaskListTitle(
+              enable: widget.addable,
               title: widget.taskGroup.taskTypeName,
               onTap: () => _addTask(Task())),
           Design.padding12,
@@ -110,7 +114,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
-    print('$index ${_taskListModel[index].detail} ${_taskListModel[index].isDone}');
     return SizeTransition(
       sizeFactor: animation,
       child: TaskWidget(
