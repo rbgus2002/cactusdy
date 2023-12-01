@@ -21,7 +21,7 @@ public class TaskGroup {
         this.tasks = roundParticipant.getTasks().stream()
                 .filter(task -> task.isSameTypeOf(taskType))
                 .sorted(Comparator.comparing(Task::getDoneYn)
-                        .thenComparing(Task::getId))
+                        .thenComparing(Task::getId, Comparator.reverseOrder()))
                 .map(TaskInfo::from)
                 .collect(Collectors.toList());
     }
