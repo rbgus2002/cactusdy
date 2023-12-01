@@ -59,4 +59,11 @@ public class StudyApi {
         final Long editedStudyId = studyService.editStudy(studyId, dto, profileImage, userDetails.getUser());
         return DataResponseDto.of("studyId", editedStudyId);
     }
+
+    @Operation(summary = "스터디 초대코드 가져오기")
+    @GetMapping("/{studyId}/inviteCode")
+    public ResponseDto getInviteCode(@PathVariable Long studyId) {
+        final String inviteCode = studyService.getInviteCode(studyId);
+        return DataResponseDto.of("inviteCode", inviteCode);
+    }
 }

@@ -29,4 +29,22 @@ class UserTest {
         softly.assertThat(user.getRoles().size()).isEqualTo(1);
         softly.assertThat(user.getRoles().get(0).getName()).isEqualTo("ROLE_USER");
     }
+
+    @Test
+    @DisplayName("사용자의 FCM 토큰을 삭제한다.")
+    void UserTest(){
+        // given
+        User user = User.builder()
+                .name("")
+                .nickname("")
+                .phoneNumber("")
+                .build();
+
+        // when
+        user.addFcmToken("valid");
+        user.deleteFcmToken("valid");
+
+        // then
+        softly.assertThat(user.getFcmTokenList().size()).isEqualTo(0);
+    }
 }
