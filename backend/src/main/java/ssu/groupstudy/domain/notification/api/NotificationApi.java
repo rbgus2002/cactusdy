@@ -18,8 +18,20 @@ public class NotificationApi {
 
     @Operation(summary = "스터디 참여자 콕찌르기")
     @GetMapping
-    public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long targetUserId, @RequestParam Long studyId) {
+    public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                         @RequestParam Long targetUserId,
+                                         @RequestParam Long studyId) {
         notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId);
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "스터디 참여자의 과제 콕찌르기", description = "스터디 참여자가 과제를 완료하지 않았을 때 콕찌르기를 한다")
+    @GetMapping("/tasks")
+    public ResponseDto notifyTask(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                  @RequestParam Long targetUserId,
+                                  @RequestParam Long studyId,
+                                  @RequestParam Long taskId) {
+        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, taskId);
         return ResponseDto.success();
     }
 

@@ -47,7 +47,7 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
 
-        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study));
+        eventPublisher.publishEvent(new NoticeCreationEvent(study, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         return NoticeInfoResponse.of(notice, writer);
