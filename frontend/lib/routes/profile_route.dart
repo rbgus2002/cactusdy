@@ -81,7 +81,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
           Design.padding4,
 
           Text(
-            (participant.statusMessage.isEmpty) ?
+            (participant.statusMessage.isNotEmpty) ?
                 participant.statusMessage :
                 context.local.inputHint2(context.local.statusMessage),
             style: TextStyles.body1.copyWith(
