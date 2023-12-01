@@ -67,24 +67,22 @@ class _HomeRouteState extends State<HomeRoute> {
                 FutureBuilder(
                   future: StudyInfo.getStudies(),
                   builder: (context, snapshot) =>
-                    (snapshot.hasData) ?
-                      ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) =>
-                            _StudyPanel(
-                                studyInfo: snapshot.data![index],
-                                onRefresh: _refresh),
-
-
-                      ) :
-                      Design.loadingIndicator,),
-
-                // add study panel
-                _AddStudyPanel(
-                  onRefresh: _refresh),
+                    (snapshot.hasData)?
+                      (snapshot.data!.isEmpty) ?
+                        // Empty => Add Panel
+                        _AddStudyPanel(onRefresh: _refresh) :
+                        // non-Empty => Study Panel List
+                        ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) =>
+                              _StudyPanel(
+                                  studyInfo: snapshot.data![index],
+                                  onRefresh: _refresh),)
+                      : Design.loadingIndicator,
+                ),
               ]),
           )
       ),
@@ -168,7 +166,7 @@ class _StudyPanel extends StatelessWidget {
 class _AddStudyPanel extends StatelessWidget {
   static const double _circleRadius = 27;
   static const double _iconSize = 18;
-  static const double _height = 256;
+  static const double _height = 128;
 
   final Function onRefresh;
 
