@@ -164,7 +164,8 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
           text: context.local.editStudy,
           icon: const Icon(CustomIcons.writing_outline),
           onTap: () => Util.pushRoute(context, (context) =>
-              StudyEditRoute(study: _study,)),),
+              StudyEditRoute(study: _study,)).then((value) =>
+                _refresh(),),),
 
         // setting
         ItemEntry(
