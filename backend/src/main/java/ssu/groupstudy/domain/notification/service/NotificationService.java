@@ -24,18 +24,36 @@ public class NotificationService {
     private final TaskRepository taskRepository;
     private final FcmUtils fcmUtils;
 
-    public void notifyParticipant(User me, Long targetUserId, Long studyId) {
+    public void notifyParticipant(User me, Long targetUserId, Long studyId, int count) {
         User target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
-        StringBuilder body = new StringBuilder();
-        body.append("'").append(me.getNickname()).append("'").append("님이 회원님을 콕 찔렀어요");
+        StringBuilder body = handleParticipantNotificationMessage(me, count);
         fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString());
     }
 
-    public void notifyParticipantTask(User user, Long targetUserId, Long studyId, Long taskId) {
+    private StringBuilder handleParticipantNotificationMessage(User me, int count) {
+        StringBuilder body = new StringBuilder();
+        body.append("'").append(me.getNickname()).append("'").append("님이 회원님을 ");
+        if (count > 1) {
+            body.append(count).append("번이나 ");
+        }
+        body.append("콕 찔렀어요");
+        handleEmoticonByCount(body, count);
+        return body;
+    }
+
+    private void handleEmoticonByCount(StringBuilder body, int count) {
+        if (count <= 5) {
+            body.append("❗️");
+        } else {
+            body.append("🔥");
+        }
+    }
+
+    public void notifyParticipantTask(User user, Long targetUserId, Long studyId, Long taskId, int count) {
         User target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Study study = studyRepository.findById(studyId)
@@ -43,9 +61,20 @@ public class NotificationService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
-        StringBuilder body = new StringBuilder();
-        body.append("'").append(user.getNickname()).append("'").append("님이 회원님의 과제를 콕 찔렀어요: ").append(task.getDetail());
+        StringBuilder body = handleTaskNotificationMessage(user, task, count);
         fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString());
+    }
+
+    private StringBuilder handleTaskNotificationMessage(User user, Task task, int count) {
+        StringBuilder body = new StringBuilder();
+        body.append("'").append(user.getNickname()).append("'").append("님이 회원님의 과제를 ");
+        if (count > 1) {
+            body.append(count).append("번이나 ");
+        }
+        body.append("콕 찔렀어요");
+        handleEmoticonByCount(body, count);
+        body.append(": ").append(task.getDetail());
+        return body;
     }
 
     @Transactional

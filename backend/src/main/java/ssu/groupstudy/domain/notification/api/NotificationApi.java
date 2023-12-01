@@ -20,8 +20,9 @@ public class NotificationApi {
     @GetMapping
     public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails,
                                          @RequestParam Long targetUserId,
-                                         @RequestParam Long studyId) {
-        notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId);
+                                         @RequestParam Long studyId,
+                                         @RequestParam int count) {
+        notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId, count);
         return ResponseDto.success();
     }
 
@@ -30,8 +31,9 @@ public class NotificationApi {
     public ResponseDto notifyTask(@AuthenticationPrincipal CustomUserDetails userDetails,
                                   @RequestParam Long targetUserId,
                                   @RequestParam Long studyId,
-                                  @RequestParam Long taskId) {
-        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, taskId);
+                                  @RequestParam Long taskId,
+                                  @RequestParam int count) {
+        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, taskId, count);
         return ResponseDto.success();
     }
 
