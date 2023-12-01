@@ -21,9 +21,9 @@ public class PushListener {
 
     @EventListener
     public void handleCommentCreationEvent(CommentCreationEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 댓글을 작성했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("공지사항", body, TopicCode.NOTICE, event.getNoticeId());
+        StringBuilder body = new StringBuilder();
+        body.append("새로운 댓글이 달렸어요: ").append(event.getCommentContents());
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.NOTICE, event.getNoticeId());
     }
 
     @EventListener

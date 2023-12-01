@@ -41,7 +41,7 @@ public class CommentService {
         validateUser(writer, notice);
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice));
+        eventPublisher.publishEvent(new CommentCreationEvent(notice, comment));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
         return commentRepository.save(comment).getCommentId();
     }
