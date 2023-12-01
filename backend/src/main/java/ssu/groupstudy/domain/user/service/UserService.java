@@ -20,17 +20,4 @@ import java.io.IOException;
 public class UserService {
     private final UserRepository userRepository;
     private final S3Utils s3Utils;
-
-    @Transactional
-    public void updateStatusMessage(User user, StatusMessageRequest request) {
-        user.setStatusMessage(request.getStatusMessage());
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public String updateProfileImage(User user, MultipartFile image) throws IOException {
-        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
-        user.updatePicture(imageUrl);
-        return imageUrl;
-    }
 }

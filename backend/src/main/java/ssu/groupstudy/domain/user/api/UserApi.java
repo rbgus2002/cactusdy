@@ -4,16 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
-import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.domain.user.service.UserService;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,20 +25,5 @@ public class UserApi {
     public ResponseDto getUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
         UserInfoResponse userInfo = UserInfoResponse.from(userDetails.getUser());
         return DataResponseDto.of("user", userInfo);
-    }
-
-    @Operation(summary = "프로필 상태메세지 수정")
-    @PutMapping("/profile/messages")
-    public ResponseDto updateStatusMessage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody StatusMessageRequest request){
-        userService.updateStatusMessage(userDetails.getUser(), request);
-        return ResponseDto.success();
-    }
-
-    @Deprecated
-    @Operation(summary = "프로필 사진 업로드")
-    @PostMapping("/profile/images")
-    public ResponseDto updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody MultipartFile profileImage) throws IOException {
-        String image = userService.updateProfileImage(userDetails.getUser(), profileImage);
-        return DataResponseDto.of("image", image);
     }
 }
