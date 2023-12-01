@@ -28,9 +28,9 @@ public class PushListener {
 
     @EventListener
     public void handleNoticeCreationEvent(NoticeCreationEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 공지사항을 작성했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
+        StringBuilder body = new StringBuilder();
+        body.append("새로운 공지사항이 작성되었어요: ").append(event.getNoticeTitle());
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
