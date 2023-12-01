@@ -11,13 +11,13 @@ public class UserInfoResponse {
     private Long userId;
     private String nickname;
     private String statusMessage;
-    private String picture;
+    private String profileImage;
 
     public UserInfoResponse(User user){
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
         this.statusMessage = user.getStatusMessage();
-        this.picture = user.getPicture();
+        this.profileImage = user.getPicture();
     }
 
     public static UserInfoResponse from(User user) {
