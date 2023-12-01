@@ -164,4 +164,10 @@ public class StudyService {
         study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
         participant.setColor(dto.getColor());
     }
+
+    public String getInviteCode(Long studyId) {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        return study.getInviteCode();
+    }
 }
