@@ -16,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static ssu.groupstudy.domain.round.domain.StatusTag.ATTENDANCE_EXPECTED;
-import static ssu.groupstudy.domain.round.domain.StatusTag.NONE;
+import static ssu.groupstudy.domain.round.domain.StatusTag.*;
 
 class RoundParticipantServiceTest extends ServiceTest {
     @InjectMocks
@@ -35,7 +34,7 @@ class RoundParticipantServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, NONE))
+            assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, ATTENDANCE))
                     .isInstanceOf(RoundParticipantNotFoundException.class)
                     .hasMessage(ResultCode.ROUND_PARTICIPANT_NOT_FOUND.getMessage());
         }
@@ -47,10 +46,10 @@ class RoundParticipantServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1_최규현)).when(roundParticipantRepository).findById(any(Long.class));
 
             // when
-            roundParticipantService.updateStatusTag(-1L, ATTENDANCE_EXPECTED);
+            roundParticipantService.updateStatusTag(-1L, ATTENDANCE);
 
             // then
-            assertThat(회차1_최규현.getStatusTag()).isEqualTo(ATTENDANCE_EXPECTED);
+            assertThat(회차1_최규현.getStatusTag()).isEqualTo(ATTENDANCE);
         }
     }
 }
