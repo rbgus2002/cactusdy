@@ -21,4 +21,12 @@ public class NotificationApi {
     public ResponseDto notifyParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long targetUserId, @RequestParam Long studyId) {
         notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId);
         return ResponseDto.success();
-    }}
+    }
+
+    @Operation(summary = "사용자 기기 FCM 토큰 삭제", description = "사용자가 로그아웃할 때 기기의 FCM 토큰을 삭제한다")
+    @DeleteMapping("/tokens")
+    public ResponseDto deleteFcmToken(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String token) {
+        notificationService.deleteFcmToken(userDetails.getUser(), token);
+        return ResponseDto.success();
+    }
+}

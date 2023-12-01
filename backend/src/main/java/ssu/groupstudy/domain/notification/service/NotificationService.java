@@ -22,4 +22,9 @@ public class NotificationService {
         String body = String.format("[%s]님이 회원님을 콕 찔렀습니다.",  user.getNickname());
         fcmUtils.sendNotificationByTokens(targetUser.getFcmTokenList(), "콕찌르기", body);
     }
+
+    @Transactional
+    public void deleteFcmToken(User user, String token) {
+        user.deleteFcmToken(token);
+    }
 }

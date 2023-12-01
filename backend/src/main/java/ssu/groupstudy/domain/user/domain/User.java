@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 
@@ -42,7 +43,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
     private final List<Authority> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
+    @OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL, orphanRemoval = true)
     private final Set<FcmToken> fcmTokens = new HashSet<>();
 
     @Column
@@ -121,6 +122,11 @@ public class User extends BaseEntity {
         return fcmTokens.stream()
                 .map(FcmToken::getToken)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteFcmToken(String token) {
+        FcmToken newToken = FcmToken.from(this, token);
+        fcmTokens.remove(newToken);
     }
 
     public void edit(String nickname, String statusMessage) {
