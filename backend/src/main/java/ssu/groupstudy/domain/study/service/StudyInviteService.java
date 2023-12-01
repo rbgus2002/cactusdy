@@ -11,7 +11,9 @@ import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -26,17 +28,25 @@ import java.util.List;
 public class StudyInviteService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
+    private final ParticipantRepository participantRepository;
     private final RoundParticipantRepository roundParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
     public Long inviteUser(User user, String inviteCode) {
+        canCreateNewStudy(user);
         Study study = studyRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
         study.invite(user);
         addUserToFutureRounds(study, user);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
+    }
+    private void canCreateNewStudy(User user) {
+        if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
+            throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
+        }
     }
 
     private void addUserToFutureRounds(Study study, User user) {
