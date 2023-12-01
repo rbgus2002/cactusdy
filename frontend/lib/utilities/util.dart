@@ -52,6 +52,24 @@ class Util {
     );
   }
 
+  static Future<void> pushRouteWithFade(BuildContext context, RoutePageBuilder builder) {
+    return Navigator.of(context).push(PageRouteBuilder(
+      opaque: false,
+      pageBuilder: builder,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        double begin = 0.0;
+        double end = 1.0;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeIn));
+
+        return FadeTransition(
+          opacity: animation.drive(tween),
+          child: child,
+        );
+      },
+    ));
+  }
+
   static Color progressToColor(double taskProgress) {
     Color color = (taskProgress > 0.8)? OldColorStyles.green :
     (taskProgress > 0.5)? OldColorStyles.orange : OldColorStyles.red;

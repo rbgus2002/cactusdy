@@ -27,13 +27,13 @@ class _SplashRouteState extends State<SplashRoute> {
     Auth.getSignInfo();
 
     Timer(_splashDuration, () {
-      Navigator.of(context).pop();
+      //Util.popRoute(context);
       if (Auth.signInfo == null) {
-        Util.pushRoute(context, (context) => const StartRoute());
+        Util.pushRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
       }
       else {
         print(Auth.signInfo!.token); //< FIXME
-        Util.pushRoute(context, (context) => const HomeRoute());
+        Util.pushRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
       }
     });
   }
