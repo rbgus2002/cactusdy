@@ -29,11 +29,11 @@ class _SplashRouteState extends State<SplashRoute> {
     Timer(_splashDuration, () {
       //Util.popRoute(context);
       if (Auth.signInfo == null) {
-        Util.pushRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
+        Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
       }
       else {
         print(Auth.signInfo!.token); //< FIXME
-        Util.pushRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
+        Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
       }
     });
   }
