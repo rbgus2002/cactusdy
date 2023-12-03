@@ -45,7 +45,8 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   void initState() {
     super.initState();
     _initListModel();
-    _isOwner = Util.isOwner(widget.userId);
+    //_isOwner = Util.isOwner(widget.userId);
+    _isOwner = true; //< FIXME!!!!
 
     if (_isNeedToSubscribe()) {
       widget.subscribe!(
@@ -75,6 +76,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             key: _taskListKey,
             shrinkWrap: true,
             primary: false,
+            reverse: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
 
@@ -97,7 +99,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   void _addTask(Task task) {
-    _taskListModel.insert(0, Task());
+    _taskListModel.add(task);
 
     if (widget.updateProgress != null) widget.updateProgress!();
   }
@@ -144,12 +146,13 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
       Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
+      _addTask(Task());
 
       // notify to other task groups
       if (widget.notify != null && widget.taskGroup.isShared) {
         widget.notify!(
-            widget.taskGroup.taskType,            // type
-            widget.taskGroup.roundParticipantId,  //
+            widget.taskGroup.taskType,
+            widget.taskGroup.roundParticipantId,
             Task(taskId: Task.nonAllocatedTaskId,
               detail: task.detail,
               isDone: task.isDone,),

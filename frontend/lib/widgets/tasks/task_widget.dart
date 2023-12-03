@@ -82,6 +82,7 @@ class _TaskWidget extends State<TaskWidget> {
     return Flexible(
       fit: FlexFit.tight,
       child: TextField(
+        autofocus: _isAdded(),
         minLines: 1,
         maxLines: 10,
         maxLength: Task.taskMaxLength,
@@ -185,5 +186,9 @@ class _TaskWidget extends State<TaskWidget> {
 
     _focusNode.unfocus();
     setState(() {});
+  }
+
+  bool _isAdded() {
+    return widget.task.taskId == Task.nonAllocatedTaskId;
   }
 }
