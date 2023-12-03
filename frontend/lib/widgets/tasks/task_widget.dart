@@ -4,24 +4,29 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/stab_controller.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/task_check_box.dart';
 
 class TaskWidget extends StatefulWidget {
+  final TaskStabController taskStabController;
   final Task task;
   final Color color;
   final Function(Task) onUpdateTaskDetail;
   final Function(Task) onDeleteTask;
   final Function? onCheckTask;
+  final bool isOwner;
 
   const TaskWidget({
     super.key,
+    required this.taskStabController,
     required this.task,
     required this.color,
     required this.onUpdateTaskDetail,
     required this.onDeleteTask,
     this.onCheckTask,
+    this.isOwner = false,
   });
 
   @override
@@ -50,11 +55,15 @@ class _TaskWidget extends State<TaskWidget> {
             TaskCheckBox(
               task: widget.task,
               activeColor: widget.color,
-              onChanged: _onChecked),
+              onChanged: _onChecked,
+              enable: widget.isOwner,),
             Design.padding12,
 
             _taskDetail(),
-            _taskPopupMenu(),
+
+            (widget.isOwner) ?
+              _taskPopupMenu() :
+              _stabButton(),
           ],),
       ),
     );
@@ -62,6 +71,8 @@ class _TaskWidget extends State<TaskWidget> {
 
   @override
   void dispose() {
+    widget.taskStabController.send();
+
     _textEditingController.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -77,7 +88,7 @@ class _TaskWidget extends State<TaskWidget> {
         style: TextStyles.task.copyWith(
             color: context.extraColors.grey900,),
         strutStyle: const StrutStyle(
-          leading: 0.6,),
+          leading: 0.4,),
 
         focusNode: _focusNode,
         controller: _textEditingController,
@@ -124,6 +135,24 @@ class _TaskWidget extends State<TaskWidget> {
     );
   }
 
+  Widget _stabButton() {
+    return SizedBox(
+      width: 24,
+      height: 24,
+      child: IconButton(
+        icon: const Icon(CustomIcons.cactus),
+        iconSize: 24,
+        color: (widget.task.isDone) ?
+          context.extraColors.grey400 :
+          context.extraColors.grey500,
+        splashRadius: 10,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        onPressed: (!widget.task.isDone)?
+          widget.taskStabController.stab : null,),
+    );
+  }
+
   void _onChecked() {
     if (widget.task.taskId == Task.nonAllocatedTaskId) return;
 
@@ -155,6 +184,6 @@ class _TaskWidget extends State<TaskWidget> {
     }
 
     _focusNode.unfocus();
-    setState(() { });
+    setState(() {});
   }
 }

@@ -10,6 +10,7 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/stab_controller.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
@@ -31,6 +32,15 @@ class ProfileRoute extends StatefulWidget {
 
 class _ProfileRouteState extends State<ProfileRoute> {
   static const double _profileImageSize = 100;
+  late final UserStabController userStabController;
+
+  @override
+  void initState() {
+    super.initState();
+    userStabController = UserStabController(
+        targetUserId: widget.userId,
+        studyId: widget.studyId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +66,12 @@ class _ProfileRouteState extends State<ProfileRoute> {
                 ],) :
               Design.loadingIndicator,),
     );
+  }
+
+  @override
+  void dispose() {
+    userStabController.send();
+    super.dispose();
   }
 
   Widget _userProfileWidget(User participant) {
@@ -221,8 +237,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
             // Stab button (with Cactus Icon)
             Expanded(
               child: ElevatedButton(
-                onPressed: () =>
-                    User.notifyParticipant(widget.userId, widget.studyId),
+                onPressed: userStabController.stab,
                 child: Container(
                   width: double.maxFinite,
                   height: Design.buttonContentHeight,

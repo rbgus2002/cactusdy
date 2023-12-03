@@ -3,6 +3,7 @@ import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/studies/study_create_route.dart';
 import 'package:group_study_app/routes/studies/study_detail_route.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -158,8 +159,9 @@ class _StudyPanel extends StatelessWidget {
             itemCount: studyInfo.taskGroups.length,
             itemBuilder: (context, index) =>
                 TaskGroupWidget(
-                    taskGroup: studyInfo.taskGroups[index],
-                    studyColor: studyInfo.study.color,),
+                  userId: Auth.signInfo!.userId,
+                  taskGroup: studyInfo.taskGroups[index],
+                  study: studyInfo.study,),
             separatorBuilder: (context, index) => Design.padding20,),
         ],),
     );
