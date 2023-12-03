@@ -105,7 +105,6 @@ class Study {
       return result;
     }
   }
-
   static Future<bool> updateStudy(Study updatedStudy, XFile? studyImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/studies/${updatedStudy.studyId}'),);
@@ -136,6 +135,7 @@ class Study {
       return responseJson['success'];
     }
   }
+
 
   static Future<String> getStudyInvitingCode(int studyId) async {
     final response = await http.get(

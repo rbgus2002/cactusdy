@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/routes/profile_edit_route.dart';
+import 'package:group_study_app/routes/profiles/profile_edit_route.dart';
 import 'package:group_study_app/routes/setting_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -80,7 +80,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         text: context.local.editProfile,
         icon: const Icon(CustomIcons.writing_outline),
         onTap: () => Util.pushRoute(context, (context) =>
-            ProfileEditRoute(user: widget.user)),),
+            ProfileEditRoute(user: widget.user)).then((value) =>
+                Util.delay(() => setState(() {}),),
+        ),),
 
       // setting
       ItemEntry(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 class User{
@@ -14,9 +15,9 @@ class User{
   static const int nonAllocatedUserId = -1;
 
   final int userId;
-  final String nickname;
-  final String statusMessage;
-  final String profileImage;
+  String nickname;
+  String statusMessage;
+  String profileImage;
 
   User({
     required this.userId,
@@ -51,33 +52,23 @@ class User{
     }
   }
 
-  static Future<bool> updateStatusMessage(User user) async {
+  static Future<bool> updateUser(User updatedUser, XFile? profileImage) async {
+    final request = http.MultipartRequest('PATCH',
+      Uri.parse('${DatabaseService.serverUrl}api/users'),);
+
+    request.headers.addAll(DatabaseService.getAuthHeader());
+
     Map<String, dynamic> data = {
-      'statusMessage': user.statusMessage,
+      'nickname': updatedUser.nickname,
+      'statusMessage': updatedUser.statusMessage,
     };
 
-    final response = await http.put(
-        Uri.parse('${DatabaseService.serverUrl}api/users/profile/messages'),
-        headers: DatabaseService.getAuthHeader(),
-        body: json.encode(data),
-    );
+    request.files.add(http.MultipartFile.fromString(
+      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to update user status message");
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print('${responseJson['message']} to update user status Message');
-      return responseJson['success'];
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
     }
-  }
-
-  static Future<bool> updateProfileImage(XFile profileImage) async {
-    final request = http.MultipartRequest(
-      'POST',
-      Uri.parse('${DatabaseService.serverUrl}api/users/profile/images'),
-    );
-    request.headers.addAll(DatabaseService.getAuthHeader());
-    request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
@@ -85,6 +76,9 @@ class User{
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
+      print('sucess to update user profile');
+      updatedUser.profileImage = responseJson['data']['user']['profileImage'];
+
       return responseJson['success'];
     }
   }
