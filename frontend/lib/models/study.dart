@@ -55,7 +55,7 @@ class Study {
     }
   }
 
-  static Future<bool> createStudy({
+  static Future<Map<String, dynamic>> createStudy({
     required String studyName,
     required String studyDetail,
     required Color studyColor,
@@ -85,8 +85,8 @@ class Study {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print('sucess to create study');
-      return responseJson['success'];
+      print('success to create study');
+      return responseJson['data']['study'];
     }
   }
 
@@ -105,7 +105,6 @@ class Study {
       return result;
     }
   }
-
   static Future<bool> updateStudy(Study updatedStudy, XFile? studyImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/studies/${updatedStudy.studyId}'),);
@@ -134,6 +133,22 @@ class Study {
     } else {
       print('sucess to update study');
       return responseJson['success'];
+    }
+  }
+
+
+  static Future<String> getStudyInvitingCode(int studyId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/$studyId/inviteCode'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Failed to get Study inviting code");
+    } else {
+      var invitingCode = json.decode(utf8.decode(response.bodyBytes))['data']['inviteCode'];
+      print('success to get inviting code($invitingCode)');
+      return invitingCode;
     }
   }
 }

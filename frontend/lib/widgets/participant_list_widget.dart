@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round_participant_info.dart';
-import 'package:group_study_app/routes/profile_route.dart';
+import 'package:group_study_app/routes/profiles/profile_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';

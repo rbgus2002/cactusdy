@@ -13,6 +13,7 @@ class TaskCheckBox extends StatefulWidget {
   final Color? fillColor;
 
   final double size;
+  final bool enable;
 
   const TaskCheckBox({
     Key? key,
@@ -23,6 +24,7 @@ class TaskCheckBox extends StatefulWidget {
     this.fillColor,
 
     this.size = 24,
+    this.enable = true,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class _TaskCheckBoxState extends State<TaskCheckBox> {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(widget.size),
-      onTap: widget.onChanged,
+      onTap: (widget.enable)? widget.onChanged : null,
       child: AnimatedContainer(
         width: widget.size,
         height: widget.size,

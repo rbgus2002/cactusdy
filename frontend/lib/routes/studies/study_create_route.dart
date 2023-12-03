@@ -36,6 +36,9 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
 
   bool _isProcessing = false;
 
+  late final int _newStudyId;
+  late final String _invitingCode;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +66,7 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
             (_page == 2) ?
               StudyCreatePage2(getNext: _getStudyColorAndImage,) :
             (_page == 3) ?
-              const StudyCreatePage3(inviteCode: 866990) : const SizedBox(), //< FIXME
+              StudyCreatePage3(inviteCode: _invitingCode) : const SizedBox(),
           ],),),
     );
   }
@@ -102,8 +105,12 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
             studyName: _studyName,
             studyDetail: _studyDetail,
             studyColor: _studyColor,
-            studyImage: _profileImage).then(
-                (value) => _pageRouteTo(3));
+            studyImage: _profileImage).then((map) {
+              _newStudyId = map['studyId'];
+              _invitingCode = map['inviteCode'];
+
+              _pageRouteTo(3);
+            });
       } on Exception catch(e) {
         if (mounted) {
           Toast.showToast(

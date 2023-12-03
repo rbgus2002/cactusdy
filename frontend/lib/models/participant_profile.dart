@@ -45,7 +45,6 @@ class ParticipantProfile {
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
       print('success to get participant profile');
-      print(responseJson);
       return ParticipantProfile.fromJson(responseJson);
     }
   }

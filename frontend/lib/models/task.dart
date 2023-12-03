@@ -126,4 +126,24 @@ class Task {
       return (isChecked == 'Y');
     }
   }
+
+  static Future<bool> stabTask({
+    required int targetUserId,
+    required int studyId,
+    required int taskId,
+    required int count}) async {
+
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/notifications/tasks?targetUserId=$targetUserId&studyId=$studyId&taskId=$taskId&count=$count'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      if (responseJson['success']) print('success to stab task($count times)');
+      return responseJson['success'];
+    }
+  }
 }

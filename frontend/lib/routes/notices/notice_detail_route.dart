@@ -51,6 +51,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
             child: RefreshIndicator(
               onRefresh: () async => setState(() {}),
               child: SingleChildScrollView(
+                clipBehavior: Clip.none,
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [

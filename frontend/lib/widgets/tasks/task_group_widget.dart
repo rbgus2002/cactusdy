@@ -1,32 +1,34 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
+import 'package:group_study_app/utilities/stab_controller.dart';
+import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/task_list_title.dart';
 import 'package:group_study_app/widgets/tasks/task_widget.dart';
 
 class TaskGroupWidget extends StatefulWidget {
-  final Color studyColor;
+  final int userId;
+  final Study study;
   final TaskGroup taskGroup;
   final Function? updateProgress;
 
   final Function(String, int, Function(Task))? subscribe;
   final Function(String, int, Task)? notify;
 
-  final bool addable;
-
   const TaskGroupWidget({
     Key? key,
+    required this.userId,
     required this.taskGroup,
-    required this.studyColor,
+    required this.study,
 
     this.updateProgress,
     this.subscribe,
     this.notify,
-    this.addable = false,
   }) : super(key: key);
 
   @override
@@ -37,11 +39,13 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   late GlobalKey<AnimatedListState> _taskListKey;
   late ListModel<Task> _taskListModel;
 
+  late final bool _isOwner;
+
   @override
   void initState() {
     super.initState();
-
     _initListModel();
+    _isOwner = Util.isOwner(widget.userId);
 
     if (_isNeedToSubscribe()) {
       widget.subscribe!(
@@ -62,7 +66,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TaskListTitle(
-              enable: widget.addable,
+              enable: _isOwner,
               title: widget.taskGroup.taskTypeName,
               onTap: () => _addTask(Task())),
           Design.padding12,
@@ -103,8 +107,13 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     return SizeTransition(
       sizeFactor: animation,
       child: TaskWidget(
+        isOwner: _isOwner,
         task: task,
-        color: widget.studyColor,
+        color: widget.study.color,
+        taskStabController: TaskStabController(
+          studyId: widget.study.studyId,
+          targetUserId: widget.userId,
+          taskId: task.taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, -1),
         onCheckTask: widget.updateProgress,
@@ -117,8 +126,13 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     return SizeTransition(
       sizeFactor: animation,
       child: TaskWidget(
+        isOwner: _isOwner,
         task: _taskListModel[index],
-        color: widget.studyColor,
+        color: widget.study.color,
+        taskStabController: TaskStabController(
+          studyId: widget.study.studyId,
+          targetUserId: widget.userId,
+          taskId: _taskListModel[index].taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, index),
         onCheckTask: widget.updateProgress,

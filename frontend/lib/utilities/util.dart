@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/old_color_styles.dart';
 
 class Util {
@@ -85,5 +86,9 @@ class Util {
 
   static String getExceptionMessage(Exception e) {
     return e.toString().substring(_exceptionTextLength);
+  }
+
+  static bool isOwner(int userId) {
+    return (userId == Auth.signInfo?.userId);
   }
 }

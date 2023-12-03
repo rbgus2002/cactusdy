@@ -39,4 +39,20 @@ class ParticipantSummary {
       return (responseJson as List).map((p) => ParticipantSummary.fromJson(p)).toList();
     }
   }
+
+  static Future<int> joinStudyByInvitingCode(String invitingCode) async {
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?inviteCode=$invitingCode'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      int studyId = json.decode(utf8.decode(response.bodyBytes))['data']['studyId'];
+      print('success to join a study');
+      return studyId;
+    }
+  }
 }

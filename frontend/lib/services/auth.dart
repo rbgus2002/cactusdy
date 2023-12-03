@@ -81,9 +81,29 @@ class Auth {
     }
   }
 
-  static void signOut() {
+  static Future<bool> signOut() async {
+    bool result = true;
+
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      final response = await http.delete(
+        Uri.parse('${DatabaseService.serverUrl}api/notifications/tokens?token=$token'),
+        headers: DatabaseService.getAuthHeader(),
+      );
+
+      var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode != DatabaseService.successCode) {
+        throw Exception(responseJson['message']);
+      } else {
+        print('Firebase Messaging Token : $token is removed');
+        result = responseJson['success'];
+      }
+    }
     SignInfo.removeSignInfo();
     signInfo = null;
+    print('success to sign out');
+
+    return result;
   }
 
   static void getSignInfo() async {

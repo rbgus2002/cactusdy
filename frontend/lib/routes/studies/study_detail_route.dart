@@ -54,8 +54,8 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: SingleChildScrollView(
+          clipBehavior: Clip.none,
           physics: const AlwaysScrollableScrollPhysics(),
-
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

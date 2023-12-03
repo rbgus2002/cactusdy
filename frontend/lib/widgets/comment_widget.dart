@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
-import 'package:group_study_app/routes/profile_route.dart';
+import 'package:group_study_app/routes/profiles/profile_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';

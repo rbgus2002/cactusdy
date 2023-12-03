@@ -1,9 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
-import 'package:group_study_app/routes/start_route.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
@@ -30,19 +27,9 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
   final GlobalKey<InputFieldState> _nicknameEditor = GlobalKey();
   final GlobalKey<InputFieldState> _statusMessageEditor = GlobalKey();
 
-  late String _nickname;
-  late String _statusMessage;
   XFile? _profileImage;
 
   bool _isProcessing = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _nickname = widget.user.nickname;
-    _statusMessage = widget.user.statusMessage;
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +63,7 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
                 hintText: context.local.inputHint1(context.local.nickname),
                 maxLength: User.nicknameMaxLength,
                 counter: true,
-                validator: _nicknameValidator,
-                onChanged: (input) => _nickname = input,),
+                validator: _nicknameValidator,),
               Design.padding12,
 
               Text(
@@ -88,13 +74,13 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
 
               InputField(
                 key: _statusMessageEditor,
+                initText: widget.user.statusMessage,
                 hintText: context.local.inputHint2(context.local.statusMessage),
                 maxLength: User.statusMessageMaxLength,
                 minLines: 3,
                 maxLines: 3,
                 counter: true,
-                validator: _statusMessageValidator,
-                onChanged: (input) => _statusMessage = input,),
+                validator: _statusMessageValidator,),
             ],
           ),
         )
@@ -107,7 +93,7 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 44),
       child: PrimaryButton(
         text: context.local.doneModify,
-        onPressed: () {}),
+        onPressed: _updateProfile),
     );
   }
 
@@ -118,14 +104,15 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
         _isProcessing = true;
 
         try {
-          /*
-          await Study.updateStudy(_study, _studyImage).then((value) {
+          widget.user.nickname = _nicknameEditor.currentState!.text;
+          widget.user.statusMessage = _statusMessageEditor.currentState!.text;
+
+          await User.updateUser(widget.user, _profileImage).then((value) {
             Toast.showToast(
                 context: context,
                 message: context.local.successToDo(context.local.editing));
             Util.popRoute(context);
           });
-           */
         } on Exception catch(e) {
           if (context.mounted) {
             Toast.showToast(
