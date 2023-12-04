@@ -69,7 +69,7 @@ class TimeUtility {
       return '$min${context.local.min} ${sec.toString().padLeft(2, '0')}${context.local.sec}';
     }
 
-    return '$sec초';
+    return '$sec${context.local.sec}';
   }
 
   static Future<DateTime?> showDateTimePicker(BuildContext context) async {

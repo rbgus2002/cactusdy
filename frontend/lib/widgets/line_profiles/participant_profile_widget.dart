@@ -10,7 +10,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/dialogs/bottom_sheets.dart';
+import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:group_study_app/widgets/tags/status_tag_widget.dart';
 
 class ParticipantProfileWidget extends StatefulWidget {

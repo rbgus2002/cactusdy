@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -181,11 +182,14 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   Design.padding4,
 
                   // Study Time (time only like AM 2:20)
-                  Text(
-                    (round!.studyTime != null) ?
-                      TimeUtility.getTime(round!.studyTime!) :
-                      context.local.inputHint1(context.local.time),
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
+                  InkWell(
+                    onTap: () => Util.pushRoute(context, (context) => DateTimePickerRoute()),
+                    child: Text(
+                      (round!.studyTime != null) ?
+                        TimeUtility.getTime(round!.studyTime!) :
+                        context.local.inputHint1(context.local.time),
+                      style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
+                  ),
                   Design.padding4,
                 ],),
             ]),

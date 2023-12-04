@@ -34,6 +34,9 @@
     "yesterday": "어제",
     "beforeOf": "{time}전",
 
+    "am": "오전",
+    "pm": "오후",
+
     "undefined": "미정",
 
     "undefinedOf": "{target} 미정",

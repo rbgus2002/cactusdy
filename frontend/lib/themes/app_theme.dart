@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:http/http.dart';
 
 extension ThemeModeStringExtension on ThemeMode {
   static const String _light = 'light';
@@ -70,6 +71,7 @@ class AppTheme with ChangeNotifier {
       outlinedButtonTheme: ColorStyles.outlinedButtonThemeData,
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
+      datePickerTheme: _datePickerThemeData,
 
       extensions: const [
         ExtraColors.extraColors,
@@ -90,6 +92,7 @@ class AppTheme with ChangeNotifier {
       outlinedButtonTheme: ColorStyles.outlinedButtonDarkThemeData,
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
+      datePickerTheme: _datePickerThemeData,
 
       extensions: const [
         ExtraColors.extraColorsDark,
@@ -106,5 +109,11 @@ class AppTheme with ChangeNotifier {
       position: PopupMenuPosition.under,
       shape: RoundedRectangleBorder(
         borderRadius: Design.borderRadiusBig,),
+  );
+
+  static const DatePickerThemeData _datePickerThemeData = DatePickerThemeData(
+    weekdayStyle: TextStyles.body2,
+    dayStyle: TextStyles.head3,
+    yearStyle: TextStyles.head4,
   );
 }

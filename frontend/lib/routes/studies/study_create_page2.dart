@@ -8,7 +8,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/dialogs/bottom_sheets.dart';
+import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
