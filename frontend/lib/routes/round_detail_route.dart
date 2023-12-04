@@ -19,12 +19,14 @@ class RoundDetailRoute extends StatefulWidget {
   final int roundId;
   final Study study;
   final Function? onRemove;
+  final bool reserved;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
     required this.roundId,
     required this.study,
+    required this.reserved,
     this.onRemove,
   }) : super(key: key);
 
@@ -38,6 +40,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Round? round;
   bool _isEdited = false;
+  bool _reserved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _reserved = widget.reserved;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +72,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       round = snapshot.data;
+                      _reserved = TimeUtility.isScheduled(round!.studyTime);
 
                       return Container(
                         padding: Design.edgePadding,
@@ -88,6 +98,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               ),
 
               ParticipantInfoListWidget(
+                  reserved: _reserved,
                   roundId: widget.roundId,
                   study: widget.study,),
             ],

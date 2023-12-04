@@ -15,6 +15,7 @@ class ParticipantInfoWidget extends StatefulWidget {
   final Function(String, int, Function(Task)) subscribe;
   final Function(String, int, Task) notify;
   final Study study;
+  final bool reserved;
 
   const ParticipantInfoWidget({
     Key? key,
@@ -22,6 +23,7 @@ class ParticipantInfoWidget extends StatefulWidget {
     required this.subscribe,
     required this.notify,
     required this.study,
+    required this.reserved,
   }) : super(key: key);
 
   @override
@@ -54,9 +56,12 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
     return Column(
       children: [
         ParticipantProfileWidget(
+          roundParticipantId: widget.participantInfo.roundParticipantId,
           user: widget.participantInfo.participant,
+          status: widget.participantInfo.status,
           studyId: widget.study.studyId,
-          taskProgress: _progress,),
+          taskProgress: _progress,
+          reserved: widget.reserved,),
         Design.padding24,
 
         ListView.separated(

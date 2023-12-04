@@ -1,13 +1,14 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/tags/rounded_tag.dart';
+import 'package:group_study_app/widgets/tags/status_tag_widget.dart';
 
 class BottomSheets {
   static void _basicBottomSheet({
@@ -24,9 +25,21 @@ class BottomSheets {
         builder: builder);
   }
 
+  static Widget _designBar({Color? color}) {
+    return Center(
+      child: Container(
+        width: 100,
+        height: 4,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: Design.borderRadiusSmall,),),);
+  }
+
   static void statusTagPickerBottomSheet({
     required BuildContext context,
-    required VoidCallback onChose}) {
+    required Function(StatusTag) onPicked,
+    bool reserved = false,
+  }) {
     _basicBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -38,13 +51,7 @@ class BottomSheets {
             Design.padding12,
 
             // Design Bar
-            Center(
-              child: Container(
-                width: 100,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: context.extraColors.grey300,
-                  borderRadius: Design.borderRadiusSmall,),),),
+            _designBar(color: context.extraColors.grey300,),
             Design.padding32,
 
             Text(
@@ -52,37 +59,25 @@ class BottomSheets {
               style: TextStyles.head3.copyWith(color: context.extraColors.grey900),),
             Design.padding24,
 
-            Row(
-              children: [
-                RoundedTag(
-                  width: 60,
-                  height: 36,
-                  color: context.extraColors.pink!,
-                  text: Text(
-                    context.local.attend,
-                    style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                  onTap: () {},),
-                Design.padding16,
-
-                RoundedTag(
-                  width: 60,
-                  height: 36,
-                  color: context.extraColors.green!,
-                  text: Text(
-                    context.local.late,
-                    style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                  onTap: () {},),
-                Design.padding16,
-
-                RoundedTag(
-                  width: 60,
-                  height: 36,
-                  color: context.extraColors.mint!,
-                  text: Text(
-                    context.local.absent,
-                    style: TextStyles.head5.copyWith(color: context.extraColors.grey600),),
-                  onTap: () {},),
-              ],),
+            SizedBox(
+              height: 36,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: StatusTag.values.length,
+                itemBuilder: (context, index) {
+                  return StatusTagWidget(
+                    context: context,
+                    status: StatusTag.values[index],
+                    reserved: reserved,
+                    onTap: () { 
+                      Util.popRoute(context);
+                      onPicked(StatusTag.values[index]);
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) => Design.padding16,
+              ),
+            ),
             Design.padding24,
 
             OutlinedPrimaryButton(
@@ -92,7 +87,6 @@ class BottomSheets {
       ),
     );
   }
-
 
 
   static void colorPickerBottomSheet({

@@ -9,11 +9,13 @@ import 'package:group_study_app/widgets/participant_info_widget.dart';
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
   final Study study;
+  final bool reserved;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
     required this.study,
+    required this.reserved,
   }) : super(key: key);
 
   @override
@@ -54,7 +56,8 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
                     participantInfo: participantInfoList[index],
                     subscribe: addListener,
                     notify: notify,
-                    study: widget.study,)
+                    study: widget.study,
+                    reserved: widget.reserved,)
               );
             },);
         }

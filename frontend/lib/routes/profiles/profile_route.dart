@@ -155,27 +155,27 @@ class _ProfileRouteState extends State<ProfileRoute> {
 
           // Stacked Bar Chart
           _AttendanceRateChartWidget(
-            attendanceCount: attendanceRate[StatusTag.attendance]??0,
-            lateCount: attendanceRate[StatusTag.late]??0,
-            absentCount: attendanceRate[StatusTag.absent]??0,),
+            attendanceCount: attendanceRate[StatusTag.attendanceCode]??0,
+            lateCount: attendanceRate[StatusTag.lateCode]??0,
+            absentCount: attendanceRate[StatusTag.absentCode]??0,),
           Design.padding(36),
 
           // Attendance
           _StatusSummaryWidget(
               status: StatusTag.attendance,
-              count: attendanceRate[StatusTag.attendance]??0),
+              count: attendanceRate[StatusTag.attendanceCode]??0),
           Design.padding32,
 
           // Late
           _StatusSummaryWidget(
               status: StatusTag.late,
-              count: attendanceRate[StatusTag.late]??0),
+              count: attendanceRate[StatusTag.lateCode]??0),
           Design.padding32,
 
           // Absent
           _StatusSummaryWidget(
               status: StatusTag.absent,
-              count: attendanceRate[StatusTag.absent]??0),
+              count: attendanceRate[StatusTag.absentCode]??0),
           Design.padding24,
         ],
       ),
@@ -262,7 +262,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
 class _StatusSummaryWidget extends StatelessWidget {
   static const double _height = 24;
 
-  final String status;
+  final StatusTag status;
   final int count;
 
   const _StatusSummaryWidget({
@@ -279,13 +279,13 @@ class _StatusSummaryWidget extends StatelessWidget {
           width: _height,
           height: _height,
           decoration: BoxDecoration(
-            color: StatusTag.getColor(status, context),
+            color: status.color(context),
             shape: BoxShape.circle,),),
         Design.padding12,
 
         Expanded(
           child: Text(
-            StatusTag.getText(status, context),
+            status.text(context, false),
             style: TextStyles.head4.copyWith(
               color: context.extraColors.grey900,),),),
 
@@ -389,16 +389,16 @@ class _AttendanceRateChartWidget extends StatelessWidget {
           Flexible(
             flex: attendanceCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.attendance, context),),),
+              color: StatusTag.attendance.color(context),),),
 
           Visibility(
-            visible: (attendanceCount * lateCount != 0),
+            visible: (attendanceCount * lateCount != 0), //< FIXME
             child: Design.padding4,),
 
           Flexible(
             flex: lateCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.late, context),),),
+              color: StatusTag.late.color(context),),),
 
           Visibility(
             visible: (lateCount * absentCount != 0 || attendanceCount * absentCount != 0),
@@ -407,7 +407,7 @@ class _AttendanceRateChartWidget extends StatelessWidget {
           Flexible(
             flex: absentCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.absent, context),),),
+              color: StatusTag.absent.color(context),),),
         ],),
     );
   }
