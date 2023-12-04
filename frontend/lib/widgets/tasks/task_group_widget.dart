@@ -7,7 +7,6 @@ import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';
-import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/task_list_title.dart';
 import 'package:group_study_app/widgets/tasks/task_widget.dart';
 

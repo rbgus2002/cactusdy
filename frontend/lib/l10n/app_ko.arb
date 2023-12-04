@@ -129,6 +129,7 @@
     "record": "기록",
     "recordHint": "자세한 기록을 적어주세요",
 
+    "noti": "공지",
     "notice": "공지사항",
     "title": "제목",
     "content": "내용",
@@ -136,6 +137,7 @@
     "writeReply": "답글쓰기",
     "successToComment": "댓글을 작성했어요",
     "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+    "tryToWriteNoti": "공지를 작성해보세요",
 
     "attendanceRate": "참석률",
     "attendanceTag": "출석태그",

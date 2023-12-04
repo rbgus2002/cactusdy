@@ -14,7 +14,7 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/member_profile_list_widget.dart';
-import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
+import 'package:group_study_app/widgets/noticie_widgets/notice_rolling_widget.dart';
 import 'package:group_study_app/widgets/round_summary_list_widget.dart';
 import 'package:group_study_app/widgets/rules/rule_list_widget.dart';
 
@@ -70,7 +70,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Notice Summary Panel
-                    NoticeSummaryPanel(studyId: _study.studyId,),
+                    NoticeRollingWidget(studyId: _study.studyId,),
                     Design.padding24,
 
                     // Member Images
