@@ -6,7 +6,6 @@ import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
 class StudyTagWidget extends StatelessWidget {
   static const double size = 20;
@@ -33,14 +32,19 @@ class StudyTagWidget extends StatelessWidget {
           Container(
             width: 20,
             height: 20,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
             decoration: BoxDecoration(
-              border: Border.all(color: context.extraColors.grey300!),
-              borderRadius: BorderRadius.circular(Design.radiusValue),),
-            child: (false) ?
-              CachedNetworkImage(
-                  imageUrl: "",
-                  fit: BoxFit.cover) : null,),
+              border: Border.all(color: context.extraColors.grey300!, width: 1),
+              borderRadius: BorderRadius.circular(Design.radiusValueSmall + 0.5),),
+            child: Container(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Design.radiusValueSmall),),
+
+              child: (studyTag.studyProfileImage.isNotEmpty) ?
+                CachedNetworkImage(
+                    imageUrl: studyTag.studyProfileImage,
+                    fit: BoxFit.cover) : null,
+            ),),
           Design.padding8,
 
           Text(
