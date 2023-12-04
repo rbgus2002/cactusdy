@@ -242,11 +242,11 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               context: context,
               text: context.local.deleteRound,
 
-              buttonText1: context.local.delete,
-              onPressed1: () => _deleteRound(context),
+              buttonText1: context.local.no,
+              onPressed1: Util.doNothing,
 
-              buttonText2: context.local.cancel,
-              onPressed2: () { },),),
+              buttonText2: context.local.delete,
+              onPressed2: () => _deleteRound(context),),),
       ],
     );
   }
