@@ -25,10 +25,14 @@
     "year": "년",
     "month": "월",
     "day": "일",
-    "hour": "시",
+    "hour": "시간",
     "min": "분",
     "sec": "초",
     "date": "날짜",
+
+    "justNow": "방금",
+    "yesterday": "어제",
+    "beforeOf": "{time}전",
 
     "undefined": "미정",
 

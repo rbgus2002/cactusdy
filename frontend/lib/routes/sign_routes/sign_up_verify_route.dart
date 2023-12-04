@@ -67,7 +67,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 OutlinedPrimaryButton(
                   text: (!_isVerificationCodeSend)?
                   context.local.receiveVerificationCode :
-                  '${context.local.receiveVerificationCodeAgain} (${TimeUtility.secondToString(_restTime)})',
+                  '${context.local.receiveVerificationCodeAgain} (${TimeUtility.secondToString(context, _restTime)})',
                   onPressed: _requestVerificationCode,),
                 Design.padding32,
 

@@ -111,7 +111,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Writing Date and Writer Nickname
             Text(
-              '${TimeUtility.getElapsedTime(widget.notice.createDate)} '
+              '${TimeUtility.getElapsedTime(context, widget.notice.createDate)} '
                   '${widget.notice.writerNickname}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey500)),

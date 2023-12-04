@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/utilities/extensions.dart';
 import 'package:intl/intl.dart';
 
 class TimeUtility {
-  static const String _confirmText = "확인";
-  static const String _cancelText = "취소";
+  TimeUtility._();
 
   static bool isScheduled(DateTime? date) {
     return (date != null && date.compareTo(DateTime.now()) > 0);
@@ -15,27 +15,27 @@ class TimeUtility {
   }
 
   static String getTime(DateTime dateTime) {
-    return DateFormat('a HH:mm', 'ko_KR').format(dateTime);
+    return DateFormat('a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
   }
 
-  static String getElapsedTime(DateTime dateTime) {
+  static String getElapsedTime(BuildContext context, DateTime dateTime) {
     final nowTime = DateTime.now();
     final difference = nowTime.difference(dateTime);
 
     if (difference.inMinutes < 1) {
-      return "방금";
+      return context.local.justNow;
     }
 
     else if (difference.inHours < 1) {
-      return '${difference.inMinutes}분전';
+      return context.local.beforeOf('${difference.inMinutes}${context.local.min}');
     }
 
     else if (difference.inDays < 1) {
-      return '${difference.inHours}시간전';
+      return context.local.beforeOf('${difference.inHours}${context.local.hour}');
     }
 
     else if (nowTime.day - dateTime.day < 2) {
-      return '어제';
+      return context.local.yesterday;
     }
 
     if (dateTime.year == nowTime.year) {
@@ -49,24 +49,24 @@ class TimeUtility {
     final nowTime = DateTime.now();
 
     if (dateTime.year == nowTime.year) {
-      return DateFormat('MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
+      return DateFormat('MM/dd(E) a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
     }
 
-    return DateFormat('yy/MM/dd(E) a HH:mm', 'ko_KR').format(dateTime);
+    return DateFormat('yy/MM/dd(E) a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
   }
 
-  static String secondToString(int sec) {
+  static String secondToString(BuildContext context, int sec) {
     int min = sec ~/ 60;
     sec %= 60;
 
     if (sec >= 3600) { // 1hour = 60min * 60sec
       int hour = min ~/ 60;
       min %= 60;
-      return '$hour시간 ${min.toString().padLeft(2, '0')}분 ${sec.toString().padLeft(2, '0')}초';
+      return '$hour${context.local.hour} ${min.toString().padLeft(2, '0')}${context.local.min} ${sec.toString().padLeft(2, '0')}${context.local.sec}';
     }
 
     else if (min > 0) {
-      return '$min분 ${sec.toString().padLeft(2, '0')}초';
+      return '$min${context.local.min} ${sec.toString().padLeft(2, '0')}${context.local.sec}';
     }
 
     return '$sec초';
@@ -87,13 +87,13 @@ class TimeUtility {
         context: context,
         initialTime: TimeOfDay.now(),
         initialEntryMode: TimePickerEntryMode.inputOnly,
-        cancelText: _cancelText,
-        confirmText: _confirmText,
+        cancelText: context.local.cancel,
+        confirmText: context.local.confirm,
       );
 
       if (time == null) return null;
 
-      return DateTime(date!.year, date.month, date.day, time.hour, time.minute);
+      return DateTime(date.year, date.month, date.day, time.hour, time.minute);
     }
     return null;
   }

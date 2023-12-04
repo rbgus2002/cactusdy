@@ -86,7 +86,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                 children: [
                   // Writing Date & Writer
                   Text(
-                      '${TimeUtility.getElapsedTime(_noticeRef.createDate)}'
+                      '${TimeUtility.getElapsedTime(context, _noticeRef.createDate)}'
                       ' • ${_noticeRef.writerNickname}',
                       style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
 

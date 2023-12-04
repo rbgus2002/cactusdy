@@ -84,7 +84,7 @@ class CommentWidget extends StatelessWidget {
                       Design.padding4,
 
                       Text(
-                        TimeUtility.getElapsedTime(comment.createDate),
+                        TimeUtility.getElapsedTime(context, comment.createDate),
                         style: TextStyles.body4.copyWith(color: context.extraColors.grey500),),
                       Design.padding8,
 
