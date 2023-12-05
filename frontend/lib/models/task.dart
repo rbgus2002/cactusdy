@@ -46,29 +46,58 @@ class Task {
     }
   }
 
-  static Future<bool> createTask(Task task, String taskType, int roundParticipantId) async {
+  static Future<bool> createPersonalTask(Task task, int roundParticipantId) async {
     Map<String, dynamic> data = {
       "roundParticipantId": roundParticipantId,
-      "taskType": taskType,
       "detail": task.detail,
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}api/tasks'),
+      Uri.parse('${DatabaseService.serverUrl}api/tasks/personal'),
       headers: DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to create task");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
       bool success = responseJson['success'];
       if(success) {
         task.taskId = responseJson['data']['taskId'];
-        print("New Task is created successfully");
+        print("success to create personal task");
       }
       return success;
+    }
+  }
+
+  static Future<bool> createGroupTask(Task task, int roundId, Function(String, List<TaskInfo>)? notify) async {
+    Map<String, dynamic> data = {
+      "roundId": roundId,
+      "detail": task.detail,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/tasks/group'),
+      headers: DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      print('success to create group tasks');
+
+      List<TaskInfo> taskInfoList = ((responseJson['data']['groupTasks']??[]) as List).map((i) =>
+          TaskInfo.fromJson(i)).toList();
+
+      if (notify != null) {
+        notify(task.detail, taskInfoList);
+      }
+
+      return responseJson['success'];
     }
   }
 
@@ -145,5 +174,22 @@ class Task {
       if (responseJson['success']) print('success to stab task($count times)');
       return responseJson['success'];
     }
+  }
+}
+
+class TaskInfo {
+  final int roundParticipantId;
+  final int taskId;
+
+  TaskInfo({
+    required this.roundParticipantId,
+    required this.taskId,
+  });
+
+  factory TaskInfo.fromJson(Map<String, dynamic> json) {
+    return TaskInfo(
+      roundParticipantId: json['roundParticipantId'],
+      taskId: json['taskId'],
+    );
   }
 }

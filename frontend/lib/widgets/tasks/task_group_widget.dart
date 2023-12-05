@@ -14,17 +14,19 @@ import 'package:group_study_app/widgets/tasks/task_widget.dart';
 class TaskGroupWidget extends StatefulWidget {
   final int userId;
   final Study study;
+  final int roundId;
   final TaskGroup taskGroup;
   final Function? updateProgress;
 
   final Function(String, int, Function(Task))? subscribe;
-  final Function(String, int, Task)? notify;
+  final Function(String, int, String, List<TaskInfo>)? notify;
 
   const TaskGroupWidget({
     Key? key,
     required this.userId,
     required this.taskGroup,
     required this.study,
+    required this.roundId,
 
     this.updateProgress,
     this.subscribe,
@@ -145,23 +147,26 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   void _updateTaskDetail(Task task) {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
-      Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
-      _addTask(Task());
+      (widget.taskGroup.isShared) ?
+        Task.createGroupTask(task, widget.roundId, _notifyToOther) :
+        Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
 
-      // notify to other task groups
-      if (widget.notify != null && widget.taskGroup.isShared) {
-        widget.notify!(
-            widget.taskGroup.taskType,
-            widget.taskGroup.roundParticipantId,
-            Task(taskId: Task.nonAllocatedTaskId,
-              detail: task.detail,
-              isDone: task.isDone,),
-        );
-      }
+      // add new empty tasks
+      _addTask(Task());
     }
     // #Case : modified the task
     else {
       Task.updateTaskDetail(task, widget.taskGroup.roundParticipantId);
+    }
+  }
+
+  void _notifyToOther(String detail, List<TaskInfo> taskInfoList) {
+    if (widget.notify != null) {
+      widget.notify!(
+        widget.taskGroup.taskType,
+        widget.taskGroup.roundParticipantId,
+        detail,
+        taskInfoList);
     }
   }
 

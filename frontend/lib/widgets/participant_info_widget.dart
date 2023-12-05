@@ -13,13 +13,16 @@ import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
 class ParticipantInfoWidget extends StatefulWidget {
   final ParticipantInfo participantInfo;
   final Function(String, int, Function(Task)) subscribe;
-  final Function(String, int, Task) notify;
+  final Function(String, int, String, List<TaskInfo>) notify;
   final Study study;
   final bool reserved;
+
+  final int roundId;
 
   const ParticipantInfoWidget({
     Key? key,
     required this.participantInfo,
+    required this.roundId,
     required this.subscribe,
     required this.notify,
     required this.study,
@@ -73,6 +76,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
           itemBuilder: (context, index) =>
               TaskGroupWidget(
                 userId: widget.participantInfo.participant.userId,
+                roundId: widget.roundId,
                 taskGroup: widget.participantInfo.taskGroups[index],
                 subscribe: widget.subscribe,
                 notify: widget.notify,

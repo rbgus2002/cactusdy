@@ -96,6 +96,7 @@ class _TaskWidget extends State<TaskWidget> {
         textAlign: TextAlign.justify,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
+          enabled: widget.isOwner,
           isDense: true,
           hintText: context.local.inputHint2(context.local.task),
           contentPadding: EdgeInsets.zero,

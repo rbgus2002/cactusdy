@@ -22,15 +22,8 @@ class ParticipantInfoListWidget extends StatefulWidget {
   State<ParticipantInfoListWidget> createState() => _ParticipantInfoListWidgetState();
 }
 
-class _Callback {
-  int key;
-  Function(Task) addTask;
-
-  _Callback(this.key, this.addTask);
-}
-
 class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
-  final Map<String, List<_Callback>> listeners = { };
+  final Map<String, Map<int, Function(Task)>> listeners = { };
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +47,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
                           width: 1,),),),
                   child: ParticipantInfoWidget(
                     participantInfo: participantInfoList[index],
+                    roundId: widget.roundId,
                     subscribe: addListener,
                     notify: notify,
                     study: widget.study,
@@ -68,18 +62,25 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
 
   void addListener(String taskType, int key, Function(Task) addTask) {
     if (!listeners.containsKey(taskType)) {
-      listeners[taskType] = [];
+      listeners[taskType] = { };
     }
 
-    listeners[taskType]!.add(_Callback(key, addTask));
+    listeners[taskType]![key] = addTask;
   }
 
-  void notify(String taskType, int notifierKey, Task newTask) {
-    if (listeners[taskType] != null) {
-      for (var callback in listeners[taskType]!) {
+  void notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
+    print(newTaskInfoList);
+    if (listeners.containsKey(taskType)) {
+      for (var newTaskInfo in newTaskInfoList) {
         // exclude it's self
-        if (callback.key != notifierKey) {
-          callback.addTask(newTask);
+        if (newTaskInfo.roundParticipantId != notifierId) {
+          if (listeners[taskType]!.containsKey(newTaskInfo.roundParticipantId)) {
+            print("This!!");
+            listeners[taskType]![newTaskInfo.roundParticipantId]!(
+              Task(taskId: newTaskInfo.taskId, detail: detail, isDone: false,),);
+          }
+          else
+            print("Euh???");
         }
       }
     }
