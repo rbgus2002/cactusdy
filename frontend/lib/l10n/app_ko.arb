@@ -83,6 +83,8 @@
     "statusMessage": "상태 메세지",
     "editProfile": "프로필 편집",
     "setting": "설정",
+    "profile": "프로필",
+    "viewProfile": "프로필 조회",
 
     "study": "스터디",
     "myStudy": "나의 스터디",
@@ -106,7 +108,6 @@
     "inputCode": "코드를 입력해 주세요",
     "invitingCodeHint": "코드 6자리",
     "discordInvitingCode": "존재하지 않는 코드번호에요.",
-
 
     "admin": "방장",
     "chooseAdmin": "방장 선택",
@@ -140,11 +141,13 @@
     "notice": "공지사항",
     "title": "제목",
     "content": "내용",
+    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+    "tryToWriteNoti": "공지를 작성해보세요",
+
     "comment": "댓글",
     "writeReply": "답글쓰기",
     "successToComment": "댓글을 작성했어요",
-    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
-    "tryToWriteNoti": "공지를 작성해보세요",
+    "confirmDeleteComment": "댓글을 삭제하시겠어요?",
 
     "attendanceRate": "참석률",
     "attendanceTag": "출석태그",

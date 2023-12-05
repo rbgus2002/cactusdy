@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/profiles/profile_edit_route.dart';
@@ -62,9 +61,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
             height: _iconSize,
             child: PopupMenuButton(
               icon: Icon(
-                  CustomIcons.more_vert,
-                  color: context.extraColors.grey500,
-                  size: _iconSize,),
+                CustomIcons.more_vert,
+                color: context.extraColors.grey500,
+                size: _iconSize,),
               splashRadius: _iconSize / 2,
               padding: EdgeInsets.zero,
               itemBuilder: _popupMenuBuilder,

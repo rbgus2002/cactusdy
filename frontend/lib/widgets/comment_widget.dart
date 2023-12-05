@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/routes/profiles/profile_route.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/old_text_styles.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 
 class CommentWidget extends StatelessWidget {
-  static const String _deleteNoticeCautionMessage = "해당 댓글을 삭제하시겠어요?"; //< FIXME
-  static const String _deleteNoticeFailMessage = "댓글 삭제에 실패했습니다";
-
-  static const String _confirmText = "확인";
-  static const String _cancelText = "취소";
-
-  static const String _showProfileText = "프로필 보기";
-  static const String _deleteCommentText = "삭제하기";
-
   static const double _replyLeftPadding = 50;
 
   static const double _imageSize = 36;
@@ -32,9 +22,9 @@ class CommentWidget extends StatelessWidget {
   final Function onDelete;
   final bool isReply;
   final int index;
-  bool isSelected;
+  final bool isSelected;
 
-  CommentWidget({
+  const CommentWidget({
     Key? key,
     required this.comment,
     required this.studyId,
@@ -48,7 +38,7 @@ class CommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB((isReply)?_replyLeftPadding:0, 0, 0, 0),
+      padding: EdgeInsets.only(left: (isReply)?_replyLeftPadding:0),
       child: Column (
         children: [
           Container(
@@ -128,48 +118,38 @@ class CommentWidget extends StatelessWidget {
         width: 18,
         height: 18,
         child: PopupMenuButton(
-          icon: Icon(Icons.more_vert, color: context.extraColors.grey500,),
-          iconSize: 18,
+          icon: Icon(
+            Icons.more_vert,
+            color: context.extraColors.grey500,
+            size: 18,),
           splashRadius: 12,
           padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-          offset: const Offset(0, 18),
+          constraints: const BoxConstraints(minWidth: 128),
 
           itemBuilder: (context) => [
+            // show writer profile
             PopupMenuItem(
-              child: const Text(_showProfileText, style: OldTextStyles.bodyMedium,),
-              onTap: () {
-                Future.delayed(Duration.zero, ()=>
-                  Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
-                      ProfileRoute(userId: comment.userId, studyId: studyId)));
-              }),
+                height: 44,
+                child: Text(context.local.viewProfile, style: TextStyles.body1),
+                onTap: () => Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+                      ProfileRoute(userId: comment.userId, studyId: studyId))),
 
-            if (comment.userId == Auth.signInfo!.userId)
+            // delete comment
+            if (Util.isOwner(comment.userId))
             PopupMenuItem(
-              child: const Text(_deleteCommentText, style: OldTextStyles.bodyMedium,),
-              onTap: () => _showDeleteCommentDialog(context),),
+                height: 44,
+                child: Text(context.local.delete, style: TextStyles.body1),
+                onTap: () => TwoButtonDialog.showProfileDialog(
+                  context: context,
+                  text: context.local.confirmDeleteComment,
+
+                  buttonText1: context.local.no,
+                  onPressed1: Util.doNothing,
+
+                  buttonText2: context.local.delete,
+                  onPressed2: () => onDelete(comment.commentId),),),
         ],),
     );
-  }
-
-  void _showDeleteCommentDialog(BuildContext context) {
-    Future.delayed(Duration.zero, ()=> showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          content: const Text(_deleteNoticeCautionMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Util.popRoute(context),
-              child: const Text(_cancelText),),
-            TextButton(
-              onPressed: () {
-                Util.popRoute(context);
-                onDelete(comment.commentId);
-              },
-              child: const Text(_confirmText),),
-          ],
-        )
-    ));
   }
 
   bool _isReplyAble() {

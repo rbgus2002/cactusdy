@@ -33,10 +33,17 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
 
+  late Future<Map<String, dynamic>> _futureCommentInfo;
   List<Comment> _comments = [];
   int _replyTo = Comment.commentWithNoParent;
 
   bool _isProcessing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureCommentInfo = Comment.getComments(widget.notice.noticeId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +56,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           Flexible(
             fit: FlexFit.tight,
             child: RefreshIndicator(
-              onRefresh: () async => setState(() {}),
+              onRefresh: _refresh,
               child: SingleChildScrollView(
                 clipBehavior: Clip.none,
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -74,20 +81,25 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     super.dispose();
   }
 
+  Future<void> _refresh() async {
+    _futureCommentInfo = Comment.getComments(widget.notice.noticeId);
+
+    Notice.getNotice(widget.notice.noticeId).then((value) =>
+        setState(() {}));
+  }
+
   List<Widget>? _noticePopupMenus() {
     if (_isWriter()) {
       return [
         IconButton(
           icon: const Icon(CustomIcons.writing_outline),
           iconSize: 28,
-          onPressed: () {},),
+          onPressed: () {},), //< FIXME
 
         IconButton(
-            icon: const Icon(CustomIcons.trash),
-            iconSize: 28,
-            onPressed: () {
-              _showDeleteNoticeDialog(context);
-            }),
+          icon: const Icon(CustomIcons.trash),
+          iconSize: 28,
+          onPressed: () => _showDeleteNoticeDialog(context)),
       ];
     }
     return null;
@@ -145,7 +157,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   Widget _commentList() {
     return FutureBuilder(
-        future: Comment.getComments(widget.notice.noticeId),
+        future: _futureCommentInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int commentCount = snapshot.data!['commentCount'];
@@ -266,13 +278,6 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
                 _commentEditor.currentState!.text = "";
                 _replyTo = Comment.commentWithNoParent;
               });
-
-              // Wait until the keyboard disappears
-              Future.delayed(const Duration(seconds: 1), () =>
-                Toast.showToast(
-                    context: context,
-                    margin: const EdgeInsets.only(bottom: 68),
-                    message: context.local.successToComment));
             }
           });
         } on Exception catch (e) {
@@ -298,7 +303,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   void _deleteComment(int commentId) async {
     try {
       await Comment.deleteComment(commentId).then((result) =>
-          (result)? setState(() {}) : null);
+          _refresh());
     } on Exception catch(e) {
       if (context.mounted) {
         Toast.showToast(
