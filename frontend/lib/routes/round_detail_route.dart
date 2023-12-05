@@ -36,7 +36,9 @@ class RoundDetailRoute extends StatefulWidget {
 }
 
 class _RoundDetailRouteState extends State<RoundDetailRoute> {
+  late final TextEditingController _placeEditingController = TextEditingController();
   final GlobalKey<InputFieldState> _detailEditor = GlobalKey();
+
   final _focusNode = FocusNode();
 
   Round? round;
@@ -74,6 +76,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                     if (snapshot.hasData) {
                       round = snapshot.data;
                       _reserved = TimeUtility.isScheduled(round!.studyTime);
+                      _placeEditingController.text = round!.studyPlace;
 
                       return Container(
                         padding: Design.edgePadding,
@@ -170,17 +173,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               // Place And Time of round
               Row(
                 children: [
-                  Icon(CustomIcons.location, size: 14, color: context.extraColors.grey600),
-                  Design.padding4,
-
-                  // Study Place
-                  Text(
-                    (round!.studyPlace.isNotEmpty) ?
-                      round!.studyPlace :
-                      context.local.inputHint2(context.local.place),
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
-                  Design.padding4,
-
                   Icon(CustomIcons.calendar, size: 14, color: context.extraColors.grey600),
                   Design.padding4,
 
@@ -194,6 +186,34 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         TimeUtility.getTime(round!.studyTime!) :
                         context.local.inputHint1(context.local.time),
                       style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
+                  ),
+                  Design.padding4,
+
+                  Icon(CustomIcons.location, size: 14, color: context.extraColors.grey600),
+                  Design.padding4,
+
+                  Expanded(
+                    child: TextField(
+                      maxLength: Round.placeMaxLength,
+                      maxLines: 1,
+                      style: TextStyles.body2.copyWith(
+                          color: context.extraColors.grey800),
+
+                      controller: _placeEditingController,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+
+                        hintText: context.local.inputHint2(context.local.place),
+                        hintStyle: TextStyles.body2.copyWith(
+                            color: context.extraColors.grey800!.withOpacity(0.5)),
+
+                        border: InputBorder.none,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.extraColors.grey700!,)),
+                        counterText: "",
+                      ),),
                   ),
                   Design.padding4,
                 ],),

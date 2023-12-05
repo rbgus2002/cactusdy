@@ -130,10 +130,10 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         borderRadius: Design.borderRadiusSmall,),
       child: Column(
           children: [
-            _placeWidget(),
+            _timeWidget(),
             Design.padding4,
 
-            _timeWidget(),
+            _placeWidget(),
             Design.padding16,
 
             ParticipantListWidget(
