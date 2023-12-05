@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -188,8 +189,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             ),
 
             onChanged: (value) => _isEdited = true,
-            onTapOutside: (event) => updatePlace(),
-            onSubmitted: (value) => updatePlace(),
+            onTapOutside: (event) => _updateStudyPlace(),
+            onSubmitted: (value) => _updateStudyPlace(),
           ),
         ),
       ],
@@ -206,7 +207,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         Design.padding4,
 
         InkWell(
-          onTap: updateDateAndTime,
+          onTap: _editStudyTime,
           child: Text(
             (widget.round.studyTime != null) ?
               TimeUtility.timeToString(widget.round.studyTime!) :
@@ -235,27 +236,22 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     }
   }
 
-  void updatePlace() {
+  void _updateStudyPlace() {
     if (_isEdited) {
       widget.round.studyPlace = _placeEditingController.text;
-      updateRound(widget.round);
+      _updateRound(widget.round);
       _isEdited = false;
     }
     setState(() {});
   }
 
-  void updateDateAndTime() async {
-    TimeUtility.showDateTimePicker(context).then((dateTime) {
-          if (dateTime != null) {
-            widget.round.studyTime = dateTime;
-            updateRound(widget.round);
-
-            setState(() { });
-          }
-        });
+  void _editStudyTime() async {
+    Util.pushRoute(context, (context) =>
+        DateTimePickerRoute(
+          round: widget.round,)).then((value) => setState((){ }));
   }
 
-  void updateRound(Round round) {
+  void _updateRound(Round round) {
     if (round.roundId == Round.nonAllocatedRoundId) {
       Round.createRound(round, widget.study.studyId);
     }

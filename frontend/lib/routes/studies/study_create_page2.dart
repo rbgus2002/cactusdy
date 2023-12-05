@@ -86,7 +86,7 @@ class _StudyCreatePage2State extends State<StudyCreatePage2> {
         InkWell(
           onTap: () => BottomSheets.colorPickerBottomSheet(
             context: context,
-            onChose: (newColor) => setState(() => _studyColor = newColor),),
+            onSelected: (newColor) => setState(() => _studyColor = newColor),),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

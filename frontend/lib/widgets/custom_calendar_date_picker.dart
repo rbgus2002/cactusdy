@@ -380,6 +380,7 @@ class _DatePickerModeToggleButtonState extends State<_DatePickerModeToggleButton
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end, //< [EDIT]
                       children: <Widget>[
                         Flexible(
                           child: Text(

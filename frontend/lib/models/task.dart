@@ -42,7 +42,6 @@ class Task {
     } else {
       print("Success to get participants Task lists");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['tasks'];
-      print(responseJson);//< FIXME
       return (responseJson as List).map((p) => ParticipantInfo.fromJson(p)).toList();
     }
   }

@@ -57,7 +57,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         actions: [ _roundPopupMenu(), ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async => setState(() {}),
+        onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -122,29 +122,32 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       decoration: BoxDecoration(
         color: widget.study.color.withOpacity(0.2),
         borderRadius: Design.borderRadiusSmall,),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // if there are studyTime => [ Month, Day ]
-          // else => [ -Mon, - ]
+      child: InkWell(
+        onTap: _editStudyTime,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // if there are studyTime => [ Month, Day ]
+            // else => [ -Mon, - ]
 
-          // Month (or date)
-          Text(
-            (round?.studyTime != null)?
-            '${round!.studyTime!.month}${context.local.month}' :
-            '-${context.local.month}',
-            style: TextStyles.body2.copyWith(
-                color: context.extraColors.grey800),),
+            // Month (or date)
+            Text(
+              (round?.studyTime != null)?
+              '${round!.studyTime!.month}${context.local.month}' :
+              '-${context.local.month}',
+              style: TextStyles.body2.copyWith(
+                  color: context.extraColors.grey800),),
 
-          // Day (or -)
-          Text(
-            (round?.studyTime != null) ?
-            '${round!.studyTime!.day}' :
-            '-',
-            style: TextStyles.head3.copyWith(
-                color: context.extraColors.grey800),),
-        ],),);
+            // Day (or -)
+            Text(
+              (round?.studyTime != null) ?
+              '${round!.studyTime!.day}' :
+              '-',
+              style: TextStyles.head3.copyWith(
+                  color: context.extraColors.grey800),),
+          ],),
+      ),);
   }
 
   Widget _roundInfo() {
@@ -183,7 +186,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
                   // Study Time (time only like AM 2:20)
                   InkWell(
-                    onTap: () => Util.pushRoute(context, (context) => DateTimePickerRoute()),
+                    onTap: () => Util.pushRoute(context, (context) =>
+                        DateTimePickerRoute(
+                          round: round!,)),
                     child: Text(
                       (round!.studyTime != null) ?
                         TimeUtility.getTime(round!.studyTime!) :
@@ -253,6 +258,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               onPressed2: () => _deleteRound(context),),),
       ],
     );
+  }
+
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+  
+  void _editStudyTime() async {
+    Util.pushRoute(context, (context) =>
+        DateTimePickerRoute(
+          round: round!,)).then((value) => _refresh());
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {

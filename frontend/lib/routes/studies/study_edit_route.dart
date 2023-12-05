@@ -170,7 +170,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           onTap: () =>
               BottomSheets.colorPickerBottomSheet(
                 context: context,
-                onChose: _changeColor),
+                onSelected: _changeColor),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

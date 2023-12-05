@@ -28,14 +28,13 @@ class _SplashRouteState extends State<SplashRoute> {
     Auth.getSignInfo();
 
     Timer(_splashDuration, () {
-      //Util.popRoute(context);
       if (Auth.signInfo == null) {
         Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
       }
       else {
         print(Auth.signInfo!.token); //< FIXME
         Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
-        Util.pushRoute(context, (context) => DateTimePickerRoute());
+        //Util.pushRoute(context, (context) => DateTimePickerRoute());
 
       }
     });

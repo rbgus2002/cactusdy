@@ -97,4 +97,16 @@ class TimeUtility {
     }
     return null;
   }
+
+  /// For BottomSheets.timePickerBottomSheet
+  static DateTime buildDateTime({
+    required int aIdx,  // [ am, pm ]
+    required int hIdx,  // [ 0(=12):11 ]
+    required int mIdx,  // [ 0:55 ] (rotSize = 5)
+  }) {
+    int hour = (aIdx * 12) + hIdx;
+    int min = (mIdx * 5);
+
+    return DateTime(0, 0, 0, hour, min);
+  }
 }

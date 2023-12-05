@@ -7,6 +7,7 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
@@ -94,7 +95,7 @@ class BottomSheets {
 
   static void colorPickerBottomSheet({
     required BuildContext context,
-    required Function(Color) onChose}) {
+    required Function(Color) onSelected}) {
     _basicBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -130,7 +131,7 @@ class BottomSheets {
                     radius: 16,
                     backgroundColor: ColorStyles.studyColors[index],),
                   onTap: () {
-                    onChose(ColorStyles.studyColors[index]);
+                    onSelected(ColorStyles.studyColors[index]);
                     Util.popRoute(context);},
                 ),),
             Design.padding4,
@@ -145,10 +146,15 @@ class BottomSheets {
 
   static void timePickerBottomSheet({
     required BuildContext context,
-    required Function(Color) onChose}) {
+    required final DateTime initTime,
+    required final Function(DateTime) onSelected}) {
       final List<String> amAndPm = [ context.local.am, context.local.pm ];
       const double height = 200;
       const double itemExtent = 36;
+
+      int aIdx = 0;
+      int hIdx = 0;
+      int mIdx = 0;
 
       _basicBottomSheet(
         context: context,
@@ -189,7 +195,7 @@ class BottomSheets {
                           selectionOverlay: null,
                           children: amAndPm.map((m) => Text(
                             m, style: TextStyles.head2,)).toList(),
-                          onSelectedItemChanged: (c){},),),
+                          onSelectedItemChanged: (idx) => aIdx = idx,),),
 
                       // Hour
                       SizedBox(
@@ -200,8 +206,8 @@ class BottomSheets {
                           looping: true,
                           selectionOverlay: null,
                           children: List.generate(12, (index) => Text(
-                            (index + 1).toString().padLeft(2, '  '), style: TextStyles.head2,)),
-                          onSelectedItemChanged: (c){},),),
+                            ((index == 0)? 12 : index).toString().padLeft(2, '  '), style: TextStyles.head2,)),
+                          onSelectedItemChanged: (idx) => hIdx = idx,),),
 
                       // Min
                       SizedBox(
@@ -213,14 +219,19 @@ class BottomSheets {
                           selectionOverlay: null,
                           children: List.generate(12, (index) => Text(
                             (index * 5).toString().padLeft(2, '0'), style: TextStyles.head2,)),
-                          onSelectedItemChanged: (c){},),),
+                          onSelectedItemChanged: (idx) => mIdx = idx,),),
                     ],),
                 ],),
               Design.padding16,
 
               PrimaryButton(
                 text: context.local.confirm,
-                onPressed: () => Util.popRoute(context),),
+                onPressed: () {
+                  DateTime pickedTime = TimeUtility.buildDateTime(aIdx: aIdx, hIdx: hIdx, mIdx: mIdx);
+                  onSelected(pickedTime);
+
+                  Util.popRoute(context);
+                }),
             ],),
       ),
     );
