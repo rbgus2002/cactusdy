@@ -20,8 +20,8 @@ public class TaskGroup {
         this.taskTypeName = taskType.getDetail();
         this.tasks = roundParticipant.getTasks().stream()
                 .filter(task -> task.isSameTypeOf(taskType))
-                .sorted(Comparator.comparing(Task::getDoneYn)
-                        .thenComparing(Task::getId, Comparator.reverseOrder()))
+                .sorted(Comparator.comparing(Task::getDoneYn, Comparator.reverseOrder())
+                        .thenComparing(Task::getId))
                 .map(TaskInfo::from)
                 .collect(Collectors.toList());
     }
