@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/date_time_picker_route.dart';
@@ -137,8 +138,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             Design.padding16,
 
             ParticipantListWidget(
-              roundParticipantInfoList: widget.round.roundParticipantInfos,
-              studyId: widget.study.studyId,),
+              roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
+                ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
+              studyId: widget.study.studyId,)
           ],),
     );
   }

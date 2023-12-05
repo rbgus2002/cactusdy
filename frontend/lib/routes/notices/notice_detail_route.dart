@@ -62,7 +62,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           ),
           _writingCommentBox(),
         ],),
-      bottomNavigationBar: Design.padding(40),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        height: 40,),
     );
   }
 
@@ -199,6 +201,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     return Container(
       padding: Design.edge8,
       decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(
             color: context.extraColors.grey200!,
