@@ -11,9 +11,12 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.List;
@@ -33,6 +36,8 @@ class StudyInviteServiceTest extends ServiceTest {
     @Mock
     private RoundRepository roundRepository;
     @Mock
+    private ParticipantRepository participantRepository;
+    @Mock
     private RoundParticipantRepository roundParticipantRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -40,13 +45,27 @@ class StudyInviteServiceTest extends ServiceTest {
     @Nested
     class inviteUser {
         @Test
-        @DisplayName("존재하지 않는 스터디이면 예외를 던진다")
-        void fail_studyNotFound() {
+        @DisplayName("참여 중인 스터디가 5개 이상이면 예외를 던진다")
+        void canNotCreateStudy(){
             // given
+            // when
+            doReturn(5).when(participantRepository).countParticipationStudy(any(User.class));
+
+            // then
+            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, "000000"))
+                    .isInstanceOf(CanNotCreateStudyException.class)
+                    .hasMessage(ResultCode.USER_CAN_NOT_CREATE_STUDY.getMessage());
+        }
+
+        @Test
+        @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
+        void studyNotFound() {
+            // given
+            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
             doReturn(Optional.empty()).when(studyRepository).findByInviteCode(any(String.class));
 
             // when, then
-            assertThatThrownBy(() -> studyInviteService.inviteUser(null, "000000"))
+            assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, "000000"))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_INVITE_CODE_NOT_FOUND.getMessage());
         }
@@ -55,8 +74,10 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("이미 초대된 사용자면 예외를 던진다")
         void inviteAlreadyExist() {
             // given
-            // when
+            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
+
+            // when
             알고리즘스터디.invite(장재우);
 
             // then
@@ -69,6 +90,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
+            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
             doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
 
