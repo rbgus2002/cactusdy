@@ -80,7 +80,7 @@ class InputFieldState extends State<InputField> {
           textAlign: TextAlign.justify,
           focusNode: widget.focusNode,
           onChanged: onChange,
-          onTapOutside: widget.onTapOutSide??(event) => FocusScope.of(context).unfocus(),
+          onTapOutside: widget.onTapOutSide??((event) => FocusScope.of(context).unfocus()),
           decoration: InputDecoration(
             contentPadding: Design.textFieldPadding,
 

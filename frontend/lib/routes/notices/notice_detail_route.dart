@@ -60,12 +60,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               child: SingleChildScrollView(
                 clipBehavior: Clip.none,
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    _noticeBody(),
-                    _commentList(),
-                  ]),
-                ),),
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Column(
+                    children: [
+                      _noticeBody(),
+                      _commentList(),
+                    ]),
+                ),
+            ),),
           ),
           _writingCommentBox(),
         ],),

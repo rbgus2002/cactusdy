@@ -62,50 +62,53 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(bottom:
-                    BorderSide(
-                        color: context.extraColors.grey50!,
-                        width: 7)),),
-                child: FutureBuilder(
-                  future: Round.getDetail(widget.roundId),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      round = snapshot.data;
-                      _reserved = TimeUtility.isScheduled(round!.studyTime);
-                      _placeEditingController.text = round!.studyPlace;
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom:
+                      BorderSide(
+                          color: context.extraColors.grey50!,
+                          width: 7)),),
+                  child: FutureBuilder(
+                    future: Round.getDetail(widget.roundId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        round = snapshot.data;
+                        _reserved = TimeUtility.isScheduled(round!.studyTime);
+                        _placeEditingController.text = round!.studyPlace;
 
-                      return Container(
-                        padding: Design.edgePadding,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Round Info
-                            _roundInfo(),
-                            Design.padding20,
+                        return Container(
+                          padding: Design.edgePadding,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Round Info
+                              _roundInfo(),
+                              Design.padding20,
 
-                            // Detail Record
-                            Text(
-                              context.local.record,
-                              style: TextStyles.head5.copyWith(
-                                  color: context.extraColors.grey900),),
-                            Design.padding8,
-                            _detailRecord(),
-                          ]),
-                      );
-                    }
-                    return Design.loadingIndicator;
-                  },),
-              ),
+                              // Detail Record
+                              Text(
+                                context.local.record,
+                                style: TextStyles.head5.copyWith(
+                                    color: context.extraColors.grey900),),
+                              Design.padding8,
+                              _detailRecord(),
+                            ]),
+                        );
+                      }
+                      return Design.loadingIndicator;
+                    },),
+                ),
 
-              ParticipantInfoListWidget(
-                  reserved: _reserved,
-                  roundId: widget.roundId,
-                  study: widget.study,),
-            ],
+                ParticipantInfoListWidget(
+                    reserved: _reserved,
+                    roundId: widget.roundId,
+                    study: widget.study,),
+              ],
+            ),
           ),
         ),
       ),
@@ -295,7 +298,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
     }
-    _focusNode.unfocus();
   }
 
   void _deleteRound(BuildContext context) async {
