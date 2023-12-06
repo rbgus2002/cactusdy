@@ -32,7 +32,7 @@ class User{
         userId: json['userId'],
         nickname: json['nickname']??"",
         statusMessage: json['statusMessage']??"",
-        profileImage: json['profileImage']??"", //< FIXME : null handling
+        profileImage: json['profileImage']??"",
     );
   }
 
@@ -53,7 +53,22 @@ class User{
     }
   }
 
-  static Future<bool> updateUser(User updatedUser, XFile? profileImage) async {
+  static Future<UserProfile> getUserProfileDetail(int userId, int studyId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception();
+    } else {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
+      print('success to get participant profile');
+      return UserProfile.fromJson(responseJson);
+    }
+  }
+
+  static Future<bool> updateUserProfile(User updatedUser, XFile? profileImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/users'),);
 
@@ -84,24 +99,6 @@ class User{
     }
   }
 
-  static Future<bool> notifyParticipant(int targetUserId, int studyId) async {
-    final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}api/notifications?targetUserId=$targetUserId&studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
-    );
-
-    var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception(responseJson['message']);
-    } else {
-      if (responseJson['success']) {
-        print("success to notify to user_$targetUserId in study_$studyId");
-      }
-
-      return responseJson['success'];
-    }
-  }
-
   static Future<bool> stabUser({
     required int targetUserId,
     required int studyId,
@@ -118,21 +115,6 @@ class User{
     } else {
       if (responseJson['success']) print('success to stab user($count times)');
       return responseJson['success'];
-    }
-  }
-
-  static Future<UserProfile> getUserProfile(int userId, int studyId) async {
-    final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
-    );
-
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception();
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
-      print('success to get participant profile');
-      return UserProfile.fromJson(responseJson);
     }
   }
 }

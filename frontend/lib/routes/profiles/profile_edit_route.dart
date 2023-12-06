@@ -107,7 +107,7 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
           widget.user.nickname = _nicknameEditor.currentState!.text;
           widget.user.statusMessage = _statusMessageEditor.currentState!.text;
 
-          await User.updateUser(widget.user, _profileImage).then((value) {
+          await User.updateUserProfile(widget.user, _profileImage).then((value) {
             Toast.showToast(
                 context: context,
                 message: context.local.successToDo(context.local.editing));

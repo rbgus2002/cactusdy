@@ -52,7 +52,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
           onPressed: () => Util.popRoute(context)),
         shape: InputBorder.none,),
       body: FutureBuilder(
-          future: User.getUserProfile(widget.userId, widget.studyId),
+          future: User.getUserProfileDetail(widget.userId, widget.studyId),
           builder: (context, snapshot) =>
             (snapshot.hasData)?
               ListView(
