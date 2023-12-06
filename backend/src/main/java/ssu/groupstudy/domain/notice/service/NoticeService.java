@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.request.EditNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -117,5 +118,12 @@ public class NoticeService {
         Notice notice = noticeRepository.findByNoticeId(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.deleteNotice();
+    }
+
+    @Transactional
+    public void updateNotice(Long noticeId, EditNoticeRequest dto) {
+        Notice notice = noticeRepository.findByNoticeId(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        notice.updateTitleAndContents(dto.getTitle(), dto.getContents());
     }
 }

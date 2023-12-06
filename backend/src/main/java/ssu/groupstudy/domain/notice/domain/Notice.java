@@ -105,4 +105,9 @@ public class Notice extends BaseEntity {
     public int countReadNotices(){
         return this.checkNotices.size();
     }
+
+    public void updateTitleAndContents(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
