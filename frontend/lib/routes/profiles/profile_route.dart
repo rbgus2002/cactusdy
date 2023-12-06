@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_profile.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/models/user.dart';
@@ -53,12 +52,12 @@ class _ProfileRouteState extends State<ProfileRoute> {
           onPressed: () => Util.popRoute(context)),
         shape: InputBorder.none,),
       body: FutureBuilder(
-          future: ParticipantProfile.getParticipantProfile(widget.userId, widget.studyId),
+          future: User.getUserProfile(widget.userId, widget.studyId),
           builder: (context, snapshot) =>
             (snapshot.hasData)?
               ListView(
                 children: [
-                  _userProfileWidget(snapshot.data!.participant),
+                  _userProfileWidget(snapshot.data!.user),
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
