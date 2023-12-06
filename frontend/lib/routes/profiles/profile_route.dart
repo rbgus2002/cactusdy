@@ -57,7 +57,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
             (snapshot.hasData)?
               ListView(
                 children: [
-                  _userProfileWidget(snapshot.data!.user),
+                  _userProfileWidget(snapshot.data!.participant),
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),

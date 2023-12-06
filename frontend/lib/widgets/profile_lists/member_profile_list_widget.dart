@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_summary.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/studies/study_inviting_route.dart';
 import 'package:group_study_app/routes/profiles/profile_route.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -7,6 +7,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
+/// Study Member Profile List
 class MemberProfileListWidget extends StatelessWidget {
   final int studyId;
   final int hostId;
@@ -26,7 +27,7 @@ class MemberProfileListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ParticipantSummary.getParticipantsProfileImageList(studyId),
+      future: Study.getMemberProfileImages(studyId),
       builder: (context, snapshot) =>
         (snapshot.hasData) ?
           SizedBox(

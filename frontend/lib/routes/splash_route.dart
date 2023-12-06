@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/routes/home_route.dart';
 import 'package:group_study_app/routes/start_route.dart';
-import 'package:group_study_app/routes/test_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/util.dart';
@@ -33,12 +31,10 @@ class _SplashRouteState extends State<SplashRoute> {
         Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
       }
       else {
-        print(Auth.signInfo!.token); //< FIXME
+        debugPrint(Auth.signInfo!.token); //< FIXME
         Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
         //Util.pushRoute(context, (context) => DateTimePickerRoute());
-
       }
-      Util.pushRoute(context, (context) => TestRoute());
     });
   }
 

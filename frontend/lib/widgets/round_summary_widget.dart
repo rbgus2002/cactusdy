@@ -14,7 +14,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/diagrams/dash_line.dart';
-import 'package:group_study_app/widgets/participant_list_widget.dart';
+import 'package:group_study_app/widgets/profile_lists/participant_profile_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
 class RoundSummaryWidget extends StatefulWidget {
@@ -138,15 +138,15 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             Design.padding16,
 
             (widget.round.roundId != Round.nonAllocatedRoundId) ?
-              ParticipantListWidget(
+              ParticipantProfileListWidget(
                 roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
                   ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
                 studyId: widget.study.studyId,) :
               FutureBuilder(
-                future: ParticipantSummary.getParticipantsProfileImageList(widget.study.studyId), //< FXIME
+                future: Study.getMemberProfileImages(widget.study.studyId), //< FIXME
                 builder: (context, snapshot) =>
                   (snapshot.hasData)?
-                    ParticipantListWidget(
+                    ParticipantProfileListWidget(
                         roundParticipantSummaries: snapshot.data!,
                         studyId: widget.study.studyId) :
                     const SizedBox(),

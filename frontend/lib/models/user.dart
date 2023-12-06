@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:group_study_app/models/study_tag.dart';
+import 'package:group_study_app/services/logger.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -14,6 +15,8 @@ class User{
 
   // state code
   static const int nonAllocatedUserId = -1;
+
+  static Logger logger = Logger('User');
 
   final int userId;
   String nickname;
@@ -37,23 +40,24 @@ class User{
   }
 
   static Future<User> getUserProfileSummary() async {
+    logger.tryLog('get user profile summary');
+
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
       headers: DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get user profile summary', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to get User Data");
+      throw Exception(responseJson['message']);
     } else {
-      print("successfully get User Profile Summary");
-
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['user'];
-
-      return User.fromJson(responseJson);
+      return User.fromJson(responseJson['data']['user']);
     }
   }
 
-  static Future<UserProfile> getUserProfileDetail(int userId, int studyId) async {
+  static Future<ParticipantProfile> getUserProfileDetail(int userId, int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
       headers: DatabaseService.getAuthHeader(),
@@ -64,7 +68,7 @@ class User{
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
       print('success to get participant profile');
-      return UserProfile.fromJson(responseJson);
+      return ParticipantProfile.fromJson(responseJson);
     }
   }
 
@@ -119,27 +123,27 @@ class User{
   }
 }
 
-class UserProfile {
-  final User user;
+class ParticipantProfile {
+  final User participant;
   final List<StudyTag> studyTags;
   final Map<String, int> attendanceRate;
   final int doneRate;
 
-  UserProfile({
-    required this.user,
+  ParticipantProfile({
+    required this.participant,
     required this.studyTags,
     required this.attendanceRate,
     required this.doneRate,
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
+  factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
     Map<String, int> attendanceRate = {};
     for (var status in json['statusTagInfoList']) {
       attendanceRate[status['statusTag']] = status['count'];
     }
 
-    return UserProfile(
-      user: User.fromJson(json),
+    return ParticipantProfile(
+      participant: User.fromJson(json),
       studyTags: (json['participantInfoList'] as List).map((studyTag) =>
           StudyTag.fromJson(studyTag)).toList(),
       attendanceRate: attendanceRate,
