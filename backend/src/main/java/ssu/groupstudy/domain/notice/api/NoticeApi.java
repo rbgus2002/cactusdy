@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.request.EditNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -26,6 +27,13 @@ import java.util.List;
 public class NoticeApi {
     private final NoticeService noticeService;
 
+    @Operation(summary = "id를 통한 공지사항 조회")
+    @GetMapping
+    public ResponseDto getNotice(@RequestParam Long noticeId, @AuthenticationPrincipal CustomUserDetails userDetails){
+        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userDetails.getUser());
+        return DataResponseDto.of("noticeInfo", noticeInfoResponse);
+    }
+
     @Operation(summary = "새로운 공지사항 생성")
     @PostMapping
     public ResponseDto createNotice(@Valid @RequestBody CreateNoticeRequest dto, @AuthenticationPrincipal CustomUserDetails userDetails){
@@ -33,11 +41,18 @@ public class NoticeApi {
         return DataResponseDto.of("noticeInfo", noticeInfoResponse);
     }
 
-    @Operation(summary = "id를 통한 공지사항 조회")
-    @GetMapping
-    public ResponseDto getNotice(@RequestParam Long noticeId, @AuthenticationPrincipal CustomUserDetails userDetails){
-        NoticeInfoResponse noticeInfoResponse = noticeService.getNoticeById(noticeId, userDetails.getUser());
-        return DataResponseDto.of("noticeInfo", noticeInfoResponse);
+    @Operation(summary = "공지사항 수정")
+    @PatchMapping
+    public ResponseDto updateNotice(@RequestParam Long noticeId, @Valid @RequestBody EditNoticeRequest dto){
+        noticeService.updateNotice(noticeId, dto);
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "공지사항 삭제")
+    @DeleteMapping
+    public ResponseDto deleteNotice(@RequestParam Long noticeId){
+        noticeService.delete(noticeId);
+        return ResponseDto.success();
     }
 
     @Operation(summary = "공지사항 읽음/안읽음 체크")
@@ -75,12 +90,5 @@ public class NoticeApi {
     public ResponseDto getCheckUserImageList(@RequestParam Long noticeId){
         final List<String> userImageList = noticeService.getCheckUserImageList(noticeId);
         return DataResponseDto.of("userImageList", userImageList);
-    }
-
-    @Operation(summary = "공지사항 삭제")
-    @DeleteMapping
-    public ResponseDto deleteNotice(@RequestParam Long noticeId){
-        noticeService.delete(noticeId);
-        return ResponseDto.success();
     }
 }
