@@ -20,7 +20,6 @@ class NoticeListRoute extends StatefulWidget {
 }
 
 class _NoticeListRouteState extends State<NoticeListRoute> {
-
   late Future<List<NoticeSummary>> futureNoticeSummaryList;
 
   @override
@@ -39,7 +38,8 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
             icon: const Icon(CustomIcons.writing_square_outline),
             splashRadius: 16,
             onPressed: () => Util.pushRoute(context, (context) =>
-              NoticeCreateRoute(studyId: widget.studyId)).then((value) => _refresh()),)
+                NoticeCreateRoute(studyId: widget.studyId,)
+              ).then((value) => _refresh()),)
         ],),
       body: RefreshIndicator(
         onRefresh: _refresh,
@@ -47,18 +47,21 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
           padding: Design.edgePadding,
           physics: const AlwaysScrollableScrollPhysics(),
           child: FutureBuilder(
-            future: futureNoticeSummaryList,
+            future: NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100),
             builder: (context, snapshot) =>
-              (snapshot.hasData) ?
+              (!snapshot.hasData) ?
+                Design.loadingIndicator :
                 ListView.builder(
                     shrinkWrap: true,
                     primary: false,
                     itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return NoticeSummaryWidget(noticeSummary: snapshot.data![index],
-                        studyId: widget.studyId,);
-                    }) : Design.loadingIndicator)
-        ),
+                    itemBuilder: (context, index) =>
+                      NoticeSummaryWidget(
+                        noticeSummary: snapshot.data![index],
+                        studyId: widget.studyId,
+                        onDelete: _onDelete,)
+                ),
+          ),),
       ),
     );
   }
@@ -67,4 +70,6 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
     futureNoticeSummaryList = NoticeSummary.getNoticeSummaryList(widget.studyId, 0, 100);
     futureNoticeSummaryList.then((value) => setState((){ }));
   }
+
+  void _onDelete() => _refresh();
 }

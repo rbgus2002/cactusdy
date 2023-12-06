@@ -14,11 +14,13 @@ import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 class NoticeSummaryWidget extends StatefulWidget {
   final NoticeSummary noticeSummary;
   final int studyId;
+  final VoidCallback onDelete;
 
   const NoticeSummaryWidget({
     Key? key,
     required this.noticeSummary,
     required this.studyId,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -126,8 +128,11 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
           ),
         onTap: () {
             Util.pushRoute(context, (context) =>
-                NoticeDetailRoute(noticeSummary: widget.noticeSummary, studyId: widget.studyId,),).then(
-                    (value) => setState((){ }));
+                NoticeDetailRoute(
+                  noticeSummary: widget.noticeSummary,
+                  studyId: widget.studyId,
+                  onDelete: widget.onDelete,
+                ),).then((value) => setState((){ }));
         },
       ),
     );

@@ -19,11 +19,13 @@ import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 class NoticeDetailRoute extends StatefulWidget {
   final NoticeSummary noticeSummary;
   final int studyId;
+  final VoidCallback onDelete;
 
   const NoticeDetailRoute({
     Key? key,
     required this.noticeSummary,
     required this.studyId,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -328,8 +330,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   void _deleteNotice() async {
     try {
-      await Notice.deleteNotice(_noticeRef.noticeId).then((result) =>
-        (result)? Navigator.of(context).pop() : null);
+      await Notice.deleteNotice(_noticeRef.noticeId).then((result) {
+        if (result) {
+          widget.onDelete();
+          Navigator.of(context).pop();
+        }
+      });
     } on Exception catch(e) {
       if (context.mounted) {
         Toast.showToast(
