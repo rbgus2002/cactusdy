@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class StudyTagWidget extends StatelessWidget {
@@ -19,6 +20,8 @@ class StudyTagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool bright = ColorUtil.isBright(studyTag.studyColor);
+
     return Container(
       height: 36,
       padding: const EdgeInsets.all(8),
@@ -33,7 +36,9 @@ class StudyTagWidget extends StatelessWidget {
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              border: Border.all(color: context.extraColors.grey300!, width: 1),
+              border: Border.all(
+                color: Colors.black54,
+                width: 1),
               borderRadius: BorderRadius.circular(Design.radiusValueSmall + 0.5),),
             child: Container(
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -49,8 +54,10 @@ class StudyTagWidget extends StatelessWidget {
 
           Text(
             studyTag.studyName,
-            style: TextStyles.body2.copyWith(
-                color: context.extraColors.grey800),),
+            style: TextStyles.head6.copyWith(
+                color: (bright)?
+                  Colors.black87 :
+                  Colors.white),),
         ],
       ),
     );
