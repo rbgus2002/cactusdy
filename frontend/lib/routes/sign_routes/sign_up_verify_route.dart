@@ -55,6 +55,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 InputField(
                   enable: !_isVerificationCodeSend,
                   key: _phoneNumberEditor,
+                  keyboardType: TextInputType.number,
                   hintText: context.local.phoneNumber,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: _phoneNumberValidator,
@@ -77,6 +78,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                       children: [
                         InputField(
                           key: _verificationCodeEditor,
+                          keyboardType: TextInputType.number,
                           hintText: context.local.verificationCodeHint,
                           maxLength: Auth.verificationCodeLength,
                           validator: _verificationCodeValidator,

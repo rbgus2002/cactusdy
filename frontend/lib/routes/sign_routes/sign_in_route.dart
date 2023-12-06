@@ -47,6 +47,7 @@ class _SignInRouteState extends State<SignInRoute> {
 
                 InputField(
                   key: _phoneNumberEditor,
+                  keyboardType: TextInputType.number,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: _phoneNumberValidator,
                   onChanged: (input) {
