@@ -62,9 +62,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Column(
+          child: Column(
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -107,8 +105,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                     reserved: _reserved,
                     roundId: widget.roundId,
                     study: widget.study,),
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -297,6 +294,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     if (_isEdited) {
       Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
+
+      FocusScope.of(context).unfocus();
     }
   }
 

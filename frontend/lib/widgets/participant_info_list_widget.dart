@@ -75,12 +75,9 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
         // exclude it's self
         if (newTaskInfo.roundParticipantId != notifierId) {
           if (listeners[taskType]!.containsKey(newTaskInfo.roundParticipantId)) {
-            print("This!!");
             listeners[taskType]![newTaskInfo.roundParticipantId]!(
               Task(taskId: newTaskInfo.taskId, detail: detail, isDone: false,),);
           }
-          else
-            print("Euh???");
         }
       }
     }
