@@ -137,10 +137,20 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             _placeWidget(),
             Design.padding16,
 
-            ParticipantListWidget(
-              roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
-                ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
-              studyId: widget.study.studyId,)
+            (widget.round.roundId != Round.nonAllocatedRoundId) ?
+              ParticipantListWidget(
+                roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
+                  ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
+                studyId: widget.study.studyId,) :
+              FutureBuilder(
+                future: ParticipantSummary.getParticipantsProfileImageList(widget.study.studyId), //< FXIME
+                builder: (context, snapshot) =>
+                  (snapshot.hasData)?
+                    ParticipantListWidget(
+                        roundParticipantSummaries: snapshot.data!,
+                        studyId: widget.study.studyId) :
+                    const SizedBox(),
+              ),
           ],),
     );
   }

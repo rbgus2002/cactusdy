@@ -69,7 +69,6 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
   }
 
   void notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
-    print(newTaskInfoList);
     if (listeners.containsKey(taskType)) {
       for (var newTaskInfo in newTaskInfoList) {
         // exclude it's self
