@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';

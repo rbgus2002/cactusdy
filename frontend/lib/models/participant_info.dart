@@ -1,7 +1,6 @@
 
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/models/user.dart';
 
 class ParticipantInfo {
