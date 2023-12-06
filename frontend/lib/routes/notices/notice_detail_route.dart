@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -16,12 +17,12 @@ import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 
 class NoticeDetailRoute extends StatefulWidget {
-  final Notice notice;
+  final NoticeSummary noticeSummary;
   final int studyId;
 
   const NoticeDetailRoute({
     Key? key,
-    required this.notice,
+    required this.noticeSummary,
     required this.studyId,
   }) : super(key: key);
 
@@ -37,12 +38,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   List<Comment> _comments = [];
   int _replyTo = Comment.commentWithNoParent;
 
+  late Notice _noticeRef;
+
   bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    _futureCommentInfo = Comment.getComments(widget.notice.noticeId);
+    _noticeRef = widget.noticeSummary.notice;
+    _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
   }
 
   @override
@@ -85,10 +89,13 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    _futureCommentInfo = Comment.getComments(widget.notice.noticeId);
+    _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
 
-    Notice.getNotice(widget.notice.noticeId).then((value) =>
-        setState(() {}));
+    Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
+      widget.noticeSummary.notice = refreshedNotice;
+      _noticeRef = refreshedNotice;
+      setState(() {});
+    });
   }
 
   List<Widget>? _noticePopupMenus() {
@@ -109,7 +116,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   bool _isWriter() {
-    return widget.notice.writerId == Auth.signInfo?.userId;
+    return _noticeRef.writerId == Auth.signInfo?.userId;
   }
 
   Widget _noticeBody() {
@@ -128,15 +135,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Writing Date and Writer Nickname
             Text(
-              '${TimeUtility.getElapsedTime(context, widget.notice.createDate)} '
-                  '${widget.notice.writerNickname}',
+              '${TimeUtility.getElapsedTime(context, _noticeRef.createDate)} '
+                  '${_noticeRef.writerNickname}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey500)),
             Design.padding12,
 
             // Title
             SelectableText(
-              widget.notice.title,
+              _noticeRef.title,
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey900),
               textAlign: TextAlign.justify,),
@@ -144,16 +151,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Body
             SelectableText(
-              widget.notice.contents,
+              _noticeRef.contents,
               style: TextStyles.body1.copyWith(
                   color: context.extraColors.grey800),
               textAlign: TextAlign.justify,),
             Design.padding16,
 
             // Reaction Tag
-            NoticeReactionTag(noticeId: widget.notice.noticeId,
-                isChecked: widget.notice.read,
-                checkerNum: widget.notice.checkNoticeCount),
+            NoticeReactionTag(
+                notice: _noticeRef,),
           ],),
     );
   }
@@ -165,6 +171,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           if (snapshot.hasData) {
             int commentCount = snapshot.data!['commentCount'];
             _comments = snapshot.data!['commentInfos'];
+
+            // update value for notice list
+            widget.noticeSummary.commentCount = commentCount;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,6 +241,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               maxLength: 100,
               focusNode: focusNode,
               hintText: context.local.inputHint1(context.local.comment),
+              onTapOutSide: (event) => Util.doNothing(),
               validator: _commentValidator,),),
           IconButton(
             icon: const Icon(CustomIcons.send, size: 24),
@@ -272,15 +282,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         try {
           int? parentCommentId = _getParentId();
           await Comment.writeComment(
-              widget.notice.noticeId, _commentEditor.currentState!.text,
+              _noticeRef.noticeId, _commentEditor.currentState!.text,
               parentCommentId).then((newCommentId) {
             if (newCommentId != Comment.commentCreationError) {
-              setState(() {
-                // Reset writing box and reply target
-                focusNode.unfocus();
-                _commentEditor.currentState!.text = "";
-                _replyTo = Comment.commentWithNoParent;
-              });
+              // Reset writing box and reply target
+              focusNode.unfocus();
+              _commentEditor.currentState!.text = "";
+              _replyTo = Comment.commentWithNoParent;
+
+              _refresh();
             }
           });
         } on Exception catch (e) {
@@ -318,7 +328,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   void _deleteNotice() async {
     try {
-      await Notice.deleteNotice(widget.notice.noticeId).then((result) =>
+      await Notice.deleteNotice(_noticeRef.noticeId).then((result) =>
         (result)? Navigator.of(context).pop() : null);
     } on Exception catch(e) {
       if (context.mounted) {

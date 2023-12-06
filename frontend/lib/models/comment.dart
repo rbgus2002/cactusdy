@@ -109,8 +109,8 @@ class Comment {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to delete comment");
     } else {
-      print(response.body);
       bool result = json.decode(response.body)['success'];
+      if (result) print('success to delete comment');
       return result;
     }
   }

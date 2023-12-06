@@ -26,11 +26,17 @@ class NoticeSummaryWidget extends StatefulWidget {
 }
 
 class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
-  late final Notice _noticeRef;
+  late Notice _noticeRef;
 
   @override
   void initState() {
     super.initState();
+    _noticeRef = widget.noticeSummary.notice;
+  }
+
+  @override
+  void didUpdateWidget(covariant NoticeSummaryWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
     _noticeRef = widget.noticeSummary.notice;
   }
 
@@ -95,9 +101,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                     children: [
                       // Reaction Tag
                       NoticeReactionTag(
-                          noticeId: _noticeRef.noticeId,
-                          isChecked: _noticeRef.read,
-                          checkerNum: _noticeRef.checkNoticeCount,
+                          notice: _noticeRef,
                           enabled: false),
                       Design.padding8,
 
@@ -122,7 +126,8 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
           ),
         onTap: () {
             Util.pushRoute(context, (context) =>
-                NoticeDetailRoute(notice: _noticeRef, studyId: widget.studyId,));
+                NoticeDetailRoute(noticeSummary: widget.noticeSummary, studyId: widget.studyId,),).then(
+                    (value) => setState((){ }));
         },
       ),
     );

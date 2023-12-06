@@ -31,16 +31,11 @@ class _RuleListWidgetState extends State<RuleListWidget> {
   @override
   void initState() {
     super.initState();
-
     _initListModel();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_ruleListModel.items != widget.rules) {
-      _initListModel();
-    }
-
     return Column(
       children: [
         _titleWidget(),
@@ -56,6 +51,14 @@ class _RuleListWidgetState extends State<RuleListWidget> {
           itemBuilder: _buildRule,),
         Design.padding(2),
       ]);
+  }
+
+  @override
+  void didUpdateWidget(covariant RuleListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_ruleListModel.items != widget.rules) {
+      _initListModel();
+    }
   }
 
   Widget _buildRule(

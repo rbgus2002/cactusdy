@@ -1,13 +1,12 @@
 import 'dart:convert';
+
 import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class NoticeSummary {
-  final Notice notice;
-  final int commentCount;
+  Notice notice;
+  int commentCount;
   bool pinYn;
 
   NoticeSummary({
@@ -46,12 +45,13 @@ class NoticeSummary {
       headers: DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to change pin"); //< FIXME
+      throw Exception(responseJson['message']);
     } else {
-      String result = json.decode(
-          utf8.decode(response.bodyBytes))['data']['pinYn'];
-      return (result == 'Y');
+      print('success to switch notice\'s pin as ${responseJson['data']['pinYn']}');
+      bool result = (responseJson['data']['pinYn'] == 'Y');
+      return result;
     }
   }
 }

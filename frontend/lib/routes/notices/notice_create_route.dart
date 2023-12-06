@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
+import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/routes/notices/notice_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -104,7 +105,9 @@ class NoticeCreateRoute extends StatelessWidget {
           await Notice.createNotice(_title, _contents, studyId).then((newNotice) {
               Navigator.of(context).pop();
               Util.pushRoute(context, (context) =>
-                  NoticeDetailRoute(notice: newNotice, studyId: studyId,));
+                  NoticeDetailRoute(
+                    noticeSummary: NoticeSummary(notice: newNotice, commentCount: 0, pinYn: false),
+                    studyId: studyId,));
             });
         } on Exception catch (e) {
           if (context.mounted) {

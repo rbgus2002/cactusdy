@@ -60,10 +60,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_taskListModel.items != widget.taskGroup.tasks) {
-      _initListModel();
-    }
-
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -86,6 +82,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             itemBuilder: _buildTask,),
         ]
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskGroupWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_taskListModel.items != widget.taskGroup.tasks) {
+      _initListModel();
+    }
   }
 
   bool _isNeedToSubscribe() {
