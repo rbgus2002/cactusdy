@@ -185,7 +185,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                       (round!.studyTime != null) ?
                         TimeUtility.getTime(round!.studyTime!) :
                         context.local.inputHint1(context.local.time),
-                      style: TextStyles.body2.copyWith(color: context.extraColors.grey800),),
+                      style: (round!.studyTime != null) ?
+                        TextStyles.body2.copyWith(color: context.extraColors.grey800) :
+                        TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
                   ),
                   Design.padding4,
 

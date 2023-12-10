@@ -50,7 +50,7 @@ class TwoButtonDialog {
                       maxLines: maxLines,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyles.head4.copyWith(
+                      style: TextStyles.head3.copyWith(
                           color: context.extraColors.grey800),),),
                   Design.padding32,
 
