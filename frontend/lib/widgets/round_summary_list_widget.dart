@@ -46,7 +46,11 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
             AddButton(
                 iconData: CustomIcons.plus_square_outline,
                 text: context.local.addRound,
-                onTap: _addNewRound),
+                onTap:() {
+                  if (_isAddable()) {
+                    _addNewRound();
+                  }
+                }),
           ],),
         Design.padding20,
 
@@ -157,5 +161,10 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   void _removeRound(int roundSeq) {
     int index = _roundListModel.length - roundSeq;
     _roundListModel.removeAt(index);
+  }
+
+  bool _isAddable() {
+    return (_roundListModel.items.isEmpty ||
+        (_roundListModel.items.last.roundId != Round.nonAllocatedRoundId));
   }
 }

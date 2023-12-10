@@ -174,7 +174,7 @@ class _TaskWidget extends State<TaskWidget> {
   }
 
   void _updateTask() {
-    if (_isEdited) {
+    if (_isEdited || _isAdded()) {
       widget.task.detail = _textEditingController.text;
 
       if (widget.task.detail.isNotEmpty) {

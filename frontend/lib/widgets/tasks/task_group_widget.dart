@@ -66,7 +66,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
           TaskListTitle(
               enable: _isOwner,
               title: widget.taskGroup.taskTypeName,
-              onTap: () => _addTask(Task())),
+              onTap: () {
+                if (_isAddable()) {
+                  _addTask(Task());
+                }
+              }),
           Design.padding12,
 
           AnimatedList(
@@ -187,5 +191,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   bool _isValidIndex(int index) {
     return (index >= 0 && index < _taskListModel.length);
+  }
+
+  bool _isAddable() {
+    return (_taskListModel.items.isEmpty ||
+        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
+    );
   }
 }
