@@ -118,7 +118,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           initText: _study.detail,
           hintText: context.local.inputHint1(context.local.studyDetail),
           maxLength: Study.studyDetailMaxLength,
-          minLines: 1,
+          minLines: 2,
           maxLines: 3,
           counter: true,
           validator: _studyDetailValidator,
@@ -136,10 +136,9 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         Design.padding16,
 
         MemberProfileListWidget(
-          scale: 48,
-          paddingSize: 16,
           studyId: _study.studyId,
           hostId: _study.hostId,
+          border: true,
           onTap: _changeAdmin,),
         Design.padding(20),
       ],);
