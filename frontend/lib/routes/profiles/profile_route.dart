@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
@@ -61,7 +61,8 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
-                  _kickAndStabButton(),
+                  _kickAndStabButton(snapshot.data!.participant),
+                  Design.padding48,
                 ],) :
               Design.loadingIndicator,),
     );
@@ -218,9 +219,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButton() {
+  Widget _kickAndStabButton(User participant) {
     return Visibility(
-      visible: (widget.userId != Auth.signInfo?.userId),
+      visible: (!Util.isOwner(widget.userId)),
       child: Container(
         padding: Design.edgePadding,
         height: 92,
@@ -236,7 +237,12 @@ class _ProfileRouteState extends State<ProfileRoute> {
             // Stab button (with Cactus Icon)
             Expanded(
               child: ElevatedButton(
-                onPressed: userStabController.stab,
+                onPressed: () {
+                  userStabController.stab();
+                  Toast.showToast(
+                    context: context,
+                    message: _getStabMessage(participant.nickname, userStabController.stabCount),);
+                },
                 child: Container(
                   width: double.maxFinite,
                   height: Design.buttonContentHeight,
@@ -254,6 +260,18 @@ class _ProfileRouteState extends State<ProfileRoute> {
           ],),
       ),
     );
+  }
+
+  String _getStabMessage(String nickname, int stabCount) {
+    if (stabCount == 1) {
+      return context.local.stabUserAbout(nickname, '');
+    }
+
+    else if (stabCount < 5) {
+      return context.local.stabUserAbout(nickname, '$stabCount${context.local.num} ');
+    }
+
+    return context.local.stabUserAbout(nickname, '$stabCount${context.local.num}${context.local.even} ');
   }
 }
 

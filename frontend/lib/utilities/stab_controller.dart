@@ -20,6 +20,8 @@ abstract class StabController {
   int _restTime = 0;
   int _stabCount = 0;
 
+  get stabCount => _stabCount;
+
   void stab() {
     _restTime = _waitingTime;
     ++_stabCount;

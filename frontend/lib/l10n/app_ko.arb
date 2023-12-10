@@ -116,9 +116,15 @@
 
     "member": "멤버",
     "kick": "내보내기",
-    "stab": "찌르기",
     "participateByCode": "코드로 참여하기",
     "leave": "탈퇴",
+
+
+    "stab": "찌르기",
+    "stabUserAbout": "'{nickname}'님을 {prefix}콕 찔렀어요",
+    "stabTaskAbout": "과제를 {prefix}콕 찔렀어요",
+    "num": "번",
+    "even": "이나",
 
     "rules": "규칙",
     "writeRule": "규칙 작성",

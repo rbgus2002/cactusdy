@@ -5,6 +5,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/task_check_box.dart';
@@ -150,8 +151,14 @@ class _TaskWidget extends State<TaskWidget> {
         splashRadius: 10,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
-        onPressed: (!widget.task.isDone)?
-          widget.taskStabController.stab : null,),
+        onPressed: () { 
+          if (!widget.task.isDone) {
+            widget.taskStabController.stab();
+            Toast.showToast(
+                context: context,
+                message: _getStabMessage(widget.taskStabController.stabCount),);
+          }
+        },),
     );
   }
 
@@ -187,6 +194,18 @@ class _TaskWidget extends State<TaskWidget> {
 
     _focusNode.unfocus();
     setState(() {});
+  }
+
+  String _getStabMessage(int stabCount) {
+    if (stabCount == 1) {
+      return context.local.stabTaskAbout('');
+    }
+
+    else if (stabCount < 5) {
+      return context.local.stabTaskAbout('$stabCount${context.local.num} ');
+    }
+    
+    return context.local.stabTaskAbout('$stabCount${context.local.num}${context.local.even} ');
   }
 
   bool _isAdded() {
