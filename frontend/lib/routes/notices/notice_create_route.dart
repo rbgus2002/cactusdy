@@ -106,7 +106,7 @@ class _NoticeCreateRouteState extends State<NoticeDetailRoute> {
         _isProcessing = true;
         try {
           await Notice.createNotice(_title, _contents, widget.studyId).then((newNotice) {
-              Navigator.of(context).pop();
+              Util.popRoute(context);
               Util.pushRoute(context, (context) =>
                   NoticeDetailRoute(
                     noticeSummary: NoticeSummary(notice: newNotice, commentCount: 0, pinYn: false),

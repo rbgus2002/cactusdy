@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/notice_summary.dart';
 import 'package:group_study_app/routes/notices/notice_create_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';

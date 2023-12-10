@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/models/comment.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/models/notice_summary.dart';
+import 'package:group_study_app/routes/notices/notice_edit_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -106,7 +107,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         IconButton(
           icon: const Icon(CustomIcons.writing_outline),
           iconSize: 28,
-          onPressed: () {},), //< FIXME
+          onPressed: () => _editNotice(),), //< FIXME
 
         IconButton(
           icon: const Icon(CustomIcons.trash),
@@ -343,6 +344,11 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
             message: Util.getExceptionMessage(e));
       }
     }
+  }
+
+  void _editNotice() {
+    Util.pushRoute(context, (context) =>
+      NoticeEditRoute(noticeSummary: widget.noticeSummary, studyId: widget.studyId,),);
   }
 
   int? _getParentId() {
