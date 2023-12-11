@@ -68,9 +68,9 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
               enable: _isOwner,
               title: widget.taskGroup.taskTypeName,
               onTap: () {
+                HapticFeedback.lightImpact();
                 if (_isAddable()) {
                   _addTask(Task());
-                  HapticFeedback.lightImpact();
                 }
               }),
           Design.padding12,
