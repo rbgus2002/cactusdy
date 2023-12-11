@@ -66,6 +66,7 @@ class _NoticeEditRouteState extends State<NoticeEditRoute> {
                         color: context.extraColors.grey900),
                     maxLength: Notice.titleMaxLength,
                     textAlign: TextAlign.justify,
+                    onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     onChanged: (text) => _noticeRef.title = text,
                     validator: (input) =>
                       (input == null || input.isEmpty)?
