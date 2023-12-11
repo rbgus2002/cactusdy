@@ -178,9 +178,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
                   // Study Time (time only like AM 2:20)
                   InkWell(
-                    onTap: () => Util.pushRoute(context, (context) =>
-                        DateTimePickerRoute(
-                          round: round!,)),
+                    onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+                        DateTimePickerRoute(round: round!,)).then((value) => _refresh()),
                     child: Text(
                       (round!.studyTime != null) ?
                         TimeUtility.getTime(round!.studyTime!) :
@@ -287,9 +286,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
   
   void _editStudyTime() async {
-    Util.pushRoute(context, (context) =>
-        DateTimePickerRoute(
-          round: round!,)).then((value) => _refresh());
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: round!,)).then((value) => _refresh());
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {

@@ -258,9 +258,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   }
 
   void _editStudyTime() async {
-    Util.pushRoute(context, (context) =>
-        DateTimePickerRoute(
-          round: widget.round,)).then((value) => setState((){ }));
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: widget.round,)).then((value) => setState((){ }));
   }
 
   void _updateRound(Round round) {

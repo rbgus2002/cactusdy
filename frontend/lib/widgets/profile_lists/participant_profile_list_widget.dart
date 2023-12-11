@@ -43,7 +43,7 @@ class ParticipantProfileListWidget extends StatelessWidget {
   }
 
   void _viewProfile(BuildContext context, int index) {
-    Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
       ProfileRoute(
           userId: roundParticipantSummaries[index].userId,
           studyId: studyId),);

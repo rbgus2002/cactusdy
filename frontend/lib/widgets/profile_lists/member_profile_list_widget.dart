@@ -72,7 +72,7 @@ class MemberProfileListWidget extends StatelessWidget {
                 onTap!(participantSummary);
               } else {
                 // View Profile
-                Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
+                Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
                     ProfileRoute(
                         userId: participantSummary.userId,
                         studyId: studyId));

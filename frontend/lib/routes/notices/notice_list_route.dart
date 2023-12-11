@@ -38,7 +38,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
           IconButton(
             icon: const Icon(CustomIcons.writing_square_outline),
             splashRadius: 16,
-            onPressed: () => Util.pushRoute(context, (context) =>
+            onPressed: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
                 NoticeCreateRoute(studyId: widget.studyId,)
               ).then((value) => _refresh()),)
         ],),
