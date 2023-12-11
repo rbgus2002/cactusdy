@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
+import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -23,8 +24,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
-import static ssu.groupstudy.global.constant.ResultCode.USER_NOT_FOUND;
+import static ssu.groupstudy.global.constant.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +77,22 @@ public class ParticipantsService {
         }
 
         return new ArrayList<>(statusTagInfoMap.values());
+    }
+
+    @Transactional
+    public void kickParticipant(User user, Long userId, Long studyId) {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+        User targetUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        assertUserIsHostOrThrow(user, study);
+
+        study.kickParticipant(targetUser);
+    }
+
+    private void assertUserIsHostOrThrow(User user, Study study) {
+        if(!study.isHostUser(user)) {
+            throw new CanNotKickParticipantException(USER_CAN_NOT_KICK_PARTICIPANT);
+        }
     }
 }
