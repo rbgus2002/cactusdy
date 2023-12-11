@@ -17,7 +17,7 @@ class Toast {
   static String lastMessage = "";
   static DateTime lastTime = DateTime.now();
 
-  static FToast fToast = FToast();
+  static final FToast _fToast = FToast();
 
   static void showToast( {
     required BuildContext context,
@@ -28,8 +28,8 @@ class Toast {
     
     _setPlaying(message);
 
-    fToast.removeCustomToast();
-    fToast.init(context);
+    _fToast.removeCustomToast();
+    _fToast.init(context);
 
     Widget toast = Container(
       height: Design.toastHeight,
@@ -47,21 +47,12 @@ class Toast {
       ),
     );
 
-    fToast.showToast(
+    _fToast.showToast(
         child: toast,
         toastDuration: duration,
         gravity: ToastGravity.BOTTOM,
         isDismissable: true,
     );
-  }
-
-  static void updateToast({
-    required BuildContext context,
-    required String message,
-  }) {
-    if (_isPlaying()) {
-      showToast(context: context, message: message);
-    }
   }
 
   static bool _isPlaying() {
