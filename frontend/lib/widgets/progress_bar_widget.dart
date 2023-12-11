@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 class ProgressBarWidget extends StatefulWidget {
   final double initProgress;
@@ -23,7 +24,8 @@ class ProgressBarWidgetState extends State<ProgressBarWidget> with SingleTickerP
   @override
   void initState() {
     super.initState();
-    _progress = widget.initProgress;
+    Future.delayed(const Duration(milliseconds: 200), () =>
+      setState(() => _progress = widget.initProgress));
   }
 
   @override
@@ -37,13 +39,13 @@ class ProgressBarWidgetState extends State<ProgressBarWidget> with SingleTickerP
           height: 4,
           color: context.extraColors.grey100,),
 
-          AnimatedSize(
-            curve: Curves.easeOutCubic,
-            duration: AnimationSetting.animationDuration,
-            child: Container(
-              width: screenWidth * _progress,
-              height: 4,
-              color: ColorStyles.mainColor,),),
+        AnimatedContainer(
+          height: 4,
+          width: screenWidth * _progress,
+          curve: Curves.easeOutCubic,
+          duration: AnimationSetting.animationDuration,
+          alignment: Alignment.centerLeft,
+          color: ColorStyles.mainColor,),
       ],
     );
   }

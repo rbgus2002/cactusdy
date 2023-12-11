@@ -13,6 +13,9 @@ class Study {
   static const int studyNameMaxLength = 30;
   static const int studyDetailMaxLength = 40;
 
+  // status code
+  static const int nonAllocatedStudyId = -1;
+
   // const values
   static const int invitingCodeLength = 6;
 
