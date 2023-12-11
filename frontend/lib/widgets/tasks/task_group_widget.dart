@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -69,6 +70,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
               onTap: () {
                 if (_isAddable()) {
                   _addTask(Task());
+                  HapticFeedback.lightImpact();
                 }
               }),
           Design.padding12,
