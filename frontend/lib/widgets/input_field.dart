@@ -12,6 +12,7 @@ class InputField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
   final TapRegionCallback? onTapOutSide;
+  final VoidCallback? onEditingComplete;
   final FocusNode? focusNode;
   final int? maxLength;
   final int? maxLines;
@@ -29,6 +30,7 @@ class InputField extends StatefulWidget {
     this.obscureText = false,
     this.onChanged,
     this.onTapOutSide,
+    this.onEditingComplete,
     this.focusNode,
     this.validator,
     this.maxLength,
@@ -83,6 +85,7 @@ class InputFieldState extends State<InputField> {
           textAlign: TextAlign.justify,
           focusNode: widget.focusNode,
           onChanged: onChange,
+          onEditingComplete: widget.onEditingComplete,
           onTapOutside: widget.onTapOutSide??((event) => FocusScope.of(context).unfocus()),
           decoration: InputDecoration(
             contentPadding: Design.textFieldPadding,
