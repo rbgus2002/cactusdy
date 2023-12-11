@@ -110,4 +110,11 @@ public class Study extends BaseEntity {
         this.detail = detail;
         this.participants.updateHostUser(hostUser);
     }
+
+    public void kickParticipant(User user) {
+        if (!isParticipated(user)) {
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
+        participants.removeParticipant(new Participant(user, this));
+    }
 }
