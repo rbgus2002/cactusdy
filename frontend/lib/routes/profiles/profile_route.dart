@@ -46,10 +46,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
     return Scaffold(
       appBar: AppBar(
         // Close button
-        leading: IconButton(
-          icon: const Icon(CustomIcons.close),
-          iconSize: 32,
-          onPressed: () => Util.popRoute(context)),
+        leading: const CloseButton(),
         shape: InputBorder.none,),
       body: FutureBuilder(
           future: User.getUserProfileDetail(widget.userId, widget.studyId),

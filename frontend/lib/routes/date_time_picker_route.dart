@@ -43,11 +43,7 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Close button
-        leading: IconButton(
-            icon: const Icon(CustomIcons.close),
-            iconSize: 32,
-            onPressed: () => Util.popRoute(context)),
+        leading: const CloseButton(),
         shape: InputBorder.none,),
       bottomNavigationBar: _doneModifyButton(),
       body: SingleChildScrollView(

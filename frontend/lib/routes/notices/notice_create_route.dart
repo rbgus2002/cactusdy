@@ -21,7 +21,7 @@ class NoticeCreateRoute extends StatefulWidget {
   State<StatefulWidget> createState() => _NoticeCreateRouteState();
 }
 
-class _NoticeCreateRouteState extends State<NoticeDetailRoute> {
+class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
   final _fromKey = GlobalKey<FormState>();
 
   String _title = "";
@@ -33,6 +33,7 @@ class _NoticeCreateRouteState extends State<NoticeDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const CloseButton(),
         actions: [ _completeButton(), ],
       ),
       body: Container(
