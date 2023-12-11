@@ -21,10 +21,8 @@ class SignUpPasswordRoute extends StatefulWidget {
 }
 
 class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
-  final GlobalKey<InputFieldState> _newPasswordEditor = GlobalKey();
-  final GlobalKey<InputFieldState> _newPasswordConfirmEditor = GlobalKey();
-
-  String _newPassword = "";
+  final GlobalKey<InputFieldState> _passwordEditor = GlobalKey();
+  final GlobalKey<InputFieldState> _passwordConfirmEditor = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -40,56 +38,58 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
               style: TextStyles.head2,),
             Design.padding48,
 
+            // Password
             InputField(
-              key: _newPasswordEditor,
+              key: _passwordEditor,
               obscureText: true,
               hintText: context.local.password,
               maxLength: Auth.passwordMaxLength,
-              validator: _newPasswordValidator,
-              onChanged: (input) => _newPassword = input,
-            ),
+              validator: _passwordValidator,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),),
             Design.padding16,
 
+            // Password Confirm
             InputField(
-              key: _newPasswordConfirmEditor,
+              key: _passwordConfirmEditor,
               obscureText: true,
               hintText: context.local.confirmPassword,
-              validator: _newPasswordConfirmValidator,
-              maxLength: Auth.passwordMaxLength,
-            ),
+              validator: _passwordConfirmValidator,
+              onEditingComplete: _verifyPassword,
+              maxLength: Auth.passwordMaxLength,),
             Design.padding(132),
 
+            // Complete Button
             PrimaryButton(
               text: context.local.complete,
-              onPressed: _tryResetPassword,),
-          ],
-        ),
+              onPressed: _verifyPassword,),
+          ],),
       ),
     );
   }
 
-  String? _newPasswordValidator(String? input) {
+  String? _passwordValidator(String? input) {
     if (input == null || input.isEmpty) {
       return context.local.inputHint2(context.local.password);
     }
     return null;
   }
 
-  String? _newPasswordConfirmValidator(String? input) {
-    if (input == null || input != _newPassword) {
+  String? _passwordConfirmValidator(String? input) {
+    if (input == null || input != _passwordEditor.currentState?.text) {
       return context.local.mismatchPassword;
     }
     return null;
   }
 
-  void _tryResetPassword() async {
-    if (_newPasswordEditor.currentState!.validate() &&
-        _newPasswordConfirmEditor.currentState!.validate()) {
+  void _verifyPassword() async {
+    if (_passwordEditor.currentState!.validate() &&
+        _passwordConfirmEditor.currentState!.validate()) {
+      String password = _passwordEditor.currentState!.text;
+
       Util.pushRoute(context, (context) =>
           SignUpDetailRoute(
             phoneNumber: widget.phoneNumber,
-            password: _newPassword,
-          ));
+            password: password,));
     }
   }
 }
