@@ -43,12 +43,16 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
   @override
   Widget build(BuildContext context) {
+    bool bright = ColorUtil.isBright(_study.color);
+    Color appBarForegroundColor = (bright)? Colors.black : Colors.white;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: _study.color,
-        actions: [ _studyPopupMenu() ],
+        foregroundColor: appBarForegroundColor,
+        leading: _backButton(appBarForegroundColor),
+        actions: [ _studyPopupMenu(appBarForegroundColor) ],
         shape: InputBorder.none,),
 
       body: RefreshIndicator(
@@ -150,11 +154,18 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
     );
   }
 
-  Widget _studyPopupMenu() {
+  Widget _backButton(Color iconColor) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12),
+      child: BackButton(color: iconColor),
+    );
+  }
+
+  Widget _studyPopupMenu(Color iconColor) {
     return PopupMenuButton(
       icon: Icon(
         CustomIcons.more_vert,
-        color: context.extraColors.grey900,
+        color: iconColor,
         size: _iconSize,),
       splashRadius: _iconSize / 2,
       padding: EdgeInsets.zero,
@@ -163,7 +174,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.writing_outline),
+          icon: Icon(CustomIcons.writing_outline, color: context.extraColors.grey900,),
           onTap: () => Util.pushRoute(context, (context) =>
               StudyEditRoute(study: _study,)).then((value) =>
                 _refresh(),),),
@@ -171,7 +182,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
-          icon: const Icon(CustomIcons.exit_outline),
+          icon: Icon(CustomIcons.exit_outline, color: context.extraColors.grey900,),
           onTap: _showLeaveStudyDialog,),
       ],);
   }

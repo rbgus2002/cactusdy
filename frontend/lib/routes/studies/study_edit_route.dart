@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -10,8 +9,8 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
+import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/image_picker_widget.dart';
 import 'package:group_study_app/widgets/input_field.dart';
