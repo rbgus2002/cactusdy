@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/studies/study_create_route.dart';
@@ -59,8 +60,11 @@ class _HomeRouteState extends State<HomeRoute> {
                     AddButton(
                       iconData: CustomIcons.plus_square_outline,
                       text: context.local.addStudy,
-                      onTap: () => Util.pushRoute(context, (context) =>
-                          const StudyCreateRoute())),
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Util.pushRoute(context, (context) =>
+                            const StudyCreateRoute());
+                      }),
                   ],),
                 Design.padding12,
 
