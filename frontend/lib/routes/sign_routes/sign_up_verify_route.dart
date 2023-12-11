@@ -55,6 +55,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 InputField(
                   enable: !_isVerificationCodeSend,
                   key: _phoneNumberEditor,
+                  keyboardType: TextInputType.number,
                   hintText: context.local.phoneNumber,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: _phoneNumberValidator,
@@ -67,7 +68,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                 OutlinedPrimaryButton(
                   text: (!_isVerificationCodeSend)?
                   context.local.receiveVerificationCode :
-                  '${context.local.receiveVerificationCodeAgain} (${TimeUtility.secondToString(_restTime)})',
+                  '${context.local.receiveVerificationCodeAgain} (${TimeUtility.secondToString(context, _restTime)})',
                   onPressed: _requestVerificationCode,),
                 Design.padding32,
 
@@ -77,6 +78,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                       children: [
                         InputField(
                           key: _verificationCodeEditor,
+                          keyboardType: TextInputType.number,
                           hintText: context.local.verificationCodeHint,
                           maxLength: Auth.verificationCodeLength,
                           validator: _verificationCodeValidator,

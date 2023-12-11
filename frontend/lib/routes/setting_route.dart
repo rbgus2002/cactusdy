@@ -160,11 +160,11 @@ class _SettingRouteState extends State<SettingRoute> {
       context: context,
       text: context.local.ensureToDo(context.local.signOut),
 
-      buttonText1: context.local.signOut,
-      onPressed1: _signOut,
+      buttonText1: context.local.no,
+      onPressed1: Util.doNothing,
 
-      buttonText2: context.local.close,
-      onPressed2: Util.doNothing,
+      buttonText2: context.local.signOut,
+      onPressed2: _signOut,
     );
   }
 

@@ -1,11 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_profile.dart';
-import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/home_route.dart';
-import 'package:group_study_app/routes/studies/study_create_page3.dart';
 import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
@@ -67,7 +64,7 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
         _isProcessing = true;
         String inputCode = _invitingCodeEditor.currentState!.text;
         try {
-          await ParticipantSummary.joinStudyByInvitingCode(inputCode).then((studyId) =>
+          await Study.joinStudyByInvitingCode(inputCode).then((studyId) =>
             Study.getStudySummary(studyId).then((study) {
               Util.pushRouteAndPopUntil(
                 context, (context) => const HomeRoute());

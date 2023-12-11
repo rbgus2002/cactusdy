@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -109,8 +107,8 @@ class Comment {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Fail to delete comment");
     } else {
-      print(response.body);
       bool result = json.decode(response.body)['success'];
+      if (result) print('success to delete comment');
       return result;
     }
   }

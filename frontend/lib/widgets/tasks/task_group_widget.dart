@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';
@@ -14,17 +13,19 @@ import 'package:group_study_app/widgets/tasks/task_widget.dart';
 class TaskGroupWidget extends StatefulWidget {
   final int userId;
   final Study study;
+  final int roundId;
   final TaskGroup taskGroup;
   final Function? updateProgress;
 
   final Function(String, int, Function(Task))? subscribe;
-  final Function(String, int, Task)? notify;
+  final Function(String, int, String, List<TaskInfo>)? notify;
 
   const TaskGroupWidget({
     Key? key,
     required this.userId,
     required this.taskGroup,
     required this.study,
+    required this.roundId,
 
     this.updateProgress,
     this.subscribe,
@@ -46,6 +47,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     super.initState();
     _initListModel();
     _isOwner = Util.isOwner(widget.userId);
+    //_isOwner = true; //< FIXME!!!!
 
     if (_isNeedToSubscribe()) {
       widget.subscribe!(
@@ -57,10 +59,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_taskListModel.items != widget.taskGroup.tasks) {
-      _initListModel();
-    }
-
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -68,13 +66,18 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
           TaskListTitle(
               enable: _isOwner,
               title: widget.taskGroup.taskTypeName,
-              onTap: () => _addTask(Task())),
+              onTap: () {
+                if (_isAddable()) {
+                  _addTask(Task());
+                }
+              }),
           Design.padding12,
 
           AnimatedList(
             key: _taskListKey,
             shrinkWrap: true,
             primary: false,
+            reverse: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
 
@@ -82,6 +85,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             itemBuilder: _buildTask,),
         ]
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskGroupWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_taskListModel.items != widget.taskGroup.tasks) {
+      _initListModel();
+    }
   }
 
   bool _isNeedToSubscribe() {
@@ -97,7 +108,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   void _addTask(Task task) {
-    _taskListModel.insert(0, Task());
+    _taskListModel.add(task);
 
     if (widget.updateProgress != null) widget.updateProgress!();
   }
@@ -143,22 +154,26 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   void _updateTaskDetail(Task task) {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
-      Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
+      (widget.taskGroup.isShared) ?
+        Task.createGroupTask(task, widget.roundId, _notifyToOther) :
+        Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
 
-      // notify to other task groups
-      if (widget.notify != null && widget.taskGroup.isShared) {
-        widget.notify!(
-            widget.taskGroup.taskType,            // type
-            widget.taskGroup.roundParticipantId,  //
-            Task(taskId: Task.nonAllocatedTaskId,
-              detail: task.detail,
-              isDone: task.isDone,),
-        );
-      }
+      // add new empty tasks
+      _addTask(Task());
     }
     // #Case : modified the task
     else {
       Task.updateTaskDetail(task, widget.taskGroup.roundParticipantId);
+    }
+  }
+
+  void _notifyToOther(String detail, List<TaskInfo> taskInfoList) {
+    if (widget.notify != null) {
+      widget.notify!(
+        widget.taskGroup.taskType,
+        widget.taskGroup.roundParticipantId,
+        detail,
+        taskInfoList);
     }
   }
 
@@ -176,5 +191,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   bool _isValidIndex(int index) {
     return (index >= 0 && index < _taskListModel.length);
+  }
+
+  bool _isAddable() {
+    return (_taskListModel.items.isEmpty ||
+        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
+    );
   }
 }

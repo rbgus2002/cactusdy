@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:group_study_app/models/study_tag.dart';
+import 'package:group_study_app/services/logger.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -13,6 +15,8 @@ class User{
 
   // state code
   static const int nonAllocatedUserId = -1;
+
+  static Logger logger = Logger('User');
 
   final int userId;
   String nickname;
@@ -31,28 +35,44 @@ class User{
         userId: json['userId'],
         nickname: json['nickname']??"",
         statusMessage: json['statusMessage']??"",
-        profileImage: json['profileImage']??"", //< FIXME : null handling
+        profileImage: json['profileImage']??"",
     );
   }
 
   static Future<User> getUserProfileSummary() async {
+    logger.tryLog('get user profile summary');
+
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
       headers: DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get user profile summary', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to get User Data");
+      throw Exception(responseJson['message']);
     } else {
-      print("successfully get User Profile Summary");
-
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['user'];
-
-      return User.fromJson(responseJson);
+      return User.fromJson(responseJson['data']['user']);
     }
   }
 
-  static Future<bool> updateUser(User updatedUser, XFile? profileImage) async {
+  static Future<ParticipantProfile> getUserProfileDetail(int userId, int studyId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception();
+    } else {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
+      print('success to get participant profile');
+      return ParticipantProfile.fromJson(responseJson);
+    }
+  }
+
+  static Future<bool> updateUserProfile(User updatedUser, XFile? profileImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/users'),);
 
@@ -83,24 +103,6 @@ class User{
     }
   }
 
-  static Future<bool> notifyParticipant(int targetUserId, int studyId) async {
-    final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}api/notifications?targetUserId=$targetUserId&studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
-    );
-
-    var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception(responseJson['message']);
-    } else {
-      if (responseJson['success']) {
-        print("success to notify to user_$targetUserId in study_$studyId");
-      }
-
-      return responseJson['success'];
-    }
-  }
-
   static Future<bool> stabUser({
     required int targetUserId,
     required int studyId,
@@ -118,5 +120,34 @@ class User{
       if (responseJson['success']) print('success to stab user($count times)');
       return responseJson['success'];
     }
+  }
+}
+
+class ParticipantProfile {
+  final User participant;
+  final List<StudyTag> studyTags;
+  final Map<String, int> attendanceRate;
+  final int doneRate;
+
+  ParticipantProfile({
+    required this.participant,
+    required this.studyTags,
+    required this.attendanceRate,
+    required this.doneRate,
+  });
+
+  factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
+    Map<String, int> attendanceRate = {};
+    for (var status in json['statusTagInfoList']) {
+      attendanceRate[status['statusTag']] = status['count'];
+    }
+
+    return ParticipantProfile(
+      participant: User.fromJson(json),
+      studyTags: (json['participantInfoList'] as List).map((studyTag) =>
+          StudyTag.fromJson(studyTag)).toList(),
+      attendanceRate: attendanceRate,
+      doneRate: json['doneRate'],
+    );
   }
 }

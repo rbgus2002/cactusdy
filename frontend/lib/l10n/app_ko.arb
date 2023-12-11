@@ -25,10 +25,17 @@
     "year": "년",
     "month": "월",
     "day": "일",
-    "hour": "시",
+    "hour": "시간",
     "min": "분",
     "sec": "초",
     "date": "날짜",
+
+    "justNow": "방금",
+    "yesterday": "어제",
+    "beforeOf": "{time}전",
+
+    "am": "오전",
+    "pm": "오후",
 
     "undefined": "미정",
 
@@ -76,6 +83,8 @@
     "statusMessage": "상태 메세지",
     "editProfile": "프로필 편집",
     "setting": "설정",
+    "profile": "프로필",
+    "viewProfile": "프로필 조회",
 
     "study": "스터디",
     "myStudy": "나의 스터디",
@@ -100,7 +109,6 @@
     "invitingCodeHint": "코드 6자리",
     "discordInvitingCode": "존재하지 않는 코드번호에요.",
 
-
     "admin": "방장",
     "chooseAdmin": "방장 선택",
     "chooseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
@@ -108,9 +116,15 @@
 
     "member": "멤버",
     "kick": "내보내기",
-    "stab": "찌르기",
     "participateByCode": "코드로 참여하기",
     "leave": "탈퇴",
+
+
+    "stab": "찌르기",
+    "stabUserAbout": "'{nickname}'님을 {prefix}콕 찔렀어요",
+    "stabTaskAbout": "과제를 {prefix}콕 찔렀어요",
+    "num": "번",
+    "even": "이나",
 
     "rules": "규칙",
     "writeRule": "규칙 작성",
@@ -129,13 +143,17 @@
     "record": "기록",
     "recordHint": "자세한 기록을 적어주세요",
 
+    "noti": "공지",
     "notice": "공지사항",
     "title": "제목",
     "content": "내용",
+    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+    "tryToWriteNoti": "공지를 작성해보세요",
+
     "comment": "댓글",
     "writeReply": "답글쓰기",
     "successToComment": "댓글을 작성했어요",
-    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+    "confirmDeleteComment": "댓글을 삭제하시겠어요?",
 
     "attendanceRate": "참석률",
     "attendanceTag": "출석태그",

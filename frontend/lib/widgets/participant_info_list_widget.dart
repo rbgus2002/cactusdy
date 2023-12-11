@@ -9,26 +9,21 @@ import 'package:group_study_app/widgets/participant_info_widget.dart';
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
   final Study study;
+  final bool reserved;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
     required this.study,
+    required this.reserved,
   }) : super(key: key);
 
   @override
   State<ParticipantInfoListWidget> createState() => _ParticipantInfoListWidgetState();
 }
 
-class _Callback {
-  int key;
-  Function(Task) addTask;
-
-  _Callback(this.key, this.addTask);
-}
-
 class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
-  final Map<String, List<_Callback>> listeners = { };
+  final Map<String, Map<int, Function(Task)>> listeners = { };
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +47,11 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
                           width: 1,),),),
                   child: ParticipantInfoWidget(
                     participantInfo: participantInfoList[index],
+                    roundId: widget.roundId,
                     subscribe: addListener,
                     notify: notify,
-                    study: widget.study,)
+                    study: widget.study,
+                    reserved: widget.reserved,)
               );
             },);
         }
@@ -65,18 +62,21 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
 
   void addListener(String taskType, int key, Function(Task) addTask) {
     if (!listeners.containsKey(taskType)) {
-      listeners[taskType] = [];
+      listeners[taskType] = { };
     }
 
-    listeners[taskType]!.add(_Callback(key, addTask));
+    listeners[taskType]![key] = addTask;
   }
 
-  void notify(String taskType, int notifierKey, Task newTask) {
-    if (listeners[taskType] != null) {
-      for (var callback in listeners[taskType]!) {
+  void notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
+    if (listeners.containsKey(taskType)) {
+      for (var newTaskInfo in newTaskInfoList) {
         // exclude it's self
-        if (callback.key != notifierKey) {
-          callback.addTask(newTask);
+        if (newTaskInfo.roundParticipantId != notifierId) {
+          if (listeners[taskType]!.containsKey(newTaskInfo.roundParticipantId)) {
+            listeners[taskType]![newTaskInfo.roundParticipantId]!(
+              Task(taskId: newTaskInfo.taskId, detail: detail, isDone: false,),);
+          }
         }
       }
     }

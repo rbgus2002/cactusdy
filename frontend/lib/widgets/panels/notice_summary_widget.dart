@@ -14,11 +14,13 @@ import 'package:group_study_app/widgets/tags/notice_reaction_tag.dart';
 class NoticeSummaryWidget extends StatefulWidget {
   final NoticeSummary noticeSummary;
   final int studyId;
+  final VoidCallback onDelete;
 
   const NoticeSummaryWidget({
     Key? key,
     required this.noticeSummary,
     required this.studyId,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -26,11 +28,17 @@ class NoticeSummaryWidget extends StatefulWidget {
 }
 
 class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
-  late final Notice _noticeRef;
+  late Notice _noticeRef;
 
   @override
   void initState() {
     super.initState();
+    _noticeRef = widget.noticeSummary.notice;
+  }
+
+  @override
+  void didUpdateWidget(covariant NoticeSummaryWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
     _noticeRef = widget.noticeSummary.notice;
   }
 
@@ -86,7 +94,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                 children: [
                   // Writing Date & Writer
                   Text(
-                      '${TimeUtility.getElapsedTime(_noticeRef.createDate)}'
+                      '${TimeUtility.getElapsedTime(context, _noticeRef.createDate)}'
                       ' • ${_noticeRef.writerNickname}',
                       style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
 
@@ -95,9 +103,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                     children: [
                       // Reaction Tag
                       NoticeReactionTag(
-                          noticeId: _noticeRef.noticeId,
-                          isChecked: _noticeRef.read,
-                          checkerNum: _noticeRef.checkNoticeCount,
+                          notice: _noticeRef,
                           enabled: false),
                       Design.padding8,
 
@@ -122,7 +128,11 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
           ),
         onTap: () {
             Util.pushRoute(context, (context) =>
-                NoticeDetailRoute(notice: _noticeRef, studyId: widget.studyId,));
+                NoticeDetailRoute(
+                  noticeSummary: widget.noticeSummary,
+                  studyId: widget.studyId,
+                  onDelete: widget.onDelete,
+                ),).then((value) => setState((){ }));
         },
       ),
     );

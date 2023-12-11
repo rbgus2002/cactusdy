@@ -44,6 +44,7 @@ class SquircleImageWidget extends SquircleWidget {
     Key? key,
     required super.scale,
     required String url,
+    super.side,
   }) : super(
       key: key,
       child: (url.isNotEmpty) ?

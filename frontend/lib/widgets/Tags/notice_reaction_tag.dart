@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:group_study_app/models/notice.dart';
 import 'package:group_study_app/themes/color_styles.dart';
@@ -12,16 +11,12 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  final int noticeId;
+  final Notice notice;
   final bool enabled;
-  int checkerNum;
-  bool isChecked;
 
-  NoticeReactionTag({
+  const NoticeReactionTag({
     Key? key,
-    required this.noticeId,
-    required this.isChecked,
-    required this.checkerNum,
+    required this.notice,
     this.enabled = true,
   }) : super(key: key);
 
@@ -50,10 +45,10 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(_height / 2),
         border: Border.all(
-            color: (widget.isChecked) ?
+            color: (widget.notice.read) ?
             ColorStyles.mainColor :
             Colors.transparent),
-        color: (widget.isChecked) ?
+        color: (widget.notice.read) ?
         context.extraColors.inputFieldBackgroundColor :
         context.extraColors.grey100,),
 
@@ -74,16 +69,16 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
               Icon(
                 CustomIcons.check2,
                 size: 16,
-                color: (widget.isChecked) ?
+                color: (widget.notice.read) ?
                   ColorStyles.mainColor :
                   context.extraColors.grey600),
               Design.padding(2),
 
               // Checker Num
               Text(
-                  "${widget.checkerNum}",
+                  "${widget.notice.checkNoticeCount}",
                   style: TextStyles.caption2.copyWith(
-                      color: (widget.isChecked) ?
+                      color: (widget.notice.read) ?
                         ColorStyles.mainColor :
                         context.extraColors.grey600)),
               Design.padding(2),
@@ -113,16 +108,16 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {
-      widget.isChecked = !widget.isChecked;
-      (widget.isChecked)? ++widget.checkerNum: --widget.checkerNum;
+      widget.notice.read = !widget.notice.read;
+      (widget.notice.read)? ++widget.notice.checkNoticeCount: --widget.notice.checkNoticeCount;
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeId).then((value) {
-      if (value != widget.isChecked) {
+    Notice.switchCheckNotice(widget.notice.noticeId).then((value) {
+      if (value != widget.notice.read) {
         setState(() {
-          (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
-          widget.isChecked = value;
+          (widget.notice.read)? --widget.notice.checkNoticeCount: ++widget.notice.checkNoticeCount;
+          widget.notice.read = value;
         });
       }
     });
@@ -137,7 +132,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       if (_isExpended) {
         _getCheckerImages();
 
-        final int showCount = min(widget.checkerNum, _showCountMax);
+        final int showCount = min(widget.notice.checkNoticeCount, _showCountMax);
         _checkerImageListWidth = (_imageSize + 4) * showCount - 4; // 4: padding size
       }
 
@@ -147,7 +142,7 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
 
   void _getCheckerImages() async {
     if (_isNeedUpdate) {
-      Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
+      Notice.getCheckUserImageList(widget.notice.noticeId).then((profileURIs) {
         setState(() => _checkerImages = profileURIs);
       },);
     }

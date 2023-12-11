@@ -20,6 +20,7 @@ class InputField extends StatefulWidget {
   final bool enable;
   final bool counter;
   final Color? backgroundColor;
+  final TextInputType? keyboardType;
 
   const InputField({
     Key? key,
@@ -36,6 +37,7 @@ class InputField extends StatefulWidget {
     this.enable = true,
     this.counter = false,
     this.backgroundColor,
+    this.keyboardType
   }) : super(key: key);
 
   @override
@@ -70,6 +72,7 @@ class InputFieldState extends State<InputField> {
     return Column(
       children: [
         TextField(
+          keyboardType: widget.keyboardType,
           enabled: widget.enable,
           controller: _textEditingController,
           style: TextStyles.body1,
@@ -80,7 +83,7 @@ class InputFieldState extends State<InputField> {
           textAlign: TextAlign.justify,
           focusNode: widget.focusNode,
           onChanged: onChange,
-          onTapOutside: widget.onTapOutSide??(event) => FocusScope.of(context).unfocus(),
+          onTapOutside: widget.onTapOutSide??((event) => FocusScope.of(context).unfocus()),
           decoration: InputDecoration(
             contentPadding: Design.textFieldPadding,
 

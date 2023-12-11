@@ -13,8 +13,8 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
-import 'package:group_study_app/widgets/member_profile_list_widget.dart';
-import 'package:group_study_app/widgets/panels/notice_summary_panel.dart';
+import 'package:group_study_app/widgets/profile_lists/member_profile_list_widget.dart';
+import 'package:group_study_app/widgets/noticie_widgets/notice_rolling_widget.dart';
 import 'package:group_study_app/widgets/round_summary_list_widget.dart';
 import 'package:group_study_app/widgets/rules/rule_list_widget.dart';
 
@@ -43,12 +43,16 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
 
   @override
   Widget build(BuildContext context) {
+    bool bright = ColorUtil.isBright(_study.color);
+    Color appBarForegroundColor = (bright)? Colors.black : Colors.white;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: _study.color,
-        actions: [ _studyPopupMenu() ],
+        foregroundColor: appBarForegroundColor,
+        leading: _backButton(appBarForegroundColor),
+        actions: [ _studyPopupMenu(appBarForegroundColor) ],
         shape: InputBorder.none,),
 
       body: RefreshIndicator(
@@ -70,7 +74,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Notice Summary Panel
-                    NoticeSummaryPanel(studyId: _study.studyId,),
+                    NoticeRollingWidget(studyId: _study.studyId,),
                     Design.padding24,
 
                     // Member Images
@@ -150,11 +154,18 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
     );
   }
 
-  Widget _studyPopupMenu() {
+  Widget _backButton(Color iconColor) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12),
+      child: BackButton(color: iconColor),
+    );
+  }
+
+  Widget _studyPopupMenu(Color iconColor) {
     return PopupMenuButton(
       icon: Icon(
         CustomIcons.more_vert,
-        color: context.extraColors.grey900,
+        color: iconColor,
         size: _iconSize,),
       splashRadius: _iconSize / 2,
       padding: EdgeInsets.zero,
@@ -163,7 +174,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // edit profile
         ItemEntry(
           text: context.local.editStudy,
-          icon: const Icon(CustomIcons.writing_outline),
+          icon: Icon(CustomIcons.writing_outline, color: context.extraColors.grey900,),
           onTap: () => Util.pushRoute(context, (context) =>
               StudyEditRoute(study: _study,)).then((value) =>
                 _refresh(),),),
@@ -171,7 +182,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         // setting
         ItemEntry(
           text: context.local.leaveStudy,
-          icon: const Icon(CustomIcons.exit_outline),
+          icon: Icon(CustomIcons.exit_outline, color: context.extraColors.grey900,),
           onTap: _showLeaveStudyDialog,),
       ],);
   }

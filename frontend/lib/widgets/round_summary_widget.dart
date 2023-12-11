@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/routes/round_detail_route.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
@@ -12,7 +14,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/diagrams/dash_line.dart';
-import 'package:group_study_app/widgets/participant_list_widget.dart';
+import 'package:group_study_app/widgets/profile_lists/participant_profile_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
 class RoundSummaryWidget extends StatefulWidget {
@@ -129,15 +131,26 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         borderRadius: Design.borderRadiusSmall,),
       child: Column(
           children: [
-            _placeWidget(),
+            _timeWidget(),
             Design.padding4,
 
-            _timeWidget(),
+            _placeWidget(),
             Design.padding16,
 
-            ParticipantListWidget(
-              roundParticipantInfoList: widget.round.roundParticipantInfos,
-              studyId: widget.study.studyId,),
+            (widget.round.roundId != Round.nonAllocatedRoundId) ?
+              ParticipantProfileListWidget(
+                roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
+                  ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
+                studyId: widget.study.studyId,) :
+              FutureBuilder(
+                future: Study.getMemberProfileImages(widget.study.studyId), //< FIXME
+                builder: (context, snapshot) =>
+                  (snapshot.hasData)?
+                    ParticipantProfileListWidget(
+                        roundParticipantSummaries: snapshot.data!,
+                        studyId: widget.study.studyId) :
+                    const SizedBox(),
+              ),
           ],),
     );
   }
@@ -188,8 +201,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             ),
 
             onChanged: (value) => _isEdited = true,
-            onTapOutside: (event) => updatePlace(),
-            onSubmitted: (value) => updatePlace(),
+            onTapOutside: (event) => _updateStudyPlace(),
+            onSubmitted: (value) => _updateStudyPlace(),
           ),
         ),
       ],
@@ -206,7 +219,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         Design.padding4,
 
         InkWell(
-          onTap: updateDateAndTime,
+          onTap: _editStudyTime,
           child: Text(
             (widget.round.studyTime != null) ?
               TimeUtility.timeToString(widget.round.studyTime!) :
@@ -228,33 +241,28 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     if (context.mounted) {
       Util.pushRoute(context, (context) =>
           RoundDetailRoute(
+            reserved: TimeUtility.isScheduled(widget.round.studyTime),
             roundSeq: widget.roundSeq,
             roundId: widget.round.roundId, study: widget.study,
             onRemove: () => widget.onRemove(widget.roundSeq),));
     }
   }
 
-  void updatePlace() {
+  void _updateStudyPlace() {
     if (_isEdited) {
       widget.round.studyPlace = _placeEditingController.text;
-      updateRound(widget.round);
+      _updateRound(widget.round);
       _isEdited = false;
     }
     setState(() {});
   }
 
-  void updateDateAndTime() async {
-    TimeUtility.showDateTimePicker(context).then((dateTime) {
-          if (dateTime != null) {
-            widget.round.studyTime = dateTime;
-            updateRound(widget.round);
-
-            setState(() { });
-          }
-        });
+  void _editStudyTime() async {
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: widget.round,)).then((value) => setState((){ }));
   }
 
-  void updateRound(Round round) {
+  void _updateRound(Round round) {
     if (round.roundId == Round.nonAllocatedRoundId) {
       Round.createRound(round, widget.study.studyId);
     }

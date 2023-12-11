@@ -45,7 +45,7 @@ class Util {
     );
   }
 
-  static pushRouteWithSlideDown(BuildContext context, RoutePageBuilder builder) async {
+  static pushRouteWithSlideUp(BuildContext context, RoutePageBuilder builder) async {
     return await Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: builder,

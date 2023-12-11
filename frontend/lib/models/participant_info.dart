@@ -1,20 +1,26 @@
 
+import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/models/user.dart';
 
 class ParticipantInfo {
+  final int roundParticipantId;
   final User participant;
+  final StatusTag status;
   final List<TaskGroup> taskGroups;
 
   ParticipantInfo({
+    required this.roundParticipantId,
     required this.participant,
+    required this.status,
     required this.taskGroups,
   });
 
   factory ParticipantInfo.fromJson(Map<String, dynamic> json) {
     return ParticipantInfo(
+      roundParticipantId: json['roundParticipantId'],
       participant: User.fromJson(json),
+      status: StatusTag.getByCode(json['statusTag']),
       taskGroups: (json['taskGroups'] as List).map((t)
         => TaskGroup.fromJson(t, json['roundParticipantId'])).toList(),
     );

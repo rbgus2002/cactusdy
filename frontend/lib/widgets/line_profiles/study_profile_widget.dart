@@ -83,6 +83,7 @@ class StudyProfileWidget extends StatelessWidget {
                       color: context.extraColors.blue!,
                       onTap: () => Util.pushRoute(context, (context) =>
                           RoundDetailRoute(
+                              reserved: TimeUtility.isScheduled(studyInfo.round.studyTime),
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
                               study: studyInfo.study,
@@ -106,7 +107,8 @@ class StudyProfileWidget extends StatelessWidget {
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
-                              study: studyInfo.study,),),
+                              study: studyInfo.study,
+                              reserved: true,),),
                     ),),
                   const Spacer(),
 
@@ -118,15 +120,15 @@ class StudyProfileWidget extends StatelessWidget {
   }
 
   String _getPlaceAndTimeText(BuildContext context) {
-    String placeText = (studyInfo.round.studyPlace.isNotEmpty)?
-      studyInfo.round.studyPlace :
-      context.local.undefinedOf(context.local.place);
-
-    String timeText = (studyInfo.round.studyTime != null)?
+    String timeText = (studyInfo.round.studyTime != null) ?
       TimeUtility.timeToString(studyInfo.round.studyTime!) :
       context.local.undefinedOf(context.local.time);
 
-    return '$placeText • $timeText';
+    String placeText = (studyInfo.round.studyPlace.isNotEmpty) ?
+      studyInfo.round.studyPlace :
+      context.local.undefinedOf(context.local.place);
+
+    return '$timeText • $placeText';
   }
 
   bool _isRoundIdNotZero() {

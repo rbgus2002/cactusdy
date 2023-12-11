@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_summary.dart';
+import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/studies/study_inviting_route.dart';
 import 'package:group_study_app/routes/profiles/profile_route.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
+/// Study Member Profile List
 class MemberProfileListWidget extends StatelessWidget {
   final int studyId;
   final int hostId;
   final double scale;
   final Function(ParticipantSummary)? onTap;
   final double paddingSize;
+  final bool border;
 
   const MemberProfileListWidget({
     Key? key,
@@ -21,12 +24,13 @@ class MemberProfileListWidget extends StatelessWidget {
     this.scale = 40.0,
     this.paddingSize = 8,
     this.onTap,
+    this.border = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ParticipantSummary.getParticipantsProfileImageList(studyId),
+      future: Study.getMemberProfileImages(studyId),
       builder: (context, snapshot) =>
         (snapshot.hasData) ?
           SizedBox(
@@ -40,32 +44,49 @@ class MemberProfileListWidget extends StatelessWidget {
                     // last => Add Participant Button
                     _addButton(context) :
                     // else => User Profile
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        InkWell(
-                          borderRadius: BorderRadius.circular(scale / 2),
-                          child: SquircleImageWidget(
-                            scale: scale,
-                            url: snapshot.data![index].picture),
-                          onTap: () {
-                            if (onTap != null) {
-                              onTap!(snapshot.data![index]);
-                            } else {
-                              // View Profile
-                              Util.pushRouteWithSlideDown(context, (context, animation, secondaryAnimation) =>
-                                  ProfileRoute(
-                                      userId: snapshot.data![index].userId,
-                                      studyId: studyId));
-                            }
-                          },),
-
-                        if (snapshot.data![index].userId == hostId)
-                          _adminBadge(context),
-                      ],),
-                    ),
-          ) : SizedBox(height: scale,),
+                    _userProfile(context, snapshot.data![index]),
+            ),) :
+          SizedBox(height: scale,),
     );
+  }
+
+  Widget _userProfile(BuildContext context, ParticipantSummary participantSummary) {
+    bool host = _isHost(participantSummary.userId);
+
+    return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(scale / 2),
+            child: SquircleImageWidget(
+                scale: scale,
+                side: (border)?
+                    BorderSide(
+                      width: 3,
+                      color: (host)?
+                        ColorStyles.mainColor :
+                        context.extraColors.grey500!) : null,
+                url: participantSummary.picture),
+            onTap: () {
+              if (onTap != null) {
+                onTap!(participantSummary);
+              } else {
+                // View Profile
+                Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+                    ProfileRoute(
+                        userId: participantSummary.userId,
+                        studyId: studyId));
+              }
+            },),
+
+          if (host)
+            _adminBadge(context),
+        ],
+    );
+  }
+
+  bool _isHost(int userId) {
+    return userId == hostId;
   }
 
   bool _isLast(int index, int length) {
@@ -91,14 +112,14 @@ class MemberProfileListWidget extends StatelessWidget {
     return Positioned(
         left: -4,
         top: 24,
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.extraColors.grey000,
-            shape: BoxShape.circle,),
-          child: Image.asset(
-            'assets/images/crown.png',
-            height: 17,
-            width: 17,),),
+        child: CircleAvatar(
+          radius: 9,
+          backgroundColor: context.extraColors.grey000,
+            child: Image.asset(
+              'assets/images/crown.png',
+              height: 16,
+              width: 16,),
+          ),
     );
   }
 }

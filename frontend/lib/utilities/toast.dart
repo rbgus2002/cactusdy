@@ -17,16 +17,18 @@ class Toast {
   static String lastMessage = "";
   static DateTime lastTime = DateTime.now();
 
+  static FToast fToast = FToast();
+
   static void showToast( {
     required BuildContext context,
     required String message,
     EdgeInsets? margin,
   }) {
-    if (_isPlaying(message)) return;
+    if (_isSameMessage(message) && _isPlaying()) return;
     
     _setPlaying(message);
 
-    FToast fToast = FToast();
+    fToast.removeCustomToast();
     fToast.init(context);
 
     Widget toast = Container(
@@ -49,12 +51,25 @@ class Toast {
         child: toast,
         toastDuration: duration,
         gravity: ToastGravity.BOTTOM,
+        isDismissable: true,
     );
   }
 
-  static bool _isPlaying(String message) {
-    return ((lastMessage == message) &&
-        (DateTime.now().difference(lastTime).inSeconds < durationSeconds));
+  static void updateToast({
+    required BuildContext context,
+    required String message,
+  }) {
+    if (_isPlaying()) {
+      showToast(context: context, message: message);
+    }
+  }
+
+  static bool _isPlaying() {
+    return (DateTime.now().difference(lastTime).inSeconds < durationSeconds);
+  }
+
+  static bool _isSameMessage(String message) {
+    return (lastMessage == message);
   }
 
   static void _setPlaying(String message) {

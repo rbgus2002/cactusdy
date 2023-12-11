@@ -12,8 +12,8 @@ class Notice {
   static const noticeCreationError = -1;
 
   final int noticeId;
-  final String title;
-  final String contents;
+  String title;
+  String contents;
   final String writerNickname;
   final int writerId;
   final DateTime createDate;
@@ -78,6 +78,28 @@ class Notice {
       print("success to create New notice");
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
       return Notice.fromJson(responseJson);
+    }
+  }
+
+  static Future<bool> updateNotice(Notice notice) async {
+    Map<String, dynamic> data = {
+      'title': notice.title,
+      'contents': notice.contents,
+    };
+
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=${notice.noticeId}'),
+      headers: DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
+
+    var responseJson = json.decode(response.body);
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool success = responseJson['success'];
+      if (success) print("Success to update task detail"); //< FIXME
+      return success;
     }
   }
 

@@ -9,6 +9,8 @@ import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 
 class TwoButtonDialog {
+  TwoButtonDialog._();
+
   static const double _innerWidth = 260;
   static const double _textWidth = 232;
   static const EdgeInsets _padding = EdgeInsets.all(16);
@@ -49,7 +51,7 @@ class TwoButtonDialog {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       style: TextStyles.head3.copyWith(
-                          color: context.extraColors.grey900)),),
+                          color: context.extraColors.grey800),),),
                   Design.padding32,
 
                   (isOutlined1)?

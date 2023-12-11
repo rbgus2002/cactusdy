@@ -1,11 +1,9 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 

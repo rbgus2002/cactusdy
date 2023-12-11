@@ -159,6 +159,7 @@ class _StudyPanel extends StatelessWidget {
             itemCount: studyInfo.taskGroups.length,
             itemBuilder: (context, index) =>
                 TaskGroupWidget(
+                  roundId: studyInfo.round.roundId,
                   userId: Auth.signInfo!.userId,
                   taskGroup: studyInfo.taskGroups[index],
                   study: studyInfo.study,),

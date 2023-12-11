@@ -1,16 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_profile.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/stab_controller.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
@@ -47,13 +46,10 @@ class _ProfileRouteState extends State<ProfileRoute> {
     return Scaffold(
       appBar: AppBar(
         // Close button
-        leading: IconButton(
-          icon: const Icon(CustomIcons.close),
-          iconSize: 32,
-          onPressed: () => Util.popRoute(context)),
+        leading: const CloseButton(),
         shape: InputBorder.none,),
       body: FutureBuilder(
-          future: ParticipantProfile.getParticipantProfile(widget.userId, widget.studyId),
+          future: User.getUserProfileDetail(widget.userId, widget.studyId),
           builder: (context, snapshot) =>
             (snapshot.hasData)?
               ListView(
@@ -62,7 +58,8 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
-                  _kickAndStabButton(),
+                  _kickAndStabButton(snapshot.data!.participant),
+                  Design.padding48,
                 ],) :
               Design.loadingIndicator,),
     );
@@ -155,27 +152,27 @@ class _ProfileRouteState extends State<ProfileRoute> {
 
           // Stacked Bar Chart
           _AttendanceRateChartWidget(
-            attendanceCount: attendanceRate[StatusTag.attendance]??0,
-            lateCount: attendanceRate[StatusTag.late]??0,
-            absentCount: attendanceRate[StatusTag.absent]??0,),
+            attendanceCount: attendanceRate[StatusTag.attendanceCode]??0,
+            lateCount: attendanceRate[StatusTag.lateCode]??0,
+            absentCount: attendanceRate[StatusTag.absentCode]??0,),
           Design.padding(36),
 
           // Attendance
           _StatusSummaryWidget(
               status: StatusTag.attendance,
-              count: attendanceRate[StatusTag.attendance]??0),
+              count: attendanceRate[StatusTag.attendanceCode]??0),
           Design.padding32,
 
           // Late
           _StatusSummaryWidget(
               status: StatusTag.late,
-              count: attendanceRate[StatusTag.late]??0),
+              count: attendanceRate[StatusTag.lateCode]??0),
           Design.padding32,
 
           // Absent
           _StatusSummaryWidget(
               status: StatusTag.absent,
-              count: attendanceRate[StatusTag.absent]??0),
+              count: attendanceRate[StatusTag.absentCode]??0),
           Design.padding24,
         ],
       ),
@@ -219,9 +216,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButton() {
+  Widget _kickAndStabButton(User participant) {
     return Visibility(
-      visible: (widget.userId != Auth.signInfo?.userId),
+      visible: (!Util.isOwner(widget.userId)),
       child: Container(
         padding: Design.edgePadding,
         height: 92,
@@ -237,7 +234,12 @@ class _ProfileRouteState extends State<ProfileRoute> {
             // Stab button (with Cactus Icon)
             Expanded(
               child: ElevatedButton(
-                onPressed: userStabController.stab,
+                onPressed: () {
+                  userStabController.stab();
+                  Toast.showToast(
+                    context: context,
+                    message: _getStabMessage(participant.nickname, userStabController.stabCount),);
+                },
                 child: Container(
                   width: double.maxFinite,
                   height: Design.buttonContentHeight,
@@ -256,13 +258,25 @@ class _ProfileRouteState extends State<ProfileRoute> {
       ),
     );
   }
+
+  String _getStabMessage(String nickname, int stabCount) {
+    if (stabCount == 1) {
+      return context.local.stabUserAbout(nickname, '');
+    }
+
+    else if (stabCount < 5) {
+      return context.local.stabUserAbout(nickname, '$stabCount${context.local.num} ');
+    }
+
+    return context.local.stabUserAbout(nickname, '$stabCount${context.local.num}${context.local.even} ');
+  }
 }
 
 /// Show status's color, name, and count as Row
 class _StatusSummaryWidget extends StatelessWidget {
   static const double _height = 24;
 
-  final String status;
+  final StatusTag status;
   final int count;
 
   const _StatusSummaryWidget({
@@ -279,13 +293,13 @@ class _StatusSummaryWidget extends StatelessWidget {
           width: _height,
           height: _height,
           decoration: BoxDecoration(
-            color: StatusTag.getColor(status, context),
+            color: status.color(context),
             shape: BoxShape.circle,),),
         Design.padding12,
 
         Expanded(
           child: Text(
-            StatusTag.getText(status, context),
+            status.text(context, false),
             style: TextStyles.head4.copyWith(
               color: context.extraColors.grey900,),),),
 
@@ -389,16 +403,16 @@ class _AttendanceRateChartWidget extends StatelessWidget {
           Flexible(
             flex: attendanceCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.attendance, context),),),
+              color: StatusTag.attendance.color(context),),),
 
           Visibility(
-            visible: (attendanceCount * lateCount != 0),
+            visible: (attendanceCount * lateCount != 0), //< FIXME
             child: Design.padding4,),
 
           Flexible(
             flex: lateCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.late, context),),),
+              color: StatusTag.late.color(context),),),
 
           Visibility(
             visible: (lateCount * absentCount != 0 || attendanceCount * absentCount != 0),
@@ -407,7 +421,7 @@ class _AttendanceRateChartWidget extends StatelessWidget {
           Flexible(
             flex: absentCount,
             child: Container(
-              color: StatusTag.getColor(StatusTag.absent, context),),),
+              color: StatusTag.absent.color(context),),),
         ],),
     );
   }

@@ -1,57 +1,78 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:group_study_app/services/database_service.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:http/http.dart' as http;
 
-class StatusTag {
-  static const String none = 'NONE';
-  static const String attendanceExcepted = 'ATTENDANCE_EXPECTED';
-  static const String attendance = 'ATTENDANCE';
-  static const String late = 'LATE';
-  static const String absent = 'ABSENT';
+enum StatusTag {
+  attendance(attendanceCode),
+  late(lateCode),
+  absent(absentCode);
 
-  static Color getColor(String status, BuildContext context) {
-    switch (status) {
-      case none:
-        return Colors.transparent;
+  static const String attendanceCode = 'ATTENDANCE';
+  static const String lateCode = 'LATE';
+  static const String absentCode = 'ABSENT';
 
-      case attendanceExcepted:
-      case attendance:
+  final String code;
+  const StatusTag(this.code);
+
+  factory StatusTag.getByCode(String code) {
+    return StatusTag.values.firstWhere((value) => value.code == code);
+  }
+
+  Color color(BuildContext context) {
+    switch (this) {
+      case StatusTag.attendance:
         return context.extraColors.green!;
 
-      case late:
+      case StatusTag.late:
         return context.extraColors.purple!;
 
-      case absent:
+      case StatusTag.absent:
         return context.extraColors.pink!;
 
       default:
         // This should be never called
-        assert(false, 'Unknown status: $status');
+        assert(false, 'Unknown status: $code');
         return Colors.transparent;
     }
   }
 
-  static String getText(String status, BuildContext context) {
-    switch (status) {
-      case none:
-        return "";
+  String text(BuildContext context, bool reserved) {
+    switch (this) {
+      case StatusTag.attendance:
+        return (reserved) ?
+        context.local.reserved :
+        context.local.attend;
 
-      case attendanceExcepted:
-        return context.local.reserved;
-
-      case attendance:
-        return context.local.attend;
-
-      case late:
+      case StatusTag.late:
         return context.local.late;
 
-      case absent:
+      case StatusTag.absent:
         return context.local.absent;
 
       default:
         // This should be never called
-        assert(false, 'Unknown status: $status');
+        assert(false, 'Unknown status: $code');
         return "";
+    }
+  }
+
+  static Future<bool> updateStatus(int roundParticipateId, StatusTag status) async {
+    final response = await http.put(
+      Uri.parse('${DatabaseService.serverUrl}api/rounds/participants/$roundParticipateId?statusTag=${status.code}'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool result = responseJson['success'];
+      if (result) print("Success to update Status");
+      return result;
     }
   }
 }

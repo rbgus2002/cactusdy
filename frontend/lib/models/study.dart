@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -12,6 +13,7 @@ class Study {
   static const int studyNameMaxLength = 30;
   static const int studyDetailMaxLength = 40;
 
+  // const values
   static const int invitingCodeLength = 6;
 
   final int studyId;
@@ -90,6 +92,22 @@ class Study {
     }
   }
 
+  static Future<int> joinStudyByInvitingCode(String invitingCode) async {
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants?inviteCode=$invitingCode'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      int studyId = json.decode(utf8.decode(response.bodyBytes))['data']['studyId'];
+      print('success to join a study');
+      return studyId;
+    }
+  }
+
   static Future<bool> leaveStudy(Study study) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?studyId=${study.studyId}'),
@@ -105,6 +123,7 @@ class Study {
       return result;
     }
   }
+
   static Future<bool> updateStudy(Study updatedStudy, XFile? studyImage) async {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/studies/${updatedStudy.studyId}'),);
@@ -136,7 +155,6 @@ class Study {
     }
   }
 
-
   static Future<String> getStudyInvitingCode(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/$studyId/inviteCode'),
@@ -150,5 +168,42 @@ class Study {
       print('success to get inviting code($invitingCode)');
       return invitingCode;
     }
+  }
+
+  static Future<List<ParticipantSummary>> getMemberProfileImages(int studyId) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants/summary?studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception("Fail to get Participants data (studyId = $studyId)");
+    } else {
+      print("successfully get Participants data (studyId = $studyId)");
+
+      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participantSummaryList'];
+
+      return (responseJson as List).map((p) => ParticipantSummary.fromJson(p)).toList();
+    }
+  }
+}
+
+class ParticipantSummary {
+  final int userId;
+  final String picture;
+  final String nickname;
+
+  ParticipantSummary({
+    required this.userId,
+    required this.picture,
+    required this.nickname,
+  });
+
+  factory ParticipantSummary.fromJson(Map<String, dynamic> json) {
+    return ParticipantSummary(
+      userId: json['userId']??User.nonAllocatedUserId,
+      picture: json['picture']??"",
+      nickname: json['nickname']??"",
+    );
   }
 }
