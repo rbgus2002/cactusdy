@@ -39,26 +39,30 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
           children: [
             Design.padding48,
 
+            // New Password
             InputField(
               key: _newPasswordEditor,
               obscureText: true,
               hintText: context.local.password,
               maxLength: Auth.passwordMaxLength,
               validator: _newPasswordValidator,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
               onChanged: (input) => _newPassword = input,),
             Design.padding16,
 
+            // New Password Confirm
             InputField(
               key: _newPasswordConfirmEditor,
               obscureText: true,
               hintText: context.local.confirmPassword,
               validator: _newPasswordConfirmValidator,
+              onEditingComplete: _resetPassword,
               maxLength: Auth.passwordMaxLength,),
             Design.padding(132),
 
             PrimaryButton(
               text: context.local.start,
-              onPressed: _tryResetPassword,),
+              onPressed: _resetPassword,),
           ],
         ),
       ),
@@ -79,7 +83,7 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
     return null;
   }
 
-  void _tryResetPassword() async {
+  void _resetPassword() async {
     if (_newPasswordEditor.currentState!.validate() &&
       _newPasswordConfirmEditor.currentState!.validate()) {
       if (!_isProcessing) {
@@ -88,7 +92,10 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
         try {
           await Auth.resetPassword(widget.phoneNumber, _newPassword).then((value) {
             if (value) {
-              Toast.showToast(context: context, message: context.local.successToResetPassword);
+              Toast.showToast(
+                  context: context,
+                  message: context.local.successToResetPassword);
+
               Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
               Util.pushRoute(context, (context) => const SignInRoute());
             }

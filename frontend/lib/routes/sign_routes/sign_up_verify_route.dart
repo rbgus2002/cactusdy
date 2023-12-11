@@ -28,7 +28,6 @@ class _SignUpRouteState extends State<SignUpRoute> {
   final GlobalKey<InputFieldState> _phoneNumberEditor = GlobalKey();
   final GlobalKey<InputFieldState> _verificationCodeEditor = GlobalKey();
 
-  static const int _expireTime = 60 * 3; // 3 min
   int _restTime = 0;
   Timer? _timer;
 
@@ -47,6 +46,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Phone Number
                 Text(
                   context.local.inputPhoneNumber,
                   style: TextStyles.head2),
@@ -59,12 +59,14 @@ class _SignUpRouteState extends State<SignUpRoute> {
                   hintText: context.local.phoneNumber,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: _phoneNumberValidator,
+                  onEditingComplete: _requestVerificationCode,
                   onChanged: (input) {
                     _phoneNumber = FormatterUtility.getNumberOnly(input);
                     _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber);
                   },),
                 Design.padding16,
 
+                // Request Verification Code Button
                 OutlinedPrimaryButton(
                   text: (!_isVerificationCodeSend)?
                   context.local.receiveVerificationCode :
@@ -72,6 +74,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
                   onPressed: _requestVerificationCode,),
                 Design.padding32,
 
+                // Verification Code
                 Visibility(
                     visible: _isVerificationCodeSend,
                     child: Column(
@@ -82,16 +85,15 @@ class _SignUpRouteState extends State<SignUpRoute> {
                           hintText: context.local.verificationCodeHint,
                           maxLength: Auth.verificationCodeLength,
                           validator: _verificationCodeValidator,
+                          onEditingComplete: _verifyCode,
                           onChanged: (input) => _inputCode = input,),
                         Design.padding48,
 
                         PrimaryButton(
                           text: context.local.complete,
                           onPressed: _verifyCode,),
-                      ],
-                    )),
-              ],
-            )
+                      ],),),
+              ],)
         )
     );
   }
@@ -123,8 +125,11 @@ class _SignUpRouteState extends State<SignUpRoute> {
       try {
         await Auth.requestSingUpVerifyMessage(_phoneNumber).then((result) {
           _isVerificationCodeSend = true;
-          Toast.showToast(context: context, message: context.local.sentVerificationCode);
           _startTimer();
+
+          Toast.showToast(
+              context: context,
+              message: context.local.sentVerificationCode);
         });
       } on Exception catch (e) {
         _phoneNumberEditor.currentState!.errorText = Util.getExceptionMessage(e);
@@ -165,7 +170,7 @@ class _SignUpRouteState extends State<SignUpRoute> {
   }
 
   void _startTimer() {
-    _restTime = _expireTime;
+    _restTime = Auth.expireTime;
 
     _timer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
       // stop timer

@@ -13,6 +13,7 @@ class Auth {
   static const int passwordMaxLength = 255;
 
   static const int verificationCodeLength = 6;
+  static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
 
   static SignInfo? signInfo;
 

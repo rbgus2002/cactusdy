@@ -52,9 +52,8 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   maxLength: Notice.titleMaxLength,
                   textAlign: TextAlign.justify,
                   onChanged: (text) => _title = text,
-                  validator: (input) =>
-                    (input == null || input.isEmpty)?
-                      context.local.inputHint1(context.local.title) : null,
+                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                  validator: _titleValidator,
                   decoration: InputDecoration(
                     hintText: context.local.inputHint1(context.local.title),
                     hintStyle: TextStyles.head3.copyWith(
@@ -74,9 +73,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   maxLength: Notice.contentsMaxLength,
                   textAlign: TextAlign.justify,
                   onChanged: (text) => _contents = text,
-                  validator: (input) =>
-                    (input == null || input.isEmpty)?
-                      context.local.inputHint1(context.local.content) : null,
+                  validator: _contentsValidator,
                   decoration: InputDecoration(
                     hintText: context.local.inputHint1(context.local.content),
                     hintStyle: TextStyles.body1.copyWith(
@@ -99,6 +96,22 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
           style: TextStyles.head5.copyWith(
             color: ColorStyles.mainColor),),
     );
+  }
+
+  String? _titleValidator(String? input) {
+    if (input == null || input.isEmpty){
+      return context.local.inputHint1(context.local.title);
+    }
+
+    return null;
+  }
+
+  String? _contentsValidator(String? input) {
+    if (input == null || input.isEmpty) {
+      return context.local.inputHint1(context.local.content);
+    }
+
+    return null;
   }
 
   void _writeNotice() async {

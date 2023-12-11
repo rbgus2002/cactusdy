@@ -42,6 +42,7 @@ class _SignInRouteState extends State<SignInRoute> {
               children: [
                 Design.padding28,
 
+                // Phone Number
                 Text(context.local.phoneNumber, style: TextStyles.head5,),
                 Design.padding8,
 
@@ -50,12 +51,15 @@ class _SignInRouteState extends State<SignInRoute> {
                   keyboardType: TextInputType.number,
                   maxLength: Auth.phoneNumberMaxLength,
                   validator: _phoneNumberValidator,
+                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   onChanged: (input) {
                     _phoneNumber = FormatterUtility.getNumberOnly(input);
-                    _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber);
+                    _phoneNumberEditor.currentState!.text =
+                        FormatterUtility.phoneNumberFormatter(_phoneNumber);
                   },),
                 Design.padding12,
 
+                // Password
                 Text(context.local.password, style: TextStyles.head5,),
                 Design.padding8,
 
@@ -64,16 +68,17 @@ class _SignInRouteState extends State<SignInRoute> {
                   obscureText: true,
                   maxLength: Auth.passwordMaxLength,
                   validator: _passwordValidator,
-                  onChanged: (input) {
-                    _password = input;
-                  },),
+                  onEditingComplete: _signIn,
+                  onChanged: (input) => _password = input,),
                 Design.padding(80),
 
+                // SignIn Button
                 PrimaryButton(
                   text: context.local.confirm,
-                  onPressed: _tryToSignIn,),
+                  onPressed: _signIn,),
                 Design.padding4,
 
+                // Forgot Password Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -82,12 +87,11 @@ class _SignInRouteState extends State<SignInRoute> {
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey500),),
 
                     TextButton(
-                      onPressed: () => Util.pushRoute(context, (context) => const ResetPasswordVerifyRoute()),
+                      onPressed: () => Util.pushRoute(context, (context) =>
+                          const ResetPasswordVerifyRoute()),
                       child : Text(context.local.resetPassword,),),
-                  ],
-                )
-              ],
-            ),
+                  ],)
+              ],),
           ),
         ),
       );
@@ -107,16 +111,15 @@ class _SignInRouteState extends State<SignInRoute> {
     return null;
   }
 
-  void _tryToSignIn() async {
+  void _signIn() async {
     if (_phoneNumberEditor.currentState!.validate() &&
       _passwordEditor.currentState!.validate()) {
       if (!_isProcessing) {
         _isProcessing = true;
 
         try {
-          await Auth.signIn(_phoneNumber, _password).then((value) {
-            Util.pushRouteAndPopUntil(context, (context) => const HomeRoute());
-          });
+          await Auth.signIn(_phoneNumber, _password).then((value) =>
+            Util.pushRouteAndPopUntil(context, (context) => const HomeRoute()));
         }
         on Exception catch (e) {
           _passwordEditor.currentState!.errorText

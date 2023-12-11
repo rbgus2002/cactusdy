@@ -63,6 +63,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
               hintText: context.local.name,
               maxLength: User.nameMaxLength,
               validator: _nameValidator,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
               onChanged: (input) => _name = input,),
             Design.padding16,
 
@@ -71,14 +72,14 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
               hintText: context.local.nickname,
               maxLength: User.nicknameMaxLength,
               validator: _nicknameValidator,
+              //onEditingComplete: Util.doNothing, // Assert to do Nothing, because sign up need to be confirm by User
               onChanged: (input) => _nickname = input,),
             Design.padding(64),
 
             PrimaryButton(
               text: context.local.signUp,
-              onPressed: _tryToSignUp,),
-          ],
-        ),
+              onPressed: _signUp,),
+          ],),
       )
     );
   }
@@ -97,7 +98,7 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
     return null;
   }
 
-  void _tryToSignUp() async {
+  void _signUp() async {
     if (_nameEditor.currentState!.validate() &&
         _nicknameEditor.currentState!.validate()) {
       if (!_isProcessing) {

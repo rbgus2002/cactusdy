@@ -27,7 +27,6 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
   final GlobalKey<InputFieldState> _phoneNumberEditor = GlobalKey();
   final GlobalKey<InputFieldState> _verificationCodeEditor = GlobalKey();
 
-  static const int _expireTime = 60 * 3; // 3 min
   int _restTime = 0;
   Timer? _timer;
 
@@ -47,6 +46,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
           children: [
             Design.padding48,
 
+            // Phone Number
             InputField(
               enable: !_isVerificationCodeSend,
               key: _phoneNumberEditor,
@@ -54,12 +54,14 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
               hintText: context.local.phoneNumber,
               maxLength: Auth.phoneNumberMaxLength,
               validator: _phoneNumberValidator,
+              onEditingComplete: _requestVerificationCode,
               onChanged: (input) {
                 _phoneNumber = FormatterUtility.getNumberOnly(input);
                 _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber);
               },),
             Design.padding16,
 
+            // Request Verification Code Button
             OutlinedPrimaryButton(
               text: (!_isVerificationCodeSend)?
                   context.local.receiveVerificationCode :
@@ -67,6 +69,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
               onPressed: _requestVerificationCode,),
             Design.padding32,
 
+            // Verification Code
             Visibility(
               visible: _isVerificationCodeSend,
               child: Column(
@@ -77,6 +80,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
                     hintText: context.local.verificationCodeHint,
                     maxLength: Auth.verificationCodeLength,
                     validator: _verificationCodeValidator,
+                    onEditingComplete: _verifyCode,
                     onChanged: (input) => _inputCode = input,),
                   Design.padding48,
 
@@ -118,8 +122,11 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
       try {
         await Auth.requestResetPasswordVerifyMessage(_phoneNumber).then((result) {
           _isVerificationCodeSend = true;
-          Toast.showToast(context: context, message: context.local.sentVerificationCode);
           _startTimer();
+
+          Toast.showToast(
+              context: context,
+              message: context.local.sentVerificationCode);
         });
       } on Exception catch (e) {
         _phoneNumberEditor.currentState!.errorText = Util.getExceptionMessage(e);
@@ -160,7 +167,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
   }
 
   void _startTimer() {
-    _restTime = _expireTime;
+    _restTime = Auth.expireTime;
 
     _timer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
         // stop timer
