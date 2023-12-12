@@ -36,7 +36,7 @@ public class FcmUtils {
     }
 
     // TODO : 해당 알림 클릭하면 어느 화면으로 이동할 것인가 생각하고 putData 고려
-    public void sendNotificationByTokens(List<String> tokens, String title, String body) {
+    public void sendNotificationByTokens(List<String> tokens, String title, String body, String key, String value) {
         log.info("## sendNotificationByTokens : title = {}, body = {}", title, body);
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(Notification.builder()

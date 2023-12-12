@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
+    Optional<Round> findById(Long roundId);
+
+    @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
 
     /**
