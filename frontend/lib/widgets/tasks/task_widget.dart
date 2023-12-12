@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -124,17 +125,20 @@ class _TaskWidget extends State<TaskWidget> {
         splashRadius: 10,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
-        onPressed: () => TwoButtonDialog.showProfileDialog(
-          context: context,
-          text: widget.task.detail,
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          TwoButtonDialog.showProfileDialog(
+            context: context,
+            text: widget.task.detail,
 
-          buttonText1: context.local.modify,
-          isOutlined1: true,
-          onPressed1: () => _focusNode.requestFocus(),
+            buttonText1: context.local.modify,
+            isOutlined1: true,
+            onPressed1: () => _focusNode.requestFocus(),
 
-          buttonText2: context.local.delete,
-          isOutlined2: false,
-          onPressed2: () => widget.onDeleteTask(widget.task),),),
+            buttonText2: context.local.delete,
+            isOutlined2: false,
+            onPressed2: () => widget.onDeleteTask(widget.task),);
+        }),
     );
   }
 
@@ -151,8 +155,9 @@ class _TaskWidget extends State<TaskWidget> {
         splashRadius: 10,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
-        onPressed: () { 
+        onPressed: () {
           if (!widget.task.isDone) {
+            HapticFeedback.lightImpact();
             widget.taskStabController.stab();
             Toast.showToast(
                 context: context,
@@ -164,6 +169,8 @@ class _TaskWidget extends State<TaskWidget> {
 
   void _onChecked() {
     if (widget.task.taskId == Task.nonAllocatedTaskId) return;
+
+    HapticFeedback.lightImpact();
 
     // Fast Unsafe State Update
     setState(() => widget.task.isDone = !widget.task.isDone);
