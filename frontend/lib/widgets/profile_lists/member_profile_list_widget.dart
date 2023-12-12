@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/studies/study_inviting_route.dart';
 import 'package:group_study_app/routes/profiles/profile_route.dart';
@@ -104,8 +105,11 @@ class MemberProfileListWidget extends StatelessWidget {
             size: 24,
             Icons.add,
             color: context.extraColors.grey400,),),
-      onTap: () => Util.pushRoute(context, (context) =>
-          StudyInvitingRoute(studyId: studyId,)));
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Util.pushRoute(context, (context) =>
+            StudyInvitingRoute(studyId: studyId,));
+      });
   }
 
   Widget _adminBadge(BuildContext context) {

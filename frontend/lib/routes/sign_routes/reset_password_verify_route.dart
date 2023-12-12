@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/routes/sign_routes/reset_password_route.dart';
 import 'package:group_study_app/services/auth.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -48,7 +49,7 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
 
             // Phone Number
             InputField(
-              enable: !_isVerificationCodeSend,
+              enable: !(_isProcessing || _isVerificationCodeSend),
               key: _phoneNumberEditor,
               keyboardType: TextInputType.number,
               hintText: context.local.phoneNumber,
@@ -117,22 +118,24 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
 
   void _requestVerificationCode() async {
     if (!_isProcessing) {
-      _isProcessing = true;
+      HapticFeedback.lightImpact();
+      // prevent modify phoneNumber after requesting
+      setState(() => _isProcessing = true);
 
       try {
         await Auth.requestResetPasswordVerifyMessage(_phoneNumber).then((result) {
           _isVerificationCodeSend = true;
           _startTimer();
-
           Toast.showToast(
               context: context,
               message: context.local.sentVerificationCode);
         });
       } on Exception catch (e) {
-        _phoneNumberEditor.currentState!.errorText = Util.getExceptionMessage(e);
+        setState(() => _phoneNumberEditor.currentState!.errorText
+          = Util.getExceptionMessage(e));
       }
 
-      _isProcessing = false;
+      setState(() => _isProcessing = false);
     }
   }
 

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/study_tag.dart';
 import 'package:group_study_app/models/user.dart';
@@ -227,7 +228,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
             // Kick button
             Expanded(
               child: OutlinedPrimaryButton(
-                onPressed: () { },  //< FIXME
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                },  //< FIXME
                 text: context.local.kick,),),
             Design.padding8,
 
@@ -235,6 +238,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
+                  HapticFeedback.lightImpact();
                   userStabController.stab();
                   Toast.showToast(
                     context: context,
