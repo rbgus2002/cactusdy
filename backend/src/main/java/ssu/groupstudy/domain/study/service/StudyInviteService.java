@@ -60,6 +60,7 @@ public class StudyInviteService {
     public void leaveUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
         study.leave(user);
     }
 }
