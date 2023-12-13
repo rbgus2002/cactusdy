@@ -159,11 +159,12 @@ class Task {
   static Future<bool> stabTask({
     required int targetUserId,
     required int studyId,
+    required int roundId,
     required int taskId,
     required int count}) async {
 
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}api/notifications/tasks?targetUserId=$targetUserId&studyId=$studyId&taskId=$taskId&count=$count'),
+      Uri.parse('${DatabaseService.serverUrl}api/notifications/tasks?targetUserId=$targetUserId&studyId=$studyId&roundId=$roundId&taskId=$taskId&count=$count'),
       headers: DatabaseService.getAuthHeader(),
     );
 

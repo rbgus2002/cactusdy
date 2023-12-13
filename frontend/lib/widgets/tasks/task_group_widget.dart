@@ -126,6 +126,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         taskStabController: TaskStabController(
           studyId: widget.study.studyId,
           targetUserId: widget.userId,
+          roundId: widget.roundId,
           taskId: task.taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, -1),
@@ -145,6 +146,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         taskStabController: TaskStabController(
           studyId: widget.study.studyId,
           targetUserId: widget.userId,
+          roundId: widget.roundId,
           taskId: _taskListModel[index].taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, index),
