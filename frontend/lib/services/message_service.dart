@@ -1,6 +1,4 @@
 
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -112,6 +110,16 @@ class MessageService {
     }
 
     print('Handling a foreground message ${message.messageId}');
+  }
+
+  static Future<void> setupInteractedMessage(Function(RemoteMessage) messageHandler) async {
+    RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      messageHandler(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(messageHandler);
   }
 
   // terminated : it's only work in release mode
