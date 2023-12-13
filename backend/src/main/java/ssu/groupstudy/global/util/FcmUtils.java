@@ -35,7 +35,6 @@ public class FcmUtils {
         }
     }
 
-    // TODO : 해당 알림 클릭하면 어느 화면으로 이동할 것인가 생각하고 putData 고려
     public void sendNotificationByTokens(List<String> tokens, String title, String body, String key, String value) {
         log.info("## sendNotificationByTokens : title = {}, body = {}", title, body);
         MulticastMessage message = MulticastMessage.builder()
@@ -43,21 +42,22 @@ public class FcmUtils {
                         .setTitle(title)
                         .setBody((body))
                         .build())
+                .putData(key, value)
                 .addAllTokens(tokens)
                 .build();
         FirebaseMessaging.getInstance().sendEachForMulticastAsync(message);
     }
 
     // TODO : 직접 @Async로 구현하고 실패하는 토큰의 경우 delete 하도록 구현
-    public void sendNotificationToTopic(String title, String body, TopicCode code, Long id){
+    public void sendNotificationToTopic(String title, String body, TopicCode code, Long id, String key, String value){
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
         String topic = TopicCode.handleTopicString(code, id);
         Message message = Message.builder()
-//                .putData("id", String.valueOf(id))
                 .setNotification(Notification.builder()
                         .setTitle(title)
                         .setBody(body)
                         .build())
+                .putData(key, value)
                 .setTopic(topic)
                 .build();
         FirebaseMessaging.getInstance().sendAsync(message);
