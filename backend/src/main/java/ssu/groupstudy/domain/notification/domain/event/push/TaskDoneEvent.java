@@ -15,6 +15,10 @@ public class TaskDoneEvent{
         return task.getStudy().getStudyId();
     }
 
+    public Long getRoundId(){
+        return task.getRoundParticipant().getRound().getRoundId();
+    }
+
     public String getStudyName(){
         return task.getStudy().getStudyName();
     }

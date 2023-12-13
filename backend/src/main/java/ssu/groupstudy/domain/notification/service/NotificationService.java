@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -22,6 +23,7 @@ public class NotificationService {
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final TaskRepository taskRepository;
+    private final RoundRepository roundRepository;
     private final FcmUtils fcmUtils;
 
     public void notifyParticipant(User me, Long targetUserId, Long studyId, int count) {
@@ -31,7 +33,7 @@ public class NotificationService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         StringBuilder body = handleParticipantNotificationMessage(me, count);
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString());
+        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), "studyId", studyId.toString());
     }
 
     private StringBuilder handleParticipantNotificationMessage(User me, int count) {
@@ -53,7 +55,7 @@ public class NotificationService {
         }
     }
 
-    public void notifyParticipantTask(User user, Long targetUserId, Long studyId, Long taskId, int count) {
+    public void notifyParticipantTask(User user, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
         User target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Study study = studyRepository.findById(studyId)
@@ -62,7 +64,7 @@ public class NotificationService {
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
         StringBuilder body = handleTaskNotificationMessage(user, task, count);
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString());
+        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), "roundId", roundId.toString());
     }
 
     private StringBuilder handleTaskNotificationMessage(User user, Task task, int count) {

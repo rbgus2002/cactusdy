@@ -31,9 +31,10 @@ public class NotificationApi {
     public ResponseDto notifyTask(@AuthenticationPrincipal CustomUserDetails userDetails,
                                   @RequestParam Long targetUserId,
                                   @RequestParam Long studyId,
+                                  @RequestParam Long roundId,
                                   @RequestParam Long taskId,
                                   @RequestParam int count) {
-        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, taskId, count);
+        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
         return ResponseDto.success();
     }
 
