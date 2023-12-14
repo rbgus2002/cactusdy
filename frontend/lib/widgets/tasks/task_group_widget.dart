@@ -158,12 +158,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   void _updateTaskDetail(Task task) {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
-      (widget.taskGroup.isShared) ?
-        Task.createGroupTask(task, widget.roundId, _notifyToOther) :
-        Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
+      if (task.detail.isNotEmpty) {
+        (widget.taskGroup.isShared) ?
+          Task.createGroupTask(task, widget.roundId, _notifyToOther) :
+          Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
 
-      // add new empty tasks
-      _addTask(Task());
+        // add new empty tasks
+        _addTask(Task());
+      }
     }
     // #Case : modified the task
     else {

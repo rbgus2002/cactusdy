@@ -39,7 +39,14 @@ class _TaskWidget extends State<TaskWidget> {
   final _textEditingController = TextEditingController();
   final _focusNode = FocusNode();
 
+  // 1) Edit Text or 2) new Task
   bool _isEdited = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isEdited = _isAdded();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,14 +195,19 @@ class _TaskWidget extends State<TaskWidget> {
   }
 
   void _updateTask() {
-    if (_isEdited || _isAdded()) {
+    if (_isEdited) {
       widget.task.detail = _textEditingController.text;
 
+      // #Case: detail is not empty
       if (widget.task.detail.isNotEmpty) {
         widget.onUpdateTaskDetail(widget.task);
-      } else {
+      }
+
+      // #Case: detail is empty;
+      else {
         widget.onDeleteTask(widget.task);
       }
+
       _isEdited = false;
     }
 
