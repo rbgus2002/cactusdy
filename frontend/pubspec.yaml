@@ -53,6 +53,9 @@ dependencies:
   lottie: ^2.7.0
   flutter_time_picker_spinner: ^2.0.0
 
+  kakao_flutter_sdk_common: ^1.7.0
+  kakao_flutter_sdk_share: ^1.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
