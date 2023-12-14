@@ -11,6 +11,7 @@ import ssu.groupstudy.domain.notification.domain.TopicCode;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -35,21 +36,21 @@ public class FcmUtils {
         }
     }
 
-    public void sendNotificationByTokens(List<String> tokens, String title, String body, String key, String value) {
+    public void sendNotificationByTokens(List<String> tokens, String title, String body, Map<String, String> data) {
         log.info("## sendNotificationByTokens : title = {}, body = {}", title, body);
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(Notification.builder()
                         .setTitle(title)
                         .setBody((body))
                         .build())
-                .putData(key, value)
+                .putAllData(data)
                 .addAllTokens(tokens)
                 .build();
         FirebaseMessaging.getInstance().sendEachForMulticastAsync(message);
     }
 
     // TODO : 직접 @Async로 구현하고 실패하는 토큰의 경우 delete 하도록 구현
-    public void sendNotificationToTopic(String title, String body, TopicCode code, Long id, String key, String value){
+    public void sendNotificationToTopic(String title, String body, TopicCode code, Long id, Map<String, String> data){
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
         String topic = TopicCode.handleTopicString(code, id);
         Message message = Message.builder()
@@ -57,7 +58,7 @@ public class FcmUtils {
                         .setTitle(title)
                         .setBody(body)
                         .build())
-                .putData(key, value)
+                .putAllData(data)
                 .setTopic(topic)
                 .build();
         FirebaseMessaging.getInstance().sendAsync(message);

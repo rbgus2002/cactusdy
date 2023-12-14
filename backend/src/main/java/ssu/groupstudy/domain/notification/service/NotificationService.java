@@ -3,7 +3,6 @@ package ssu.groupstudy.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -16,6 +15,8 @@ import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.FcmUtils;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,7 +24,6 @@ public class NotificationService {
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final TaskRepository taskRepository;
-    private final RoundRepository roundRepository;
     private final FcmUtils fcmUtils;
 
     public void notifyParticipant(User me, Long targetUserId, Long studyId, int count) {
@@ -33,7 +33,8 @@ public class NotificationService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
 
         StringBuilder body = handleParticipantNotificationMessage(me, count);
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), "studyId", studyId.toString());
+        Map<String, String> data = Map.of("type", "study", "studyId", studyId.toString());
+        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), data);
     }
 
     private StringBuilder handleParticipantNotificationMessage(User me, int count) {
@@ -64,7 +65,8 @@ public class NotificationService {
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
         StringBuilder body = handleTaskNotificationMessage(user, task, count);
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), "roundId", roundId.toString());
+        Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "0");
+        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), study.getStudyName(), body.toString(), data);
     }
 
     private StringBuilder handleTaskNotificationMessage(User user, Task task, int count) {

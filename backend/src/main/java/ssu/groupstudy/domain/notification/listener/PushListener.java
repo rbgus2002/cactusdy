@@ -9,6 +9,8 @@ import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
 import ssu.groupstudy.global.util.FcmUtils;
 
+import java.util.Map;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class PushListener {
     public void handleTaskDoneEvent(TaskDoneEvent event) {
         StringBuilder body = new StringBuilder();
         body.append("'").append(event.getNickname()).append("'").append("님이 과제를 완료했어요: ").append(event.getTaskDetail());
-        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), "roundId", event.getRoundId().toString());
+        Map<String, String> data = Map.of("type", "round", "studyId", event.getStudyId().toString(), "roundId", event.getRoundId().toString(), "roundSeq", "0");
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
     }
 }
