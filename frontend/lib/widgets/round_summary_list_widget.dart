@@ -166,7 +166,8 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   }
 
   bool _isAddable() {
+    // will add in first(top)
     return (_roundListModel.items.isEmpty ||
-        (_roundListModel.items.last.roundId != Round.nonAllocatedRoundId));
+        (_roundListModel.items.first.roundId != Round.nonAllocatedRoundId));
   }
 }

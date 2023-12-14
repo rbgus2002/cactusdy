@@ -200,6 +200,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   bool _isAddable() {
+    // will add in last (reversed; last is top)
     return (_taskListModel.items.isEmpty ||
         (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
     );
