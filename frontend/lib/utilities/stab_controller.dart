@@ -74,11 +74,13 @@ class UserStabController extends StabController {
 }
 
 class TaskStabController extends StabController {
-  int taskId;
+  final int roundId;
+  final int taskId;
 
   TaskStabController({
     required super.targetUserId,
     required super.studyId,
+    required this.roundId,
     required this.taskId,
   });
 
@@ -89,6 +91,7 @@ class TaskStabController extends StabController {
         await Task.stabTask(
             targetUserId: targetUserId,
             studyId: studyId,
+            roundId: roundId,
             taskId: taskId,
             count: _stabCount);
       } on Exception catch (e) {

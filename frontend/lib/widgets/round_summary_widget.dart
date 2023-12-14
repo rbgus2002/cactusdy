@@ -241,7 +241,6 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     if (context.mounted) {
       Util.pushRoute(context, (context) =>
           RoundDetailRoute(
-            reserved: TimeUtility.isScheduled(widget.round.studyTime),
             roundSeq: widget.roundSeq,
             roundId: widget.round.roundId, study: widget.study,
             onRemove: () => widget.onRemove(widget.roundSeq),));

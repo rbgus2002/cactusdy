@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/themes/color_styles.dart';
@@ -47,6 +48,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
                 iconData: CustomIcons.plus_square_outline,
                 text: context.local.addRound,
                 onTap:() {
+                  HapticFeedback.lightImpact();
                   if (_isAddable()) {
                     _addNewRound();
                   }
@@ -164,7 +166,8 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   }
 
   bool _isAddable() {
+    // will add in first(top)
     return (_roundListModel.items.isEmpty ||
-        (_roundListModel.items.last.roundId != Round.nonAllocatedRoundId));
+        (_roundListModel.items.first.roundId != Round.nonAllocatedRoundId));
   }
 }

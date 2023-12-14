@@ -83,7 +83,6 @@ class StudyProfileWidget extends StatelessWidget {
                       color: context.extraColors.blue!,
                       onTap: () => Util.pushRoute(context, (context) =>
                           RoundDetailRoute(
-                              reserved: TimeUtility.isScheduled(studyInfo.round.studyTime),
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
                               study: studyInfo.study,
@@ -107,8 +106,7 @@ class StudyProfileWidget extends StatelessWidget {
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
                               roundId: studyInfo.round.roundId,
-                              study: studyInfo.study,
-                              reserved: true,),),
+                              study: studyInfo.study,),),
                     ),),
                   const Spacer(),
 

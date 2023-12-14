@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/models/task.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -67,6 +68,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
               enable: _isOwner,
               title: widget.taskGroup.taskTypeName,
               onTap: () {
+                HapticFeedback.lightImpact();
                 if (_isAddable()) {
                   _addTask(Task());
                 }
@@ -124,6 +126,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         taskStabController: TaskStabController(
           studyId: widget.study.studyId,
           targetUserId: widget.userId,
+          roundId: widget.roundId,
           taskId: task.taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, -1),
@@ -143,6 +146,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
         taskStabController: TaskStabController(
           studyId: widget.study.studyId,
           targetUserId: widget.userId,
+          roundId: widget.roundId,
           taskId: _taskListModel[index].taskId,),
         onUpdateTaskDetail: _updateTaskDetail,
         onDeleteTask: (task) => _deleteTask(task, index),
@@ -154,12 +158,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   void _updateTaskDetail(Task task) {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
-      (widget.taskGroup.isShared) ?
-        Task.createGroupTask(task, widget.roundId, _notifyToOther) :
-        Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
+      if (task.detail.isNotEmpty) {
+        (widget.taskGroup.isShared) ?
+          Task.createGroupTask(task, widget.roundId, _notifyToOther) :
+          Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
 
-      // add new empty tasks
-      _addTask(Task());
+        // add new empty tasks
+        _addTask(Task());
+      }
     }
     // #Case : modified the task
     else {
@@ -194,6 +200,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   }
 
   bool _isAddable() {
+    // will add in last (reversed; last is top)
     return (_taskListModel.items.isEmpty ||
         (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
     );

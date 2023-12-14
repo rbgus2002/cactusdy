@@ -118,6 +118,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
     if (_fromKey.currentState!.validate()) {
       if (!_isProcessing) {
         _isProcessing = true;
+        
         try {
           await Notice.createNotice(_title, _contents, widget.studyId).then((newNotice) {
               Util.popRoute(context);
@@ -125,8 +126,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   NoticeDetailRoute(
                     noticeSummary: NoticeSummary(notice: newNotice, commentCount: 0, pinYn: false),
                     studyId: widget.studyId,
-                    onDelete: Util.doNothing,
-                  ));
+                    onDelete: Util.doNothing,));
             });
         } on Exception catch (e) {
           if (context.mounted) {

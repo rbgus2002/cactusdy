@@ -11,10 +11,14 @@ import 'package:group_study_app/widgets/input_field.dart';
 
 class StudyCreatePage1 extends StatefulWidget {
   final Function(String, String) getNext;
+  final String studyName;
+  final String studyDetail;
 
   const StudyCreatePage1({
     Key? key,
     required this.getNext,
+    required this.studyName,
+    required this.studyDetail,
   }) : super(key: key);
 
   @override
@@ -40,6 +44,7 @@ class _StudyCreatePage1State extends State<StudyCreatePage1> {
 
         InputField(
           key: _studyNameEditor,
+          initText: widget.studyName,
           hintText: context.local.inputHint1(context.local.studyName),
           maxLength: Study.studyNameMaxLength,
           counter: true,
@@ -54,6 +59,7 @@ class _StudyCreatePage1State extends State<StudyCreatePage1> {
 
         InputField(
           key: _studyDetailEditor,
+          initText: widget.studyDetail,
           hintText: context.local.inputHint1(context.local.studyDetail),
           maxLength: Study.studyDetailMaxLength,
           minLines: 3,

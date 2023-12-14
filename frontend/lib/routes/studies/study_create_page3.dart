@@ -77,6 +77,7 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
   }
 
   void _copyCodeToClipboard() {
+    HapticFeedback.lightImpact();
     Clipboard.setData(ClipboardData(text: widget.inviteCode));
     Toast.showToast(
         context: context,

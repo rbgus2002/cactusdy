@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/status_tag.dart';
 import 'package:group_study_app/models/user.dart';
 import 'package:group_study_app/routes/profiles/profile_route.dart';
@@ -79,19 +80,21 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           context: context,
           status: widget.status,
           reserved: widget.reserved,
-          onTap: showStatusPicker,
+          onTap: _showStatusPicker,
         ),
       ],
     );
   }
 
-  void showStatusPicker() {
+  void _showStatusPicker() {
+    HapticFeedback.lightImpact();
     BottomSheets.statusTagPickerBottomSheet(
         context: context,
-        onPicked: updateStatus);
+        onPicked: _updateStatus);
   }
 
-  void updateStatus(StatusTag newStatus) async {
+  void _updateStatus(StatusTag newStatus) async {
+    HapticFeedback.lightImpact();
     if (widget.status != newStatus) {
       try {
         await StatusTag.updateStatus(widget.roundParticipantId, newStatus).then((value) =>

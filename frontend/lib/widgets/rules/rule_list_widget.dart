@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:group_study_app/models/rule.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -90,6 +91,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
   }
 
   void _addRule() {
+    HapticFeedback.lightImpact();
     if (_ruleListModel.length < Rule.ruleLimitedCount) {
       _ruleListModel.add(Rule());
       setState(() {});
