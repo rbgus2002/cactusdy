@@ -103,6 +103,25 @@ class User{
     }
   }
 
+  static Future<bool> kickUser({
+    required int userId,
+    required int studyId,
+  }) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants/kick?userId=$userId&studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool result = json.decode(response.body)['success'];
+      if (result) print("success to leave study");
+      return result;
+    }
+  }
+
   static Future<bool> stabUser({
     required int targetUserId,
     required int studyId,

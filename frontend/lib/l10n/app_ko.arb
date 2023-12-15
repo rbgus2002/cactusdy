@@ -46,7 +46,7 @@
     "inputHint2": "{target}를 입력해주세요.",
     "copyText1": "{target}이 복사되었어요",
     "copyText2": "{target}가 복사되었어요",
-    "ensureToDo": "정말 {action} 하시겠어요?",
+    "ensureToDo": "정말 {action}하시겠어요?",
     "successToDo": "성공적으로 {action}했어요",
     "willDo": "{action}할래요",
 
@@ -118,6 +118,7 @@
 
     "member": "멤버",
     "kick": "내보내기",
+    "kicking": "추방",
     "participateByCode": "코드로 참여하기",
     "leave": "탈퇴",
 
