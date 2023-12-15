@@ -8,7 +8,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/buttons/primary_button.dart';
+import 'package:group_study_app/widgets/buttons/kakao_style_button.dart';
 
 class StudyCreatePage3 extends StatefulWidget {
   final String studyName;
@@ -39,11 +39,10 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
         Design.padding12,
 
         _invitingCodeBox(),
-        Design.padding48,
+        Design.padding(120),
 
-
-        PrimaryButton(
-          text: context.local.next,
+        KakaoStyleButton(
+          text: context.local.shareInvitingCode,
           onPressed: () {
             HapticFeedback.lightImpact();
             KakaoService.shareInvitingCode(
