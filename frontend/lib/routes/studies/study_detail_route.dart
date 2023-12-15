@@ -88,7 +88,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                       studyName: _study.studyName,
                       studyId: _study.studyId,
                       hostId: _study.hostId,),
-                    Design.padding32,
+                    Design.padding12,
                 ]),
               ),
 
