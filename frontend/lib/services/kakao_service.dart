@@ -34,7 +34,8 @@ class KakaoService {
       logger.log('kakao sharing is available');
 
       try {
-        Uri uri = await ShareClient.instance.shareDefault(template: textTemplate);
+        Uri uri = await ShareClient.instance
+            .shareDefault(template: textTemplate);
         await ShareClient.instance.launchKakaoTalk(uri);
 
         logger.successLog('kakao sharing');
@@ -48,11 +49,12 @@ class KakaoService {
       logger.log('kakao sharing is not available');
 
       try {
-        /* Access by Browser
+        // Access by Browser
         Uri shareUrl = await WebSharerClient.instance
             .makeDefaultUrl(template: textTemplate);
         await launchBrowserTab(shareUrl, popupOpen: true);
-         */
+
+        logger.successLog('kakao sharing by web browser');
       } on Exception catch (e) {
         logger.failLog('kakao sharing', e.toString());
       }

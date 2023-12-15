@@ -85,6 +85,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                     Design.padding16,
 
                     MemberProfileListWidget(
+                      studyName: _study.studyName,
                       studyId: _study.studyId,
                       hostId: _study.hostId,),
                     Design.padding32,

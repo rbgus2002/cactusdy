@@ -11,6 +11,7 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
 /// Study Member Profile List
 class MemberProfileListWidget extends StatelessWidget {
+  final String studyName;
   final int studyId;
   final int hostId;
   final double scale;
@@ -20,6 +21,7 @@ class MemberProfileListWidget extends StatelessWidget {
 
   const MemberProfileListWidget({
     Key? key,
+    required this.studyName,
     required this.studyId,
     required this.hostId,
     this.scale = 40.0,
@@ -108,7 +110,9 @@ class MemberProfileListWidget extends StatelessWidget {
       onTap: () {
         HapticFeedback.lightImpact();
         Util.pushRoute(context, (context) =>
-            StudyInvitingRoute(studyId: studyId,));
+            StudyInvitingRoute(
+              studyName: studyName,
+              studyId: studyId,));
       });
   }
 
