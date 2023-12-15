@@ -8,10 +8,12 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 
 class StudyInvitingRoute extends StatefulWidget {
+  final String studyName;
   final int studyId;
 
   const StudyInvitingRoute({
     Key? key,
+    required this.studyName,
     required this.studyId,
   }) : super(key: key);
 
@@ -42,7 +44,9 @@ class _StudyInvitingRouteState extends State<StudyInvitingRoute> {
               future: Study.getStudyInvitingCode(widget.studyId),
               builder: (context, snapshot) =>
                 (snapshot.hasData)?
-                  StudyCreatePage3(inviteCode: snapshot.data!) :
+                  StudyCreatePage3(
+                      studyName: widget.studyName,
+                      invitingCode: snapshot.data!) :
                   const SizedBox(),),
           ],),),
     );

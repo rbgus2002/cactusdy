@@ -28,7 +28,7 @@ class Logger {
     log('FAIL: $task, message: $message');
   }
 
-  void successLog(String message) {
-    log('SUCCESS: success to $message');
+  void successLog(String task) {
+    log('SUCCESS: success to $task');
   }
 }

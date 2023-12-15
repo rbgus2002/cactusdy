@@ -78,9 +78,12 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
                   studyName: _studyName, studyDetail: _studyDetail,
                   getNext: _getStudyNameAndDetail,) :
               (_page == 2) ?
-                StudyCreatePage2(getNext: _getStudyColorAndImage,) :
+                StudyCreatePage2(
+                  getNext: _getStudyColorAndImage,) :
               (_page == 3) ?
-                StudyCreatePage3(inviteCode: _invitingCode) : const SizedBox(),
+                StudyCreatePage3(
+                  studyName: _studyName,
+                  invitingCode: _invitingCode) : const SizedBox(),
             ],),),
       ),
     );

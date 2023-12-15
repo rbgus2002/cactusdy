@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_study_app/services/kakao_service.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
@@ -10,11 +11,13 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 
 class StudyCreatePage3 extends StatefulWidget {
-  final String inviteCode;
+  final String studyName;
+  final String invitingCode;
 
   const StudyCreatePage3({
     Key? key,
-    required this.inviteCode,
+    required this.studyName,
+    required this.invitingCode,
   }) : super(key: key);
 
   @override
@@ -41,7 +44,13 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
 
         PrimaryButton(
           text: context.local.next,
-          onPressed: () { },),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            KakaoService.shareInvitingCode(
+                context: context,
+                studyName: widget.studyName,
+                invitingCode: widget.invitingCode);
+          },),
       ],
     );
   }
@@ -60,7 +69,7 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget.inviteCode,
+                widget.invitingCode,
                 style: TextStyles.head3.copyWith(
                   color: ColorStyles.mainColor,
                   letterSpacing: 4),),
@@ -78,7 +87,7 @@ class _StudyCreatePage3State extends State<StudyCreatePage3> {
 
   void _copyCodeToClipboard() {
     HapticFeedback.lightImpact();
-    Clipboard.setData(ClipboardData(text: widget.inviteCode));
+    Clipboard.setData(ClipboardData(text: widget.invitingCode));
     Toast.showToast(
         context: context,
         message: context.local.copyText2(context.local.invitingCode));
