@@ -53,9 +53,9 @@ class _SignInRouteState extends State<SignInRoute> {
                   validator: _phoneNumberValidator,
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   onChanged: (input) {
-                    _phoneNumber = FormatterUtility.getNumberOnly(input);
+                    _phoneNumber = Formatter.getNumberOnly(input);
                     _phoneNumberEditor.currentState!.text =
-                        FormatterUtility.phoneNumberFormatter(_phoneNumber);
+                        Formatter.phoneNumberFormatter(_phoneNumber);
                   },),
                 Design.padding12,
 

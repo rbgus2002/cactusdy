@@ -7,6 +7,8 @@ import 'package:group_study_app/services/firebase_options.dart';
 import 'package:group_study_app/services/notification_channel.dart';
 
 class MessageService {
+  MessageService._();
+
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   static bool _isInitLocalNotification = false;
 

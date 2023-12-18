@@ -28,6 +28,8 @@ extension ThemeModeStringExtension on ThemeMode {
 }
 
 class AppTheme with ChangeNotifier {
+  AppTheme._();
+
   static ValueNotifier<ThemeMode> themeMode = ValueNotifier(ThemeMode.system);
 
   static const FlutterSecureStorage _storage = FlutterSecureStorage();

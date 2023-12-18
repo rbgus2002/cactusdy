@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 class TextStyles {
+  TextStyles._();
+
   static const String mainFont = 'Pretendard';
 
   static const regular    = FontWeight.w400;

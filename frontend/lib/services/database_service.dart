@@ -2,6 +2,8 @@
 import 'package:group_study_app/services/auth.dart';
 
 class DatabaseService {
+  DatabaseService._();
+
   static const serverUrl = 'http://43.200.247.214:8080/';
   //static const serverUrl = 'http://localhost:8080/';
 

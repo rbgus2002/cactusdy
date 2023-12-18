@@ -1,7 +1,9 @@
 
-import 'package:flutter/material.dart';
 
-class FormatterUtility {
+
+class Formatter {
+  Formatter._();
+
   static const String numberSeparator = " ";
 
   static String getNumberOnly(String numberWithOther) {
@@ -33,7 +35,6 @@ class FormatterUtility {
 
     // format : 010-123-1 ~ 010-123-4567
     else if (numberOnly.length > 6) {
-      int tailLength = numberOnly.length - 6;
       return numberOnly.replaceAllMapped(
           RegExp(r'(\d{3})(\d{3})(\d)'), (m) => '${m[1]}$separator${m[2]}$separator${m[3]}');
     }

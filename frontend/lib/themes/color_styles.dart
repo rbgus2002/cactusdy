@@ -5,6 +5,8 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 
 class ColorStyles {
+  ColorStyles._();
+
   /// [mainColor] & [secondColor]
   static const Color mainColor    = Color(0xFF04C781);
   static const Color secondColor  = Color(0xFF212C43);

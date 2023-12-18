@@ -9,6 +9,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Auth {
+  Auth._();
+
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
