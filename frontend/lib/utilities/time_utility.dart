@@ -15,7 +15,7 @@ class TimeUtility {
   }
 
   static String getTime(DateTime dateTime) {
-    return DateFormat('a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
+    return DateFormat('a HH:mm',).format(dateTime);
   }
 
   static String getElapsedTime(BuildContext context, DateTime dateTime) {
@@ -49,10 +49,10 @@ class TimeUtility {
     final nowTime = DateTime.now();
 
     if (dateTime.year == nowTime.year) {
-      return DateFormat('MM/dd(E) a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
+      return DateFormat('MM/dd(E) a HH:mm',).format(dateTime);
     }
 
-    return DateFormat('yy/MM/dd(E) a HH:mm', 'ko_KR').format(dateTime); //< FIXME : need to be Localization
+    return DateFormat('yy/MM/dd(E) a HH:mm',).format(dateTime);
   }
 
   static String secondToString(BuildContext context, int sec) {
