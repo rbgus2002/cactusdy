@@ -282,7 +282,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
 
-      FocusScope.of(context).unfocus();
+      _focusNode.unfocus();
     }
   }
 
