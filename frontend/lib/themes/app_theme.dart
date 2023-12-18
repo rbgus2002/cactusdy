@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
-import 'package:http/http.dart';
 
 extension ThemeModeStringExtension on ThemeMode {
   static const String _light = 'light';
@@ -72,6 +71,8 @@ class AppTheme with ChangeNotifier {
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
       datePickerTheme: _datePickerThemeData,
+      expansionTileTheme: _expansionTileThemeData,
+      listTileTheme: _listTileThemeData,
 
       extensions: const [
         ExtraColors.extraColors,
@@ -93,6 +94,8 @@ class AppTheme with ChangeNotifier {
       textButtonTheme: _textButtonThemeData,
       popupMenuTheme: _popupMenuThemeData,
       datePickerTheme: _datePickerThemeData,
+      expansionTileTheme: _expansionTileThemeData,
+      listTileTheme: _listTileThemeData,
 
       extensions: const [
         ExtraColors.extraColorsDark,
@@ -115,5 +118,20 @@ class AppTheme with ChangeNotifier {
     weekdayStyle: TextStyles.body2,
     dayStyle: TextStyles.head3,
     yearStyle: TextStyles.head4,
+  );
+
+  static const ExpansionTileThemeData _expansionTileThemeData = ExpansionTileThemeData(
+    shape: InputBorder.none,
+    collapsedShape: InputBorder.none,
+    childrenPadding: EdgeInsets.zero,
+    tilePadding: EdgeInsets.zero,
+  );
+
+  static const ListTileThemeData _listTileThemeData = ListTileThemeData(
+    contentPadding: EdgeInsets.zero,
+    minVerticalPadding: -16,
+    minLeadingWidth: 0,
+    horizontalTitleGap: -16,
+    dense: true,
   );
 }

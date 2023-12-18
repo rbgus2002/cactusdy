@@ -79,7 +79,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                           children: [
                             // Round Info
                             _roundInfo(),
-                            Design.padding20,
+                            Design.padding12,
 
                             // Detail Record
                             _detailRecord(),
@@ -213,51 +213,33 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _detailRecord() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ExpansionTile(
+      initiallyExpanded: true,
+      title: Text(
+        context.local.record,
+        style: TextStyles.head5.copyWith(
+            color: context.extraColors.grey900),),
+      onExpansionChanged: (value) => setState(() => _isExpended = !_isExpended),
+      trailing: AnimatedRotation(
+        turns: (_isExpended) ? 0 : 0.5,
+        duration: AnimationSetting.animationDurationShort,
+        curve: Curves.easeOutCirc,
+        child: Icon(
+          CustomIcons.chevron_down,
+          color: context.extraColors.grey500,),),
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-              context.local.record,
-              style: TextStyles.head5.copyWith(
-                  color: context.extraColors.grey900),),),
-
-            InkWell(
-              onTap: () => setState(() => _isExpended = !_isExpended),
-              borderRadius: BorderRadius.circular(16),
-              child: AnimatedRotation(
-                turns: (_isExpended) ? 0 : 0.5,
-                duration: AnimationSetting.animationDurationShort,
-                curve: Curves.easeOutCirc,
-                child: Icon(
-                    CustomIcons.chevron_down,
-                    color: context.extraColors.grey500,),),
-              ),
-          ],
-        ),
-        Design.padding8,
-
-        AnimatedContainer(
-          height: (_isExpended)? 136 : 0,
-          duration: AnimationSetting.animationDurationShort,
-          curve: Curves.easeOutCirc,
-          child: SingleChildScrollView(
-            child: InputField(
-              key: _detailEditor,
-              initText: round.detail,
-              hintText: context.local.recordHint,
-              minLines: 4,
-              maxLines: 7,
-              maxLength: Round.detailMaxLength,
-              focusNode: _focusNode,
-              backgroundColor: context.extraColors.grey50,
-              onChanged: (input) => _isEdited = true,
-              onTapOutSide: _updateDetail,
-              counter: true,),
-          ),
-        ),
+        InputField(
+          key: _detailEditor,
+          initText: round.detail,
+          hintText: context.local.recordHint,
+          minLines: 4,
+          maxLines: 7,
+          maxLength: Round.detailMaxLength,
+          focusNode: _focusNode,
+          backgroundColor: context.extraColors.grey50,
+          onChanged: (input) => _isEdited = true,
+          onTapOutSide: _updateDetail,
+          counter: true,),
       ],
     );
   }
