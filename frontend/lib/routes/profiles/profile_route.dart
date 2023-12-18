@@ -439,7 +439,7 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.attendance.color(context),),),
 
           Visibility(
-            visible: (attendanceCount * lateCount != 0), //< FIXME
+            visible: _bothNotZero(attendanceCount, lateCount),
             child: Design.padding4,),
 
           Flexible(
@@ -448,7 +448,8 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.late.color(context),),),
 
           Visibility(
-            visible: (lateCount * absentCount != 0 || attendanceCount * absentCount != 0),
+            visible: (_bothNotZero(lateCount, absentCount)
+                  || _bothNotZero(attendanceCount, absentCount)),
             child: Design.padding4,),
 
           Flexible(
@@ -457,6 +458,10 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.absent.color(context),),),
         ],),
     );
+  }
+
+  bool _bothNotZero(int left, int right) {
+    return (left != 0 && right != 0);
   }
 
   bool _isEmpty() {
