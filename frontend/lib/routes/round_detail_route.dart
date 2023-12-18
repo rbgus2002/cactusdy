@@ -5,6 +5,7 @@ import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
@@ -41,6 +42,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   Round? round;
   bool _isEdited = false;
+  bool _isExpended = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +55,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(bottom:
-                BorderSide(
-                    color: context.extraColors.grey50!,
-                    width: 7)),),
-            child: FutureBuilder(
+          child: FutureBuilder(
               future: Round.getDetail(widget.roundId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -67,34 +63,39 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   bool reserved = TimeUtility.isScheduled(round!.studyTime);
                   _placeEditingController.text = round!.studyPlace;
 
-                  return Container(
-                    padding: Design.edgePadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Round Info
-                        _roundInfo(),
-                        Design.padding20,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Round Info & Detail Record
+                      Container(
+                        padding: Design.edgePadding,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: context.extraColors.grey50!,
+                              width: 7),),),
+                        child: Column(
+                          children: [
+                            // Round Info
+                            _roundInfo(),
+                            Design.padding20,
 
-                        // Detail Record
-                        Text(
-                          context.local.record,
-                          style: TextStyles.head5.copyWith(
-                              color: context.extraColors.grey900),),
-                        Design.padding8,
-                        _detailRecord(),
+                            // Detail Record
+                            _detailRecord(),
+                            Design.padding12,
+                          ],),
+                      ),
 
-                        ParticipantInfoListWidget(
-                          reserved: reserved,
-                          roundId: widget.roundId,
-                          study: widget.study,),
-                      ]),
-                  );
+                      // Participant Information List
+                      ParticipantInfoListWidget(
+                        reserved: reserved,
+                        roundId: widget.roundId,
+                        study: widget.study,),
+                    ]);
                 }
                 return Design.loadingIndicator;
               },),
           ),
-        ),
       ),
     );
   }
@@ -230,18 +231,52 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _detailRecord() {
-    return InputField(
-      key: _detailEditor,
-      initText: round!.detail,
-      hintText: context.local.recordHint,
-      minLines: 4,
-      maxLines: 7,
-      maxLength: Round.detailMaxLength,
-      focusNode: _focusNode,
-      backgroundColor: context.extraColors.grey50,
-      onChanged: (input) => _isEdited = true,
-      onTapOutSide: _updateDetail,
-      counter: true,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+              context.local.record,
+              style: TextStyles.head5.copyWith(
+                  color: context.extraColors.grey900),),),
+
+            InkWell(
+              onTap: () => setState(() => _isExpended = !_isExpended),
+              borderRadius: BorderRadius.circular(16),
+              child: AnimatedRotation(
+                turns: (_isExpended) ? 0 : 0.5,
+                duration: AnimationSetting.animationDurationShort,
+                curve: Curves.easeOutCirc,
+                child: Icon(
+                    CustomIcons.chevron_down,
+                    color: context.extraColors.grey500,),),
+              ),
+          ],
+        ),
+        Design.padding8,
+
+        AnimatedContainer(
+          height: (_isExpended)? 136 : 0,
+          duration: AnimationSetting.animationDurationShort,
+          curve: Curves.easeOutCirc,
+          child: SingleChildScrollView(
+            child: InputField(
+              key: _detailEditor,
+              initText: round!.detail,
+              hintText: context.local.recordHint,
+              minLines: 4,
+              maxLines: 7,
+              maxLength: Round.detailMaxLength,
+              focusNode: _focusNode,
+              backgroundColor: context.extraColors.grey50,
+              onChanged: (input) => _isEdited = true,
+              onTapOutSide: _updateDetail,
+              counter: true,),
+          ),
+        ),
+      ],
     );
   }
 
@@ -281,9 +316,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     if (_isEdited) {
       Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
-
-      _focusNode.unfocus();
     }
+
+    _focusNode.unfocus();
   }
 
   void _deleteRound(BuildContext context) async {
