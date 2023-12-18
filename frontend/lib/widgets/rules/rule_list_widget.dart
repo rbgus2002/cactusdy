@@ -1,10 +1,13 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_study_app/models/rule.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/utilities/toast.dart';
@@ -26,13 +29,26 @@ class RuleListWidget extends StatefulWidget {
 }
 
 class _RuleListWidgetState extends State<RuleListWidget> {
+  static const int _ellipsisCount = 3;
+  static const double _ruleWidgetHeight = 40;
+
   late GlobalKey<AnimatedListState> _rulesKey;
   late ListModel<Rule> _ruleListModel;
+
+  bool _expended = false;
+  bool _isShadowed = false;
 
   @override
   void initState() {
     super.initState();
     _initListModel();
+
+    // it is only once distinguished at first
+    if (_ruleListModel.length >= _ellipsisCount) {
+      _isShadowed = true;
+    } else {
+      _expended = true;
+    }
   }
 
   @override
@@ -41,15 +57,8 @@ class _RuleListWidgetState extends State<RuleListWidget> {
       children: [
         _titleWidget(),
         Design.padding(6),
-
-        AnimatedList(
-          key: _rulesKey,
-          shrinkWrap: true,
-          primary: false,
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
-          initialItemCount: _ruleListModel.length,
-          itemBuilder: _buildRule,),
+        
+        _ruleList(),
         Design.padding(2),
       ]);
   }
@@ -61,13 +70,95 @@ class _RuleListWidgetState extends State<RuleListWidget> {
       _initListModel();
     }
   }
+  
+  Widget _ruleList() {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        // Rule List
+        AnimatedContainer(
+          height: (_expended)?
+            (_ruleListModel.length * _ruleWidgetHeight + 24) :
+            (min(_ruleListModel.length, _ellipsisCount) * _ruleWidgetHeight),
+          duration: AnimationSetting.animationDurationShort,
+          curve: Curves.easeOutCirc,
+          child: AnimatedList(
+            key: _rulesKey,
+            shrinkWrap: true,
+            primary: false,
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            initialItemCount: _ruleListModel.length,
+            itemBuilder: _buildRule,),),
+
+        // Overlay Shadow
+        Visibility(
+          visible: _isShadowed,
+          child: _overlayShadow(),),
+      ],
+    );
+  }
+
+  Widget _titleWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          context.local.rules,
+          style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
+        AddButton(
+            iconData: CustomIcons.writing_outline,
+            text: context.local.writeRule,
+            onTap: () => _addRule()),
+      ],
+    );
+  }
+
+  Widget _overlayShadow() {
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: _expend,
+      child: AnimatedContainer(
+        duration: AnimationSetting.animationDurationShort,
+        curve: Curves.easeOutCirc,
+
+        width: double.maxFinite,
+        height: (_expended)?
+        28 : (min(_ruleListModel.length, _ellipsisCount) * 40),
+        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [
+              0.5,
+              0.95,
+            ],
+            colors: [
+              Theme.of(context).scaffoldBackgroundColor.withOpacity(0),
+              Theme.of(context).scaffoldBackgroundColor,
+            ],),),
+        child: AnimatedRotation(
+          duration: AnimationSetting.animationDurationShort,
+          curve: Curves.easeOutCirc,
+          turns: (_expended)? 0.5 : 0,
+          child: Icon(
+            CustomIcons.chevron_down,
+            size: 24,
+            color: context.extraColors.grey400,),),
+      ),
+    );
+  }
 
   Widget _buildRule(
       BuildContext context, int index, Animation<double> animation) {
     return SizeTransition(
       sizeFactor: animation,
       child: RuleWidget(
+          enable: _isEnable(),
           rule: _ruleListModel[index],
+          height: _ruleWidgetHeight,
           onUpdateRuleDetail: _updateRuleDetail,
           onDeleteRule: (rule) => _deleteRule(rule, index),));
   }
@@ -77,7 +168,9 @@ class _RuleListWidgetState extends State<RuleListWidget> {
     return SizeTransition(
       sizeFactor: animation,
       child: RuleWidget(
+          enable: _isEnable(),
           rule: rule,
+          height: _ruleWidgetHeight,
           onUpdateRuleDetail: _updateRuleDetail,
           onDeleteRule: (rule) => _deleteRule(rule, -1),));
   }
@@ -103,19 +196,12 @@ class _RuleListWidgetState extends State<RuleListWidget> {
     }
   }
 
-  Widget _titleWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          context.local.rules,
-          style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
-        AddButton(
-            iconData: CustomIcons.writing_outline,
-            text: context.local.writeRule,
-            onTap: () => _addRule()),
-      ],
-    );
+  bool _isEnable() {
+    return (_ruleListModel.length < _ellipsisCount || _expended);
+  }
+
+  void _expend() {
+    setState(() => _expended = !_expended);
   }
 
   void _updateRuleDetail(Rule rule) {
