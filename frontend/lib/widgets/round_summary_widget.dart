@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_summary.dart';
 import 'package:group_study_app/models/round.dart';
 import 'package:group_study_app/models/study.dart';
 import 'package:group_study_app/routes/date_time_picker_route.dart';
@@ -14,6 +13,7 @@ import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/diagrams/dash_line.dart';
+import 'package:group_study_app/widgets/input_field_place.dart';
 import 'package:group_study_app/widgets/profile_lists/participant_profile_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
@@ -22,6 +22,7 @@ class RoundSummaryWidget extends StatefulWidget {
   final Round round;
   final Study study;
   final Function(int) onRemove;
+  final List<ParticipantProfile> participantProfileList;
 
   const RoundSummaryWidget({
     Key? key,
@@ -29,6 +30,7 @@ class RoundSummaryWidget extends StatefulWidget {
     required this.round,
     required this.study,
     required this.onRemove,
+    required this.participantProfileList,
   }) : super(key: key);
 
   @override
@@ -39,7 +41,6 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   static const Color _color = ColorStyles.mainColor;
 
   late final TextEditingController _placeEditingController;
-  bool _isEdited = false;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     _placeEditingController.text = widget.round.studyPlace;
 
     return InkWell(
-      onTap: _lookUpRound,
+      onTap: _viewRound,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       child: Row(
@@ -118,7 +119,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
           padding: EdgeInsets.zero,
           color: context.extraColors.grey400,
           constraints: const BoxConstraints(),
-          onPressed: _lookUpRound,),
+          onPressed: _viewRound,),
       ],
     );
   }
@@ -137,20 +138,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             _placeWidget(),
             Design.padding16,
 
-            (widget.round.roundId != Round.nonAllocatedRoundId) ?
-              ParticipantProfileListWidget(
-                roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
-                  ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
-                studyId: widget.study.studyId,) :
-              FutureBuilder(
-                future: Study.getMemberProfileImages(widget.study.studyId), //< FIXME
-                builder: (context, snapshot) =>
-                  (snapshot.hasData)?
-                    ParticipantProfileListWidget(
-                        roundParticipantSummaries: snapshot.data!,
-                        studyId: widget.study.studyId) :
-                    const SizedBox(),
-              ),
+            ParticipantProfileListWidget(
+                roundParticipantSummaries: widget.participantProfileList,
+                studyId: widget.study.studyId)
           ],),
     );
   }
@@ -164,7 +154,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         context.local.reserved,
         style: TextStyles.caption2.copyWith(
           color: context.extraColors.grey000,),),
-      onTap: _lookUpRound,
+      onTap: _viewRound,
     );
   }
 
@@ -178,33 +168,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
         Design.padding4,
         Flexible(
-          child: TextField(
-            maxLength: Round.placeMaxLength,
-            maxLines: 1,
-            style: TextStyles.body2.copyWith(
-                color: context.extraColors.grey800),
-
-            controller: _placeEditingController,
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-
-              hintText: context.local.inputHint2(context.local.place),
-              hintStyle: TextStyles.body2.copyWith(
-                  color: context.extraColors.grey800!.withOpacity(0.5)),
-
-              border: InputBorder.none,
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: context.extraColors.grey700!,)),
-              counterText: "",
-            ),
-
-            onChanged: (value) => _isEdited = true,
-            onTapOutside: (event) => _updateStudyPlace(),
-            onSubmitted: (value) => _updateStudyPlace(),
-          ),
-        ),
+          child: InputFieldPlace(
+            placeEditingController: _placeEditingController,
+            onUpdatePlace: _updateStudyPlace,),),
       ],
     );
   }
@@ -233,7 +199,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     );
   }
 
-  void _lookUpRound() async {
+  void _viewRound() async {
     if (widget.round.roundId == Round.nonAllocatedRoundId) {
       await Round.createRound(widget.round, widget.study.studyId);
     }
@@ -248,12 +214,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   }
 
   void _updateStudyPlace() {
-    if (_isEdited) {
-      widget.round.studyPlace = _placeEditingController.text;
-      _updateRound(widget.round);
-      _isEdited = false;
-    }
-    setState(() {});
+    widget.round.studyPlace = _placeEditingController.text;
+    _updateRound(widget.round);
   }
 
   void _editStudyTime() async {
@@ -261,12 +223,14 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         DateTimePickerRoute(round: widget.round,)).then((value) => setState((){ }));
   }
 
-  void _updateRound(Round round) {
+  void _updateRound(Round round) async {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      Round.createRound(round, widget.study.studyId);
+      await Round.createRound(round, widget.study.studyId);
     }
     else {
-      Round.updateAppointment(round);
+      await Round.updateAppointment(round);
     }
+
+    setState(() { });
   }
 }

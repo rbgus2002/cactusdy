@@ -14,6 +14,7 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/tags/study_tag_widget.dart';
 
 class ProfileRoute extends StatefulWidget {
@@ -230,7 +231,8 @@ class _ProfileRouteState extends State<ProfileRoute> {
               child: OutlinedPrimaryButton(
                 onPressed: () {
                   HapticFeedback.lightImpact();
-                },  //< FIXME
+                  _showKickDialog();
+                },
                 text: context.local.kick,),),
             Design.padding8,
 
@@ -261,6 +263,33 @@ class _ProfileRouteState extends State<ProfileRoute> {
           ],),
       ),
     );
+  }
+
+  void _showKickDialog() {
+    TwoButtonDialog.showProfileDialog(
+        context: context,
+        text: context.local.ensureToDo(context.local.kicking),
+
+        buttonText1: context.local.no,
+        onPressed1: Util.doNothing,
+
+        buttonText2: context.local.kick,
+        onPressed2: _kickUser);
+  }
+
+  void _kickUser() async {
+    try {
+      await User.kickUser(
+          userId: widget.userId,
+          studyId: widget.studyId).then((value) =>
+            Util.popRoute(context));
+    } on Exception catch(e) {
+      if (context.mounted) {
+        Toast.showToast(
+            context: context, 
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 
   String _getStabMessage(String nickname, int stabCount) {
@@ -410,7 +439,7 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.attendance.color(context),),),
 
           Visibility(
-            visible: (attendanceCount * lateCount != 0), //< FIXME
+            visible: _bothNotZero(attendanceCount, lateCount),
             child: Design.padding4,),
 
           Flexible(
@@ -419,7 +448,8 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.late.color(context),),),
 
           Visibility(
-            visible: (lateCount * absentCount != 0 || attendanceCount * absentCount != 0),
+            visible: (_bothNotZero(lateCount, absentCount)
+                  || _bothNotZero(attendanceCount, absentCount)),
             child: Design.padding4,),
 
           Flexible(
@@ -428,6 +458,10 @@ class _AttendanceRateChartWidget extends StatelessWidget {
               color: StatusTag.absent.color(context),),),
         ],),
     );
+  }
+
+  bool _bothNotZero(int left, int right) {
+    return (left != 0 && right != 0);
   }
 
   bool _isEmpty() {

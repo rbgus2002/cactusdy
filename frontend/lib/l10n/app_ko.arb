@@ -5,7 +5,7 @@
     "appName": "뜨끔",
     "appDescription": "스터디 그룹에서\n친구에게 뜨끔하게 찔리기..",
 
-    "invitingMessage": "'과제 해오셨어요?'\n'(뜨끔!)'\n\n\uD83C\uDF35[뜨끔] - 뜨끔한 스터디 관리앱\n'{studyName}'에 참여하세요!\n\n초대 코드: [{invitingCode}]",
+    "invitingMessage": "\uD83C\uDF35[뜨끔] - 뜨끔한 스터디 관리앱\n\n'과제 해오셨어요?' (뜨끔!)\n\n스터디 관리를 \"뜨끔\"이 도와드릴게요.\n'{studyName}'에 참여하세요!\n\n초대 코드: [{invitingCode}]",
 
     "confirm": "확인",
     "cancel": "취소",
@@ -46,7 +46,7 @@
     "inputHint2": "{target}를 입력해주세요.",
     "copyText1": "{target}이 복사되었어요",
     "copyText2": "{target}가 복사되었어요",
-    "ensureToDo": "정말 {action} 하시겠어요?",
+    "ensureToDo": "정말 {action}하시겠어요?",
     "successToDo": "성공적으로 {action}했어요",
     "willDo": "{action}할래요",
 
@@ -58,6 +58,7 @@
     "signOut": "로그아웃",
     "signUp": "가입하기",
 
+    "tokenExpired": "로그인 정보가 만료되었어요",
     "alreadyHaveAnAccount": "이미 계정이 있나요?",
     "successToSignUp": "가입이 완료되었어요.",
 
@@ -118,6 +119,7 @@
 
     "member": "멤버",
     "kick": "내보내기",
+    "kicking": "추방",
     "participateByCode": "코드로 참여하기",
     "leave": "탈퇴",
 

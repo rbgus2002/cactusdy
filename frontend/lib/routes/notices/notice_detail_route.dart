@@ -107,7 +107,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         IconButton(
           icon: const Icon(CustomIcons.writing_outline),
           iconSize: 28,
-          onPressed: () => _editNotice(),), //< FIXME
+          onPressed: () => _editNotice(),),
 
         IconButton(
           icon: const Icon(CustomIcons.trash),

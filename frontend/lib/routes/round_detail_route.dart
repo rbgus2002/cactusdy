@@ -5,12 +5,14 @@ import 'package:group_study_app/routes/date_time_picker_route.dart';
 import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
+import 'package:group_study_app/utilities/animation_setting.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/input_field.dart';
+import 'package:group_study_app/widgets/input_field_place.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
@@ -39,8 +41,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   final _focusNode = FocusNode();
 
-  Round? round;
+  late Round round;
   bool _isEdited = false;
+  bool _isExpended = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,48 +56,47 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(bottom:
-                BorderSide(
-                    color: context.extraColors.grey50!,
-                    width: 7)),),
-            child: FutureBuilder(
+          child: FutureBuilder(
               future: Round.getDetail(widget.roundId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  round = snapshot.data;
-                  bool reserved = TimeUtility.isScheduled(round!.studyTime);
-                  _placeEditingController.text = round!.studyPlace;
+                  round = snapshot.data!;
+                  bool reserved = TimeUtility.isScheduled(round.studyTime);
+                  _placeEditingController.text = round.studyPlace;
 
-                  return Container(
-                    padding: Design.edgePadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Round Info
-                        _roundInfo(),
-                        Design.padding20,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Round Info & Detail Record
+                      Container(
+                        padding: Design.edgePadding,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: context.extraColors.grey50!,
+                              width: 7),),),
+                        child: Column(
+                          children: [
+                            // Round Info
+                            _roundInfo(),
+                            Design.padding12,
 
-                        // Detail Record
-                        Text(
-                          context.local.record,
-                          style: TextStyles.head5.copyWith(
-                              color: context.extraColors.grey900),),
-                        Design.padding8,
-                        _detailRecord(),
+                            // Detail Record
+                            _detailRecord(),
+                            Design.padding12,
+                          ],),
+                      ),
 
-                        ParticipantInfoListWidget(
-                          reserved: reserved,
-                          roundId: widget.roundId,
-                          study: widget.study,),
-                      ]),
-                  );
+                      // Participant Information List
+                      ParticipantInfoListWidget(
+                        reserved: reserved,
+                        roundId: widget.roundId,
+                        study: widget.study,),
+                    ]);
                 }
                 return Design.loadingIndicator;
               },),
           ),
-        ),
       ),
     );
   }
@@ -123,16 +125,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
             // Month (or date)
             Text(
-              (round?.studyTime != null)?
-              '${round!.studyTime!.month}${context.local.month}' :
+              (round.studyTime != null)?
+              '${round.studyTime!.month}${context.local.month}' :
               '-${context.local.month}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey800),),
 
             // Day (or -)
             Text(
-              (round?.studyTime != null) ?
-              '${round!.studyTime!.day}' :
+              (round.studyTime != null) ?
+              '${round.studyTime!.day}' :
               '-',
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey800),),
@@ -157,52 +159,33 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                 style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
               Design.padding4,
 
-              // Place And Time of round
+              // Time And Place of round
               Row(
                 children: [
+                  // Study Time (time only like AM 2:20)
                   Icon(CustomIcons.calendar, size: 14, color: context.extraColors.grey600),
                   Design.padding4,
 
-                  // Study Time (time only like AM 2:20)
                   InkWell(
-                    onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-                        DateTimePickerRoute(round: round!,)).then((value) => _refresh()),
+                    onTap: _editStudyTime,
                     child: Text(
-                      (round!.studyTime != null) ?
-                        TimeUtility.getTime(round!.studyTime!) :
+                      (round.studyTime != null) ?
+                        TimeUtility.getTime(round.studyTime!) :
                         context.local.inputHint1(context.local.time),
-                      style: (round!.studyTime != null) ?
+                      style: (round.studyTime != null) ?
                         TextStyles.body2.copyWith(color: context.extraColors.grey800) :
                         TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
                   ),
                   Design.padding4,
 
+                  // Study Place
                   Icon(CustomIcons.location, size: 14, color: context.extraColors.grey600),
                   Design.padding4,
 
                   Expanded(
-                    child: TextField(
-                      maxLength: Round.placeMaxLength,
-                      maxLines: 1,
-                      style: TextStyles.body2.copyWith(
-                          color: context.extraColors.grey800),
-
-                      controller: _placeEditingController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-
-                        hintText: context.local.inputHint2(context.local.place),
-                        hintStyle: TextStyles.body2.copyWith(
-                            color: context.extraColors.grey800!.withOpacity(0.5)),
-
-                        border: InputBorder.none,
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: context.extraColors.grey700!,)),
-                        counterText: "",
-                      ),),
-                  ),
+                    child: InputFieldPlace(
+                      placeEditingController: _placeEditingController,
+                      onUpdatePlace: _updateStudyPlace,),),
                   Design.padding4,
                 ],),
             ]),
@@ -210,7 +193,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
         // Scheduled Tag
         Visibility(
-          visible: TimeUtility.isScheduled(round!.studyTime),
+          visible: TimeUtility.isScheduled(round.studyTime),
           child: _scheduleTag()),
       ],
     );
@@ -230,18 +213,34 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _detailRecord() {
-    return InputField(
-      key: _detailEditor,
-      initText: round!.detail,
-      hintText: context.local.recordHint,
-      minLines: 4,
-      maxLines: 7,
-      maxLength: Round.detailMaxLength,
-      focusNode: _focusNode,
-      backgroundColor: context.extraColors.grey50,
-      onChanged: (input) => _isEdited = true,
-      onTapOutSide: _updateDetail,
-      counter: true,
+    return ExpansionTile(
+      initiallyExpanded: true,
+      title: Text(
+        context.local.record,
+        style: TextStyles.head5.copyWith(
+            color: context.extraColors.grey900),),
+      onExpansionChanged: (value) => setState(() => _isExpended = !_isExpended),
+      trailing: AnimatedRotation(
+        turns: (_isExpended) ? 0 : 0.5,
+        duration: AnimationSetting.animationDurationShort,
+        curve: Curves.easeOutCirc,
+        child: Icon(
+          CustomIcons.chevron_down,
+          color: context.extraColors.grey500,),),
+      children: [
+        InputField(
+          key: _detailEditor,
+          initText: round.detail,
+          hintText: context.local.recordHint,
+          minLines: 4,
+          maxLines: 7,
+          maxLength: Round.detailMaxLength,
+          focusNode: _focusNode,
+          backgroundColor: context.extraColors.grey50,
+          onChanged: (input) => _isEdited = true,
+          onTapOutSide: _updateDetail,
+          counter: true,),
+      ],
     );
   }
 
@@ -271,24 +270,40 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   Future<void> _refresh() async {
     setState(() {});
   }
-  
-  void _editStudyTime() async {
-    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: round!,)).then((value) => _refresh());
-  }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
     if (_isEdited) {
       Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
-
-      FocusScope.of(context).unfocus();
     }
+
+    _focusNode.unfocus();
+  }
+
+  void _updateStudyPlace() {
+    round.studyPlace = _placeEditingController.text;
+    _updateRound(round);
+  }
+
+  void _editStudyTime() async {
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: round,)).then((value) => _refresh());
+  }
+
+  Future<void> _updateRound(Round round) async {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(round, widget.study.studyId);
+    }
+    else {
+      await Round.updateAppointment(round);
+    }
+
+    _refresh();
   }
 
   void _deleteRound(BuildContext context) async {
     try {
-      await Round.deleteRound(round!.roundId).then((result) {
+      await Round.deleteRound(round.roundId).then((result) {
         if (result) {
           Navigator.of(context).pop();
 

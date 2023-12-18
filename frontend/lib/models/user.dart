@@ -51,6 +51,9 @@ class User{
     logger.resultLog('get user profile summary', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
+      if (response.statusCode == DatabaseService.unauthorizedCode) {
+        throw Exception("unauthorized");
+      }
       throw Exception(responseJson['message']);
     } else {
       return User.fromJson(responseJson['data']['user']);
@@ -100,6 +103,25 @@ class User{
       updatedUser.profileImage = responseJson['data']['user']['profileImage'];
 
       return responseJson['success'];
+    }
+  }
+
+  static Future<bool> kickUser({
+    required int userId,
+    required int studyId,
+  }) async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/participants/kick?userId=$userId&studyId=$studyId'),
+      headers: DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool result = json.decode(response.body)['success'];
+      if (result) print("success to leave study");
+      return result;
     }
   }
 

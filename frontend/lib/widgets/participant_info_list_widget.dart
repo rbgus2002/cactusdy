@@ -39,12 +39,12 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
             itemCount: participantInfoList.length,
             itemBuilder: (context, index) {
               return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 24,),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
                   decoration: BoxDecoration(
-                    border: Border.symmetric(
-                        horizontal: BorderSide(
-                          color: context.extraColors.grey100!,
-                          width: 1,),),),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: context.extraColors.grey100!,
+                        width: 1,),),),
                   child: ParticipantInfoWidget(
                     participantInfo: participantInfoList[index],
                     roundId: widget.roundId,

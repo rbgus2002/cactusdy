@@ -105,7 +105,7 @@ class ColorStyles {
       onSecondary: Colors.white,
       error: errorColor,
       onError: Colors.white,
-      background: Colors.red, //< FIXME
+      background: Colors.red, //< FIXME : idk it used in
       onBackground: _black800,
       surface: _black000,
       onSurface: _black800,
@@ -119,7 +119,7 @@ class ColorStyles {
       onSecondary: Colors.white,
       error: errorColor,
       onError: Colors.white,
-      background: Colors.red, //< FIXME
+      background: Colors.red, //< FIXME : idk it used in
       onBackground: _white800,
       surface: _white50,
       onSurface: _white800,

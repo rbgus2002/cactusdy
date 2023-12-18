@@ -48,7 +48,6 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     super.initState();
     _initListModel();
     _isOwner = Util.isOwner(widget.userId);
-    //_isOwner = true; //< FIXME!!!!
 
     if (_isNeedToSubscribe()) {
       widget.subscribe!(

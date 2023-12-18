@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_study_app/models/study_Info.dart';
 import 'package:group_study_app/models/user.dart';
+import 'package:group_study_app/routes/start_route.dart';
 import 'package:group_study_app/routes/studies/study_create_route.dart';
 import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/services/auth.dart';
@@ -10,6 +11,7 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
+import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/line_profiles/study_profile_widget.dart';
@@ -43,11 +45,11 @@ class _HomeRouteState extends State<HomeRoute> {
 
                 // User Profile
                 FutureBuilder(
-                    future: User.getUserProfileSummary(),
-                    builder: (context, snapshot) =>
-                      (snapshot.hasData) ?
-                        UserLineProfileWidget(user: snapshot.data!) :
-                        Container(height: 48,)),
+                  future: _getUserProfile(),
+                  builder: (context, snapshot) =>
+                    (snapshot.hasData) ?
+                      UserLineProfileWidget(user: snapshot.data!) :
+                      Container(height: 48,)),
                 Design.padding(44),
 
                 // title line
@@ -96,6 +98,24 @@ class _HomeRouteState extends State<HomeRoute> {
 
   Future<void> _refresh() async {
     return setState(() {});
+  }
+
+  Future _getUserProfile() async {
+    try {
+      return await User.getUserProfileSummary();
+    } on Exception catch (e) {
+      String message = Util.getExceptionMessage(e);
+      bool unauthorized = (message.compareTo("unauthorized") == 0);
+
+      Toast.showToast(
+          context: context,
+          message: (unauthorized)?
+            context.local.tokenExpired :
+            message);
+
+      Util.pushRouteAndPopUntil(context, (context) =>
+          const StartRoute());
+    }
   }
 }
 

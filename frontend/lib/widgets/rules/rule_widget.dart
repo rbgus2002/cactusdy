@@ -8,15 +8,18 @@ import 'package:group_study_app/utilities/extensions.dart';
 
 class RuleWidget extends StatefulWidget {
   final Rule rule;
-
+  final bool enable;
   final Function(Rule) onUpdateRuleDetail;
   final Function(Rule) onDeleteRule;
+  final double height;
 
   const RuleWidget({
     Key? key,
     required this.rule,
     required this.onUpdateRuleDetail,
     required this.onDeleteRule,
+    required this.enable,
+    this.height = 40,
   }) : super(key: key);
 
   @override
@@ -34,7 +37,7 @@ class _RuleWidgetState extends State<RuleWidget> {
     _textEditingController.text = widget.rule.detail;
 
     return SizedBox(
-      height: 40,
+      height: widget.height,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -48,6 +51,7 @@ class _RuleWidgetState extends State<RuleWidget> {
           Flexible(
             fit: FlexFit.tight,
             child: TextField(
+              enabled: widget.enable,
               maxLines: 1,
               maxLength: Rule.ruleMaxLength,
               style: TextStyles.body1.copyWith(

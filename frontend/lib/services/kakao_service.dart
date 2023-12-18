@@ -65,6 +65,7 @@ class KakaoService {
   static TextTemplate _getTextTemplate(BuildContext context, String studyName, String invitingCode) {
     return TextTemplate(
       text: context.local.invitingMessage(invitingCode, studyName),
+      buttonTitle: context.local.participate,
       link: Link(
         webUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link
         mobileWebUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link also
