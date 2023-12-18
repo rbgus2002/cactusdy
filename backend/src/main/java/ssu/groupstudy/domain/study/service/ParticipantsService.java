@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.domain.StatusTag;
@@ -34,6 +35,7 @@ public class ParticipantsService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
         Study study = studyRepository.findById(studyId)
@@ -86,6 +88,7 @@ public class ParticipantsService {
         User targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         assertUserIsHostOrThrow(user, study);
+        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
 
         study.kickParticipant(targetUser);
     }
