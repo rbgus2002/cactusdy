@@ -12,6 +12,7 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/input_field.dart';
+import 'package:group_study_app/widgets/input_field_place.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/participant_info_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
@@ -40,7 +41,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   final _focusNode = FocusNode();
 
-  Round? round;
+  late Round round;
   bool _isEdited = false;
   bool _isExpended = true;
 
@@ -59,9 +60,9 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               future: Round.getDetail(widget.roundId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  round = snapshot.data;
-                  bool reserved = TimeUtility.isScheduled(round!.studyTime);
-                  _placeEditingController.text = round!.studyPlace;
+                  round = snapshot.data!;
+                  bool reserved = TimeUtility.isScheduled(round.studyTime);
+                  _placeEditingController.text = round.studyPlace;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,16 +125,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
             // Month (or date)
             Text(
-              (round?.studyTime != null)?
-              '${round!.studyTime!.month}${context.local.month}' :
+              (round.studyTime != null)?
+              '${round.studyTime!.month}${context.local.month}' :
               '-${context.local.month}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey800),),
 
             // Day (or -)
             Text(
-              (round?.studyTime != null) ?
-              '${round!.studyTime!.day}' :
+              (round.studyTime != null) ?
+              '${round.studyTime!.day}' :
               '-',
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey800),),
@@ -158,52 +159,33 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                 style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
               Design.padding4,
 
-              // Place And Time of round
+              // Time And Place of round
               Row(
                 children: [
+                  // Study Time (time only like AM 2:20)
                   Icon(CustomIcons.calendar, size: 14, color: context.extraColors.grey600),
                   Design.padding4,
 
-                  // Study Time (time only like AM 2:20)
                   InkWell(
-                    onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-                        DateTimePickerRoute(round: round!,)).then((value) => _refresh()),
+                    onTap: _editStudyTime,
                     child: Text(
-                      (round!.studyTime != null) ?
-                        TimeUtility.getTime(round!.studyTime!) :
+                      (round.studyTime != null) ?
+                        TimeUtility.getTime(round.studyTime!) :
                         context.local.inputHint1(context.local.time),
-                      style: (round!.studyTime != null) ?
+                      style: (round.studyTime != null) ?
                         TextStyles.body2.copyWith(color: context.extraColors.grey800) :
                         TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
                   ),
                   Design.padding4,
 
+                  // Study Place
                   Icon(CustomIcons.location, size: 14, color: context.extraColors.grey600),
                   Design.padding4,
 
                   Expanded(
-                    child: TextField(
-                      maxLength: Round.placeMaxLength,
-                      maxLines: 1,
-                      style: TextStyles.body2.copyWith(
-                          color: context.extraColors.grey800),
-
-                      controller: _placeEditingController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-
-                        hintText: context.local.inputHint2(context.local.place),
-                        hintStyle: TextStyles.body2.copyWith(
-                            color: context.extraColors.grey800!.withOpacity(0.5)),
-
-                        border: InputBorder.none,
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: context.extraColors.grey700!,)),
-                        counterText: "",
-                      ),),
-                  ),
+                    child: InputFieldPlace(
+                      placeEditingController: _placeEditingController,
+                      onUpdatePlace: _updateStudyPlace,),),
                   Design.padding4,
                 ],),
             ]),
@@ -211,7 +193,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
         // Scheduled Tag
         Visibility(
-          visible: TimeUtility.isScheduled(round!.studyTime),
+          visible: TimeUtility.isScheduled(round.studyTime),
           child: _scheduleTag()),
       ],
     );
@@ -264,7 +246,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
           child: SingleChildScrollView(
             child: InputField(
               key: _detailEditor,
-              initText: round!.detail,
+              initText: round.detail,
               hintText: context.local.recordHint,
               minLines: 4,
               maxLines: 7,
@@ -306,11 +288,6 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   Future<void> _refresh() async {
     setState(() {});
   }
-  
-  void _editStudyTime() async {
-    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: round!,)).then((value) => _refresh());
-  }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
     if (_isEdited) {
@@ -321,9 +298,30 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
     _focusNode.unfocus();
   }
 
+  void _updateStudyPlace() {
+    setState(() {
+      round.studyPlace = _placeEditingController.text;
+      _updateRound(round);
+    });
+  }
+
+  void _editStudyTime() async {
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: round,)).then((value) => _refresh());
+  }
+
+  void _updateRound(Round round) {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      Round.createRound(round, widget.study.studyId);
+    }
+    else {
+      Round.updateAppointment(round);
+    }
+  }
+
   void _deleteRound(BuildContext context) async {
     try {
-      await Round.deleteRound(round!.roundId).then((result) {
+      await Round.deleteRound(round.roundId).then((result) {
         if (result) {
           Navigator.of(context).pop();
 
