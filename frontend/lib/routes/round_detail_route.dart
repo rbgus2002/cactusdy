@@ -299,10 +299,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   void _updateStudyPlace() {
-    setState(() {
-      round.studyPlace = _placeEditingController.text;
-      _updateRound(round);
-    });
+    round.studyPlace = _placeEditingController.text;
+    _updateRound(round);
   }
 
   void _editStudyTime() async {
@@ -310,13 +308,15 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         DateTimePickerRoute(round: round,)).then((value) => _refresh());
   }
 
-  void _updateRound(Round round) {
+  Future<void> _updateRound(Round round) async {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      Round.createRound(round, widget.study.studyId);
+      await Round.createRound(round, widget.study.studyId);
     }
     else {
-      Round.updateAppointment(round);
+      await Round.updateAppointment(round);
     }
+
+    _refresh();
   }
 
   void _deleteRound(BuildContext context) async {

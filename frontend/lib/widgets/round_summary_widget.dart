@@ -52,7 +52,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     _placeEditingController.text = widget.round.studyPlace;
 
     return InkWell(
-      onTap: _lookUpRound,
+      onTap: _viewRound,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       child: Row(
@@ -117,7 +117,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
           padding: EdgeInsets.zero,
           color: context.extraColors.grey400,
           constraints: const BoxConstraints(),
-          onPressed: _lookUpRound,),
+          onPressed: _viewRound,),
       ],
     );
   }
@@ -163,7 +163,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         context.local.reserved,
         style: TextStyles.caption2.copyWith(
           color: context.extraColors.grey000,),),
-      onTap: _lookUpRound,
+      onTap: _viewRound,
     );
   }
 
@@ -208,7 +208,7 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
     );
   }
 
-  void _lookUpRound() async {
+  void _viewRound() async {
     if (widget.round.roundId == Round.nonAllocatedRoundId) {
       await Round.createRound(widget.round, widget.study.studyId);
     }
@@ -223,10 +223,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   }
 
   void _updateStudyPlace() {
-    setState(() {
-      widget.round.studyPlace = _placeEditingController.text;
-      _updateRound(widget.round);
-    });
+    widget.round.studyPlace = _placeEditingController.text;
+    _updateRound(widget.round);
   }
 
   void _editStudyTime() async {
@@ -234,12 +232,14 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         DateTimePickerRoute(round: widget.round,)).then((value) => setState((){ }));
   }
 
-  void _updateRound(Round round) {
+  void _updateRound(Round round) async {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      Round.createRound(round, widget.study.studyId);
+      await Round.createRound(round, widget.study.studyId);
     }
     else {
-      Round.updateAppointment(round);
+      await Round.updateAppointment(round);
     }
+
+    setState(() { });
   }
 }
