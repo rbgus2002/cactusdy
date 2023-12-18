@@ -21,4 +21,5 @@ class DatabaseService {
   }
 
   static const successCode = 200;
+  static const unauthorizedCode = 401;
 }

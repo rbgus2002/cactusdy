@@ -58,6 +58,7 @@
     "signOut": "로그아웃",
     "signUp": "가입하기",
 
+    "tokenExpired": "로그인 정보가 만료되었어요",
     "alreadyHaveAnAccount": "이미 계정이 있나요?",
     "successToSignUp": "가입이 완료되었어요.",
 

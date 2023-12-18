@@ -51,6 +51,9 @@ class User{
     logger.resultLog('get user profile summary', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
+      if (response.statusCode == DatabaseService.unauthorizedCode) {
+        throw Exception("unauthorized");
+      }
       throw Exception(responseJson['message']);
     } else {
       return User.fromJson(responseJson['data']['user']);
