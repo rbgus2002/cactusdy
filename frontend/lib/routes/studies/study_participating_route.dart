@@ -52,7 +52,7 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
 
             PrimaryButton(
                 text: context.local.participate,
-                onPressed: _participateStudy), //< FIXME
+                onPressed: _participateStudy),
             Design.padding(24),
           ],),),
     );
