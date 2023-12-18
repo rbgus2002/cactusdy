@@ -23,7 +23,7 @@ public enum ResultCode {
     INVALID_PASSWORD(400, "잘못된 비밀번호에요"),
     NOT_SATISFIED_DB_CONSTRAINT(400, "DB의 제약조건을 만족하지 않습니다"),
     USER_NOT_PARTICIPATED(400, "스터디에 참여 중인 사용자가 아니에요"),
-    HOST_USER_CAN_NOT_LEAVE_STUDY(400, "스터디에 누군가 참여 중이면 방장은 탈퇴할 수 없어요"),
+    HOST_USER_CAN_NOT_LEAVE_STUDY(400, "다른 멤버가 있을때, 방장은 탈퇴할 수 없어요"),
     USER_CAN_NOT_CREATE_STUDY(400, "추가할 수 있는 스터디의 개수가 초과됐어요"),
     INVALID_TASK_ACCESS(400, "본인이 생성한 태스크만 접근이 가능합니다"),
     HOST_USER_ONLY_CAN_DELETE_ROUND(400, "방장만 회차를 삭제할 수 있습니다"),
@@ -36,17 +36,17 @@ public enum ResultCode {
     FORBIDDEN(403, "권한이 없는 사용자입니다"),
 
     // 404
-    USER_NOT_FOUND(404, "존재하지 않는 사용자입니다"),
-    STUDY_NOT_FOUND(404, "존재하지 않는 스터디입니다"),
+    USER_NOT_FOUND(404, "존재하지 않는 사용자에요"),
+    STUDY_NOT_FOUND(404, "존재하지 않는 스터디에요"),
     STUDY_INVITE_CODE_NOT_FOUND(404, "존재하지 않는 코드번호에요"),
-    NOTICE_NOT_FOUND(404, "존재하지 않는 공지사항입니다"),
-    ROUND_NOT_FOUND(404, "존재하지 않는 회차입니다"),
-    ROUND_PARTICIPANT_NOT_FOUND(404, "존재하지 않는 회차 참여자입니다"),
-    COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다"),
-    TASK_NOT_FOUND(404, "존재하지 않는 태스크입니다"),
-    PARTICIPANT_NOT_FOUND(404, "존재하지 않는 참여자입니다"),
-    PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호입니다"),
-    RULE_NOT_FOUND(404, "존재하지 않는 규칙입니다"),
+    NOTICE_NOT_FOUND(404, "존재하지 않는 공지사항이에요"),
+    ROUND_NOT_FOUND(404, "존재하지 않는 회차에요"),
+    ROUND_PARTICIPANT_NOT_FOUND(404, "존재하지 않는 회차 멤버에요"),
+    COMMENT_NOT_FOUND(404, "존재하지 않는 댓글이에요"),
+    TASK_NOT_FOUND(404, "존재하지 않는 과제에요"),
+    PARTICIPANT_NOT_FOUND(404, "존재하지 않는 멤버에요"),
+    PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호에요"),
+    RULE_NOT_FOUND(404, "존재하지 않는 규칙이에요"),
 
 
     // 405
