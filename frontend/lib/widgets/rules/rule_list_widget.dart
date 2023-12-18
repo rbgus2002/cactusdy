@@ -31,6 +31,7 @@ class RuleListWidget extends StatefulWidget {
 class _RuleListWidgetState extends State<RuleListWidget> {
   static const int _ellipsisCount = 3;
   static const double _ruleWidgetHeight = 40;
+  static const double _iconSize = 24;
 
   late GlobalKey<AnimatedListState> _rulesKey;
   late ListModel<Rule> _ruleListModel;
@@ -78,7 +79,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
         // Rule List
         AnimatedContainer(
           height: (_expended)?
-            (_ruleListModel.length * _ruleWidgetHeight + 24) :
+            (_ruleListModel.length * _ruleWidgetHeight + _iconSize) :
             (min(_ruleListModel.length, _ellipsisCount) * _ruleWidgetHeight),
           duration: AnimationSetting.animationDurationShort,
           curve: Curves.easeOutCirc,
@@ -125,7 +126,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
         width: double.maxFinite,
         height: (_expended)?
-        28 : (min(_ruleListModel.length, _ellipsisCount) * 40),
+        _iconSize : (min(_ruleListModel.length, _ellipsisCount) * 40),
         alignment: Alignment.bottomCenter,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -145,8 +146,8 @@ class _RuleListWidgetState extends State<RuleListWidget> {
           turns: (_expended)? 0.5 : 0,
           child: Icon(
             CustomIcons.chevron_down,
-            size: 24,
-            color: context.extraColors.grey400,),),
+            size: _iconSize,
+            color: context.extraColors.grey500,),),
       ),
     );
   }
@@ -185,6 +186,10 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
   void _addRule() {
     HapticFeedback.lightImpact();
+    if (!_expended) {
+      setState(() => _expended = true);
+    }
+
     if (_ruleListModel.length < Rule.ruleLimitedCount) {
       _ruleListModel.add(Rule());
       setState(() {});
