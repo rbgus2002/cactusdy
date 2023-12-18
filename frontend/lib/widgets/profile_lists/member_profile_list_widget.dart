@@ -16,7 +16,7 @@ class MemberProfileListWidget extends StatelessWidget {
   final int studyId;
   final int hostId;
   final double scale;
-  final Function(ParticipantSummary)? onTap;
+  final Function(ParticipantProfile)? onTap;
   final double paddingSize;
   final bool border;
 
@@ -54,7 +54,7 @@ class MemberProfileListWidget extends StatelessWidget {
     );
   }
 
-  Widget _userProfile(BuildContext context, ParticipantSummary participantSummary) {
+  Widget _userProfile(BuildContext context, ParticipantProfile participantSummary) {
     bool host = _isHost(participantSummary.userId);
 
     return Stack(

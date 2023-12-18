@@ -22,6 +22,7 @@ class RoundSummaryWidget extends StatefulWidget {
   final Round round;
   final Study study;
   final Function(int) onRemove;
+  final List<ParticipantProfile> participantProfileList;
 
   const RoundSummaryWidget({
     Key? key,
@@ -29,6 +30,7 @@ class RoundSummaryWidget extends StatefulWidget {
     required this.round,
     required this.study,
     required this.onRemove,
+    required this.participantProfileList,
   }) : super(key: key);
 
   @override
@@ -136,20 +138,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
             _placeWidget(),
             Design.padding16,
 
-            (widget.round.roundId != Round.nonAllocatedRoundId) ?
-              ParticipantProfileListWidget(
-                roundParticipantSummaries: widget.round.roundParticipantInfos.map((r) =>
-                  ParticipantSummary(userId: r.userId, picture: r.picture, nickname: "")).toList(),
-                studyId: widget.study.studyId,) :
-              FutureBuilder(
-                future: Study.getMemberProfileImages(widget.study.studyId), //< FIXME
-                builder: (context, snapshot) =>
-                  (snapshot.hasData)?
-                    ParticipantProfileListWidget(
-                        roundParticipantSummaries: snapshot.data!,
-                        studyId: widget.study.studyId) :
-                    const SizedBox(),
-              ),
+            ParticipantProfileListWidget(
+                roundParticipantSummaries: widget.participantProfileList,
+                studyId: widget.study.studyId)
           ],),
     );
   }

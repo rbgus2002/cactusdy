@@ -173,7 +173,7 @@ class Study {
     }
   }
 
-  static Future<List<ParticipantSummary>> getMemberProfileImages(int studyId) async {
+  static Future<List<ParticipantProfile>> getMemberProfileImages(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants/summary?studyId=$studyId'),
       headers: DatabaseService.getAuthHeader(),
@@ -186,24 +186,24 @@ class Study {
 
       var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participantSummaryList'];
 
-      return (responseJson as List).map((p) => ParticipantSummary.fromJson(p)).toList();
+      return (responseJson as List).map((p) => ParticipantProfile.fromJson(p)).toList();
     }
   }
 }
 
-class ParticipantSummary {
+class ParticipantProfile {
   final int userId;
   final String picture;
   final String nickname;
 
-  ParticipantSummary({
+  ParticipantProfile({
     required this.userId,
     required this.picture,
     required this.nickname,
   });
 
-  factory ParticipantSummary.fromJson(Map<String, dynamic> json) {
-    return ParticipantSummary(
+  factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
+    return ParticipantProfile(
       userId: json['userId']??User.nonAllocatedUserId,
       picture: json['picture']??"",
       nickname: json['nickname']??"",

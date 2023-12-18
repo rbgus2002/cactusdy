@@ -28,10 +28,15 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   late GlobalKey<AnimatedListState> _roundListKey;
   late ListModel<Round> _roundListModel;
 
+  late final List<ParticipantProfile> _memberProfileImages;
+
   @override
   void initState() {
     super.initState();
     _initListModel();
+
+    Study.getMemberProfileImages(widget.study.studyId).then((value) =>
+      _memberProfileImages = value);
   }
 
   @override
@@ -107,7 +112,8 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
           roundSeq: 0,
           round: round,
           study: widget.study,
-          onRemove: _removeRound,),),
+          onRemove: _removeRound,
+          participantProfileList: _getParticipantProfileList(round)),),
     );
   }
 
@@ -128,8 +134,22 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
               roundSeq: roundSeq,
               round: _roundListModel[index],
               study: widget.study,
-              onRemove: _removeRound,),),
+              onRemove: _removeRound,
+              participantProfileList: _getParticipantProfileList(_roundListModel[index]),
+          ),),
     );
+  }
+
+  List<ParticipantProfile> _getParticipantProfileList(Round round) {
+    if (round.roundId != Round.nonAllocatedRoundId) {
+      return round.roundParticipantInfos.map((r) =>
+          ParticipantProfile(
+              userId: r.userId,
+              picture: r.picture,
+              nickname: "")).toList();
+    }
+
+    return _memberProfileImages;
   }
 
   Widget _studyStartFlagWidget() {

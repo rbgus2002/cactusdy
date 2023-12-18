@@ -8,7 +8,7 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 /// Round Participant Profile List (not all member of study)
 /// Tap Profile => View Profile
 class ParticipantProfileListWidget extends StatelessWidget {
-  final List<ParticipantSummary> roundParticipantSummaries;
+  final List<ParticipantProfile> roundParticipantSummaries;
   final int studyId;
   final double size;
 
