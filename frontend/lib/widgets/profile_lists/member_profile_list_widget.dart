@@ -60,39 +60,44 @@ class MemberProfileListWidget extends StatelessWidget {
     return Stack(
         clipBehavior: Clip.none,
         children: [
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            child: Column(
-              children: [
-                SquircleImageWidget(
-                    scale: scale,
-                    side: (border)?
-                        BorderSide(
-                          width: 3,
-                          color: (host)?
-                            ColorStyles.mainColor :
-                            context.extraColors.grey500!) : null,
-                    url: participantSummary.picture),
-                Design.padding(2),
+          SizedBox(
+            width: scale,
+            child: InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              child: Column(
+                children: [
+                  SquircleImageWidget(
+                      scale: scale,
+                      side: (border)?
+                          BorderSide(
+                            width: 3,
+                            color: (host)?
+                              ColorStyles.mainColor :
+                              context.extraColors.grey500!) : null,
+                      url: participantSummary.picture),
+                  Design.padding(2),
 
-                Text(
-                  participantSummary.nickname,
-                  style: TextStyles.body5.copyWith(
-                      color: context.extraColors.grey700),),
-              ],
-            ),
-            onTap: () {
-              if (onTap != null) {
-                onTap!(participantSummary);
-              } else {
-                // View Profile
-                Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-                    ProfileRoute(
-                        userId: participantSummary.userId,
-                        studyId: studyId));
-              }
-            },),
+                  Text(
+                    participantSummary.nickname,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.body5.copyWith(
+                        color: context.extraColors.grey700),),
+                ],
+              ),
+              onTap: () {
+                if (onTap != null) {
+                  onTap!(participantSummary);
+                } else {
+                  // View Profile
+                  Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+                      ProfileRoute(
+                          userId: participantSummary.userId,
+                          studyId: studyId));
+                }
+              },),
+          ),
 
           if (host)
             _adminBadge(context),
