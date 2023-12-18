@@ -123,9 +123,6 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
       widget.round.studyTime = newStudyTime;
       await Round.updateAppointment(widget.round).then((value) {
         Util.popRoute(context);
-        Toast.showToast(
-            context: context,
-            message: context.local.successToDo(context.local.editing));
       });
     } on Exception catch(e) {
       if (context.mounted) {
