@@ -9,7 +9,7 @@ import 'package:group_study_app/utilities/color_util.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/time_utility.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/profile_images.dart';
+import 'package:group_study_app/widgets/profile_lists/stacked_profile_list_widget.dart';
 import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
 
 class StudyProfileWidget extends StatelessWidget {
@@ -110,7 +110,7 @@ class StudyProfileWidget extends StatelessWidget {
                     ),),
                   const Spacer(),
 
-                  StackedProfileImages(profileImages: studyInfo.profileImages),
+                  StackedProfileListWidget(profileImages: studyInfo.profileImages),
                 ],)
             ],),
         )],

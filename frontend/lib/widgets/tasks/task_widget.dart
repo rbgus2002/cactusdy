@@ -9,7 +9,7 @@ import 'package:group_study_app/utilities/stab_controller.dart';
 import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
-import 'package:group_study_app/widgets/task_check_box.dart';
+import 'package:group_study_app/widgets/tasks/task_check_box.dart';
 
 class TaskWidget extends StatefulWidget {
   final TaskStabController taskStabController;

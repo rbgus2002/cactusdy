@@ -7,7 +7,6 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/logo.dart';
 
 class StartRoute extends StatelessWidget {
   const StartRoute({

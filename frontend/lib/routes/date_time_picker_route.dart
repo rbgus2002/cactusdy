@@ -12,7 +12,7 @@ import 'package:group_study_app/utilities/toast.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/custom_calendar_date_picker.dart';
+import 'package:group_study_app/widgets/pickers/custom_calendar_date_picker.dart';
 
 class DateTimePickerRoute extends StatefulWidget {
   final Round round;
