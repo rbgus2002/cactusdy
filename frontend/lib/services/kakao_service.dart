@@ -69,8 +69,10 @@ class KakaoService {
       text: context.local.invitingMessage(invitingCode, studyName),
       buttonTitle: context.local.participate,
       link: Link(
-        webUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link
-        mobileWebUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link also
+        webUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link
+        mobileWebUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link also
+        iosExecutionParams: { "invitingCode": invitingCode, },
+        androidExecutionParams: { "invitingCode": invitingCode, },
       ),
     );
   }
