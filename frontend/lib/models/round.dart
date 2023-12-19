@@ -20,18 +20,18 @@ class Round {
   DateTime? studyTime;
   String? detail;
 
-  final List<RoundParticipantInfo> roundParticipantInfos;
+  final List<RoundParticipantInfo>? roundParticipantInfos;
 
   Round({
     required this.roundId,
     this.studyPlace = "",
     this.studyTime,
     this.detail,
-    this.roundParticipantInfos = const[],
+    this.roundParticipantInfos,
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
-    List<RoundParticipantInfo> roundParticipantInfos = [];
+    List<RoundParticipantInfo>? roundParticipantInfos;
     if (json['roundParticipantInfos'] != null) {
       roundParticipantInfos = (json['roundParticipantInfos'] as List).map(
               (r) => RoundParticipantInfo.fromJson(r)).toList();

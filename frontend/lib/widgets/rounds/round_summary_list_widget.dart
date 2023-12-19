@@ -141,8 +141,8 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   }
 
   List<ParticipantProfile> _getParticipantProfileList(Round round) {
-    if (round.roundId != Round.nonAllocatedRoundId) {
-      return round.roundParticipantInfos.map((r) =>
+    if (round.roundParticipantInfos != null) {
+      return round.roundParticipantInfos!.map((r) =>
           ParticipantProfile(
               userId: r.userId,
               picture: r.picture,
