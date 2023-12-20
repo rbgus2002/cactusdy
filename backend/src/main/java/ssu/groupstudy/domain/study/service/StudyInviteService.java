@@ -52,7 +52,7 @@ public class StudyInviteService {
     private void addUserToFutureRounds(Study study, User user) {
         List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (Round round : futureRounds) {
-            roundParticipantRepository.save(new RoundParticipant(user, round));
+            round.addParticipantWithoutDuplicates(new RoundParticipant(user, round));
         }
     }
 
