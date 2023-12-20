@@ -35,7 +35,7 @@ public class StudyInviteService {
 
     @Transactional
     public Long inviteUser(User user, String inviteCode) {
-        canCreateNewStudy(user);
+        canAddNewStudy(user);
         Study study = studyRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
         study.invite(user);
@@ -43,7 +43,7 @@ public class StudyInviteService {
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
     }
-    private void canCreateNewStudy(User user) {
+    private void canAddNewStudy(User user) {
         if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
             throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
         }
