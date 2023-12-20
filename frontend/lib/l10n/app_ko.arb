@@ -3,7 +3,8 @@
     "helloWorld": "Hello World!",
 
     "appName": "뜨끔",
-    "appDescription": "스터디 그룹에서\n친구에게 뜨끔하게 찔리기..",
+    "appDescriptionFront": "여러분의 스터디그룹, \n이제는 ",
+    "appDescriptionBack": " 에서 \n관리해 드릴게요",
 
     "invitingMessage": "\uD83C\uDF35[뜨끔] - 스터디 관리 앱\n\n'과제 해오셨어요?' (뜨끔!)\n\n스터디 관리를 \"뜨끔\"이 도와드릴게요.\n'{studyName}'에 참여하세요!\n\n초대 코드: [{invitingCode}]",
 

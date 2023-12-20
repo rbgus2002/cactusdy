@@ -105,16 +105,19 @@ class _HomeRouteState extends State<HomeRoute> {
       return await User.getUserProfileSummary();
     } on Exception catch (e) {
       String message = Util.getExceptionMessage(e);
-      bool unauthorized = (message.compareTo("unauthorized") == 0);
 
-      Toast.showToast(
-          context: context,
-          message: (unauthorized)?
-            context.local.tokenExpired :
-            message);
+      bool unauthorized = (message == 'unauthorized');
 
-      Util.pushRouteAndPopUntil(context, (context) =>
-          const StartRoute());
+      if (unauthorized) {
+        Toast.showToast(
+            context: context,
+            message: context.local.tokenExpired);
+
+        Util.pushRouteAndPopUntil(context, (context) =>
+            const StartRoute());
+      } else {
+        print(e);
+      }
     }
   }
 }

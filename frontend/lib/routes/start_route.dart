@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_study_app/routes/sign_routes/sign_in_route.dart';
 import 'package:group_study_app/routes/sign_routes/sign_up_verify_route.dart';
+import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
@@ -15,6 +16,12 @@ class StartRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle appNameStyle = TextStyles.startTitle.copyWith(
+        color: ColorStyles.mainColor,
+        fontWeight: TextStyles.black,
+        fontSize: 32,
+        height: 1);
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
@@ -23,20 +30,20 @@ class StartRoute extends StatelessWidget {
           children: [
             // Character
             Positioned(
-              top: 260,
+              top: 300,
               child: Image.asset(
                 Design.characterImagePath,
                 scale: 2,),),
 
             // Cloud
             Positioned(
-              top: 488,
+              top: 528,
               child: Image.asset(
                 Design.cloudImagePath,
                 color: context.extraColors.inputFieldBackgroundColor,
                 scale: 2,),),
             Container(
-              margin: const EdgeInsets.only(top: 604),
+              margin: const EdgeInsets.only(top: 644),
               color: context.extraColors.inputFieldBackgroundColor,
               width: 420,
               height: 600,),
@@ -48,14 +55,24 @@ class StartRoute extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Design.padding(92),
+                  Design.padding(100),
 
                   // Title Text
                   SizedBox(
                     width: double.maxFinite,
-                    child: Text(
-                      context.local.appDescription,
-                      style: TextStyles.startTitle,),),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyles.startTitle.copyWith(color: context.extraColors.grey800),
+                        children: [
+                          TextSpan(
+                              text: context.local.appDescriptionFront),
+                          TextSpan(
+                              text: '“${context.local.appName}”',
+                              style: appNameStyle),
+                          TextSpan(
+                              text: context.local.appDescriptionBack),
+                        ]
+                      ),),),
                   const Spacer(),
 
                   // start(sing up) button
