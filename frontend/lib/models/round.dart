@@ -57,7 +57,7 @@ class Round {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -77,7 +77,7 @@ class Round {
   static Future<bool> deleteRound(int roundId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -101,7 +101,7 @@ class Round {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=${round.roundId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -117,7 +117,7 @@ class Round {
   static Future<Round> getDetail(int roundId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -137,7 +137,7 @@ class Round {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -153,7 +153,7 @@ class Round {
   static Future<List<Round>> getRoundInfoResponses(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/list?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {

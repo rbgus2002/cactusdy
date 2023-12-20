@@ -26,7 +26,7 @@ class NoticeSummary {
   static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId, int offset, int pageSize) async {
     final response = await http.get(
         Uri.parse('${DatabaseService.serverUrl}api/notices/list?studyId=$studyId&offset=$offset&pageSize=$pageSize'),
-        headers: DatabaseService.getAuthHeader(),
+        headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -42,7 +42,7 @@ class NoticeSummary {
   static Future<bool> switchNoticePin(int noticeId) async {
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/notices/pin?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));

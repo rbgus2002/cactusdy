@@ -91,7 +91,7 @@ class Auth {
     if (token != null) {
       final response = await http.delete(
         Uri.parse('${DatabaseService.serverUrl}api/notifications/tokens?token=$token'),
-        headers: DatabaseService.getAuthHeader(),
+        headers: await DatabaseService.getAuthHeader(),
       );
 
       var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
@@ -109,7 +109,7 @@ class Auth {
     return result;
   }
 
-  static void getSignInfo() async {
+  static Future<void> loadSignInfo() async {
     signInfo ??= await SignInfo.readSignInfo();
   }
 

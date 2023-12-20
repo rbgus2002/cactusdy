@@ -54,7 +54,7 @@ class Comment {
   static Future<Map<String, dynamic>> getComments(int noticeId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/comments?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -81,7 +81,7 @@ class Comment {
     try {
       final response = await http.post(
         Uri.parse('${DatabaseService.serverUrl}api/comments'),
-        headers: DatabaseService.getAuthHeader(),
+        headers: await DatabaseService.getAuthHeader(),
         body: json.encode(data),
       );
 
@@ -101,7 +101,7 @@ class Comment {
   static Future<bool> deleteComment(int commentId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/comments?commentId=$commentId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {

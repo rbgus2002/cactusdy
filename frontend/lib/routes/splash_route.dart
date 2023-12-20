@@ -27,7 +27,7 @@ class _SplashRouteState extends State<SplashRoute> {
   void initState() {
     super.initState();
 
-    Auth.getSignInfo();
+    Auth.loadSignInfo();
 
     Timer(_splashDuration, () {
       if (Auth.signInfo == null) {

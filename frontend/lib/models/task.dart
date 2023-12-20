@@ -34,7 +34,7 @@ class Task {
   static Future<List<ParticipantInfo>> getTasks(int roundId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/tasks?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -54,7 +54,7 @@ class Task {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/tasks/personal'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -80,7 +80,7 @@ class Task {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/tasks/group'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -104,7 +104,7 @@ class Task {
   static Future<bool> deleteTask(int taskId, int roundParticipantId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/tasks?taskId=$taskId&roundParticipantId=$roundParticipantId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -127,7 +127,7 @@ class Task {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/tasks?taskId=${task.taskId}&roundParticipantId=$roundParticipantId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -145,7 +145,7 @@ class Task {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/tasks/check?taskId=$taskId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -165,7 +165,7 @@ class Task {
 
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/notifications/tasks?targetUserId=$targetUserId&studyId=$studyId&roundId=$roundId&taskId=$taskId&count=$count'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));

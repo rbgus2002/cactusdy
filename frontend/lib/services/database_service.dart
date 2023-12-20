@@ -13,12 +13,16 @@ class DatabaseService {
     'Content-Type': 'application/json;charset=UTF-8',
   };
 
-  static Map<String, String> getAuthHeader() {
+  static Future<Map<String, String>> getAuthHeader() async {
+    if (Auth.signInfo == null) {
+      await Auth.loadSignInfo();
+    }
+
     return {
       'accept': '*/*',
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json;charset=UTF-8',
-      'Authorization': 'Bearer ${Auth.signInfo!.token}'
+      'Authorization': 'Bearer ${Auth.signInfo?.token}'
     };
   }
 
