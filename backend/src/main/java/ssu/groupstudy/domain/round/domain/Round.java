@@ -62,6 +62,13 @@ public class Round extends BaseEntity {
                 .forEach(roundParticipants::add);
     }
 
+    public void addParticipantWithoutDuplicates(RoundParticipant participant) {
+        if (roundParticipants.contains(participant)) {
+            return;
+        }
+        roundParticipants.add(participant);
+    }
+
     public void updateAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
@@ -82,7 +89,7 @@ public class Round extends BaseEntity {
     }
 
     public Appointment getAppointment() {
-        if(this.appointment == null){
+        if (this.appointment == null) {
             return Appointment.empty();
         }
         return this.appointment;
