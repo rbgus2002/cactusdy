@@ -2,9 +2,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:group_study_app/models/study.dart';
+import 'package:group_study_app/routes/round_detail_route.dart';
+import 'package:group_study_app/routes/studies/study_detail_route.dart';
 import 'package:group_study_app/services/firebase_options.dart';
 import 'package:group_study_app/services/notification_channel.dart';
+import 'package:group_study_app/utilities/util.dart';
 
 class MessageService {
   MessageService._();
@@ -12,11 +17,12 @@ class MessageService {
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   static bool _isInitLocalNotification = false;
 
-  static void initMessageService() async {
+  static void init() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     await _initFCM();
     await _initLocalNotification();
+    await _setupInteractedMessage(_MessageInteractionHandler._handleMessageInteraction);
 
     // if you want to see firebase messaging token, uncomment under line.
     print('Firebase Messaging Token : ${await FirebaseMessaging.instance.getToken()}');
@@ -114,7 +120,7 @@ class MessageService {
     print('Handling a foreground message ${message.messageId}');
   }
 
-  static Future<void> setupInteractedMessage(Function(RemoteMessage) messageHandler) async {
+  static Future<void> _setupInteractedMessage(Function(RemoteMessage) messageHandler) async {
     RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
@@ -136,5 +142,60 @@ class MessageService {
 
   static bool _isAndroid(RemoteMessage message) {
     return (message.notification?.android != null);
+  }
+}
+
+class _MessageInteractionHandler {
+  _MessageInteractionHandler._();
+
+  static void _handleMessageInteraction(RemoteMessage message) {
+    switch (message.data['type']) {
+      case 'study':
+        int studyId = int.parse(message.data['studyId']);
+
+        _viewStudy(studyId);
+        break;
+
+      case 'round':
+        int studyId = int.parse(message.data['studyId']);
+        int roundId = int.parse(message.data['roundId']);
+        int roundSeq = int.parse(message.data['roundSeq']);
+
+        _viewRound(studyId, roundId, roundSeq);
+        break;
+
+    // [Fallthrough] : not implemented yet
+      case 'notice':
+      case 'others':
+      default:
+        // TODO: implement later
+        break;
+    }
+  }
+
+  static Future<Study?> _viewStudy(int studyId) async {
+    try {
+      Study study = await Study.getStudySummary(studyId);
+
+      Util.pushRouteByKey((context) =>
+          StudyDetailRoute(study: study));
+
+      return study;
+    } on Exception catch (e) {
+      print(Util.getExceptionMessage(e));
+    }
+  }
+
+  static void _viewRound(int studyId, int roundId, int roundSeq) async {
+    _viewStudy(studyId).then((study) {
+      if (study != null) {
+        Util.pushRouteByKey((context) =>
+            RoundDetailRoute(
+              roundSeq: roundSeq,
+              roundId: roundId,
+              study: study,
+            ));
+      }
+    });
   }
 }

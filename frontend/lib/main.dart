@@ -11,11 +11,12 @@ import 'package:group_study_app/utilities/extensions.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  MessageService.initMessageService();
+
+  LocalizationExtension.init();
+  MessageService.init();
   KakaoService.init();
-  AppTheme.initTheme();
-  LocalizationExtension.initLocale();
   UriLinkService.init();
+  AppTheme.init();
 
   runApp(const MyApp());
 }

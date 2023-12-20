@@ -35,7 +35,7 @@ class AppTheme with ChangeNotifier {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
   static const String _themeKey = 'theme';
 
-  static void initTheme() {
+  static void init() {
     _readThemeSetting();
   }
 
