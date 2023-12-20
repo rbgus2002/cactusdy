@@ -37,7 +37,7 @@ class StudyInfo {
   static Future<List<StudyInfo>> getStudies() async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/list'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {

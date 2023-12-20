@@ -44,7 +44,7 @@ class User{
 
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -63,7 +63,7 @@ class User{
   static Future<ParticipantProfile> getUserProfileDetail(int userId, int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -79,7 +79,7 @@ class User{
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/users'),);
 
-    request.headers.addAll(DatabaseService.getAuthHeader());
+    request.headers.addAll(await DatabaseService.getAuthHeader());
 
     Map<String, dynamic> data = {
       'nickname': updatedUser.nickname,
@@ -112,7 +112,7 @@ class User{
   }) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants/kick?userId=$userId&studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
@@ -132,7 +132,7 @@ class User{
 
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/notifications?targetUserId=$targetUserId&studyId=$studyId&count=$count'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));

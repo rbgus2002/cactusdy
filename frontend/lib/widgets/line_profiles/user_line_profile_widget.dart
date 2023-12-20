@@ -10,6 +10,7 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 
+/// User Profile for main route
 class UserLineProfileWidget extends StatefulWidget {
   final User user;
 

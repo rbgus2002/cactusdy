@@ -4,7 +4,6 @@ import 'package:group_study_app/themes/color_styles.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/widgets/text_counter.dart';
 
 class InputField extends StatefulWidget {
   final String? initText;
@@ -114,7 +113,7 @@ class InputFieldState extends State<InputField> {
         // Counter
         Visibility(
           visible: (widget.counter && (widget.maxLength != null)),
-          child: TextCounter(
+          child: _TextCounter(
             length: _textEditingController.text.length,
             maxLength: widget.maxLength!,),),
       ],
@@ -163,5 +162,35 @@ class InputFieldState extends State<InputField> {
   String? get errorText => _errorText;
   set errorText(String? text) {
     setState(() => _errorText = text);
+  }
+}
+
+class _TextCounter extends StatelessWidget {
+  final int length;
+  final int maxLength;
+
+  const _TextCounter({
+    Key? key,
+    required this.length,
+    required this.maxLength,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Design.padding4,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+                '$length',
+                style: TextStyles.body2.copyWith(color: ColorStyles.mainColor)),
+            Text(
+              '/$maxLength',
+              style: TextStyles.body2.copyWith(color: context.extraColors.grey400),),
+          ],),
+      ],
+    );
   }
 }

@@ -7,14 +7,17 @@ import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/widgets/buttons/circle_button.dart';
 
-class StackedProfileImages extends StatelessWidget {
+/// Stacked Profile Images for Study Profile
+/// it will show Member of Study about [_showingMaxCount]
+/// if member count is over [_showingMaxCount], it will show '+' icon also
+class StackedProfileListWidget extends StatelessWidget {
   static const double _imageSize = 26;
   static const double _overlaySize = 8;
   static const int _showingMaxCount = 5;
 
   final List<String> profileImages;
 
-  const StackedProfileImages({
+  const StackedProfileListWidget({
     required this.profileImages,
     Key? key,
   }) : super(key: key);

@@ -12,7 +12,7 @@ extension ExtraColorsExtension on BuildContext {
 extension LocalizationExtension on BuildContext {
   AppLocalizations get local => AppLocalizations.of(this)!;
 
-  static void initLocale() {
+  static void init() {
     findSystemLocale().then((value) => Intl.systemLocale = value);
   }
 }

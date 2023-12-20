@@ -7,7 +7,7 @@ import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/themes/text_styles.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/auto_scrolling_banner.dart';
+import 'package:group_study_app/widgets/noticie_widgets/auto_scrolling_banner.dart';
 
 class NoticeRollingWidget extends StatefulWidget {
   final int studyId;

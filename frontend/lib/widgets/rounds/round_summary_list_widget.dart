@@ -10,7 +10,7 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/list_model.dart';
 import 'package:group_study_app/widgets/buttons/add_button.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/round_summary_widget.dart';
+import 'package:group_study_app/widgets/rounds/round_summary_widget.dart';
 
 class RoundSummaryListWidget extends StatefulWidget {
   final Study study;
@@ -141,8 +141,8 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   }
 
   List<ParticipantProfile> _getParticipantProfileList(Round round) {
-    if (round.roundId != Round.nonAllocatedRoundId) {
-      return round.roundParticipantInfos.map((r) =>
+    if (round.roundParticipantInfos != null) {
+      return round.roundParticipantInfos!.map((r) =>
           ParticipantProfile(
               userId: r.userId,
               picture: r.picture,

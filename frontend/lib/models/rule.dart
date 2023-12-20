@@ -28,7 +28,7 @@ class Rule {
   static Future<List<Rule>> getRules(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/rules/$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -48,7 +48,7 @@ class Rule {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/rules'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -70,7 +70,7 @@ class Rule {
 
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/rules/${rule.ruleId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -91,7 +91,7 @@ class Rule {
 
     final response = await http.put(
       Uri.parse('${DatabaseService.serverUrl}api/rules/${rule.ruleId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 

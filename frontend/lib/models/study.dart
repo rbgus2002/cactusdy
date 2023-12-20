@@ -49,7 +49,7 @@ class Study {
   static Future<Study> getStudySummary(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -69,7 +69,7 @@ class Study {
     final request = http.MultipartRequest('POST',
       Uri.parse('${DatabaseService.serverUrl}api/studies'),);
 
-    request.headers.addAll(DatabaseService.getAuthHeader());
+    request.headers.addAll(await DatabaseService.getAuthHeader());
 
     Map<String, dynamic> data = {
       'studyName': studyName,
@@ -98,7 +98,7 @@ class Study {
   static Future<int> joinStudyByInvitingCode(String invitingCode) async {
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?inviteCode=$invitingCode'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
@@ -114,7 +114,7 @@ class Study {
   static Future<bool> leaveStudy(Study study) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?studyId=${study.studyId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
@@ -131,7 +131,7 @@ class Study {
     final request = http.MultipartRequest('PATCH',
       Uri.parse('${DatabaseService.serverUrl}api/studies/${updatedStudy.studyId}'),);
 
-    request.headers.addAll(DatabaseService.getAuthHeader());
+    request.headers.addAll(await DatabaseService.getAuthHeader());
 
     Map<String, dynamic> data = {
       'studyName': updatedStudy.studyName,
@@ -161,7 +161,7 @@ class Study {
   static Future<String> getStudyInvitingCode(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/$studyId/inviteCode'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -176,7 +176,7 @@ class Study {
   static Future<List<ParticipantProfile>> getMemberProfileImages(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants/summary?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -188,6 +188,15 @@ class Study {
 
       return (responseJson as List).map((p) => ParticipantProfile.fromJson(p)).toList();
     }
+  }
+
+  static void _asd() {
+
+  }
+
+  static int getInvitingCode(String uriStr) {
+    String invitingCode = uriStr.substring(uriStr.length - Study.invitingCodeLength);
+    return int.parse(invitingCode);
   }
 }
 

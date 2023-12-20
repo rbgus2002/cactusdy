@@ -57,8 +57,8 @@ class _ResetPasswordVerifyRouteState extends State<ResetPasswordVerifyRoute> {
               validator: _phoneNumberValidator,
               onEditingComplete: _requestVerificationCode,
               onChanged: (input) {
-                _phoneNumber = FormatterUtility.getNumberOnly(input);
-                _phoneNumberEditor.currentState!.text = FormatterUtility.phoneNumberFormatter(_phoneNumber);
+                _phoneNumber = Formatter.getNumberOnly(input);
+                _phoneNumberEditor.currentState!.text = Formatter.phoneNumberFormatter(_phoneNumber);
               },),
             Design.padding16,
 

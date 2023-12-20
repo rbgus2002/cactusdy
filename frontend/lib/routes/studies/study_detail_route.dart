@@ -15,7 +15,7 @@ import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
 import 'package:group_study_app/widgets/item_entry.dart';
 import 'package:group_study_app/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:group_study_app/widgets/noticie_widgets/notice_rolling_widget.dart';
-import 'package:group_study_app/widgets/round_summary_list_widget.dart';
+import 'package:group_study_app/widgets/rounds/round_summary_list_widget.dart';
 import 'package:group_study_app/widgets/rules/rule_list_widget.dart';
 
 class StudyDetailRoute extends StatefulWidget {

@@ -6,6 +6,8 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 class KakaoService {
+  KakaoService._();
+
   static final Logger logger = Logger('KakaoSharing');
 
   static void init() {
@@ -67,8 +69,10 @@ class KakaoService {
       text: context.local.invitingMessage(invitingCode, studyName),
       buttonTitle: context.local.participate,
       link: Link(
-        webUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link
-        mobileWebUrl: Uri.parse('https: //developers.kakao.com'), //< TODO: App Store link also
+        webUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link
+        mobileWebUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link also
+        iosExecutionParams: { "invitingCode": invitingCode, },
+        androidExecutionParams: { "invitingCode": invitingCode, },
       ),
     );
   }

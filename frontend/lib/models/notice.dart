@@ -47,7 +47,7 @@ class Notice {
   static Future<Notice> getNotice(int noticeId) async {
       final response = await http.get(
         Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=$noticeId'),
-        headers: DatabaseService.getAuthHeader(),
+        headers: await DatabaseService.getAuthHeader(),
       );
 
       if (response.statusCode != DatabaseService.successCode) {
@@ -68,7 +68,7 @@ class Notice {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/notices'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -89,7 +89,7 @@ class Notice {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=${notice.noticeId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
@@ -106,7 +106,7 @@ class Notice {
   static Future<bool> deleteNotice(int noticeId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/notices?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -121,7 +121,7 @@ class Notice {
   static Future<bool> switchCheckNotice(int noticeId) async {
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/notices/check?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {
@@ -135,7 +135,7 @@ class Notice {
   static Future<List<String>> getCheckUserImageList(int noticeId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/notices/users/images?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     if (response.statusCode != DatabaseService.successCode) {

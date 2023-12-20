@@ -63,7 +63,7 @@ enum StatusTag {
   static Future<bool> updateStatus(int roundParticipateId, StatusTag status) async {
     final response = await http.put(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/participants/$roundParticipateId?statusTag=${status.code}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));

@@ -14,6 +14,7 @@ import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:group_study_app/widgets/tags/status_tag_widget.dart';
 
+/// Participant Profile for Round Detail Route
 class ParticipantProfileWidget extends StatefulWidget {
   final User user;
   final int studyId;

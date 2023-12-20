@@ -10,7 +10,8 @@ import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
 
-/// Study Member Profile List
+/// Study Member Profile List (All member of Study)
+/// it shows images and nicknames
 class MemberProfileListWidget extends StatelessWidget {
   final String studyName;
   final int studyId;

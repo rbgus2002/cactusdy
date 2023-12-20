@@ -12,7 +12,7 @@ import 'package:group_study_app/utilities/util.dart';
 import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
-import 'package:group_study_app/widgets/image_picker_widget.dart';
+import 'package:group_study_app/widgets/pickers/image_picker_widget.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 import 'package:group_study_app/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:image_picker/image_picker.dart';

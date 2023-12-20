@@ -13,8 +13,11 @@ import 'package:group_study_app/widgets/buttons/primary_button.dart';
 import 'package:group_study_app/widgets/input_field.dart';
 
 class StudyParticipantRoute extends StatefulWidget {
+  final String invitingCode;
+
   const StudyParticipantRoute({
     Key? key,
+    this.invitingCode = "",
   }) : super(key: key);
 
   @override
@@ -45,8 +48,10 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
 
             InputField(
               key: _invitingCodeEditor,
+              initText: widget.invitingCode,
               hintText: context.local.invitingCodeHint,
               maxLength: Study.invitingCodeLength,
+              keyboardType: TextInputType.number,
               validator: _invitingCodeValidator,),
             const Spacer(),
 

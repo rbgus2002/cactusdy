@@ -6,7 +6,7 @@ import 'package:group_study_app/themes/custom_icons.dart';
 import 'package:group_study_app/themes/design.dart';
 import 'package:group_study_app/utilities/extensions.dart';
 import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/panels/notice_summary_widget.dart';
+import 'package:group_study_app/widgets/noticie_widgets/notice_summary_widget.dart';
 
 class NoticeListRoute extends StatefulWidget {
   final int studyId;
