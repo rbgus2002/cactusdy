@@ -51,6 +51,7 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
               initText: widget.invitingCode,
               hintText: context.local.invitingCodeHint,
               maxLength: Study.invitingCodeLength,
+              keyboardType: TextInputType.number,
               validator: _invitingCodeValidator,),
             const Spacer(),
 
