@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:group_study_app/routes/studies/study_participating_route.dart';
 import 'package:group_study_app/services/auth.dart';
+import 'package:group_study_app/main.dart';
 
 class Util {
   static const int _exceptionTextLength = "Exception: ".length;
@@ -8,6 +10,11 @@ class Util {
 
   static Function doNothing() {
     return () {};
+  }
+
+  static Future<void> pushRouteByKey(WidgetBuilder builder) async {
+    MyApp.navigationKey.currentState?.push(
+        MaterialPageRoute(builder: builder));
   }
 
   static Future<void> pushRoute(BuildContext context, WidgetBuilder builder) async {

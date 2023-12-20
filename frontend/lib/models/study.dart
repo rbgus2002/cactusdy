@@ -189,6 +189,15 @@ class Study {
       return (responseJson as List).map((p) => ParticipantProfile.fromJson(p)).toList();
     }
   }
+
+  static void _asd() {
+
+  }
+
+  static int getInvitingCode(String uriStr) {
+    String invitingCode = uriStr.substring(uriStr.length - Study.invitingCodeLength);
+    return int.parse(invitingCode);
+  }
 }
 
 class ParticipantProfile {
