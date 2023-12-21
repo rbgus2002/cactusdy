@@ -3,17 +3,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/routes/sign_routes/reset_password_route.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/formatter_utility.dart';
-import 'package:group_study_app/utilities/time_utility.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/input_field.dart';
+import 'package:groupstudy/routes/sign_routes/reset_password_route.dart';
+import 'package:groupstudy/services/auth.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/formatter_utility.dart';
+import 'package:groupstudy/utilities/time_utility.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/outlined_primary_button.dart';
+import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/input_field.dart';
 
 class ResetPasswordVerifyRoute extends StatefulWidget {
   const ResetPasswordVerifyRoute({

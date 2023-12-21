@@ -1,18 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/status_tag.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/routes/profiles/profile_route.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/bottom_sheets/bottom_sheets.dart';
-import 'package:group_study_app/widgets/tags/status_tag_widget.dart';
+import 'package:groupstudy/models/status_tag.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/routes/profiles/profile_route.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
+import 'package:groupstudy/widgets/tags/status_tag_widget.dart';
 
 /// Participant Profile for Round Detail Route
 class ParticipantProfileWidget extends StatefulWidget {

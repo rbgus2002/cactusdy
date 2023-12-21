@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/routes/studies/study_inviting_route.dart';
-import 'package:group_study_app/routes/profiles/profile_route.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/routes/studies/study_inviting_route.dart';
+import 'package:groupstudy/routes/profiles/profile_route.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 
 /// Study Member Profile List (All member of Study)
 /// it shows images and nicknames

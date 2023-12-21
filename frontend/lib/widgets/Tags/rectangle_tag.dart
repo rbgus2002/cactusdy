@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/widgets/tags/tag_widget.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/widgets/tags/tag_widget.dart';
 
 class RectangleTag extends TagWidget {
   const RectangleTag({

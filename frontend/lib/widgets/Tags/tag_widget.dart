@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
+import 'package:groupstudy/themes/design.dart';
 
 class TagWidget extends StatelessWidget {
   final double width;

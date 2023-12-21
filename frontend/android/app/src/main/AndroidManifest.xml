@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.group_study_app">
+    package="com.ssu.groupstudy">
 
     <!-- for Notification -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="group_study_app"
+        android:label="group_study"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

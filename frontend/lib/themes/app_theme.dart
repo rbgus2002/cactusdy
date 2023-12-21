@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
 
 extension ThemeModeStringExtension on ThemeMode {
   static const String _light = 'light';

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/widgets/tags/tag_widget.dart';
+import 'package:groupstudy/widgets/tags/tag_widget.dart';
 
 class RoundedTag extends TagWidget {
   const RoundedTag({

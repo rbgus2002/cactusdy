@@ -2,13 +2,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_info.dart';
-import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/widgets/line_profiles/participant_profile_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
+import 'package:groupstudy/models/participant_info.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/widgets/line_profiles/participant_profile_widget.dart';
+import 'package:groupstudy/widgets/tasks/task_group_widget.dart';
 
 class ParticipantInfoWidget extends StatefulWidget {
   final ParticipantInfo participantInfo;

@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/primary_button.dart';
-import 'package:group_study_app/widgets/pickers/image_picker_widget.dart';
-import 'package:group_study_app/widgets/input_field.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
+import 'package:groupstudy/widgets/input_field.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileEditRoute extends StatefulWidget {

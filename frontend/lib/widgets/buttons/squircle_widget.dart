@@ -1,9 +1,9 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/widgets/diagrams/squircle.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/diagrams/squircle.dart';
 
 class SquircleWidget extends StatelessWidget {
   final Widget? child;

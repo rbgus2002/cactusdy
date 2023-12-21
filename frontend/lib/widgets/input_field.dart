@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class InputField extends StatefulWidget {
   final String? initText;

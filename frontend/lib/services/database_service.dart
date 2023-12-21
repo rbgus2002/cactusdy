@@ -1,5 +1,5 @@
 
-import 'package:group_study_app/services/auth.dart';
+import 'package:groupstudy/services/auth.dart';
 
 class DatabaseService {
   DatabaseService._();

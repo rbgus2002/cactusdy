@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:group_study_app/models/study_tag.dart';
-import 'package:group_study_app/services/logger.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/study_tag.dart';
+import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';

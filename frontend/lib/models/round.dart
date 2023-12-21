@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/round_participant_info.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/round_participant_info.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 

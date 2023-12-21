@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/stab_controller.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/tasks/task_list_title.dart';
-import 'package:group_study_app/widgets/tasks/task_widget.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/list_model.dart';
+import 'package:groupstudy/utilities/stab_controller.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/tasks/task_list_title.dart';
+import 'package:groupstudy/widgets/tasks/task_widget.dart';
 
 class TaskGroupWidget extends StatefulWidget {
   final int userId;

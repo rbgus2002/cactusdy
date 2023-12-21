@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class TaskCheckBox extends StatefulWidget {
   final Task task;

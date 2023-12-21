@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:group_study_app/routes/splash_route.dart';
-import 'package:group_study_app/services/kakao_service.dart';
-import 'package:group_study_app/services/message_service.dart';
-import 'package:group_study_app/services/uri_link_service.dart';
-import 'package:group_study_app/themes/app_theme.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/routes/splash_route.dart';
+import 'package:groupstudy/services/kakao_service.dart';
+import 'package:groupstudy/services/message_service.dart';
+import 'package:groupstudy/services/uri_link_service.dart';
+import 'package:groupstudy/themes/app_theme.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

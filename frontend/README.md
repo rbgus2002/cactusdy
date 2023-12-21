@@ -1,4 +1,4 @@
-# group_study_app
+# groupstudy
 
 group study app
 
