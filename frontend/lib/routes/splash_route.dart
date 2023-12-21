@@ -37,6 +37,7 @@ class _SplashRouteState extends State<SplashRoute> {
       else {
         debugPrint(Auth.signInfo!.token); //< FIXME
         Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
+        UriLinkService.handleInitialUri();
       }
     });
   }
