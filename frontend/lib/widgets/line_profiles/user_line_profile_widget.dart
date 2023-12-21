@@ -51,7 +51,8 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                     style: TextStyles.head3.copyWith(color: context.extraColors.grey800)),
                 Text(
                     widget.user.statusMessage,
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500),
+                    overflow: TextOverflow.ellipsis,),
               ],),
           ),
 

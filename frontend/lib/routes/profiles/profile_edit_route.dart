@@ -77,8 +77,6 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
                 initText: widget.user.statusMessage,
                 hintText: context.local.inputHint2(context.local.statusMessage),
                 maxLength: User.statusMessageMaxLength,
-                minLines: 3,
-                maxLines: 3,
                 counter: true,
                 validator: _statusMessageValidator,),
             ],
@@ -107,12 +105,8 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
           widget.user.nickname = _nicknameEditor.currentState!.text;
           widget.user.statusMessage = _statusMessageEditor.currentState!.text;
 
-          await User.updateUserProfile(widget.user, _profileImage).then((value) {
-            Toast.showToast(
-                context: context,
-                message: context.local.successToDo(context.local.editing));
-            Util.popRoute(context);
-          });
+          await User.updateUserProfile(widget.user, _profileImage).then((value) =>
+            Util.popRoute(context));
         } on Exception catch(e) {
           if (context.mounted) {
             Toast.showToast(
