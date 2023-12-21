@@ -53,7 +53,8 @@ class StudyProfileWidget extends StatelessWidget {
               // Study Name
               Text(
                 studyInfo.study.studyName,
-                style: TextStyles.head4.copyWith(color: context.extraColors.grey900),),
+                style: TextStyles.head4.copyWith(color: context.extraColors.grey900),
+                overflow: TextOverflow.ellipsis),
               Design.padding4,
 
               // Study Place & Date

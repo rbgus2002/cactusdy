@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Study {
   // string length limits
-  static const int studyNameMaxLength = 12;
+  static const int studyNameMaxLength = 14;
   static const int studyDetailMaxLength = 20;
 
   // state code
