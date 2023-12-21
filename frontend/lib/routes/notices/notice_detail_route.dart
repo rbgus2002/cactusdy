@@ -244,8 +244,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               maxLength: Comment.commentMaxLength,
               focusNode: focusNode,
               hintText: context.local.inputHint1(context.local.comment),
-              onTapOutSide: (event) => Util.doNothing(),
-              validator: _commentValidator,),),
+              onTapOutSide: (event) => Util.doNothing(),),),
           IconButton(
             icon: const Icon(CustomIcons.send, size: 24),
             color: ColorStyles.mainColor,
@@ -253,13 +252,6 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
             onPressed: _writeComment,),
         ],),
     );
-  }
-
-  String? _commentValidator(String? input) {
-    if (input == null || input.isEmpty) {
-      return context.local.inputHint1(context.local.comment);
-    }
-    return null;
   }
 
   void _setReplyTo(int index) {
@@ -278,7 +270,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   void _writeComment() async {
-    if (_commentEditor.currentState!.validate()) {
+    if (_commentEditor.currentState!.text.isNotEmpty) {
       if (!_isProcessing) {
         _isProcessing = true;
 
