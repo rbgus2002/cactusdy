@@ -39,7 +39,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   late Future<Map<String, dynamic>> _futureCommentInfo;
   List<Comment> _comments = [];
-  int _replyTo = Comment.commentWithNoParent;
+  int _replyTo = Comment.noReplyTarget;
 
   late Notice _noticeRef;
 
@@ -241,7 +241,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
               key: _commentEditor,
               minLines: 1,
               maxLines: 5,
-              maxLength: 100,
+              maxLength: Comment.commentMaxLength,
               focusNode: focusNode,
               hintText: context.local.inputHint1(context.local.comment),
               onTapOutSide: (event) => Util.doNothing(),
@@ -267,7 +267,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
       // #Case : double check => uncheck
       if (_replyTo == index) {
         focusNode.unfocus();
-        _replyTo = Comment.commentWithNoParent;
+        _replyTo = Comment.noReplyTarget;
       }
       // #Case : Single check
       else {
@@ -287,14 +287,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
           await Comment.writeComment(
               _noticeRef.noticeId, _commentEditor.currentState!.text,
               parentCommentId).then((newCommentId) {
-            if (newCommentId != Comment.commentCreationError) {
-              // Reset writing box and reply target
-              focusNode.unfocus();
-              _commentEditor.currentState!.text = "";
-              _replyTo = Comment.commentWithNoParent;
+            // Reset writing box and reply target
+            focusNode.unfocus();
+            _commentEditor.currentState!.text = "";
+            _replyTo = Comment.noReplyTarget;
 
-              _refresh();
-            }
+            _refresh();
           });
         } on Exception catch (e) {
           if (context.mounted) {
@@ -352,7 +350,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   int? _getParentId() {
-    return (_replyTo != Comment.commentWithNoParent) ?
+    return (_replyTo != Comment.noReplyTarget) ?
         _comments[_replyTo].commentId
         : null;
   }
