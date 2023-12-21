@@ -4,7 +4,7 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Comment {
-  // string length limits
+  // string length limit
   static const commentMaxLength = 255;
 
   // state code

@@ -10,8 +10,8 @@ import 'package:image_picker/image_picker.dart';
 class User{
   // string length limits
   static const int nameMaxLength = 255;
-  static const int nicknameMaxLength = 255;
-  static const int statusMessageMaxLength = 255;
+  static const int nicknameMaxLength = 6;
+  static const int statusMessageMaxLength = 20;
 
   // state code
   static const int nonAllocatedUserId = -1;

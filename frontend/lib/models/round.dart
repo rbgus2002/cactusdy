@@ -9,8 +9,8 @@ import 'package:intl/intl.dart';
 
 class Round {
   // string length limits
-  static const int detailMaxLength = 100;
-  static const int placeMaxLength = 30;
+  static const int detailMaxLength = 255;
+  static const int placeMaxLength = 15;
 
   // state code
   static const int nonAllocatedRoundId = -1;

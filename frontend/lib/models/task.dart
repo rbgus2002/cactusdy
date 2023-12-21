@@ -5,7 +5,10 @@ import 'package:group_study_app/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Task {
-  static const int taskMaxLength = 200;
+  // string length limit
+  static const int taskMaxLength = 255;
+
+  // state code
   static const int nonAllocatedTaskId = -1;
 
   int taskId;
