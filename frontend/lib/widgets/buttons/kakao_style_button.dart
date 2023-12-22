@@ -25,6 +25,8 @@ class KakaoStyleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        elevation: 0,
+        shadowColor: Colors.transparent,
         backgroundColor: _containerColor,),
       onPressed: onPressed,
       child: Container(
