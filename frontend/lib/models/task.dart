@@ -49,7 +49,9 @@ class Task {
     }
   }
 
-  static Future<bool> createPersonalTask(Task task, int roundParticipantId) async {
+  static Future<bool> createPersonalTask({
+      required Task task,
+      required int roundParticipantId}) async {
     Map<String, dynamic> data = {
       "roundParticipantId": roundParticipantId,
       "detail": task.detail,
@@ -75,7 +77,11 @@ class Task {
     }
   }
 
-  static Future<bool> createGroupTask(Task task, int roundId, Function(String, List<TaskInfo>)? notify) async {
+  static Future<bool> createGroupTask({
+      required Task task,
+      required int roundId,
+      required int roundParticipantId,
+      required Function(String, List<TaskInfo>)? notify}) async {
     Map<String, dynamic> data = {
       "roundId": roundId,
       "detail": task.detail,
@@ -96,6 +102,15 @@ class Task {
       List<TaskInfo> taskInfoList = ((responseJson['data']['groupTasks']??[]) as List).map((i) =>
           TaskInfo.fromJson(i)).toList();
 
+      // find adder's taskId
+      for (var taskInfo in taskInfoList) {
+        if (taskInfo.roundParticipantId == roundParticipantId) {
+          task.taskId = taskInfo.taskId;
+          break;
+        }
+      }
+
+      // if there are other's taskGroup => notify
       if (notify != null) {
         notify(task.detail, taskInfoList);
       }
@@ -160,12 +175,11 @@ class Task {
   }
 
   static Future<bool> stabTask({
-    required int targetUserId,
-    required int studyId,
-    required int roundId,
-    required int taskId,
-    required int count}) async {
-
+      required int targetUserId,
+      required int studyId,
+      required int roundId,
+      required int taskId,
+      required int count}) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/notifications/tasks?targetUserId=$targetUserId&studyId=$studyId&roundId=$roundId&taskId=$taskId&count=$count'),
       headers: await DatabaseService.getAuthHeader(),
