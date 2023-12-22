@@ -1,7 +1,7 @@
 
-import 'package:group_study_app/models/status_tag.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/user.dart';
+import 'package:groupstudy/models/status_tag.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/models/user.dart';
 
 class ParticipantInfo {
   final int roundParticipantId;

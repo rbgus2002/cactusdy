@@ -1,16 +1,16 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/start_route.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/themes/app_theme.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/routes/start_route.dart';
+import 'package:groupstudy/services/auth.dart';
+import 'package:groupstudy/themes/app_theme.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 
 class _ThemeModeData {
   ThemeMode mode;

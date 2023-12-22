@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:group_study_app/themes/color_styles.dart';
+import 'package:groupstudy/themes/color_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 

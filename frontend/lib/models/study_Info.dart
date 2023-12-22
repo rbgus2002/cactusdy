@@ -1,10 +1,10 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/round.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class StudyInfo {

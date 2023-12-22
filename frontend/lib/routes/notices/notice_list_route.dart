@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/models/notice_summary.dart';
-import 'package:group_study_app/routes/notices/notice_create_route.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/noticie_widgets/notice_summary_widget.dart';
+import 'package:groupstudy/models/notice.dart';
+import 'package:groupstudy/models/notice_summary.dart';
+import 'package:groupstudy/routes/notices/notice_create_route.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/noticie_widgets/notice_summary_widget.dart';
 
 class NoticeListRoute extends StatefulWidget {
   final int studyId;

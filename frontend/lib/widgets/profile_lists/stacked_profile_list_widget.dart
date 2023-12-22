@@ -2,10 +2,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/participant_summary.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:groupstudy/models/participant_summary.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/buttons/circle_button.dart';
 
 /// Stacked Profile Images for Study Profile
 /// it will show Member of Study about [_showingMaxCount]

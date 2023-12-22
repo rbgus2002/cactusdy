@@ -1,21 +1,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/status_tag.dart';
-import 'package:group_study_app/models/study_tag.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/stab_controller.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/outlined_primary_button.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
-import 'package:group_study_app/widgets/tags/study_tag_widget.dart';
+import 'package:groupstudy/models/status_tag.dart';
+import 'package:groupstudy/models/study_tag.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/stab_controller.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/outlined_primary_button.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/tags/study_tag_widget.dart';
 
 class ProfileRoute extends StatefulWidget {
   final int userId;

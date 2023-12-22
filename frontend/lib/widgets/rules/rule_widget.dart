@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/rule.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/models/rule.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class RuleWidget extends StatefulWidget {
   final Rule rule;
@@ -27,14 +27,14 @@ class RuleWidget extends StatefulWidget {
 }
 
 class _RuleWidgetState extends State<RuleWidget> {
-  final _textEditingController = TextEditingController();
+  final _textEditor = TextEditingController();
   final _focusNode = FocusNode();
 
   bool _isEdited = false;
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.rule.detail;
+    _textEditor.text = widget.rule.detail;
 
     return SizedBox(
       height: widget.height,
@@ -51,13 +51,15 @@ class _RuleWidgetState extends State<RuleWidget> {
           Flexible(
             fit: FlexFit.tight,
             child: TextField(
+              autofocus: _isAdded(),
+              focusNode: _focusNode,
               enabled: widget.enable,
               maxLines: 1,
               maxLength: Rule.ruleMaxLength,
               style: TextStyles.body1.copyWith(
                 color: context.extraColors.grey600,),
 
-              controller: _textEditingController,
+              controller: _textEditor,
               decoration: InputDecoration(
                 isDense: true,
                 hintText: context.local.inputHint1(context.local.rules),
@@ -79,14 +81,14 @@ class _RuleWidgetState extends State<RuleWidget> {
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    _textEditor.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
   void _updateRule() {
-    if (_isEdited) {
-      widget.rule.detail = _textEditingController.text;
+    if (_isEdited || _textEditor.text.isEmpty) {
+      widget.rule.detail = _textEditor.text;
 
       if (widget.rule.detail.isNotEmpty) {
         widget.onUpdateRuleDetail(widget.rule);
@@ -99,5 +101,9 @@ class _RuleWidgetState extends State<RuleWidget> {
 
     _focusNode.unfocus();
     setState(() {});
+  }
+
+  bool _isAdded() {
+    return widget.rule.ruleId == Rule.nonAllocatedRuleId;
   }
 }

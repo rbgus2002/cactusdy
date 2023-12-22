@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
 
 extension ThemeModeStringExtension on ThemeMode {
   static const String _light = 'light';
@@ -76,6 +76,8 @@ class AppTheme with ChangeNotifier {
       expansionTileTheme: _expansionTileThemeData,
       listTileTheme: _listTileThemeData,
 
+      pageTransitionsTheme: _pageTransitionsTheme,
+
       extensions: const [
         ExtraColors.extraColors,
       ]
@@ -98,6 +100,8 @@ class AppTheme with ChangeNotifier {
       datePickerTheme: _datePickerThemeData,
       expansionTileTheme: _expansionTileThemeData,
       listTileTheme: _listTileThemeData,
+
+      pageTransitionsTheme: _pageTransitionsTheme,
 
       extensions: const [
         ExtraColors.extraColorsDark,
@@ -135,5 +139,13 @@ class AppTheme with ChangeNotifier {
     minLeadingWidth: 0,
     horizontalTitleGap: -16,
     dense: true,
+  );
+
+  static const PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(
+    builders: {
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+    }
   );
 }

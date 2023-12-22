@@ -2,11 +2,11 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/study_tag.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/color_util.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/models/study_tag.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/color_util.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class StudyTagWidget extends StatelessWidget {
   static const double size = 20;

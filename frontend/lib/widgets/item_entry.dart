@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/text_styles.dart';
+import 'package:groupstudy/themes/text_styles.dart';
 
 class ItemEntry extends PopupMenuItem {
   static const double _popupHeight = 44;

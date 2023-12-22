@@ -2,15 +2,15 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/round_participant_info.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/round_participant_info.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class Round {
   // string length limits
-  static const int detailMaxLength = 100;
-  static const int placeMaxLength = 30;
+  static const int detailMaxLength = 255;
+  static const int placeMaxLength = 15;
 
   // state code
   static const int nonAllocatedRoundId = -1;

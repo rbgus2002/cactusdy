@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/study.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/stab_controller.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/tasks/task_list_title.dart';
-import 'package:group_study_app/widgets/tasks/task_widget.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/list_model.dart';
+import 'package:groupstudy/utilities/stab_controller.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/tasks/task_list_title.dart';
+import 'package:groupstudy/widgets/tasks/task_widget.dart';
 
 class TaskGroupWidget extends StatefulWidget {
   final int userId;
@@ -42,6 +42,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   late ListModel<Task> _taskListModel;
 
   late final bool _isOwner;
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -60,31 +61,36 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TaskListTitle(
-              enable: _isOwner,
-              title: widget.taskGroup.taskTypeName,
-              onTap: () {
-                HapticFeedback.lightImpact();
-                if (_isAddable()) {
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TaskListTitle(
+            enable: _isOwner,
+            title: widget.taskGroup.taskTypeName,
+            onTap: () {
+              HapticFeedback.lightImpact();
+              if (!_isProcessing) {
+                _isProcessing = true;
+
+                Util.delay(() {
                   _addTask(Task());
-                }
-              }),
-          Design.padding12,
+                  _isProcessing = false;
+                });
+              }
+            }),
+        Design.padding12,
 
-          AnimatedList(
-            key: _taskListKey,
-            shrinkWrap: true,
-            primary: false,
-            reverse: true,
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
+        AnimatedList(
+          key: _taskListKey,
+          shrinkWrap: true,
+          primary: false,
+          reverse: true,
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.vertical,
 
-            initialItemCount: _taskListModel.length,
-            itemBuilder: _buildTask,),
-        ]
+          initialItemCount: _taskListModel.length,
+          itemBuilder: _buildTask,),
+      ]
     );
   }
 
@@ -159,8 +165,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     if (task.taskId == Task.nonAllocatedTaskId) {
       if (task.detail.isNotEmpty) {
         (widget.taskGroup.isShared) ?
-          Task.createGroupTask(task, widget.roundId, _notifyToOther) :
-          Task.createPersonalTask(task, widget.taskGroup.roundParticipantId);
+          Task.createGroupTask(
+              task: task,
+              roundId: widget.roundId,
+              roundParticipantId: widget.taskGroup.roundParticipantId,
+              notify: _notifyToOther) :
+          Task.createPersonalTask(
+              task: task,
+              roundParticipantId: widget.taskGroup.roundParticipantId);
 
         // add new empty tasks
         _addTask(Task());
@@ -196,12 +208,5 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   bool _isValidIndex(int index) {
     return (index >= 0 && index < _taskListModel.length);
-  }
-
-  bool _isAddable() {
-    // will add in last (reversed; last is top)
-    return (_taskListModel.items.isEmpty ||
-        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
-    );
   }
 }

@@ -1,16 +1,16 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/study_Info.dart';
-import 'package:group_study_app/routes/round_detail_route.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/color_util.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/time_utility.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/profile_lists/stacked_profile_list_widget.dart';
-import 'package:group_study_app/widgets/tags/rectangle_tag.dart';
+import 'package:groupstudy/models/study_Info.dart';
+import 'package:groupstudy/routes/round_detail_route.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/color_util.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/time_utility.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/profile_lists/stacked_profile_list_widget.dart';
+import 'package:groupstudy/widgets/tags/rectangle_tag.dart';
 
 class StudyProfileWidget extends StatelessWidget {
   static const double _imageSize = 88;
@@ -53,7 +53,8 @@ class StudyProfileWidget extends StatelessWidget {
               // Study Name
               Text(
                 studyInfo.study.studyName,
-                style: TextStyles.head4.copyWith(color: context.extraColors.grey900),),
+                style: TextStyles.head4.copyWith(color: context.extraColors.grey900),
+                overflow: TextOverflow.ellipsis),
               Design.padding4,
 
               // Study Place & Date

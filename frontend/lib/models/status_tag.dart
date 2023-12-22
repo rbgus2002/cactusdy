@@ -2,8 +2,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/services/database_service.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 import 'package:http/http.dart' as http;
 
 enum StatusTag {

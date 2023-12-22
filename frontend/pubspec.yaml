@@ -1,4 +1,4 @@
-name: group_study_app
+name: groupstudy
 description: group study app
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

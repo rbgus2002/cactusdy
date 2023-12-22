@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/widgets/diagrams/dash_line.dart';
+import 'package:groupstudy/widgets/diagrams/dash_line.dart';
 
 @Deprecated('we cant certain progress')
 class DashLineChartWidget extends StatelessWidget {

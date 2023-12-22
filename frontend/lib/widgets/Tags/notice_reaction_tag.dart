@@ -1,14 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
+import 'package:groupstudy/models/notice.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/buttons/circle_button.dart';
 
 class NoticeReactionTag extends StatefulWidget {
   final Notice notice;

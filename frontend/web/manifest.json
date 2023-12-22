@@ -1,6 +1,6 @@
 {
-    "name": "group_study_app",
-    "short_name": "group_study_app",
+    "name": "groupstudy",
+    "short_name": "groupstudy",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

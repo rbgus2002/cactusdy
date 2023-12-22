@@ -1,9 +1,9 @@
 
 import 'dart:async';
 
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/utilities/util.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/utilities/util.dart';
 
 abstract class StabController {
   static const int _waitingTime = 3; // 3 sec

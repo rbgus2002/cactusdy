@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:295774991714:android:fd2012676c1ebe0663e83b",
+        "mobilesdk_app_id": "1:295774991714:android:7c0cfa6c9a811dae63e83b",
         "android_client_info": {
-          "package_name": "com.example.group_study_app"
+          "package_name": "com.ssu.groupstudy"
         }
       },
       "oauth_client": [],

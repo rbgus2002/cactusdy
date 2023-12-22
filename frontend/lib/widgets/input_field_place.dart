@@ -1,9 +1,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/models/round.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class InputFieldPlace extends StatefulWidget {
   final TextEditingController placeEditingController;

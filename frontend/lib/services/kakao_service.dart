@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/services/logger.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 class KakaoService {

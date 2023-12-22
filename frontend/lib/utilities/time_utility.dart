@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 import 'package:intl/intl.dart';
 
 class TimeUtility {

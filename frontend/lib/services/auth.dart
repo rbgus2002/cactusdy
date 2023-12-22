@@ -2,8 +2,8 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/sign_info.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,9 +11,11 @@ import 'package:image_picker/image_picker.dart';
 class Auth {
   Auth._();
 
+  // string length limits
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
+  // const values
   static const int verificationCodeLength = 6;
   static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
 

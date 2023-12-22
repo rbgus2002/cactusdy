@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/stab_controller.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/dialogs/two_button_dialog.dart';
-import 'package:group_study_app/widgets/tasks/task_check_box.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/stab_controller.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/tasks/task_check_box.dart';
 
 class TaskWidget extends StatefulWidget {
   final TaskStabController taskStabController;
@@ -36,21 +36,14 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidget extends State<TaskWidget> {
-  final _textEditingController = TextEditingController();
+  final _textEditor = TextEditingController();
   final _focusNode = FocusNode();
 
-  // 1) Edit Text or 2) new Task
   bool _isEdited = false;
 
   @override
-  void initState() {
-    super.initState();
-    _isEdited = _isAdded();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _textEditingController.text = widget.task.detail;
+    _textEditor.text = widget.task.detail;
     return Ink(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
@@ -82,7 +75,7 @@ class _TaskWidget extends State<TaskWidget> {
   void dispose() {
     widget.taskStabController.send();
 
-    _textEditingController.dispose();
+    _textEditor.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -101,7 +94,7 @@ class _TaskWidget extends State<TaskWidget> {
           leading: 0.4,),
 
         focusNode: _focusNode,
-        controller: _textEditingController,
+        controller: _textEditor,
         textAlign: TextAlign.justify,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
@@ -115,8 +108,16 @@ class _TaskWidget extends State<TaskWidget> {
             borderSide: BorderSide(color: context.extraColors.grey700!,),),),
 
         onChanged: (value) => _isEdited = true,
-        onTapOutside: (event) => _updateTask(),
-        onSubmitted: (value) => _updateTask(),
+        onTapOutside: (event) {
+            // empty && tap outside => delete task
+            if (_textEditor.text.isEmpty) {
+              _updateTask();
+            }},
+        onSubmitted: (value) {
+            // summit => update or delete task
+            if (_isEdited || _textEditor.text.isEmpty) {
+              _updateTask();
+            }},
       ),
     );
   }
@@ -195,24 +196,22 @@ class _TaskWidget extends State<TaskWidget> {
   }
 
   void _updateTask() {
-    if (_isEdited) {
-      widget.task.detail = _textEditingController.text;
+    widget.task.detail = _textEditor.text;
 
-      // #Case: detail is not empty
-      if (widget.task.detail.isNotEmpty) {
-        widget.onUpdateTaskDetail(widget.task);
-      }
-
-      // #Case: detail is empty;
-      else {
-        widget.onDeleteTask(widget.task);
-      }
-
-      _isEdited = false;
+    // #Case: detail is not empty
+    if (widget.task.detail.isNotEmpty) {
+      widget.onUpdateTaskDetail(widget.task);
     }
 
-    _focusNode.unfocus();
-    setState(() {});
+    // #Case: detail is empty;
+    else {
+      widget.onDeleteTask(widget.task);
+    }
+
+    setState(() {
+      _focusNode.unfocus();
+      _isEdited = false;
+    });
   }
 
   String _getStabMessage(int stabCount) {

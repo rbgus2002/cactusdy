@@ -1,11 +1,14 @@
 import 'dart:convert';
 
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Comment {
-  static const commentCreationError = -1;
-  static const commentWithNoParent = -1;
+  // string length limit
+  static const commentMaxLength = 255;
+
+  // state code
+  static const noReplyTarget = -1;
 
   final int userId;
   final String nickname;
@@ -78,23 +81,19 @@ class Comment {
       'parentCommentId': parentCommentId
     };
 
-    try {
-      final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}api/comments'),
-        headers: await DatabaseService.getAuthHeader(),
-        body: json.encode(data),
-      );
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/comments'),
+      headers: await DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
 
-      if (response.statusCode != DatabaseService.successCode) {
-        throw Exception("Failed to write new comment");
-      } else {
-        int newCommentId = json.decode(response.body)['data']['commentId'];
-        return newCommentId;
-      }
-    }
-    catch (e) {
-      print(e);
-      return commentCreationError;
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      int newCommentId = responseJson['data']['commentId'];
+      return newCommentId;
     }
   }
 

@@ -3,16 +3,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:group_study_app/models/rule.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/buttons/add_button.dart';
-import 'package:group_study_app/widgets/rules/rule_widget.dart';
+import 'package:groupstudy/models/rule.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/list_model.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/add_button.dart';
+import 'package:groupstudy/widgets/rules/rule_widget.dart';
 
 class RuleListWidget extends StatefulWidget {
   final List<Rule> rules;
@@ -38,6 +39,8 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
   bool _expended = false;
   bool _isShadowed = false;
+
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -190,10 +193,17 @@ class _RuleListWidgetState extends State<RuleListWidget> {
       setState(() => _expended = true);
     }
 
-    if (_ruleListModel.length < Rule.ruleLimitedCount) {
-      _ruleListModel.add(Rule());
-      setState(() {});
+    if (_isAddable()) {
+      _isProcessing = true;
+
+      Util.delay(() {
+        setState(() {
+          _ruleListModel.add(Rule());
+          _isProcessing = false;
+        });
+      });
     }
+
     else {
       Toast.showToast(
           context: context,
@@ -234,5 +244,9 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
   bool _isValidIndex(int index) {
     return (index >= 0 && index < _ruleListModel.length);
+  }
+
+  bool _isAddable() {
+    return (_ruleListModel.length < Rule.ruleLimitedCount);
   }
 }

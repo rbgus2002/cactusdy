@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/user.dart';
-import 'package:group_study_app/routes/profiles/profile_edit_route.dart';
-import 'package:group_study_app/routes/setting_route.dart';
-import 'package:group_study_app/themes/custom_icons.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/extensions.dart';
-import 'package:group_study_app/utilities/util.dart';
-import 'package:group_study_app/widgets/buttons/squircle_widget.dart';
-import 'package:group_study_app/widgets/item_entry.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/routes/profiles/profile_edit_route.dart';
+import 'package:groupstudy/routes/setting_route.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/item_entry.dart';
 
 /// User Profile for main route
 class UserLineProfileWidget extends StatefulWidget {
@@ -51,7 +51,8 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                     style: TextStyles.head3.copyWith(color: context.extraColors.grey800)),
                 Text(
                     widget.user.statusMessage,
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500)),
+                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500),
+                    overflow: TextOverflow.ellipsis,),
               ],),
           ),
 

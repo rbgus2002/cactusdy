@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/extensions.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 class CircleButton extends StatelessWidget {
   final double size;
