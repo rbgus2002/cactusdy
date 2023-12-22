@@ -76,6 +76,8 @@ class AppTheme with ChangeNotifier {
       expansionTileTheme: _expansionTileThemeData,
       listTileTheme: _listTileThemeData,
 
+      pageTransitionsTheme: _pageTransitionsTheme,
+
       extensions: const [
         ExtraColors.extraColors,
       ]
@@ -98,6 +100,8 @@ class AppTheme with ChangeNotifier {
       datePickerTheme: _datePickerThemeData,
       expansionTileTheme: _expansionTileThemeData,
       listTileTheme: _listTileThemeData,
+
+      pageTransitionsTheme: _pageTransitionsTheme,
 
       extensions: const [
         ExtraColors.extraColorsDark,
@@ -135,5 +139,13 @@ class AppTheme with ChangeNotifier {
     minLeadingWidth: 0,
     horizontalTitleGap: -16,
     dense: true,
+  );
+
+  static const PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(
+    builders: {
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+    }
   );
 }
