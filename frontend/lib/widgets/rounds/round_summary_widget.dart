@@ -42,6 +42,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   late final TextEditingController _placeEditingController;
 
+  bool _isProcessing = false;
+
   @override
   void initState() {
     super.initState();
@@ -200,16 +202,22 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   }
 
   void _viewRound() async {
-    if (widget.round.roundId == Round.nonAllocatedRoundId) {
-      await Round.createRound(widget.round, widget.study.studyId);
-    }
+    if (!_isProcessing) {
+      _isProcessing = true;
 
-    if (context.mounted) {
-      Util.pushRoute(context, (context) =>
-          RoundDetailRoute(
-            roundSeq: widget.roundSeq,
-            roundId: widget.round.roundId, study: widget.study,
-            onRemove: () => widget.onRemove(widget.roundSeq),));
+      if (widget.round.roundId == Round.nonAllocatedRoundId) {
+        await Round.createRound(widget.round, widget.study.studyId);
+      }
+
+      if (context.mounted) {
+        Util.pushRoute(context, (context) =>
+            RoundDetailRoute(
+              roundSeq: widget.roundSeq,
+              roundId: widget.round.roundId, study: widget.study,
+              onRemove: () => widget.onRemove(widget.roundSeq),));
+      }
+
+      _isProcessing = false;
     }
   }
 
