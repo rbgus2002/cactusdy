@@ -40,10 +40,9 @@ class MemberProfileListWidget extends StatelessWidget {
         (snapshot.hasData) ?
           SizedBox(
             height: scale + 12, // 12 = (padding: 2) + (nicknameHeight: 10);
-            child: ListView.separated(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length + 1, // add 1 for last add button
-              separatorBuilder: (context, index) => Design.padding(paddingSize),
               itemBuilder: (context, index) =>
                 _isLast(index, snapshot.data!.length) ?
                     // last => Add Participant Button
@@ -62,7 +61,7 @@ class MemberProfileListWidget extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           SizedBox(
-            width: scale,
+            width: scale + paddingSize,
             child: InkWell(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -115,32 +114,34 @@ class MemberProfileListWidget extends StatelessWidget {
   }
 
   Widget _addButton(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          child: SquircleWidget(
-            scale: scale,
-            backgroundColor:Colors.transparent,
-            child: Icon(
-                size: 24,
-                Icons.add,
-                color: context.extraColors.grey400,),),
-          onTap: () {
-            HapticFeedback.lightImpact();
-            Util.pushRoute(context, (context) =>
-                StudyInvitingRoute(
-                  studyName: studyName,
-                  studyId: studyId,));
-          }),
-      ],
+    return SizedBox(
+      width: scale + paddingSize,
+      child: Column(
+        children: [
+          InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            child: SquircleWidget(
+              scale: scale,
+              backgroundColor:Colors.transparent,
+              child: Icon(
+                  size: 24,
+                  Icons.add,
+                  color: context.extraColors.grey400,),),
+            onTap: () {
+              HapticFeedback.lightImpact();
+              Util.pushRoute(context, (context) =>
+                  StudyInvitingRoute(
+                    studyName: studyName,
+                    studyId: studyId,));
+            }),
+        ],
+      ),
     );
   }
 
   Widget _adminBadge(BuildContext context) {
     return Positioned(
-        left: -4,
         top: 24,
         child: CircleAvatar(
           radius: 9,
