@@ -8,7 +8,7 @@ class TagWidget extends StatelessWidget {
   final Text text;
   final Color color;
   final double radius;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const TagWidget({
     Key? key,
@@ -17,7 +17,7 @@ class TagWidget extends StatelessWidget {
     required this.text,
     required this.color,
     required this.radius,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   @override

@@ -17,6 +17,7 @@ import 'package:groupstudy/widgets/tags/status_tag_widget.dart';
 /// Participant Profile for Round Detail Route
 class ParticipantProfileWidget extends StatefulWidget {
   final User user;
+  final int hostId;
   final int studyId;
   final int roundParticipantId;
   final double taskProgress;
@@ -26,6 +27,7 @@ class ParticipantProfileWidget extends StatefulWidget {
   ParticipantProfileWidget({
     Key? key,
     required this.user,
+    required this.hostId,
     required this.studyId,
     required this.roundParticipantId,
     required this.taskProgress,
@@ -81,7 +83,9 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           context: context,
           status: widget.status,
           reserved: widget.reserved,
-          onTap: _showStatusPicker,
+          onTap: (_isEditable())?
+            _showStatusPicker
+            : null,
         ),
       ],
     );
@@ -109,5 +113,10 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
       }
       widget.status = newStatus;
     }
+  }
+
+  bool _isEditable() {
+    return (Util.isOwner(widget.user.userId) ||
+        (Util.isOwner(widget.hostId)));
   }
 }

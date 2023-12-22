@@ -7,7 +7,7 @@ class RoundedTag extends TagWidget {
     Key? key,
     required super.text,
     required super.color,
-    required super.onTap,
+    super.onTap,
 
     required super.width,
     required super.height,

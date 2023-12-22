@@ -61,6 +61,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
         ParticipantProfileWidget(
           roundParticipantId: widget.participantInfo.roundParticipantId,
           user: widget.participantInfo.participant,
+          hostId: widget.study.hostId,
           status: widget.participantInfo.status,
           studyId: widget.study.studyId,
           taskProgress: _progress,
