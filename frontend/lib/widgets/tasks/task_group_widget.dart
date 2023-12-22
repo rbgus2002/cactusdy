@@ -42,6 +42,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   late ListModel<Task> _taskListModel;
 
   late final bool _isOwner;
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -60,31 +61,36 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TaskListTitle(
-              enable: _isOwner,
-              title: widget.taskGroup.taskTypeName,
-              onTap: () {
-                HapticFeedback.lightImpact();
-                if (_isAddable()) {
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TaskListTitle(
+            enable: _isOwner,
+            title: widget.taskGroup.taskTypeName,
+            onTap: () {
+              HapticFeedback.lightImpact();
+              if (!_isProcessing) {
+                _isProcessing = true;
+
+                Util.delay(() {
                   _addTask(Task());
-                }
-              }),
-          Design.padding12,
+                  _isProcessing = false;
+                });
+              }
+            }),
+        Design.padding12,
 
-          AnimatedList(
-            key: _taskListKey,
-            shrinkWrap: true,
-            primary: false,
-            reverse: true,
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
+        AnimatedList(
+          key: _taskListKey,
+          shrinkWrap: true,
+          primary: false,
+          reverse: true,
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.vertical,
 
-            initialItemCount: _taskListModel.length,
-            itemBuilder: _buildTask,),
-        ]
+          initialItemCount: _taskListModel.length,
+          itemBuilder: _buildTask,),
+      ]
     );
   }
 
@@ -196,12 +202,5 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
 
   bool _isValidIndex(int index) {
     return (index >= 0 && index < _taskListModel.length);
-  }
-
-  bool _isAddable() {
-    // will add in last (reversed; last is top)
-    return (_taskListModel.items.isEmpty ||
-        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId)
-    );
   }
 }
