@@ -21,10 +21,10 @@ class TwoButtonDialog {
     int maxLines = 1,
     required String buttonText1,
     required VoidCallback onPressed1,
-    bool isOutlined1 = false,
+    //bool isOutlined1 = false,
     required String buttonText2,
     required VoidCallback onPressed2,
-    bool isOutlined2 = true,
+    //bool isOutlined2 = true,
   }) {
     return showDialog(
         barrierColor: context.extraColors.barrierColor!,
@@ -54,30 +54,18 @@ class TwoButtonDialog {
                           color: context.extraColors.grey800),),),
                   Design.padding32,
 
-                  (isOutlined1)?
-                    OutlinedPrimaryButton(
+                  PrimaryButton(
                       text: buttonText1,
                       onPressed: () {
                         Util.popRoute(context);
-                        onPressed1(); }) :
-                    PrimaryButton(
-                        text: buttonText1,
-                        onPressed: () {
-                          Util.popRoute(context);
-                          onPressed1(); }),
+                        onPressed1(); }),
                   Design.padding12,
 
-                  (isOutlined2)?
-                    OutlinedPrimaryButton(
-                      text: buttonText2,
-                      onPressed: () {
-                        Util.popRoute(context);
-                        onPressed2(); }) :
-                    PrimaryButton(
-                      text: buttonText2,
-                      onPressed: () {
-                        Util.popRoute(context);
-                        onPressed2(); }),
+                  OutlinedPrimaryButton(
+                    text: buttonText2,
+                    onPressed: () {
+                      Util.popRoute(context);
+                      onPressed2(); })
                 ],),),
           );
         }
