@@ -72,10 +72,8 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
               if (!_isProcessing) {
                 _isProcessing = true;
 
-                Util.delay(() {
-                  _addTask(Task());
-                  _isProcessing = false;
-                });
+                _addTask(Task());
+                _isProcessing = false;
               }
             }),
         Design.padding12,

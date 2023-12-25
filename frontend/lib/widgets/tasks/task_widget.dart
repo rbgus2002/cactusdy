@@ -111,12 +111,16 @@ class _TaskWidget extends State<TaskWidget> {
         onTapOutside: (event) {
             // empty && tap outside => delete task
             if (_textEditor.text.isEmpty) {
-              _updateTask();
+              _deleteTask();
+              setState(() { });
             }},
         onSubmitted: (value) {
             // summit => update or delete task
             if (_isEdited || _textEditor.text.isEmpty) {
               _updateTask();
+              setState(() {
+                _isEdited = false;
+              });
             }},
       ),
     );
@@ -203,13 +207,12 @@ class _TaskWidget extends State<TaskWidget> {
 
     // #Case: detail is empty;
     else {
-      widget.onDeleteTask(widget.task);
+      _deleteTask();
     }
+  }
 
-    setState(() {
-      _focusNode.unfocus();
-      _isEdited = false;
-    });
+  void _deleteTask() {
+    widget.onDeleteTask(widget.task);
   }
 
   String _getStabMessage(int stabCount) {

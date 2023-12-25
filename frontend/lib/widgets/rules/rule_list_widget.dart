@@ -196,11 +196,9 @@ class _RuleListWidgetState extends State<RuleListWidget> {
     if (_isAddable()) {
       _isProcessing = true;
 
-      Util.delay(() {
-        setState(() {
-          _ruleListModel.add(Rule());
-          _isProcessing = false;
-        });
+      setState(() {
+        _ruleListModel.add(Rule());
+        _isProcessing = false;
       });
     }
 

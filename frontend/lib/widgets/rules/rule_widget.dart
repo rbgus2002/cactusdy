@@ -72,8 +72,20 @@ class _RuleWidgetState extends State<RuleWidget> {
                   borderSide: BorderSide(color: context.extraColors.grey700!,),),),
 
               onChanged: (value) => _isEdited = true,
-              onTapOutside: (event) => _updateRule(),
-              onSubmitted: (value) => _updateRule(),
+              onTapOutside: (event) {
+                // empty && tap outside => delete rule
+                if (_textEditor.text.isEmpty) {
+                  _deleteRule();
+                  setState(() { });
+                }},
+              onSubmitted: (value) {
+                // summit => update or delete rule
+                if (_isEdited || _textEditor.text.isEmpty) {
+                  _updateRule();
+                  setState(() {
+                    _isEdited = false;
+                  });
+                }},
             ),),
       ],),
     );
@@ -87,20 +99,21 @@ class _RuleWidgetState extends State<RuleWidget> {
   }
 
   void _updateRule() {
-    if (_isEdited || _textEditor.text.isEmpty) {
-      widget.rule.detail = _textEditor.text;
+    widget.rule.detail = _textEditor.text;
 
-      if (widget.rule.detail.isNotEmpty) {
-        widget.onUpdateRuleDetail(widget.rule);
-      } else {
-        widget.onDeleteRule(widget.rule);
-      }
-
-      _isEdited = false;
+    // #Case: detail is not empty
+    if (widget.rule.detail.isNotEmpty) {
+      widget.onUpdateRuleDetail(widget.rule);
     }
 
-    _focusNode.unfocus();
-    setState(() {});
+    // #Case: detail is empty;
+    else {
+      _deleteRule();
+    }
+  }
+
+  void _deleteRule() {
+    widget.onDeleteRule(widget.rule);
   }
 
   bool _isAdded() {
