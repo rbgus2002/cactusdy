@@ -95,9 +95,10 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
 
     Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
-      widget.noticeSummary.notice = refreshedNotice;
-      _noticeRef = refreshedNotice;
-      setState(() {});
+      setState(() {
+        widget.noticeSummary.notice = refreshedNotice;
+        _noticeRef = refreshedNotice;
+      });
     });
   }
 

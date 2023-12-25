@@ -82,7 +82,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         icon: const Icon(CustomIcons.writing_outline),
         onTap: () => Util.pushRoute(context, (context) =>
             ProfileEditRoute(user: widget.user)).then((value) =>
-                Util.delay(() => setState(() {}),),
+                Util.delay(() => setState(() { }),),
         ),),
 
       // setting

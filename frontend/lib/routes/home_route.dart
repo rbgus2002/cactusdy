@@ -97,7 +97,7 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Future<void> _refresh() async {
-    return setState(() {});
+    return setState(() { });
   }
 
   Future _getUserProfile() async {

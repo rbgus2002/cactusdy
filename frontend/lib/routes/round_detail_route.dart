@@ -268,7 +268,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    setState(() {});
+    setState(() { });
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
