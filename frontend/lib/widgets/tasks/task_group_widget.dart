@@ -78,16 +78,21 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             }),
         Design.padding12,
 
-        AnimatedList(
-          key: _taskListKey,
-          shrinkWrap: true,
-          primary: false,
-          reverse: true,
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
+        InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: Util.doNothing,
+          child: AnimatedList(
+            key: _taskListKey,
+            shrinkWrap: true,
+            primary: false,
+            reverse: true,
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
 
-          initialItemCount: _taskListModel.length,
-          itemBuilder: _buildTask,),
+            initialItemCount: _taskListModel.length,
+            itemBuilder: _buildTask,),
+        ),
       ]
     );
   }

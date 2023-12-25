@@ -44,30 +44,25 @@ class _TaskWidget extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     _textEditor.text = widget.task.detail;
-    return Ink(
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: Util.doNothing, // For prevent miss touch
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TaskCheckBox(
-              task: widget.task,
-              activeColor: widget.color,
-              onChanged: _onChecked,
-              enable: widget.isOwner,),
-            Design.padding12,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TaskCheckBox(
+            task: widget.task,
+            activeColor: widget.color,
+            onChanged: _onChecked,
+            enable: widget.isOwner,),
+          Design.padding12,
 
-            _taskDetail(),
+          _taskDetail(),
 
-            (widget.isOwner) ?
-              _taskPopupMenu() :
-              _stabButton(),
-          ],),
-      ),
+          (widget.isOwner) ?
+            _taskPopupMenu() :
+            _stabButton(),
+        ],),
     );
   }
 
