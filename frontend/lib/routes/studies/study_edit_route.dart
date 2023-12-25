@@ -34,7 +34,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   final GlobalKey<InputFieldState> _studyDetailEditor = GlobalKey();
 
   late final bool _isHost;
-  late Study _study;
+  late Study _studyRef;
 
   XFile? _studyImage;
   bool _isProcessing = false;
@@ -42,8 +42,8 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   @override
   void initState() {
     super.initState();
-    _study = widget.study;
-    _isHost = (_study.hostId == Auth.signInfo?.userId);
+    _studyRef = widget.study;
+    _isHost = (_studyRef.hostId == Auth.signInfo?.userId);
   }
 
   @override
@@ -97,12 +97,12 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
 
         InputField(
           key: _studyNameEditor,
-          initText: _study.studyName,
+          initText: _studyRef.studyName,
           hintText: context.local.inputHint1(context.local.studyName),
           maxLength: Study.studyNameMaxLength,
           counter: true,
           validator: _studyNameValidator,
-          onChanged: (input) => _study.studyName = input,),
+          onChanged: (input) => _studyRef.studyName = input,),
         Design.padding12,
 
         // Study Detail
@@ -114,14 +114,14 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
 
         InputField(
           key: _studyDetailEditor,
-          initText: _study.detail,
+          initText: _studyRef.detail,
           hintText: context.local.inputHint1(context.local.studyDetail),
           maxLength: Study.studyDetailMaxLength,
           minLines: 2,
           maxLines: 3,
           counter: true,
           validator: _studyDetailValidator,
-          onChanged: (input) => _study.detail = input,),
+          onChanged: (input) => _studyRef.detail = input,),
         Design.padding(32),
 
         // Study Color
@@ -135,9 +135,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         Design.padding16,
 
         MemberProfileListWidget(
-          studyName: _study.studyName,
-          studyId: _study.studyId,
-          hostId: _study.hostId,
+          study: _studyRef,
           border: true,
           onTap: _changeAdmin,),
         Design.padding(20),
@@ -175,7 +173,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: _study.color,),
+                backgroundColor: _studyRef.color,),
               Design.padding12,
 
               Icon(
@@ -194,7 +192,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         maxLines: 4,
 
         buttonText1: context.local.confirm,
-        onPressed1: () => setState(() => _study.hostId = newAdmin.userId),
+        onPressed1: () => setState(() => _studyRef.hostId = newAdmin.userId),
 
         buttonText2: context.local.cancel,
         onPressed2: () {}// << Assert to do nothing
@@ -202,7 +200,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   }
 
   void _changeColor(Color newColor) {
-    setState(() => _study.color = newColor);
+    setState(() => _studyRef.color = newColor);
   }
 
   void _updateStudy() async {
@@ -212,7 +210,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         _isProcessing = true;
 
         try {
-          await Study.updateStudy(_study, _studyImage).then((value) {
+          await Study.updateStudy(_studyRef, _studyImage).then((value) {
             Toast.showToast(
                 context: context,
                 message: context.local.successToDo(context.local.editing));

@@ -20,11 +20,13 @@ import 'package:groupstudy/widgets/tags/study_tag_widget.dart';
 class ProfileRoute extends StatefulWidget {
   final int userId;
   final int studyId;
+  final VoidCallback? onKick;
 
   const ProfileRoute({
     Key? key,
     required this.userId,
     required this.studyId,
+    this.onKick,
   }) : super(key: key);
 
   @override
@@ -283,6 +285,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
           userId: widget.userId,
           studyId: widget.studyId).then((value) =>
             Util.popRoute(context));
+      if (widget.onKick != null) {
+        widget.onKick!();
+      }
     } on Exception catch(e) {
       if (context.mounted) {
         Toast.showToast(

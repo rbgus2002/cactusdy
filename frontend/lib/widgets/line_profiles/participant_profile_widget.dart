@@ -22,9 +22,9 @@ class ParticipantProfileWidget extends StatefulWidget {
   final int roundParticipantId;
   final double taskProgress;
   final bool reserved;
-  StatusTag status;
+  final StatusTag status;
 
-  ParticipantProfileWidget({
+  const ParticipantProfileWidget({
     Key? key,
     required this.user,
     required this.hostId,
@@ -41,6 +41,13 @@ class ParticipantProfileWidget extends StatefulWidget {
 
 class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
   static const double _imageSize = 48;
+  late StatusTag _statusRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _statusRef = widget.status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +56,11 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
       children: [
         // Participant Profile Image (Left Part)
         InkWell(
-          onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-            ProfileRoute(
-                userId: widget.user.userId,
-                studyId: widget.studyId),),
+          onTap: () => Util.pushRouteWithSlideUp(
+              context, (context, animation, secondaryAnimation) =>
+                ProfileRoute(
+                  userId: widget.user.userId,
+                  studyId: widget.studyId),),
           child: SquircleImageWidget(
               scale: _imageSize,
               url: widget.user.profileImage),),
@@ -81,7 +89,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           width: 48,
           height: 30,
           context: context,
-          status: widget.status,
+          status: _statusRef,
           reserved: widget.reserved,
           onTap: (_isEditable())?
             _showStatusPicker
@@ -100,10 +108,10 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
 
   void _updateStatus(StatusTag newStatus) async {
     HapticFeedback.lightImpact();
-    if (widget.status != newStatus) {
+    if (_statusRef != newStatus) {
       try {
         await StatusTag.updateStatus(widget.roundParticipantId, newStatus).then((value) =>
-            setState((){ }),);
+            setState(() => _statusRef = newStatus),);
       } on Exception catch(e) {
         if (context.mounted) {
           Toast.showToast(
@@ -111,7 +119,6 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
               message: Util.getExceptionMessage(e));
         }
       }
-      widget.status = newStatus;
     }
   }
 
