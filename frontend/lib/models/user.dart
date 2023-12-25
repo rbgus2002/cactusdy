@@ -100,7 +100,7 @@ class User{
       throw Exception(responseJson['message']);
     } else {
       print('sucess to update user profile');
-      updatedUser.profileImage = responseJson['data']['user']['profileImage'];
+      updatedUser.profileImage = responseJson['data']['user']['profileImage']??"";
 
       return responseJson['success'];
     }
