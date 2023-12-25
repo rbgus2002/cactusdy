@@ -92,7 +92,7 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
 
   String? _invitingCodeValidator(String? input) {
     if (input == null || input.length < Study.invitingCodeLength) {
-      return context.local.discordInvitingCode;
+      return context.local.shortInvitingCode;
     }
     return null;
   }
