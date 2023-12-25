@@ -59,14 +59,14 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
           // Popup button to edit profile and setting
           SizedBox(
             // for sizing down of PopupMenuButton
-            width: 20, // HomeRoute.specialPadding: 16 + 4
+            width: 24, // HomeRoute.specialPadding: 16 + 4
             height: _iconSize,
             child: PopupMenuButton(
               icon: Icon(
                 CustomIcons.more_vert,
                 color: context.extraColors.grey500,
                 size: _iconSize,),
-              splashRadius: _iconSize / 2,
+              splashRadius: 0.1,
               padding: EdgeInsets.zero,
               itemBuilder: _popupMenuBuilder,
               constraints: const BoxConstraints(minWidth: Design.popupWidth),),),

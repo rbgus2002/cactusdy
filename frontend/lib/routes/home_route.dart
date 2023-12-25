@@ -50,14 +50,14 @@ class _HomeRouteState extends State<HomeRoute> {
                     (snapshot.hasData) ?
                       UserLineProfileWidget(user: snapshot.data!) :
                       Container(height: 48,)),
-                Design.padding(44),
+                Design.padding28,
 
                 // title line
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      context.local.myStudy,
+                      ' ${context.local.myStudy}',
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                     AddButton(
                       iconData: CustomIcons.plus_square_outline,
