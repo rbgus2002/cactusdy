@@ -149,12 +149,17 @@ class BottomSheets {
     required final DateTime initTime,
     required final Function(DateTime) onSelected}) {
       final List<String> amAndPm = [ context.local.am, context.local.pm ];
+
       const double height = 200;
       const double itemExtent = 36;
 
-      int aIdx = 0;
-      int hIdx = 0;
-      int mIdx = 0;
+      int aIdx = initTime.hour ~/ 12;
+      int hIdx = initTime.hour % 12;
+      int mIdx = initTime.minute;
+
+      final amAndPmController = FixedExtentScrollController(initialItem: aIdx);
+      final hourController = FixedExtentScrollController(initialItem: hIdx);
+      final minController = FixedExtentScrollController(initialItem: mIdx);
 
       _basicBottomSheet(
         context: context,
@@ -177,7 +182,7 @@ class BottomSheets {
                   Container(
                     width: double.maxFinite,
                     height: itemExtent,
-                    margin: const EdgeInsets.only(bottom: 8),
+                    margin: const EdgeInsets.only(bottom: 0),
                     decoration: BoxDecoration(
                       color: context.extraColors.grey100,
                       borderRadius: Design.borderRadius,),),
@@ -191,22 +196,30 @@ class BottomSheets {
                         width: 80,
                         height: height,
                         child: CupertinoPicker(
+                          scrollController: amAndPmController,
                           itemExtent: itemExtent,
                           selectionOverlay: null,
-                          children: amAndPm.map((m) => Text(
-                            m, style: TextStyles.head2,)).toList(),
-                          onSelectedItemChanged: (idx) => aIdx = idx,),),
+                          children: amAndPm.map((m) =>
+                            Center(
+                              child: Text(m, style: TextStyles.head3,),
+                            )).toList(),
+                          onSelectedItemChanged: (idx) => aIdx = idx),),
 
                       // Hour
                       SizedBox(
                         width: 60,
                         height: height,
                         child: CupertinoPicker(
+                          scrollController: hourController,
                           itemExtent: itemExtent,
                           looping: true,
                           selectionOverlay: null,
-                          children: List.generate(12, (index) => Text(
-                            ((index == 0)? 12 : index).toString().padLeft(2, '  '), style: TextStyles.head2,)),
+                          children: List.generate(12, (index) =>
+                            Center(
+                              child: Text(
+                                ((index == 0)? 12 : index).toString().padLeft(2, '  '),
+                                style: TextStyles.head2,),
+                            ),),
                           onSelectedItemChanged: (idx) => hIdx = idx,),),
 
                       // Min
@@ -214,12 +227,16 @@ class BottomSheets {
                         width: 60,
                         height: height,
                         child: CupertinoPicker(
+                          scrollController: minController,
                           itemExtent: itemExtent,
                           looping: true,
                           selectionOverlay: null,
-                          children: List.generate(12, (index) => Text(
-                            (index * 5).toString().padLeft(2, '0'), style: TextStyles.head2,)),
-                          onSelectedItemChanged: (idx) => mIdx = idx,),),
+                          children: List.generate(12, (index) =>
+                            Center(
+                              child: Text(
+                                (index * 5).toString().padLeft(2, '0'), style: TextStyles.head2,),
+                            ),),
+                          onSelectedItemChanged: (idx) => mIdx = idx),),
                     ],),
                 ],),
               Design.padding16,
@@ -227,7 +244,11 @@ class BottomSheets {
               PrimaryButton(
                 text: context.local.confirm,
                 onPressed: () {
-                  DateTime pickedTime = TimeUtility.buildDateTime(aIdx: aIdx, hIdx: hIdx, mIdx: mIdx);
+                  hIdx %= 12;
+                  mIdx %= 12;
+
+                  DateTime pickedTime = TimeUtility.buildDateTime(
+                      aIdx: aIdx, hIdx: hIdx, mIdx: mIdx);
                   onSelected(pickedTime);
 
                   Util.popRoute(context);
