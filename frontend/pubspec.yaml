@@ -40,7 +40,6 @@ dependencies:
   http: ^0.13.6
 
   intl: ^0.18.1
-  flutter_colorpicker: ^1.0.3
   flutter_secure_storage: ^9.0.0
   device_info_plus: ^9.0.3
   cached_network_image: ^3.3.0
