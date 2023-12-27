@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:groupstudy/themes/design.dart';
@@ -21,52 +22,54 @@ class TwoButtonDialog {
     int maxLines = 1,
     required String buttonText1,
     required VoidCallback onPressed1,
-    //bool isOutlined1 = false,
     required String buttonText2,
     required VoidCallback onPressed2,
-    //bool isOutlined2 = true,
   }) {
     return showDialog(
-        barrierColor: context.extraColors.barrierColor!,
+        barrierColor: context.extraColors.barrierColor!.withOpacity(0.1),
         context: context,
         builder: (context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-              borderRadius: Design.borderRadiusBig,),
-            insetPadding: _padding,
-            backgroundColor: context.extraColors.grey50,
-            content: SizedBox(
-              width: _innerWidth,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Design.padding12,
+          return BackdropFilter(
+            filter: Design.basicBlur,
+            child: AlertDialog(
+              shape: const RoundedRectangleBorder(
+                borderRadius: Design.borderRadiusBig,),
+              insetPadding: _padding,
+              backgroundColor: context.extraColors.grey50!.withOpacity(0.95),
+              shadowColor: Colors.transparent,
+              content: SizedBox(
+                width: _innerWidth,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Design.padding12,
 
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: _textWidth),
-                    child: Text(
-                      text,
-                      maxLines: maxLines,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyles.head3.copyWith(
-                          color: context.extraColors.grey800),),),
-                  Design.padding32,
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: _textWidth),
+                      child: Text(
+                        text,
+                        maxLines: maxLines,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyles.head3.copyWith(
+                            color: context.extraColors.grey800),),),
+                    Design.padding32,
 
-                  PrimaryButton(
-                      text: buttonText1,
+                    PrimaryButton(
+                        text: buttonText1,
+                        onPressed: () {
+                          Util.popRoute(context);
+                          onPressed1(); }),
+                    Design.padding12,
+
+                    OutlinedPrimaryButton(
+                      text: buttonText2,
                       onPressed: () {
                         Util.popRoute(context);
-                        onPressed1(); }),
-                  Design.padding12,
-
-                  OutlinedPrimaryButton(
-                    text: buttonText2,
-                    onPressed: () {
-                      Util.popRoute(context);
-                      onPressed2(); })
-                ],),),
+                        onPressed2(); })
+                  ],),),
+            ),
           );
         }
     );
