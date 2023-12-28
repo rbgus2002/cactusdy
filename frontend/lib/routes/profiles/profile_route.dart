@@ -62,7 +62,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
-                  _kickAndStabButton(snapshot.data!.participant),
+                  _kickAndStabButton(snapshot.data!),
                   Design.padding48,
                 ],) :
               Design.loadingIndicator,),
@@ -220,9 +220,10 @@ class _ProfileRouteState extends State<ProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButton(User participant) {
+  Widget _kickAndStabButton(ParticipantProfile participantProfile) {
     return Visibility(
-      visible: (!Util.isOwner(widget.userId)),
+      visible: (!Util.isOwner(widget.userId)
+            && participantProfile.isParticipated),
       child: Container(
         padding: Design.edgePadding,
         height: 92,
@@ -246,7 +247,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   userStabController.stab();
                   Toast.showToast(
                     context: context,
-                    message: _getStabMessage(participant.nickname, userStabController.stabCount),);
+                    message: _getStabMessage(
+                        participantProfile.participant.nickname,
+                        userStabController.stabCount),);
                 },
                 child: Container(
                   width: double.maxFinite,
