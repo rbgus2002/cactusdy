@@ -121,10 +121,10 @@ create table if not exists round
         primary key,
     create_date   datetime(6)  not null,
     modified_date datetime(6)  not null,
-    study_place   varchar(30)  null,
+    study_place   varchar(15)  null,
     study_time    datetime(6)  null,
     delete_yn     char         not null,
-    detail        varchar(100) null,
+    detail        varchar(255) null,
     study_id      bigint       not null,
     constraint FK41ah5maxtjcdgiohmdr2s9fai
         foreign key (study_id) references study (study_id)

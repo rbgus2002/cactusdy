@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Appointment {
-    @Column(length = 30)
+    @Column(length = 15)
     private String studyPlace;
     @Column
     private LocalDateTime studyTime;
