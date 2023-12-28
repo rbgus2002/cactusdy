@@ -30,7 +30,7 @@ public class Notice extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String contents;
 
     @Column(nullable = false)

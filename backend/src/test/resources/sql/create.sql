@@ -7,10 +7,10 @@ create table if not exists `user`
     delete_yn      char         not null,
     phone_number   varchar(255) not null,
     name           varchar(255) not null,
-    nickname       varchar(255) not null,
+    nickname       varchar(6) not null,
     phone_model    varchar(255) null,
     picture        varchar(255) null,
-    status_message varchar(255) null,
+    status_message varchar(20) null,
     password       varchar(255) not null
 );
 
@@ -42,10 +42,10 @@ create table if not exists study
     create_date    datetime(6)  not null,
     modified_date  datetime(6)  not null,
     delete_yn      char         not null,
-    detail         varchar(40)  null,
+    detail         varchar(20)  null,
     invite_code varchar(255) not null,
     picture        varchar(255) null,
-    study_name     varchar(30)  not null,
+    study_name     varchar(14)  not null,
     host_user_id        bigint       not null,
     constraint FKkhcyngf15w120k4wx6pp21ijn
         foreign key (host_user_id) references `user` (user_id)
@@ -57,7 +57,7 @@ create table if not exists notice
         primary key,
     create_date   datetime(6)  not null,
     modified_date datetime(6)  not null,
-    contents      varchar(100) not null,
+    contents      varchar(500) not null,
     delete_yn     char         not null,
     pin_yn        char         not null,
     title         varchar(50)  not null,
@@ -87,7 +87,7 @@ create table if not exists comment
         primary key,
     create_date       datetime(6)  not null,
     modified_date     datetime(6)  not null,
-    contents          varchar(100) not null,
+    contents          varchar(255) not null,
     delete_yn         char         not null,
     notice_id         bigint       null,
     parent_comment_id bigint       null,
@@ -121,10 +121,10 @@ create table if not exists round
         primary key,
     create_date   datetime(6)  not null,
     modified_date datetime(6)  not null,
-    study_place   varchar(30)  null,
+    study_place   varchar(15)  null,
     study_time    datetime(6)  null,
     delete_yn     char         not null,
-    detail        varchar(100) null,
+    detail        varchar(255) null,
     study_id      bigint       not null,
     constraint FK41ah5maxtjcdgiohmdr2s9fai
         foreign key (study_id) references study (study_id)
@@ -160,7 +160,7 @@ create table if not exists task
 (
     task_id       bigint auto_increment
         primary key,
-    detail        varchar(200) not null,
+    detail        varchar(255) not null,
     done_yn       char         not null,
     task_type     varchar(20)  not null,
     user_round_id bigint       not null,

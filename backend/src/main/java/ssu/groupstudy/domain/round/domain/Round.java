@@ -30,7 +30,7 @@ public class Round extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @Column(length = 100)
+    @Column(length = 255)
     private String detail;
 
     @Embedded
