@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:groupstudy/models/status_tag.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/profiles/profile_route.dart';
-import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
-import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/participant_info_widget.dart';
 import 'package:groupstudy/widgets/tags/status_tag_widget.dart';
 
 /// Participant Profile for Round Detail Route
@@ -20,9 +20,9 @@ class ParticipantProfileWidget extends StatefulWidget {
   final int hostId;
   final int studyId;
   final int roundParticipantId;
-  final double taskProgress;
   final bool scheduled;
   final StatusTag status;
+  final ProgressText progressTextWidget;
 
   const ParticipantProfileWidget({
     Key? key,
@@ -30,9 +30,9 @@ class ParticipantProfileWidget extends StatefulWidget {
     required this.hostId,
     required this.studyId,
     required this.roundParticipantId,
-    required this.taskProgress,
     required this.status,
     required this.scheduled,
+    required this.progressTextWidget,
   }) : super(key: key);
 
   @override
@@ -79,9 +79,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
               Design.padding4,
 
               // Task Progress (%)
-              Text(
-                  '${(widget.taskProgress * 100).toStringAsFixed(1)}%',
-                  style: TextStyles.head5.copyWith(color: ColorStyles.mainColor)),
+              widget.progressTextWidget,
             ],),
         ),
 
