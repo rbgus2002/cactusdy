@@ -37,6 +37,13 @@ public class ParticipantApi {
         return ResponseDto.success();
     }
 
+    @Operation(summary = "스터디 회원 강퇴하기", description = "방장만 해당 기능을 이용할 수 있다")
+    @DeleteMapping("/kick")
+    public ResponseDto kickParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long userId, @RequestParam Long studyId){
+        participantsService.kickParticipant(userDetails.getUser(), userId, studyId);
+        return ResponseDto.success();
+    }
+
     @Operation(summary = "스터디에 소속된 사용자의 프로필 이미지를 모두 불러온다", description = "가입 시각을 기준으로 오름차순 정렬한다")
     @GetMapping("/summary")
     public ResponseDto getParticipantsProfileImageList(@RequestParam Long studyId){
@@ -49,12 +56,5 @@ public class ParticipantApi {
     public ResponseDto getParticipant(@RequestParam Long userId, @RequestParam Long studyId){
         ParticipantResponse participant = participantsService.getParticipant(userId, studyId);
         return DataResponseDto.of("participant", participant);
-    }
-
-    @Operation(summary = "스터디 회원 강퇴하기", description = "방장만 해당 기능을 이용할 수 있다")
-    @DeleteMapping("/kick")
-    public ResponseDto kickParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long userId, @RequestParam Long studyId){
-        participantsService.kickParticipant(userDetails.getUser(), userId, studyId);
-        return ResponseDto.success();
     }
 }

@@ -13,10 +13,12 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -34,7 +36,7 @@ public class Round extends BaseEntity {
     @Embedded
     private Appointment appointment;
 
-    @OneToMany(mappedBy = "round", cascade = PERSIST)
+    @OneToMany(mappedBy = "round", cascade = ALL, orphanRemoval = true)
     private final List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
@@ -67,6 +69,10 @@ public class Round extends BaseEntity {
             return;
         }
         roundParticipants.add(participant);
+    }
+
+    public void removeParticipant(RoundParticipant participant){
+        roundParticipants.remove(participant);
     }
 
     public void updateAppointment(Appointment appointment) {
