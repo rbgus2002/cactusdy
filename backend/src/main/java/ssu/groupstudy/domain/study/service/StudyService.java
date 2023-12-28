@@ -61,7 +61,6 @@ public class StudyService {
         canCreateNewStudy(user);
         Study study = createNewStudy(dto, user);
         handleUploadProfileImage(study, image);
-        createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
