@@ -160,7 +160,7 @@ create table if not exists task
 (
     task_id       bigint auto_increment
         primary key,
-    detail        varchar(200) not null,
+    detail        varchar(255) not null,
     done_yn       char         not null,
     task_type     varchar(20)  not null,
     user_round_id bigint       not null,
