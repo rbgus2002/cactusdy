@@ -87,7 +87,7 @@ create table if not exists comment
         primary key,
     create_date       datetime(6)  not null,
     modified_date     datetime(6)  not null,
-    contents          varchar(100) not null,
+    contents          varchar(255) not null,
     delete_yn         char         not null,
     notice_id         bigint       null,
     parent_comment_id bigint       null,
