@@ -34,6 +34,10 @@ class _HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.extraColors.baseBackgroundColor,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: context.extraColors.baseBackgroundColor,
+        shape: InputBorder.none,),
       body: RefreshIndicator(
           onRefresh: _refresh,
           child: SingleChildScrollView(
@@ -41,7 +45,7 @@ class _HomeRouteState extends State<HomeRoute> {
             padding: _specialPadding,
             child: Column(
               children: [
-                Design.padding(76),
+                Design.padding20,
 
                 // User Profile
                 FutureBuilder(

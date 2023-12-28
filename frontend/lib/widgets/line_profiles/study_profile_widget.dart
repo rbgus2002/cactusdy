@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/study_Info.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
+import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/color_util.dart';
@@ -81,7 +82,7 @@ class StudyProfileWidget extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: context.extraColors.grey700,),),
-                      color: context.extraColors.blue!,
+                      color: studyInfo.study.color.withOpacity(0.3),
                       onTap: () => Util.pushRoute(context, (context) =>
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
@@ -101,8 +102,8 @@ class StudyProfileWidget extends StatelessWidget {
                         context.local.reserved,
                         style: TextStyles.caption1.copyWith(
                           height: 1.1,
-                          color: context.extraColors.grey000,),),
-                      color: context.extraColors.reservedTagColor!,
+                          color: context.extraColors.grey800,),),
+                      color: context.extraColors.pink!,
                       onTap: () => Util.pushRoute(context, (context) =>
                           RoundDetailRoute(
                               roundSeq: studyInfo.roundSeq,
