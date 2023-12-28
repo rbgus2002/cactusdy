@@ -15,7 +15,7 @@ class ParticipantInfoWidget extends StatefulWidget {
   final Function(String, int, Function(Task)) subscribe;
   final Function(String, int, String, List<TaskInfo>) notify;
   final Study study;
-  final bool reserved;
+  final bool scheduled;
 
   final int roundId;
 
@@ -26,7 +26,7 @@ class ParticipantInfoWidget extends StatefulWidget {
     required this.subscribe,
     required this.notify,
     required this.study,
-    required this.reserved,
+    required this.scheduled,
   }) : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class _ParticipantInfoWidgetState extends State<ParticipantInfoWidget> with Tick
           status: widget.participantInfo.status,
           studyId: widget.study.studyId,
           taskProgress: _progress,
-          reserved: widget.reserved,),
+          scheduled: widget.scheduled,),
         Design.padding24,
 
         ListView.separated(

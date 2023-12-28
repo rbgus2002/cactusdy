@@ -70,52 +70,61 @@ class StudyProfileWidget extends StatelessWidget {
               Row(
                 children: [
                   // Round Sequence Tag
-                  Visibility(
-                    visible: _isRoundIdNotZero(),
-                    child: RectangleTag(
-                      width: 48,
-                      height: 26,
-                      text: Text(
-                        '${studyInfo.roundSeq}${context.local.round}',
-                        style: TextStyle(
-                          height: 1.1,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: context.extraColors.grey700,),),
-                      color: studyInfo.study.color.withOpacity(0.3),
-                      onTap: () => Util.pushRoute(context, (context) =>
-                          RoundDetailRoute(
-                              roundSeq: studyInfo.roundSeq,
-                              roundId: studyInfo.round.roundId,
-                              study: studyInfo.study,
-                              onRemove: () => onRefresh(),)),),
-                  ),
+                  _roundSequenceTag(context),
                   Design.padding4,
 
                   // Scheduled Tag
-                  Visibility(
-                    visible: TimeUtility.isScheduled(studyInfo.round.studyTime),
-                    child: RectangleTag(
-                      width: 40,
-                      height: 26,
-                      text: Text(
-                        context.local.reserved,
-                        style: TextStyles.caption1.copyWith(
-                          height: 1.1,
-                          color: context.extraColors.grey800,),),
-                      color: context.extraColors.pink!,
-                      onTap: () => Util.pushRoute(context, (context) =>
-                          RoundDetailRoute(
-                              roundSeq: studyInfo.roundSeq,
-                              roundId: studyInfo.round.roundId,
-                              study: studyInfo.study,),),
-                    ),),
+                  _scheduledTag(context),
                   const Spacer(),
 
                   StackedProfileListWidget(profileImages: studyInfo.profileImages),
                 ],)
             ],),
         )],
+    );
+  }
+
+  Widget _roundSequenceTag(BuildContext context) {
+    return Visibility(
+      visible: _isRoundIdNotZero(),
+      child: RectangleTag(
+        width: 48,
+        height: 26,
+        text: Text(
+          '${studyInfo.roundSeq}${context.local.round}',
+          style: TextStyle(
+            height: 1.1,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: context.extraColors.grey700,),),
+        color: studyInfo.study.color.withOpacity(0.3),
+        onTap: () => Util.pushRoute(context, (context) =>
+            RoundDetailRoute(
+              roundSeq: studyInfo.roundSeq,
+              roundId: studyInfo.round.roundId,
+              study: studyInfo.study,
+              onRemove: () => onRefresh(),)),),
+    );
+  }
+
+  Widget _scheduledTag(BuildContext context) {
+    return Visibility(
+      visible: TimeUtility.isScheduled(studyInfo.round.studyTime),
+      child: RectangleTag(
+        width: 40,
+        height: 26,
+        text: Text(
+          context.local.scheduled,
+          style: TextStyles.caption1.copyWith(
+            height: 1.1,
+            color: context.extraColors.grey800,),),
+        color: context.extraColors.pink!,
+        onTap: () => Util.pushRoute(context, (context) =>
+            RoundDetailRoute(
+              roundSeq: studyInfo.roundSeq,
+              roundId: studyInfo.round.roundId,
+              study: studyInfo.study,),),
+      ),
     );
   }
 

@@ -9,13 +9,13 @@ import 'package:groupstudy/widgets/participant_info_widget.dart';
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
   final Study study;
-  final bool reserved;
+  final bool scheduled;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
     required this.study,
-    required this.reserved,
+    required this.scheduled,
   }) : super(key: key);
 
   @override
@@ -29,14 +29,13 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Task.getTasks(widget.roundId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List participantInfoList = snapshot.data!;
-          return ListView.builder(
+      builder: (context, snapshot) =>
+        (snapshot.hasData) ?
+          ListView.builder(
             shrinkWrap: true,
             primary: false,
 
-            itemCount: participantInfoList.length,
+            itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Container(
                   padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -46,21 +45,19 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
                         color: context.extraColors.grey100!,
                         width: 1,),),),
                   child: ParticipantInfoWidget(
-                    participantInfo: participantInfoList[index],
+                    participantInfo: snapshot.data![index],
                     roundId: widget.roundId,
-                    subscribe: addListener,
-                    notify: notify,
+                    subscribe: _addListener,
+                    notify: _notify,
                     study: widget.study,
-                    reserved: widget.reserved,)
+                    scheduled: widget.scheduled,)
               );
-            },);
-        }
-        return Design.loadingIndicator;
-      },
+            },
+          ) : Design.loadingIndicator,
     );
   }
 
-  void addListener(String taskType, int key, Function(Task) addTask) {
+  void _addListener(String taskType, int key, Function(Task) addTask) {
     if (!listeners.containsKey(taskType)) {
       listeners[taskType] = { };
     }
@@ -68,7 +65,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
     listeners[taskType]![key] = addTask;
   }
 
-  void notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
+  void _notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
     if (listeners.containsKey(taskType)) {
       for (var newTaskInfo in newTaskInfoList) {
         // exclude it's self

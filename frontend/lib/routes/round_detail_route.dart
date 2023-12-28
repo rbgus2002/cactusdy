@@ -61,7 +61,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   round = snapshot.data!;
-                  bool reserved = TimeUtility.isScheduled(round.studyTime);
+                  bool scheduled = TimeUtility.isScheduled(round.studyTime);
                   _placeEditingController.text = round.studyPlace;
 
                   return Column(
@@ -89,7 +89,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
                       // Participant Information List
                       ParticipantInfoListWidget(
-                        reserved: reserved,
+                        scheduled: scheduled,
                         roundId: widget.roundId,
                         study: widget.study,),
                     ]);
@@ -194,18 +194,18 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         // Scheduled Tag
         Visibility(
           visible: TimeUtility.isScheduled(round.studyTime),
-          child: _scheduleTag()),
+          child: _scheduledTag()),
       ],
     );
   }
 
-  Widget _scheduleTag() {
+  Widget _scheduledTag() {
     return RectangleTag(
-      width: 40,
+      width: 36,
       height: 22,
-      color: context.extraColors.reservedTagColor!,
+      color: context.extraColors.pink!,
       text: Text(
-        context.local.reserved,
+        context.local.scheduled,
         style: TextStyles.caption2.copyWith(
           color: context.extraColors.grey000,),),
       onTap: Util.doNothing,

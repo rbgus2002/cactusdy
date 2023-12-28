@@ -136,7 +136,7 @@
     "ruleIsLimitedTo": "규칙은 최대 {count}개 만들 수 있어요",
 
     "task": "과제",
-    "reserved": "예정",
+    "scheduled": "예정",
     "taskAchievementRateIs": "과제를 {rate}% 달성했어요",
     "achievement": "달성",
     "count": "회",

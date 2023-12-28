@@ -21,7 +21,7 @@ class ParticipantProfileWidget extends StatefulWidget {
   final int studyId;
   final int roundParticipantId;
   final double taskProgress;
-  final bool reserved;
+  final bool scheduled;
   final StatusTag status;
 
   const ParticipantProfileWidget({
@@ -32,7 +32,7 @@ class ParticipantProfileWidget extends StatefulWidget {
     required this.roundParticipantId,
     required this.taskProgress,
     required this.status,
-    required this.reserved,
+    required this.scheduled,
   }) : super(key: key);
 
   @override
@@ -90,7 +90,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           height: 30,
           context: context,
           status: _statusRef,
-          reserved: widget.reserved,
+          reserved: widget.scheduled,
           onTap: (_isEditable())?
             _showStatusPicker
             : null,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groupstudy/models/rule.dart';
 import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/routes/home_route.dart';
@@ -53,7 +54,10 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         foregroundColor: appBarForegroundColor,
         leading: _backButton(appBarForegroundColor),
         actions: [ _studyPopupMenu(appBarForegroundColor) ],
-        shape: InputBorder.none,),
+        shape: InputBorder.none,
+        systemOverlayStyle: (bright) ?
+          SystemUiOverlayStyle.dark :
+          SystemUiOverlayStyle.light,),
 
       body: RefreshIndicator(
         onRefresh: _refresh,

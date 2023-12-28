@@ -220,9 +220,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
   /// Base background Color
   final Color? baseBackgroundColor;
 
-  /// Reserved Tag Color
-  final Color? reservedTagColor;
-
   /// Barrier Color
   final Color? barrierColor;
 
@@ -254,7 +251,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
     required this.inputFieldBackgroundErrorColor,
 
     required this.baseBackgroundColor,
-    required this.reservedTagColor,
     required this.barrierColor,
   });
 
@@ -318,7 +314,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
         inputFieldBackgroundErrorColor: inputFieldBackgroundErrorColor?? this.inputFieldBackgroundErrorColor,
 
         baseBackgroundColor: baseBackgroundColor?? this.baseBackgroundColor,
-        reservedTagColor: reservedTagColor?? this.reservedTagColor,
         barrierColor: barrierColor?? this.barrierColor,
     );
   }
@@ -356,7 +351,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: Color.lerp(inputFieldBackgroundErrorColor, other.inputFieldBackgroundErrorColor, t),
 
       baseBackgroundColor: Color.lerp(baseBackgroundColor, other.baseBackgroundColor, t),
-      reservedTagColor: Color.lerp(reservedTagColor, other.reservedTagColor, t),
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t),
     );
   }
@@ -389,7 +383,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
 
       baseBackgroundColor: ColorStyles._black100,
-      reservedTagColor: ColorStyles.secondColor,
       barrierColor: ColorStyles.dim,
   );
 
@@ -421,7 +414,6 @@ class ExtraColors extends ThemeExtension<ExtraColors> {
       inputFieldBackgroundErrorColor: ColorStyles._fillErrorBackground,
 
       baseBackgroundColor: Colors.black,
-      reservedTagColor: ColorStyles._pinkDark,
       barrierColor: ColorStyles.dimDark,
   );
 }
