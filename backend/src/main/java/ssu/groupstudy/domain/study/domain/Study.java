@@ -22,10 +22,10 @@ public class Study extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 14)
     private String studyName;
 
-    @Column(length = 40)
+    @Column(length = 20)
     private String detail;
 
     @Column(nullable = false)

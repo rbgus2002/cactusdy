@@ -42,10 +42,10 @@ create table if not exists study
     create_date    datetime(6)  not null,
     modified_date  datetime(6)  not null,
     delete_yn      char         not null,
-    detail         varchar(40)  null,
+    detail         varchar(20)  null,
     invite_code varchar(255) not null,
     picture        varchar(255) null,
-    study_name     varchar(30)  not null,
+    study_name     varchar(14)  not null,
     host_user_id        bigint       not null,
     constraint FKkhcyngf15w120k4wx6pp21ijn
         foreign key (host_user_id) references `user` (user_id)
