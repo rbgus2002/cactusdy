@@ -65,13 +65,11 @@ public class FcmUtils {
     }
 
     public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
-        log.info("## subscribeTopicFor : ");
         String topic = TopicCode.handleTopicString(code, id);
         FirebaseMessaging.getInstance().subscribeToTopicAsync(tokens, topic);
     }
 
     public void unsubscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
-        log.info("## unsubscribeTopicFor : ");
         String topic = TopicCode.handleTopicString(code, id);
         FirebaseMessaging.getInstance().unsubscribeFromTopicAsync(tokens, topic);
     }
