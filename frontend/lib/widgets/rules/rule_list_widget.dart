@@ -37,8 +37,8 @@ class _RuleListWidgetState extends State<RuleListWidget> {
   late GlobalKey<AnimatedListState> _rulesKey;
   late ListModel<Rule> _ruleListModel;
 
+  late final bool _isFoldable;
   bool _expended = false;
-  bool _isShadowed = false;
 
   bool _isProcessing = false;
 
@@ -48,11 +48,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
     _initListModel();
 
     // it is only once distinguished at first
-    if (_ruleListModel.length >= _ellipsisCount) {
-      _isShadowed = true;
-    } else {
-      _expended = true;
-    }
+    _isFoldable = (_ruleListModel.length >= _ellipsisCount);
   }
 
   @override
@@ -82,7 +78,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
         // Rule List
         AnimatedContainer(
           height: (_expended)?
-            (_ruleListModel.length * _ruleWidgetHeight + _iconSize) :
+            (_ruleListModel.length * _ruleWidgetHeight + ((_isFoldable)? _iconSize : 0) ) :
             (min(_ruleListModel.length, _ellipsisCount) * _ruleWidgetHeight),
           duration: AnimationSetting.animationDurationShort,
           curve: Curves.easeOutCirc,
@@ -97,7 +93,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
         // Overlay Shadow
         Visibility(
-          visible: _isShadowed,
+          visible: _isFoldable,
           child: _overlayShadow(),),
       ],
     );
