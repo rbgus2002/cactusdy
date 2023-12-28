@@ -55,6 +55,7 @@ class Notice {
       } else {
         //print(json.decode(utf8.decode(response.bodyBytes)));
         var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
+        print('success to get notice (noticeId: $noticeId)');
         return Notice.fromJson(responseJson);
       }
   }
