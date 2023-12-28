@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
@@ -40,6 +42,7 @@ public class ParticipantsService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
+    private final NoticeRepository noticeRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
@@ -94,10 +97,13 @@ public class ParticipantsService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         User targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+
         assertUserIsHostOrThrow(user, study);
 
         removeUserToFutureRounds(study, targetUser);
         eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
+        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
         study.kickParticipant(targetUser);
     }
 

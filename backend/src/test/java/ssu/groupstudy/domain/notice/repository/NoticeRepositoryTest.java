@@ -190,4 +190,17 @@ class NoticeRepositoryTest{
         // then
         softly.assertThat(notice).isEmpty();
     }
+
+    @Test
+    @DisplayName("스터디에 속한 공지사항을 모두 가져온다")
+    void findNoticesByStudy(){
+        // given
+        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
+
+        // when
+        List<Notice> notices = noticeRepository.findNoticesByStudy(알고리즘_스터디);
+
+        // then
+        softly.assertThat(notices.size()).isGreaterThan(1);
+    }
 }
