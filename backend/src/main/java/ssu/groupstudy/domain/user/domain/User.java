@@ -28,7 +28,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 6)
     private String nickname;
 
     @Column
@@ -46,7 +46,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL, orphanRemoval = true)
     private final Set<FcmToken> fcmTokens = new HashSet<>();
 
-    @Column
+    @Column(length = 20)
     private String statusMessage;
 
     @Column(nullable = false)

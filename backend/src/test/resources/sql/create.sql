@@ -7,10 +7,10 @@ create table if not exists `user`
     delete_yn      char         not null,
     phone_number   varchar(255) not null,
     name           varchar(255) not null,
-    nickname       varchar(255) not null,
+    nickname       varchar(6) not null,
     phone_model    varchar(255) null,
     picture        varchar(255) null,
-    status_message varchar(255) null,
+    status_message varchar(20) null,
     password       varchar(255) not null
 );
 
