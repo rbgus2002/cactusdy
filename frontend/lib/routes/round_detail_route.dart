@@ -207,7 +207,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       text: Text(
         context.local.scheduled,
         style: TextStyles.caption2.copyWith(
-          color: context.extraColors.grey000,),),
+          color: context.extraColors.grey800,),),
       onTap: Util.doNothing,
     );
   }
