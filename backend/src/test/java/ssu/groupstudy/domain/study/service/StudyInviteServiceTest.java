@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
@@ -39,6 +40,8 @@ class StudyInviteServiceTest extends ServiceTest {
     private ParticipantRepository participantRepository;
     @Mock
     private RoundParticipantRepository roundParticipantRepository;
+    @Mock
+    private NoticeRepository noticeRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
@@ -123,6 +126,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(List.of()).when(noticeRepository).findNoticesByStudy(any(Study.class));
 
             // when
             알고리즘스터디.invite(장재우);

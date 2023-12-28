@@ -11,6 +11,9 @@ public class CommentCreationEvent {
     private final Notice notice;
     private final Comment comment;
 
+    public Long getStudyId(){
+        return notice.getStudy().getStudyId();
+    }
     public Long getNoticeId(){
         return notice.getNoticeId();
     }

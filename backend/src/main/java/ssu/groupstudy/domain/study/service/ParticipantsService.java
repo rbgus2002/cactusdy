@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
@@ -16,6 +18,8 @@ import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
@@ -40,6 +44,7 @@ public class ParticipantsService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
+    private final NoticeRepository noticeRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
@@ -94,10 +99,13 @@ public class ParticipantsService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         User targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+
         assertUserIsHostOrThrow(user, study);
 
         removeUserToFutureRounds(study, targetUser);
         eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
+        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
         study.kickParticipant(targetUser);
     }
 

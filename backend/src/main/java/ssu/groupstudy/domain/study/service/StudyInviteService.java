@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
@@ -29,7 +32,8 @@ public class StudyInviteService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
     private final ParticipantRepository participantRepository;
-    private final RoundParticipantRepository roundParticipantRepository;
+    private final NoticeRepository noticeRepository;
+
     private final ApplicationEventPublisher eventPublisher;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
@@ -60,8 +64,11 @@ public class StudyInviteService {
     public void leaveUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+
         removeUserToFutureRounds(study, user);
         eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
+        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
         study.leave(user);
     }
 
