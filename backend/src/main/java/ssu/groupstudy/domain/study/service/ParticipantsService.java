@@ -18,6 +18,8 @@ import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;

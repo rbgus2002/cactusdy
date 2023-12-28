@@ -10,8 +10,8 @@ import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSub
 import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.service.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.study.service.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
