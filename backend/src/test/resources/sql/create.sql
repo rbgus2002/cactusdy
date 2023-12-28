@@ -57,7 +57,7 @@ create table if not exists notice
         primary key,
     create_date   datetime(6)  not null,
     modified_date datetime(6)  not null,
-    contents      varchar(100) not null,
+    contents      varchar(500) not null,
     delete_yn     char         not null,
     pin_yn        char         not null,
     title         varchar(50)  not null,
