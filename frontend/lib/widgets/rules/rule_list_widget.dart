@@ -190,12 +190,14 @@ class _RuleListWidgetState extends State<RuleListWidget> {
     }
 
     if (_isAddable()) {
-      _isProcessing = true;
+      if (!_isProcessing && _isNotAdded()) {
+        _isProcessing = true;
 
-      setState(() {
-        _ruleListModel.add(Rule());
-        _isProcessing = false;
-      });
+        setState(() {
+          _ruleListModel.add(Rule());
+          _isProcessing = false;
+        });
+      }
     }
 
     else {
@@ -241,6 +243,11 @@ class _RuleListWidgetState extends State<RuleListWidget> {
   }
 
   bool _isAddable() {
-    return (_ruleListModel.length < Rule.ruleLimitedCount);
+    return _ruleListModel.length < Rule.ruleLimitedCount;
+  }
+
+  bool _isNotAdded() {
+    return (_ruleListModel.items.isEmpty ||
+        (_ruleListModel.items.last.ruleId != Rule.nonAllocatedRuleId));
   }
 }

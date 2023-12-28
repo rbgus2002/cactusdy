@@ -69,7 +69,7 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             title: widget.taskGroup.taskTypeName,
             onTap: () {
               HapticFeedback.lightImpact();
-              if (!_isProcessing) {
+              if (!_isProcessing && _isAddable()) {
                 _isProcessing = true;
 
                 _addTask(Task());
@@ -207,6 +207,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     setState(() { });
 
     if (widget.updateProgress != null) widget.updateProgress!();
+  }
+
+  bool _isAddable() {
+    return (_taskListModel.items.isEmpty ||
+        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId));
   }
 
   bool _isValidIndex(int index) {
