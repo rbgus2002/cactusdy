@@ -60,7 +60,15 @@ public class StudyInviteService {
     public void leaveUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        removeUserToFutureRounds(study, user);
         eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
         study.leave(user);
+    }
+
+    private void removeUserToFutureRounds(Study study, User user) {
+        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (Round round : futureRounds) {
+            round.removeParticipant(new RoundParticipant(user, round));
+        }
     }
 }

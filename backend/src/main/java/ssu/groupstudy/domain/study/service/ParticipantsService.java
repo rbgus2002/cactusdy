@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.DoneCount;
@@ -21,6 +24,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,6 +39,7 @@ public class ParticipantsService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final RoundRepository roundRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
@@ -63,10 +68,12 @@ public class ParticipantsService {
         List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(user);
         List<StatusTagInfo> statusTagInfoList = handleStatusTagInfo(study, user);
         DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
+        char isParticipated = (study.isParticipated(user)) ? 'Y' : 'N';
 
-        return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount);
+        return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
+    // TODO : refactoring (modern java in action)
     private List<StatusTagInfo> handleStatusTagInfo(Study study, User user) {
         List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
         EnumSet<StatusTag> statusTags = EnumSet.allOf(StatusTag.class);
@@ -88,9 +95,17 @@ public class ParticipantsService {
         User targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         assertUserIsHostOrThrow(user, study);
-        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
 
+        removeUserToFutureRounds(study, targetUser);
+        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
         study.kickParticipant(targetUser);
+    }
+
+    private void removeUserToFutureRounds(Study study, User user) {
+        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (Round round : futureRounds) {
+            round.removeParticipant(new RoundParticipant(user, round));
+        }
     }
 
     private void assertUserIsHostOrThrow(User user, Study study) {

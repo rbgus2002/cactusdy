@@ -19,6 +19,6 @@ public class CreateRuleRequest {
     private String detail;
 
     public Rule toEntity(Study study){
-        return new Rule(this.detail, study);
+        return Rule.create(this.detail, study);
     }
 }
