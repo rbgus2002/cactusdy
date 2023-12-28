@@ -63,10 +63,12 @@ public class ParticipantsService {
         List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(user);
         List<StatusTagInfo> statusTagInfoList = handleStatusTagInfo(study, user);
         DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
+        char isParticipated = (study.isParticipated(user)) ? 'Y' : 'N';
 
-        return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount);
+        return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
+    // TODO : refactoring (modern java in action)
     private List<StatusTagInfo> handleStatusTagInfo(Study study, User user) {
         List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
         EnumSet<StatusTag> statusTags = EnumSet.allOf(StatusTag.class);

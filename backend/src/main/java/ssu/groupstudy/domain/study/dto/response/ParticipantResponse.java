@@ -21,9 +21,10 @@ public class ParticipantResponse {
     private List<StatusTagInfo> statusTagInfoList;
     private int doneRate;
     private int unDoneRate;
+    private char isParticipated;
 
 
-    private ParticipantResponse(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfoList, DoneCount doneCount) {
+    private ParticipantResponse(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfoList, DoneCount doneCount, char isParticipated) {
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
         this.profileImage = user.getPicture();
@@ -32,9 +33,10 @@ public class ParticipantResponse {
         this.statusTagInfoList = statusTagInfoList;
         this.doneRate = doneCount.getDoneRate();
         this.unDoneRate = doneCount.getUndoneRate();
+        this.isParticipated = isParticipated;
     }
 
-    public static ParticipantResponse of(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfo, DoneCount doneCount) {
-        return new ParticipantResponse(user, participantInfoList, statusTagInfo, doneCount);
+    public static ParticipantResponse of(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfo, DoneCount doneCount, char isParticipated) {
+        return new ParticipantResponse(user, participantInfoList, statusTagInfo, doneCount, isParticipated);
     }
 }
