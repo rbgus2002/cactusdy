@@ -15,6 +15,10 @@ public class NoticeCreationEvent {
         return study.getStudyId();
     }
 
+    public Long getNoticeId(){
+        return notice.getNoticeId();
+    }
+
     public String getStudyName(){
         return study.getStudyName();
     }

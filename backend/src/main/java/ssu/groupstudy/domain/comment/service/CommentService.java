@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.domain.Comment;
@@ -14,6 +15,8 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 
@@ -29,6 +32,8 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Transactional
     public Long createComment(CreateCommentRequest dto, User writer) {
@@ -36,6 +41,9 @@ public class CommentService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
+
+        eventPublisher.publishEvent(new CommentCreationEvent(notice, comment));
+        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         return commentRepository.save(comment).getCommentId();
     }
@@ -52,7 +60,7 @@ public class CommentService {
     private Comment handleCommentCreationWithParent(CreateCommentRequest dto, User writer, Notice notice) {
         Comment parent = null;
         if(dto.getParentCommentId() != null){
-            parent = commentRepository.getReferenceById(dto.getParentCommentId());
+            parent = commentRepository.getReferenceById(dto.getParentCommentId()); // TODO : findById로 변경 후 deleteYn
         }
         return dto.toEntity(writer, notice, parent);
     }
