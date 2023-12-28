@@ -24,7 +24,7 @@ public class PushListener {
     public void handleCommentCreationEvent(CommentCreationEvent event) {
         StringBuilder body = new StringBuilder();
         body.append("새로운 댓글이 달렸어요: ").append(event.getCommentContents());
-        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString());
+        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
         fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.NOTICE, event.getNoticeId(), data);
     }
 
@@ -32,7 +32,7 @@ public class PushListener {
     public void handleNoticeCreationEvent(NoticeCreationEvent event) {
         StringBuilder body = new StringBuilder();
         body.append("새로운 공지사항이 작성되었어요: ").append(event.getNoticeTitle());
-        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString());
+        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
         fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
     }
 
