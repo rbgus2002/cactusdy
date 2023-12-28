@@ -63,7 +63,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
                   _kickAndStabButton(snapshot.data!),
-                  Design.padding48,
+                  Design.padding20,
+                  _notWithUsNowText(snapshot.data!.isParticipated),
+                  Design.padding28,
                 ],) :
               Design.loadingIndicator,),
     );
@@ -310,6 +312,19 @@ class _ProfileRouteState extends State<ProfileRoute> {
     }
 
     return context.local.stabUserAbout(nickname, '$stabCount${context.local.num}${context.local.even} ');
+  }
+
+  Widget _notWithUsNowText(bool isParticipated) {
+    return Center(
+      child: Visibility(
+        visible: !isParticipated,
+        child: Text(
+          context.local.notWithUsNow,
+          style: TextStyles.head6.copyWith(
+              color: context.extraColors.grey600),
+        ),
+      ),
+    );
   }
 }
 
