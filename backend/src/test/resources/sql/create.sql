@@ -177,5 +177,5 @@ create table if not exists feedback
     contents      varchar(255) not null,
     user_id       bigint       not null,
     constraint fk_user_id
-    foreign key (user_id) references user (user_id)
+    foreign key (user_id) references `user` (user_id)
 );
