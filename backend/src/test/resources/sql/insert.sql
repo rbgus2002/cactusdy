@@ -18,8 +18,8 @@ INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, 
 INSERT INTO notice (notice_id, create_date, modified_date, contents, delete_yn, pin_yn, title, study_id, user_id) VALUES (4, '2023-09-10 00:09:20.247088', '2023-09-10 00:10:34.784027', '상세내용4', 'N', 'N', '공지사항4', 1, 1);
 
 -- check_notice
-INSERT INTO check_notice (id, notice_id, user_id) VALUES (1, 4, 1);
-INSERT INTO check_notice (id, notice_id, user_id) VALUES (2, 4, 2);
+INSERT INTO check_notice (check_notice_id, notice_id, user_id) VALUES (1, 4, 1);
+INSERT INTO check_notice (check_notice_id, notice_id, user_id) VALUES (2, 4, 2);
 
 
 -- comment

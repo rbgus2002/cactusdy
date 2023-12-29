@@ -71,7 +71,7 @@ create table if not exists notice
 
 create table if not exists check_notice
 (
-    id        bigint auto_increment
+    check_notice_id        bigint auto_increment
         primary key,
     notice_id bigint not null,
     user_id   bigint not null,
@@ -168,3 +168,14 @@ create table if not exists task
         foreign key (user_round_id) references rel_user_round (user_round_id)
 );
 
+create table if not exists feedback
+(
+    feedback_id   bigint auto_increment
+    primary key,
+    feedback_type varchar(255) not null,
+    title         varchar(255) not null,
+    contents      varchar(255) not null,
+    user_id       bigint       not null,
+    constraint fk_user_id
+    foreign key (user_id) references `user` (user_id)
+);
