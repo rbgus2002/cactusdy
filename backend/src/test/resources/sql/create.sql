@@ -71,7 +71,7 @@ create table if not exists notice
 
 create table if not exists check_notice
 (
-    id        bigint auto_increment
+    check_notice_id        bigint auto_increment
         primary key,
     notice_id bigint not null,
     user_id   bigint not null,
