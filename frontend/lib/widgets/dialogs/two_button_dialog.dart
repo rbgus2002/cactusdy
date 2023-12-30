@@ -16,7 +16,7 @@ class TwoButtonDialog {
   static const double _textWidth = 232;
   static const EdgeInsets _padding = EdgeInsets.all(16);
 
-  static Future<dynamic> showProfileDialog({
+  static Future<dynamic> showDialog({
     required BuildContext context,
     required String text,
     int maxLines = 1,
@@ -25,10 +25,12 @@ class TwoButtonDialog {
     required String buttonText2,
     required VoidCallback onPressed2,
   }) {
-    return showDialog(
-        barrierColor: context.extraColors.barrierColor!.withOpacity(0.1),
+    return showGeneralDialog(
         context: context,
-        builder: (context) {
+        barrierDismissible: true,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: context.extraColors.barrierColor!.withOpacity(0.1),
+        pageBuilder: (context, animation, secondaryAnimation) {
           return BackdropFilter(
             filter: Design.basicBlur,
             child: AlertDialog(

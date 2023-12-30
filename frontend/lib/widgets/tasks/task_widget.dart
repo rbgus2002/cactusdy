@@ -133,7 +133,7 @@ class _TaskWidget extends State<TaskWidget> {
         constraints: const BoxConstraints(),
         onPressed: () {
           HapticFeedback.lightImpact();
-          TwoButtonDialog.showProfileDialog(
+          TwoButtonDialog.showDialog(
             context: context,
             text: widget.task.detail,
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/routes/feedback_route.dart';
 import 'package:groupstudy/routes/profiles/profile_edit_route.dart';
 import 'package:groupstudy/routes/setting_route.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
@@ -8,6 +9,7 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
 
 /// User Profile for main route
@@ -58,19 +60,19 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
 
           // Popup button to edit profile and setting
           SizedBox(
-            // for sizing down of PopupMenuButton
-            width: 24, // HomeRoute.specialPadding: 16 + 4
-            height: _iconSize,
-            child: PopupMenuButton(
+            width: 24,
+            child: IconButton(
               icon: Icon(
                 CustomIcons.more_vert,
                 color: context.extraColors.grey500,
                 size: _iconSize,),
-              splashRadius: 0.1,
               padding: EdgeInsets.zero,
-              itemBuilder: _popupMenuBuilder,
-              constraints: const BoxConstraints(minWidth: Design.popupWidth),),),
-        ],)
+              splashRadius: 0.1,
+              onPressed: () => FocusedMenuDialog.showDialog(
+                  context: context,
+                  items: _popupMenuBuilder(context)),),
+          ),
+      ],)
     );
   }
 
@@ -85,11 +87,19 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                 Util.delay(() => setState(() { }),),
         ),),
 
+      // feedback
+      ItemEntry(
+        text: context.local.feedback,
+        icon: const Icon(CustomIcons.comment,),
+        onTap: () => Util.pushRoute(context, (context) =>
+            const FeedbackRoute())),
+
       // setting
       ItemEntry(
         text: context.local.setting,
         icon: const Icon(CustomIcons.setting_outline,),
-        onTap: () => Util.pushRoute(context, (context) => const SettingRoute())),
+        onTap: () => Util.pushRoute(context, (context) =>
+            const SettingRoute())),
     ];
   }
 }

@@ -11,6 +11,7 @@ import 'package:groupstudy/utilities/time_utility.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
+import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:groupstudy/widgets/input_field_place.dart';
@@ -37,6 +38,8 @@ class RoundDetailRoute extends StatefulWidget {
 }
 
 class _RoundDetailRouteState extends State<RoundDetailRoute> {
+  static const double _iconSize = 32;
+
   late final TextEditingController _placeEditingController = TextEditingController();
   final GlobalKey<InputFieldState> _detailEditor = GlobalKey();
 
@@ -52,8 +55,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       appBar: AppBar(
         leading: const SlowBackButton(),
         shape: InputBorder.none,
-        actions: [ _roundPopupMenu(), ],
-      ),
+        actions: [ _roundPopupMenu(), ],),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: SingleChildScrollView(
@@ -247,25 +249,31 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _roundPopupMenu() {
-    return PopupMenuButton(
-      icon: const Icon(CustomIcons.more_vert),
-      splashRadius: 16,
-      position: PopupMenuPosition.under,
-      constraints: const BoxConstraints(minWidth: Design.popupWidth),
-      itemBuilder: (context) => [
-        ItemEntry(
-          text: context.local.deleteRound,
-          icon: const Icon(CustomIcons.trash),
-          onTap: () => TwoButtonDialog.showProfileDialog(
-              context: context,
+    return SizedBox(
+      width: 48,
+      child: IconButton(
+        icon: const Icon(
+          CustomIcons.more_vert,
+          size: _iconSize,),
+        splashRadius: 16,
+        constraints: const BoxConstraints(minWidth: Design.popupWidth),
+        onPressed: () => FocusedMenuDialog.showDialog(
+          context: context,
+          isAppbar: true,
+          items: [
+            ItemEntry(
               text: context.local.deleteRound,
+              icon: const Icon(CustomIcons.trash),
+              onTap: () => TwoButtonDialog.showDialog(
+                  context: context,
+                  text: context.local.deleteRound,
 
-              buttonText1: context.local.no,
-              onPressed1: Util.doNothing,
+                  buttonText1: context.local.no,
+                  onPressed1: Util.doNothing,
 
-              buttonText2: context.local.delete,
-              onPressed2: () => _deleteRound(context),),),
-      ],
+                  buttonText2: context.local.delete,
+                  onPressed2: () => _deleteRound(context),),),
+          ],),)
     );
   }
 

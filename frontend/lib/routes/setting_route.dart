@@ -157,7 +157,7 @@ class _SettingRouteState extends State<SettingRoute> {
   }
 
   void _showSignOutDialog() {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
       context: context,
       text: context.local.ensureToDo(context.local.signOut),
 

@@ -139,7 +139,7 @@ class CommentWidget extends StatelessWidget {
             PopupMenuItem(
                 height: 44,
                 child: Text(context.local.delete, style: TextStyles.body1),
-                onTap: () => TwoButtonDialog.showProfileDialog(
+                onTap: () => TwoButtonDialog.showDialog(
                   context: context,
                   text: context.local.confirmDeleteComment,
 

@@ -273,7 +273,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
   }
 
   void _showKickDialog() {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.ensureToDo(context.local.kicking),
 

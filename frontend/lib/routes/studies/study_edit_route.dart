@@ -188,7 +188,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   }
 
   void _changeAdmin(ParticipantProfile newAdmin) {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.ensureToGiveAdminTo(newAdmin.nickname),
         maxLines: 4,

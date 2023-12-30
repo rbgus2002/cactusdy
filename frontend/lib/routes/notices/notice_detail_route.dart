@@ -35,6 +35,8 @@ class NoticeDetailRoute extends StatefulWidget {
 }
 
 class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
+  static const double _iconSize = 28;
+
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
 
@@ -109,12 +111,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
       return [
         IconButton(
           icon: const Icon(CustomIcons.writing_outline),
-          iconSize: 28,
+          iconSize: _iconSize,
           onPressed: () => _editNotice(),),
 
         IconButton(
           icon: const Icon(CustomIcons.trash),
-          iconSize: 28,
+          iconSize: _iconSize,
           onPressed: () => _showDeleteNoticeDialog(context)),
       ];
     }
@@ -215,7 +217,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   void _showDeleteNoticeDialog(BuildContext context) {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.confirmDeleteNotice,
 

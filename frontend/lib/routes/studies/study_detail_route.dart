@@ -13,6 +13,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
+import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
 import 'package:groupstudy/widgets/noticie_widgets/notice_rolling_widget.dart';
@@ -159,29 +160,39 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   Widget _studyPopupMenu(Color iconColor) {
-    return PopupMenuButton(
-      icon: Icon(
-        CustomIcons.more_vert,
-        color: iconColor,
-        size: _iconSize,),
-      splashRadius: _iconSize / 2,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(minWidth: Design.popupWidth),
-      itemBuilder: (context) => [
-        // edit profile
-        ItemEntry(
-          text: context.local.editStudy,
-          icon: Icon(CustomIcons.writing_outline, color: context.extraColors.grey900,),
-          onTap: () => Util.pushRoute(context, (context) =>
-              StudyEditRoute(study: _study,)).then((value) =>
-                _refresh(),),),
+    return SizedBox(
+      width: 48,
+      child: IconButton(
+        icon: Icon(
+          CustomIcons.more_vert,
+          color: iconColor,
+          size: _iconSize,),
+        splashRadius: _iconSize / 2,
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(minWidth: Design.popupWidth),
+        onPressed: () => FocusedMenuDialog.showDialog(
+            context: context,
+            isAppbar: true,
+            items: _popupMenuBuilder(context),),),
+    );
+  }
 
-        // setting
-        ItemEntry(
-          text: context.local.leaveStudy,
-          icon: Icon(CustomIcons.exit_outline, color: context.extraColors.grey900,),
-          onTap: _showLeaveStudyDialog,),
-      ],);
+  List<PopupMenuEntry> _popupMenuBuilder(BuildContext context) {
+    return [
+      // edit profile
+      ItemEntry(
+        text: context.local.editStudy,
+        icon: Icon(CustomIcons.writing_outline, color: context.extraColors.grey900,),
+        onTap: () => Util.pushRoute(context, (context) =>
+            StudyEditRoute(study: _study,)).then((value) =>
+            _refresh(),),),
+
+      // setting
+      ItemEntry(
+        text: context.local.leaveStudy,
+        icon: Icon(CustomIcons.exit_outline, color: context.extraColors.grey900,),
+        onTap: _showLeaveStudyDialog,),
+    ];
   }
 
   Future<void> _refresh() async {
@@ -190,7 +201,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   void _showLeaveStudyDialog() {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.ensureToDo(context.local.leave),
 
