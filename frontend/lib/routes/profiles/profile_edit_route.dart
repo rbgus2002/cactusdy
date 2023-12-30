@@ -7,6 +7,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,6 +36,7 @@ class _ProfileEditRouteState extends State<ProfileEditRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: const SlowBackButton(),
           title: Text(context.local.editProfile),),
         bottomNavigationBar: _doneModifyButton(),
         body: SingleChildScrollView(

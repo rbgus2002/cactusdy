@@ -6,6 +6,7 @@ import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/noticie_widgets/notice_summary_widget.dart';
 
 class NoticeListRoute extends StatefulWidget {
@@ -34,6 +35,7 @@ class _NoticeListRouteState extends State<NoticeListRoute> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.local.notice,),
+        leading: const SlowBackButton(),
         actions: [
           IconButton(
             icon: const Icon(CustomIcons.writing_square_outline),

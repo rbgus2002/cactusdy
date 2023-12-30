@@ -6,6 +6,7 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class SignUpPasswordRoute extends StatefulWidget {
@@ -27,7 +28,8 @@ class _SignUpPasswordRouteState extends State<SignUpPasswordRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: const SlowBackButton(),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(

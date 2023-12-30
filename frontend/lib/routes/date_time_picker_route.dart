@@ -12,6 +12,7 @@ import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/pickers/custom_calendar_date_picker.dart';
 
 class DateTimePickerRoute extends StatefulWidget {
@@ -45,7 +46,7 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CloseButton(),
+        leading: const SlowBackButton(isClose: true,),
         shape: InputBorder.none,),
       bottomNavigationBar: _doneModifyButton(),
       body: SingleChildScrollView(

@@ -10,6 +10,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/time_utility.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:groupstudy/widgets/input_field_place.dart';
@@ -49,6 +50,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SlowBackButton(),
         shape: InputBorder.none,
         actions: [ _roundPopupMenu(), ],
       ),

@@ -12,6 +12,7 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/charts/progress_bar_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -57,6 +58,7 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
       onWillPop: _onBack,
       child: Scaffold(
         appBar: AppBar(
+          leading: const SlowBackButton(),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(4),
             child: progressBarWidget),),

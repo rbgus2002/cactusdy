@@ -11,6 +11,7 @@ import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
 import 'package:groupstudy/widgets/input_field.dart';
@@ -50,6 +51,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SlowBackButton(),
         title: Text(context.local.editStudy),),
       body: SingleChildScrollView(
           padding: Design.edgePadding,

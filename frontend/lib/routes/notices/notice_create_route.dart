@@ -8,6 +8,7 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 
 class NoticeCreateRoute extends StatefulWidget {
   final int studyId;
@@ -33,7 +34,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CloseButton(),
+        leading: const SlowBackButton(isClose: true,),
         actions: [ _completeButton(), ],
       ),
       body: Container(

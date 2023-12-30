@@ -12,10 +12,11 @@ import 'package:groupstudy/utilities/color_util.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
-import 'package:groupstudy/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:groupstudy/widgets/noticie_widgets/notice_rolling_widget.dart';
+import 'package:groupstudy/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:groupstudy/widgets/rounds/round_summary_list_widget.dart';
 import 'package:groupstudy/widgets/rules/rule_list_widget.dart';
 
@@ -52,7 +53,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       appBar: AppBar(
         backgroundColor: _study.color,
         foregroundColor: appBarForegroundColor,
-        leading: _backButton(appBarForegroundColor),
+        leading: SlowBackButton(color: appBarForegroundColor),
         actions: [ _studyPopupMenu(appBarForegroundColor) ],
         shape: InputBorder.none,
         systemOverlayStyle: (bright) ?
@@ -154,13 +155,6 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
                 style: TextStyles.head3.copyWith(
                     color: context.extraColors.grey800),))
         ],),
-    );
-  }
-
-  Widget _backButton(Color iconColor) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12),
-      child: BackButton(color: iconColor),
     );
   }
 

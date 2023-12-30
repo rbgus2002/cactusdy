@@ -10,6 +10,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,7 +42,8 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: const SlowBackButton(),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(

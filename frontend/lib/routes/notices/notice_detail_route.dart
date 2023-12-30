@@ -12,6 +12,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/time_utility.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/comment_widget.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/input_field.dart';
@@ -57,6 +58,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     return Scaffold(
       appBar: AppBar(
         shape: InputBorder.none,
+        leading: const SlowBackButton(),
         actions: _noticePopupMenus(),),
       body: Column(
         children: [
