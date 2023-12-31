@@ -14,6 +14,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/add_button.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/line_profiles/study_profile_widget.dart';
 import 'package:groupstudy/widgets/line_profiles/user_line_profile_widget.dart';
 import 'package:groupstudy/widgets/tasks/task_group_widget.dart';
@@ -38,7 +39,7 @@ class _HomeRouteState extends State<HomeRoute> {
         toolbarHeight: 0,
         backgroundColor: context.extraColors.baseBackgroundColor,
         shape: InputBorder.none,),
-      body: RefreshIndicator(
+      body: HapticRefreshIndicator(
           onRefresh: _refresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

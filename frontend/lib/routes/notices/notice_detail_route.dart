@@ -15,6 +15,7 @@ import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/comment_widget.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:groupstudy/widgets/tags/notice_reaction_tag.dart';
 
@@ -66,7 +67,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         children: [
           Flexible(
             fit: FlexFit.tight,
-            child: RefreshIndicator(
+            child: HapticRefreshIndicator(
               onRefresh: _refresh,
               child: SingleChildScrollView(
                 clipBehavior: Clip.none,

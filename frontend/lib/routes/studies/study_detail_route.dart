@@ -15,6 +15,7 @@ import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
 import 'package:groupstudy/widgets/noticie_widgets/notice_rolling_widget.dart';
 import 'package:groupstudy/widgets/profile_lists/member_profile_list_widget.dart';
@@ -61,8 +62,9 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
           SystemUiOverlayStyle.dark :
           SystemUiOverlayStyle.light,),
 
-      body: RefreshIndicator(
+      body: HapticRefreshIndicator(
         onRefresh: _refresh,
+        edgeOffset: 116, // app bar height
         child: SingleChildScrollView(
           clipBehavior: Clip.none,
           physics: const AlwaysScrollableScrollPhysics(),

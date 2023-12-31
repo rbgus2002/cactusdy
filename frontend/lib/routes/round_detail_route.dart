@@ -13,6 +13,7 @@ import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:groupstudy/widgets/input_field_place.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
@@ -56,7 +57,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         leading: const SlowBackButton(),
         shape: InputBorder.none,
         actions: [ _roundPopupMenu(), ],),
-      body: RefreshIndicator(
+      body: HapticRefreshIndicator(
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
