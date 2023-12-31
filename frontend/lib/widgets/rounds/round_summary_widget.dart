@@ -213,8 +213,10 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: widget.roundSeq,
-              roundId: widget.round.roundId, study: widget.study,
-              onRemove: () => widget.onRemove(widget.roundSeq),));
+              round: widget.round,
+              study: widget.study,
+              onRemove: () => widget.onRemove(widget.roundSeq),))
+          .then((value) => setState(() { } ));
       }
 
       _isProcessing = false;

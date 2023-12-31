@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:groupstudy/models/notice.dart';
 import 'package:groupstudy/models/notice_summary.dart';
+import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/routes/notices/notice_detail_route.dart';
 import 'package:groupstudy/routes/notices/notice_list_route.dart';
@@ -200,15 +201,20 @@ class _MessageInteractionHandler {
 
   static void _viewRound(int studyId, int roundId, int roundSeq) async {
     // Visit Study Detail Route
-    _viewStudy(studyId).then((study) {
+    _viewStudy(studyId).then((study) async {
       if (study != null) {
-        // View Round Detail
-        Util.pushRouteByKey((context) =>
-            RoundDetailRoute(
-              roundSeq: roundSeq,
-              roundId: roundId,
-              study: study,
-            ));
+        try {
+          Round round = await Round.getDetail(roundId);
+
+          // View Round Detail
+          Util.pushRouteByKey((context) =>
+              RoundDetailRoute(
+                roundSeq: roundSeq,
+                round: round,
+                study: study,));
+        } on Exception catch (e) {
+          print(Util.getExceptionMessage(e));
+        }
       }
     });
   }

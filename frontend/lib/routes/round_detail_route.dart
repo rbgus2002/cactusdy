@@ -22,15 +22,15 @@ import 'package:groupstudy/widgets/tags/rectangle_tag.dart';
 
 class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
-  final int roundId;
   final Study study;
+  final Round round;
   final Function? onRemove;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
-    required this.roundId,
     required this.study,
+    required this.round,
     this.onRemove,
   }) : super(key: key);
 
@@ -46,12 +46,21 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   final _focusNode = FocusNode();
 
-  late Round round;
+  late Round _roundRef;
   bool _isEdited = false;
   bool _isExpended = true;
+  
+  @override
+  void initState() {
+    super.initState();
+    _roundRef = widget.round;
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool scheduled = TimeUtility.isScheduled(_roundRef.studyTime);
+    _placeEditingController.text = _roundRef.studyPlace;
+
     return Scaffold(
       appBar: AppBar(
         leading: const SlowBackButton(),
@@ -61,47 +70,36 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: FutureBuilder(
-              future: Round.getDetail(widget.roundId),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  round = snapshot.data!;
-                  bool scheduled = TimeUtility.isScheduled(round.studyTime);
-                  _placeEditingController.text = round.studyPlace;
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Round Info & Detail Record
+              Container(
+                padding: Design.edgePadding,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: context.extraColors.grey50!,
+                      width: 7),),),
+                child: Column(
+                  children: [
+                    // Round Info
+                    _roundInfo(),
+                    Design.padding12,
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Round Info & Detail Record
-                      Container(
-                        padding: Design.edgePadding,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: context.extraColors.grey50!,
-                              width: 7),),),
-                        child: Column(
-                          children: [
-                            // Round Info
-                            _roundInfo(),
-                            Design.padding12,
+                    // Detail Record
+                    _detailRecord(),
+                    Design.padding12,
+                  ],),
+              ),
 
-                            // Detail Record
-                            _detailRecord(),
-                            Design.padding12,
-                          ],),
-                      ),
-
-                      // Participant Information List
-                      ParticipantInfoListWidget(
-                        scheduled: scheduled,
-                        roundId: widget.roundId,
-                        study: widget.study,),
-                    ]);
-                }
-                return Design.loadingIndicator;
-              },),
-          ),
+              // Participant Information List
+              ParticipantInfoListWidget(
+                scheduled: scheduled,
+                roundId: _roundRef.roundId,
+                study: widget.study,),
+            ]),
+        ),
       ),
     );
   }
@@ -130,16 +128,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
             // Month (or date)
             Text(
-              (round.studyTime != null)?
-              '${round.studyTime!.month}${context.local.month}' :
+              (_roundRef.studyTime != null)?
+              '${_roundRef.studyTime!.month}${context.local.month}' :
               '-${context.local.month}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey800),),
 
             // Day (or -)
             Text(
-              (round.studyTime != null) ?
-              '${round.studyTime!.day}' :
+              (_roundRef.studyTime != null) ?
+              '${_roundRef.studyTime!.day}' :
               '-',
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey800),),
@@ -174,10 +172,10 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   InkWell(
                     onTap: _editStudyTime,
                     child: Text(
-                      (round.studyTime != null) ?
-                        TimeUtility.getTime(round.studyTime!) :
+                      (_roundRef.studyTime != null) ?
+                        TimeUtility.getTime(_roundRef.studyTime!) :
                         context.local.inputHint1(context.local.time),
-                      style: (round.studyTime != null) ?
+                      style: (_roundRef.studyTime != null) ?
                         TextStyles.body2.copyWith(color: context.extraColors.grey800) :
                         TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
                   ),
@@ -198,7 +196,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
         // Scheduled Tag
         Visibility(
-          visible: TimeUtility.isScheduled(round.studyTime),
+          visible: TimeUtility.isScheduled(_roundRef.studyTime),
           child: _scheduledTag()),
       ],
     );
@@ -235,7 +233,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       children: [
         InputField(
           key: _detailEditor,
-          initText: round.detail,
+          initText: _roundRef.detail,
           hintText: context.local.recordHint,
           minLines: 4,
           maxLines: 7,
@@ -279,12 +277,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    setState(() { });
+    Round.getDetail(_roundRef.roundId).then((refreshedRound) {
+      setState(() {
+        _roundRef = refreshedRound;
+      });
+    });
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
     if (_isEdited) {
-      Round.updateDetail(widget.roundId, _detailEditor.currentState!.text);
+      Round.updateDetail(_roundRef.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
     }
 
@@ -292,13 +294,13 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   void _updateStudyPlace() {
-    round.studyPlace = _placeEditingController.text;
-    _updateRound(round);
+    _roundRef.studyPlace = _placeEditingController.text;
+    _updateRound(_roundRef);
   }
 
   void _editStudyTime() async {
     Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: round,)).then((value) => _refresh());
+        DateTimePickerRoute(round: _roundRef,)).then((value) => _refresh());
   }
 
   Future<void> _updateRound(Round round) async {
@@ -314,7 +316,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   void _deleteRound(BuildContext context) async {
     try {
-      await Round.deleteRound(round.roundId).then((result) {
+      await Round.deleteRound(_roundRef.roundId).then((result) {
         if (result) {
           Navigator.of(context).pop();
 
