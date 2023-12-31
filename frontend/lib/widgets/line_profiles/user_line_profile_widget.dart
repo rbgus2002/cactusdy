@@ -91,7 +91,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
       ItemEntry(
         text: context.local.feedback,
         icon: const Icon(CustomIcons.comment,),
-        onTap: () => Util.pushRoute(context, (context) =>
+        onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
             const FeedbackRoute())),
 
       // setting

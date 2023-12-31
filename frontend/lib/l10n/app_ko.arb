@@ -168,5 +168,15 @@
     "late": "지각",
 
     "place": "장소",
-    "time": "시간"
+    "time": "시간",
+
+    "feedback": "문의하기",
+    "send": "전송",
+    "feedbackType": "유형",
+    "feedbackTitle": "문의 제목",
+    "feedbackContent": "문의 내용",
+    "bug": "버그 제보",
+    "feat": "신규 기능",
+    "enhance": "기능 개선",
+    "etc": "기타"
 }

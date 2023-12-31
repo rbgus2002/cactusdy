@@ -56,6 +56,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   validator: _titleValidator,
                   decoration: InputDecoration(
+                    isDense: true,
                     hintText: context.local.inputHint1(context.local.title),
                     hintStyle: TextStyles.head3.copyWith(
                         color: context.extraColors.grey400),
@@ -64,7 +65,6 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                     errorBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: ColorStyles.errorColor),),
                   ),),
-                Design.padding16,
 
                 // [Contents]
                 TextFormField(
@@ -76,6 +76,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   onChanged: (text) => _contents = text,
                   validator: _contentsValidator,
                   decoration: InputDecoration(
+                    isDense: true,
                     hintText: context.local.inputHint1(context.local.content),
                     hintStyle: TextStyles.body1.copyWith(
                         color: context.extraColors.grey400),
