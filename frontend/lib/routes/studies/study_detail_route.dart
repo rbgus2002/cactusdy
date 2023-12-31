@@ -129,9 +129,9 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            top: -160,
+            top: -320,
             child: Container(
-              height: 320,
+              height: 480,
               width: double.maxFinite,
               color: study.color),),
 
