@@ -29,7 +29,7 @@ class TwoButtonDialog {
         context: context,
         barrierDismissible: true,
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: context.extraColors.barrierColor!.withOpacity(0.1),
+        barrierColor: context.extraColors.barrierColor!.withOpacity(0.2),
         pageBuilder: (context, animation, secondaryAnimation) {
           return BackdropFilter(
             filter: Design.basicBlur,

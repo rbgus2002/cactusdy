@@ -28,7 +28,7 @@ class FocusedMenuDialog {
 
     return showGeneralDialog(
         context: context,
-        barrierColor: context.extraColors.barrierColor!.withOpacity(0.1),
+        barrierColor: context.extraColors.barrierColor!.withOpacity(0.2),
         barrierDismissible: true,
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder: (context, animation, secondaryAnimation) =>
