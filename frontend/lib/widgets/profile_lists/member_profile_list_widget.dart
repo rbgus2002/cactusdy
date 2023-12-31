@@ -72,7 +72,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
                   scale: widget.scale,
                   side: (widget.border)?
                       BorderSide(
-                        width: 3,
+                        width: (host)? 3 : 1,
                         color: (host)?
                           ColorStyles.mainColor :
                           context.extraColors.grey500!) : null,
