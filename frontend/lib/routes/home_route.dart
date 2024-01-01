@@ -14,6 +14,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/add_button.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/line_profiles/study_profile_widget.dart';
 import 'package:groupstudy/widgets/line_profiles/user_line_profile_widget.dart';
 import 'package:groupstudy/widgets/tasks/task_group_widget.dart';
@@ -34,14 +35,18 @@ class _HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.extraColors.baseBackgroundColor,
-      body: RefreshIndicator(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: context.extraColors.baseBackgroundColor,
+        shape: InputBorder.none,),
+      body: HapticRefreshIndicator(
           onRefresh: _refresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: _specialPadding,
             child: Column(
               children: [
-                Design.padding(76),
+                Design.padding20,
 
                 // User Profile
                 FutureBuilder(
@@ -50,14 +55,14 @@ class _HomeRouteState extends State<HomeRoute> {
                     (snapshot.hasData) ?
                       UserLineProfileWidget(user: snapshot.data!) :
                       Container(height: 48,)),
-                Design.padding(44),
+                Design.padding28,
 
                 // title line
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      context.local.myStudy,
+                      ' ${context.local.myStudy}',
                       style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
                     AddButton(
                       iconData: CustomIcons.plus_square_outline,
@@ -97,7 +102,7 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Future<void> _refresh() async {
-    return setState(() {});
+    return setState(() { });
   }
 
   Future _getUserProfile() async {

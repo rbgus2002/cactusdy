@@ -9,6 +9,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/formatter_utility.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class SignInRoute extends StatefulWidget {
@@ -33,6 +34,7 @@ class _SignInRouteState extends State<SignInRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const SlowBackButton(),
         title: Text(context.local.signIn),),
         body: SingleChildScrollView(
           child: Container(

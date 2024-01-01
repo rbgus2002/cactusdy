@@ -105,13 +105,14 @@
     "studyColorHint": "색상은 개인별로 설정이 가능해요",
     "setStudyInfo": "스터디 정보를 설정해 주세요",
     "startStudyWithFriend": "친구들과 스터디를 시작해 보세요",
+    "notWithUsNow": "지금은 함께하지 않아요...",
 
     "participate": "참여하기",
     "invitingCode": "초대코드",
     "shareInvitingCode": "초대코드 공유",
     "inputCode": "코드를 입력해 주세요",
     "invitingCodeHint": "코드 6자리",
-    "discordInvitingCode": "존재하지 않는 코드번호에요.",
+    "shortInvitingCode": "초대코드 6자리를 전부 입력해주세요",
 
     "admin": "방장",
     "chooseAdmin": "방장 선택",
@@ -136,7 +137,7 @@
     "ruleIsLimitedTo": "규칙은 최대 {count}개 만들 수 있어요",
 
     "task": "과제",
-    "reserved": "예정",
+    "scheduled": "예정",
     "taskAchievementRateIs": "과제를 {rate}% 달성했어요",
     "achievement": "달성",
     "count": "회",
@@ -167,5 +168,15 @@
     "late": "지각",
 
     "place": "장소",
-    "time": "시간"
+    "time": "시간",
+
+    "feedback": "문의하기",
+    "send": "전송",
+    "feedbackType": "유형",
+    "feedbackTitle": "문의 제목",
+    "feedbackContent": "문의 내용",
+    "bug": "버그 제보",
+    "feat": "신규 기능",
+    "enhance": "기능 개선",
+    "etc": "기타"
 }

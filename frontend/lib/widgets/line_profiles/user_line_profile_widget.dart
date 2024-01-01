@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/routes/feedback_route.dart';
 import 'package:groupstudy/routes/profiles/profile_edit_route.dart';
 import 'package:groupstudy/routes/setting_route.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
@@ -7,7 +8,9 @@ import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
 import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
 
 /// User Profile for main route
@@ -57,20 +60,14 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
           ),
 
           // Popup button to edit profile and setting
-          SizedBox(
-            // for sizing down of PopupMenuButton
-            width: 20, // HomeRoute.specialPadding: 16 + 4
-            height: _iconSize,
-            child: PopupMenuButton(
-              icon: Icon(
-                CustomIcons.more_vert,
-                color: context.extraColors.grey500,
-                size: _iconSize,),
-              splashRadius: _iconSize / 2,
-              padding: EdgeInsets.zero,
-              itemBuilder: _popupMenuBuilder,
-              constraints: const BoxConstraints(minWidth: Design.popupWidth),),),
-        ],)
+          FocusedMenuButton(
+            width: 24,
+            icon: Icon(
+              CustomIcons.more_vert,
+              color: context.extraColors.grey500,
+              size: _iconSize,),
+            items: _popupMenuBuilder(context)),
+      ],)
     );
   }
 
@@ -82,14 +79,22 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         icon: const Icon(CustomIcons.writing_outline),
         onTap: () => Util.pushRoute(context, (context) =>
             ProfileEditRoute(user: widget.user)).then((value) =>
-                Util.delay(() => setState(() {}),),
+                Util.delay(() => setState(() { }),),
         ),),
+
+      // feedback
+      ItemEntry(
+        text: context.local.feedback,
+        icon: const Icon(CustomIcons.comment,),
+        onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+            const FeedbackRoute())),
 
       // setting
       ItemEntry(
         text: context.local.setting,
         icon: const Icon(CustomIcons.setting_outline,),
-        onTap: () => Util.pushRoute(context, (context) => const SettingRoute())),
+        onTap: () => Util.pushRoute(context, (context) =>
+            const SettingRoute())),
     ];
   }
 }

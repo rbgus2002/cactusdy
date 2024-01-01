@@ -6,6 +6,7 @@ import 'package:groupstudy/routes/studies/study_create_page3.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 
 class StudyInvitingRoute extends StatefulWidget {
   final String studyName;
@@ -27,7 +28,8 @@ class _StudyInvitingRouteState extends State<StudyInvitingRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: const SlowBackButton(),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(

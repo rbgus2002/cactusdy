@@ -27,7 +27,7 @@ class ParticipantProfileListWidget extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.zero,
-        separatorBuilder: (context, index) => Design.padding8,
+        separatorBuilder: (context, index) => Design.padding4,
         itemCount: roundParticipantSummaries.length,
         itemBuilder: _profileImageBuilder,),
     );

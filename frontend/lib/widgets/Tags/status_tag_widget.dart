@@ -12,7 +12,7 @@ class StatusTagWidget extends RoundedTag {
     required BuildContext context,
     required StatusTag status,
     required bool reserved,
-    required super.onTap,
+    super.onTap,
     super.width = 60,
     super.height = 36,
   }) : super(

@@ -3,6 +3,7 @@ import 'package:groupstudy/models/task.dart';
 import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/color_util.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 
 class TaskCheckBox extends StatefulWidget {
@@ -36,6 +37,8 @@ class _TaskCheckBoxState extends State<TaskCheckBox> {
 
   @override
   Widget build(BuildContext context) {
+    bool bright = ColorUtil.isBright(widget.activeColor??ColorStyles.mainColor);
+
     return InkWell(
       borderRadius: BorderRadius.circular(widget.size),
       onTap: (widget.enable)? widget.onChanged : null,
@@ -55,7 +58,9 @@ class _TaskCheckBoxState extends State<TaskCheckBox> {
         child: (widget.task.isDone)?
             Icon(
               CustomIcons.check2,
-              color: context.extraColors.grey000,
+              color: (bright)?
+                context.extraColors.grey000 :
+                Colors.white,
               size: _iconSize) : null,),
     );
   }

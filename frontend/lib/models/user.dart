@@ -100,7 +100,7 @@ class User{
       throw Exception(responseJson['message']);
     } else {
       print('sucess to update user profile');
-      updatedUser.profileImage = responseJson['data']['user']['profileImage'];
+      updatedUser.profileImage = responseJson['data']['user']['profileImage']??"";
 
       return responseJson['success'];
     }
@@ -150,12 +150,14 @@ class ParticipantProfile {
   final List<StudyTag> studyTags;
   final Map<String, int> attendanceRate;
   final int doneRate;
+  final bool isParticipated;
 
   ParticipantProfile({
     required this.participant,
     required this.studyTags,
     required this.attendanceRate,
     required this.doneRate,
+    required this.isParticipated,
   });
 
   factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
@@ -170,6 +172,7 @@ class ParticipantProfile {
           StudyTag.fromJson(studyTag)).toList(),
       attendanceRate: attendanceRate,
       doneRate: json['doneRate'],
+      isParticipated: (json['isParticipated'] == 'Y'),
     );
   }
 }

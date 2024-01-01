@@ -20,11 +20,13 @@ import 'package:groupstudy/widgets/tags/study_tag_widget.dart';
 class ProfileRoute extends StatefulWidget {
   final int userId;
   final int studyId;
+  final VoidCallback? onKick;
 
   const ProfileRoute({
     Key? key,
     required this.userId,
     required this.studyId,
+    this.onKick,
   }) : super(key: key);
 
   @override
@@ -60,8 +62,10 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
-                  _kickAndStabButton(snapshot.data!.participant),
-                  Design.padding48,
+                  _kickAndStabButton(snapshot.data!),
+                  Design.padding20,
+                  _notWithUsNowText(snapshot.data!.isParticipated),
+                  Design.padding28,
                 ],) :
               Design.loadingIndicator,),
     );
@@ -218,9 +222,10 @@ class _ProfileRouteState extends State<ProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButton(User participant) {
+  Widget _kickAndStabButton(ParticipantProfile participantProfile) {
     return Visibility(
-      visible: (!Util.isOwner(widget.userId)),
+      visible: (!Util.isOwner(widget.userId)
+            && participantProfile.isParticipated),
       child: Container(
         padding: Design.edgePadding,
         height: 92,
@@ -244,7 +249,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   userStabController.stab();
                   Toast.showToast(
                     context: context,
-                    message: _getStabMessage(participant.nickname, userStabController.stabCount),);
+                    message: _getStabMessage(
+                        participantProfile.participant.nickname,
+                        userStabController.stabCount),);
                 },
                 child: Container(
                   width: double.maxFinite,
@@ -266,7 +273,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
   }
 
   void _showKickDialog() {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.ensureToDo(context.local.kicking),
 
@@ -283,6 +290,9 @@ class _ProfileRouteState extends State<ProfileRoute> {
           userId: widget.userId,
           studyId: widget.studyId).then((value) =>
             Util.popRoute(context));
+      if (widget.onKick != null) {
+        widget.onKick!();
+      }
     } on Exception catch(e) {
       if (context.mounted) {
         Toast.showToast(
@@ -302,6 +312,19 @@ class _ProfileRouteState extends State<ProfileRoute> {
     }
 
     return context.local.stabUserAbout(nickname, '$stabCount${context.local.num}${context.local.even} ');
+  }
+
+  Widget _notWithUsNowText(bool isParticipated) {
+    return Center(
+      child: Visibility(
+        visible: !isParticipated,
+        child: Text(
+          context.local.notWithUsNow,
+          style: TextStyles.head6.copyWith(
+              color: context.extraColors.grey600),
+        ),
+      ),
+    );
   }
 }
 

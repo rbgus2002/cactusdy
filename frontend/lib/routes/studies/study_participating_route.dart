@@ -10,6 +10,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class StudyParticipantRoute extends StatefulWidget {
@@ -32,7 +33,8 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: const SlowBackButton(),),
       body: Container(
         padding: Design.edgePadding,
         child: Column(
@@ -92,7 +94,7 @@ class _StudyParticipantRouteState extends State<StudyParticipantRoute> {
 
   String? _invitingCodeValidator(String? input) {
     if (input == null || input.length < Study.invitingCodeLength) {
-      return context.local.discordInvitingCode;
+      return context.local.shortInvitingCode;
     }
     return null;
   }

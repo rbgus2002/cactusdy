@@ -4,33 +4,35 @@ import 'package:flutter/services.dart';
 import 'package:groupstudy/models/status_tag.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/profiles/profile_route.dart';
-import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
-import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
+import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
+import 'package:groupstudy/widgets/participant_info_widget.dart';
 import 'package:groupstudy/widgets/tags/status_tag_widget.dart';
 
 /// Participant Profile for Round Detail Route
 class ParticipantProfileWidget extends StatefulWidget {
   final User user;
+  final int hostId;
   final int studyId;
   final int roundParticipantId;
-  final double taskProgress;
-  final bool reserved;
-  StatusTag status;
+  final bool scheduled;
+  final StatusTag status;
+  final ProgressText progressTextWidget;
 
-  ParticipantProfileWidget({
+  const ParticipantProfileWidget({
     Key? key,
     required this.user,
+    required this.hostId,
     required this.studyId,
     required this.roundParticipantId,
-    required this.taskProgress,
     required this.status,
-    required this.reserved,
+    required this.scheduled,
+    required this.progressTextWidget,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,13 @@ class ParticipantProfileWidget extends StatefulWidget {
 
 class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
   static const double _imageSize = 48;
+  late StatusTag _statusRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _statusRef = widget.status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +56,11 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
       children: [
         // Participant Profile Image (Left Part)
         InkWell(
-          onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-            ProfileRoute(
-                userId: widget.user.userId,
-                studyId: widget.studyId),),
+          onTap: () => Util.pushRouteWithSlideUp(
+              context, (context, animation, secondaryAnimation) =>
+                ProfileRoute(
+                  userId: widget.user.userId,
+                  studyId: widget.studyId),),
           child: SquircleImageWidget(
               scale: _imageSize,
               url: widget.user.profileImage),),
@@ -69,9 +79,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
               Design.padding4,
 
               // Task Progress (%)
-              Text(
-                  '${(widget.taskProgress * 100).toStringAsFixed(1)}%',
-                  style: TextStyles.head5.copyWith(color: ColorStyles.mainColor)),
+              widget.progressTextWidget,
             ],),
         ),
 
@@ -79,9 +87,11 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           width: 48,
           height: 30,
           context: context,
-          status: widget.status,
-          reserved: widget.reserved,
-          onTap: _showStatusPicker,
+          status: _statusRef,
+          reserved: widget.scheduled,
+          onTap: (_isEditable())?
+            _showStatusPicker
+            : null,
         ),
       ],
     );
@@ -96,10 +106,10 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
 
   void _updateStatus(StatusTag newStatus) async {
     HapticFeedback.lightImpact();
-    if (widget.status != newStatus) {
+    if (_statusRef != newStatus) {
       try {
         await StatusTag.updateStatus(widget.roundParticipantId, newStatus).then((value) =>
-            setState((){ }),);
+            setState(() => _statusRef = newStatus),);
       } on Exception catch(e) {
         if (context.mounted) {
           Toast.showToast(
@@ -107,7 +117,11 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
               message: Util.getExceptionMessage(e));
         }
       }
-      widget.status = newStatus;
     }
+  }
+
+  bool _isEditable() {
+    return (Util.isOwner(widget.user.userId) ||
+        (Util.isOwner(widget.hostId)));
   }
 }

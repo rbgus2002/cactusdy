@@ -2,9 +2,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:groupstudy/models/notice.dart';
+import 'package:groupstudy/models/notice_summary.dart';
+import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/routes/notices/notice_detail_route.dart';
+import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
 import 'package:groupstudy/services/firebase_options.dart';
@@ -86,8 +90,8 @@ class MessageService {
     RemoteNotification? notification = message.notification;
     if (notification == null) return;
 
-    String title = notification!.title??"";
-    String body = notification!.body??"";
+    String title = notification.title??"";
+    String body = notification.body??"";
     print('notification : { title : $title, body : $body }');
 
     // Android : in our app, { channel id == title }
@@ -164,8 +168,14 @@ class _MessageInteractionHandler {
         _viewRound(studyId, roundId, roundSeq);
         break;
 
-    // [Fallthrough] : not implemented yet
       case 'notice':
+        int studyId = int.parse(message.data['studyId']);
+        int noticeId = int.parse(message.data['noticeId']);
+
+        _viewNotice(studyId, noticeId);
+        break;
+
+      // [Fallthrough] : not implemented yet
       case 'others':
       default:
         // TODO: implement later
@@ -177,6 +187,7 @@ class _MessageInteractionHandler {
     try {
       Study study = await Study.getStudySummary(studyId);
 
+      // View Study Detail
       Util.pushRouteByKey((context) =>
           StudyDetailRoute(study: study));
 
@@ -184,17 +195,53 @@ class _MessageInteractionHandler {
     } on Exception catch (e) {
       print(Util.getExceptionMessage(e));
     }
+
+    return null;
   }
 
   static void _viewRound(int studyId, int roundId, int roundSeq) async {
-    _viewStudy(studyId).then((study) {
+    // Visit Study Detail Route
+    _viewStudy(studyId).then((study) async {
       if (study != null) {
-        Util.pushRouteByKey((context) =>
-            RoundDetailRoute(
-              roundSeq: roundSeq,
-              roundId: roundId,
-              study: study,
-            ));
+        try {
+          Round round = await Round.getDetail(roundId);
+
+          // View Round Detail
+          Util.pushRouteByKey((context) =>
+              RoundDetailRoute(
+                roundSeq: roundSeq,
+                round: round,
+                study: study,));
+        } on Exception catch (e) {
+          print(Util.getExceptionMessage(e));
+        }
+      }
+    });
+  }
+
+  static void _viewNotice(int studyId, int noticeId) async {
+    // Visit Study Detail Route
+    _viewStudy(studyId).then((study) async {
+      if (study != null) {
+        try {
+          NoticeSummary noticeSummary = NoticeSummary(
+              notice: await Notice.getNotice(noticeId),
+              commentCount: 0, pinYn: false);
+
+          // Visit Notice List Route
+          Util.pushRouteByKey((context) =>
+              NoticeListRoute(
+                  studyId: studyId));
+
+          // View Notice Detail
+          Util.pushRouteByKey((context) =>
+              NoticeDetailRoute(
+                  noticeSummary: noticeSummary,
+                  studyId: studyId,
+                  onDelete: Util.doNothing));
+        } on Exception catch(e) {
+          print(Util.getExceptionMessage(e));
+        }
       }
     });
   }

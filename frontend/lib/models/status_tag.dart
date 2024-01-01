@@ -44,7 +44,7 @@ enum StatusTag {
     switch (this) {
       case StatusTag.attendance:
         return (reserved) ?
-        context.local.reserved :
+        context.local.scheduled :
         context.local.attend;
 
       case StatusTag.late:

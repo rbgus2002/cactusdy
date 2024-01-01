@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class Design {
@@ -57,6 +59,11 @@ class Design {
     blurRadius: 4,
     offset: const Offset(0, 4),
   )];
+
+  static final ImageFilter basicBlur = ImageFilter.blur(
+    sigmaX: 5,
+    sigmaY: 5,
+  );
 
   static const double popupWidth = 250;
 

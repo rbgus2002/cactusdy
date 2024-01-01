@@ -12,6 +12,7 @@ import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/pickers/custom_calendar_date_picker.dart';
 
 class DateTimePickerRoute extends StatefulWidget {
@@ -28,7 +29,8 @@ class DateTimePickerRoute extends StatefulWidget {
 
 
 class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
-  late DateTime _date;
+  late final DateTime _initDate;
+  late DateTime? _date;
   late DateTime _time;
 
   @override
@@ -36,14 +38,15 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
     super.initState();
 
     _date = widget.round.studyTime??DateTime.now();
-    _time = widget.round.studyTime??DateTime.now();
+    _time = widget.round.studyTime??DateTime(0, 0, 0, 12, 0);
+    _initDate = _date!;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CloseButton(),
+        leading: const SlowBackButton(isClose: true,),
         shape: InputBorder.none,),
       bottomNavigationBar: _doneModifyButton(),
       body: SingleChildScrollView(
@@ -54,9 +57,9 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomCalendarDatePicker(
                 onDateChanged: _pickDate,
-                initialDate: _date,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),),),
+                initialDate: _initDate,
+                firstDate: DateTime(2000, 1, 1),
+                lastDate: DateTime(2100, 12, 31),),),
 
             // Time Picker Button
             Container(
@@ -65,10 +68,12 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
                   top: BorderSide(
                       color: context.extraColors.grey200!),),),
               child: InkWell(
-                onTap: () => BottomSheets.timePickerBottomSheet(
-                  context: context,
-                  initTime: _time,
-                  onSelected: _pickTime,),
+                onTap: (_date != null)?
+                    () => BottomSheets.timePickerBottomSheet(
+                      context: context,
+                      initTime: _time,
+                      onSelected: _pickTime,) :
+                    null,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                   child: Row(
@@ -79,7 +84,9 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
                           style: TextStyles.head4,),),
 
                       Text(
-                        TimeUtility.getTime(_time),
+                        (_date != null) ?
+                          TimeUtility.getTime(_time) :
+                          '- -  - - : - -',
                         style: TextStyles.head4.copyWith(color: ColorStyles.mainColor),),
                       Design.padding8,
 
@@ -108,7 +115,7 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
     );
   }
 
-  void _pickDate(DateTime date) {
+  void _pickDate(DateTime? date) {
     setState(() => _date = date);
   }
 
@@ -117,7 +124,15 @@ class _DateTimePickerRouteState extends State<DateTimePickerRoute> {
   }
 
   void _updateStudyTime() async {
-    DateTime newStudyTime = DateTime(_date.year, _date.month, _date.day, _time.hour, _time.minute);
+    DateTime? newStudyTime;
+    if (_date != null) {
+      newStudyTime = DateTime(
+          _date!.year,
+          _date!.month,
+          _date!.day,
+          _time.hour,
+          _time.minute);
+    }
 
     try {
       widget.round.studyTime = newStudyTime;

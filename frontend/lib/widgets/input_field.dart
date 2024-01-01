@@ -127,7 +127,7 @@ class InputFieldState extends State<InputField> {
 
     // For Counter
     if (widget.counter) {
-      setState(() {});
+      setState(() { });
     }
   }
 

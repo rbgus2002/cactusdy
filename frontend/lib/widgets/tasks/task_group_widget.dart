@@ -69,27 +69,30 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
             title: widget.taskGroup.taskTypeName,
             onTap: () {
               HapticFeedback.lightImpact();
-              if (!_isProcessing) {
+              if (!_isProcessing && _isAddable()) {
                 _isProcessing = true;
 
-                Util.delay(() {
-                  _addTask(Task());
-                  _isProcessing = false;
-                });
+                _addTask(Task());
+                _isProcessing = false;
               }
             }),
         Design.padding12,
 
-        AnimatedList(
-          key: _taskListKey,
-          shrinkWrap: true,
-          primary: false,
-          reverse: true,
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
+        InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: Util.doNothing,
+          child: AnimatedList(
+            key: _taskListKey,
+            shrinkWrap: true,
+            primary: false,
+            reverse: true,
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
 
-          initialItemCount: _taskListModel.length,
-          itemBuilder: _buildTask,),
+            initialItemCount: _taskListModel.length,
+            itemBuilder: _buildTask,),
+        ),
       ]
     );
   }
@@ -204,6 +207,11 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     setState(() { });
 
     if (widget.updateProgress != null) widget.updateProgress!();
+  }
+
+  bool _isAddable() {
+    return (_taskListModel.items.isEmpty ||
+        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId));
   }
 
   bool _isValidIndex(int index) {

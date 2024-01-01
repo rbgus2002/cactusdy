@@ -149,13 +149,13 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
 
   Widget _scheduleTag() {
     return RectangleTag(
-      width: 40,
+      width: 36,
       height: 22,
-      color: context.extraColors.reservedTagColor!,
+      color: context.extraColors.pink!,
       text: Text(
-        context.local.reserved,
+        context.local.scheduled,
         style: TextStyles.caption2.copyWith(
-          color: context.extraColors.grey000,),),
+          color: context.extraColors.grey800,),),
       onTap: _viewRound,
     );
   }
@@ -213,8 +213,10 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: widget.roundSeq,
-              roundId: widget.round.roundId, study: widget.study,
-              onRemove: () => widget.onRemove(widget.roundSeq),));
+              round: widget.round,
+              study: widget.study,
+              onRemove: () => widget.onRemove(widget.roundSeq),))
+          .then((value) => setState(() { } ));
       }
 
       _isProcessing = false;

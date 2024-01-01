@@ -122,7 +122,7 @@ class CustomCalendarDatePicker extends StatefulWidget {
   final DateTime currentDate;
 
   /// Called when the user selects a date in the picker.
-  final ValueChanged<DateTime> onDateChanged;
+  final ValueChanged<DateTime?> onDateChanged; //< [EDIT] <DateTime> -> <DateTime?>
 
   /// Called when the user navigates to a new month/year in the picker.
   final ValueChanged<DateTime>? onDisplayedMonthChanged;
@@ -141,7 +141,7 @@ class _CustomCalendarDatePickerState extends State<CustomCalendarDatePicker> {
   bool _announcedInitialDate = false;
   late DatePickerMode _mode;
   late DateTime _currentDisplayedMonthDate;
-  late DateTime _selectedDate;
+  late DateTime? _selectedDate; //< [EDIT] DateTime -> DateTime?
   final GlobalKey _monthPickerKey = GlobalKey();
   final GlobalKey _yearPickerKey = GlobalKey();
   late MaterialLocalizations _localizations;
@@ -179,10 +179,12 @@ class _CustomCalendarDatePickerState extends State<CustomCalendarDatePicker> {
       _announcedInitialDate = true;
       final bool isToday = DateUtils.isSameDay(widget.currentDate, _selectedDate);
       final String semanticLabelSuffix = isToday ? ', ${_localizations.currentDateLabel}' : '';
-      SemanticsService.announce(
-        '${_localizations.formatFullDate(_selectedDate)}$semanticLabelSuffix',
-        _textDirection,
-      );
+      if (_selectedDate != null) { //< [EDIT]
+        SemanticsService.announce(
+          '${_localizations.formatFullDate(_selectedDate!)}$semanticLabelSuffix',
+          _textDirection,
+        );
+      }
     }
   }
 
@@ -204,16 +206,18 @@ class _CustomCalendarDatePickerState extends State<CustomCalendarDatePicker> {
     _vibrate();
     setState(() {
       _mode = mode;
-      if (_mode == DatePickerMode.day) {
-        SemanticsService.announce(
-          _localizations.formatMonthYear(_selectedDate),
-          _textDirection,
-        );
-      } else {
-        SemanticsService.announce(
-          _localizations.formatYear(_selectedDate),
-          _textDirection,
-        );
+      if (_selectedDate != null) { //< [EDIT]
+        if (_mode == DatePickerMode.day) {
+          SemanticsService.announce(
+            _localizations.formatMonthYear(_selectedDate!),
+            _textDirection,
+          );
+        } else {
+          SemanticsService.announce(
+            _localizations.formatYear(_selectedDate!),
+            _textDirection,
+          );
+        }
       }
     });
   }
@@ -242,7 +246,7 @@ class _CustomCalendarDatePickerState extends State<CustomCalendarDatePicker> {
     });
   }
 
-  void _handleDayChanged(DateTime value) {
+  void _handleDayChanged(DateTime? value) { //< [EDIT] DateTime -> DateTime?
     _vibrate();
     setState(() {
       _selectedDate = value;
@@ -433,8 +437,8 @@ class _MonthPicker extends StatefulWidget {
     required this.onDisplayedMonthChanged,
     this.selectableDayPredicate,
   }) : assert(!firstDate.isAfter(lastDate)),
-        assert(!selectedDate.isBefore(firstDate)),
-        assert(!selectedDate.isAfter(lastDate));
+        assert(selectedDate == null || !selectedDate.isBefore(firstDate)),  //< [EDIT]
+        assert(selectedDate == null || !selectedDate.isAfter(lastDate));    //< [EDIT]
 
   /// The initial month to display.
   final DateTime initialMonth;
@@ -457,10 +461,10 @@ class _MonthPicker extends StatefulWidget {
   /// The currently selected date.
   ///
   /// This date is highlighted in the picker.
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
 
   /// Called when the user picks a day.
-  final ValueChanged<DateTime> onChanged;
+  final ValueChanged<DateTime?> onChanged;
 
   /// Called when the user navigates to a new month.
   final ValueChanged<DateTime> onDisplayedMonthChanged;
@@ -527,9 +531,18 @@ class _MonthPickerState extends State<_MonthPicker> {
     super.dispose();
   }
 
-  void _handleDateSelected(DateTime selectedDate) {
-    _focusedDay = selectedDate;
-    widget.onChanged(selectedDate);
+  void _handleDateSelected(DateTime selectedDate) { //< [EDIT]
+    // #Case: Single Select => select
+    if (!DateUtils.isSameDay(selectedDate, widget.selectedDate)) {
+      _focusedDay = selectedDate;
+      widget.onChanged(selectedDate);
+    }
+
+    // #Case: Duplicated Select => unselect
+    else {
+      _focusedDay = null;
+      widget.onChanged(null);
+    }
   }
 
   void _handleMonthPageChanged(int monthPage) {
@@ -820,13 +833,13 @@ class _DayPicker extends StatefulWidget {
     required this.onChanged,
     this.selectableDayPredicate,
   }) : assert(!firstDate.isAfter(lastDate)),
-        assert(!selectedDate.isBefore(firstDate)),
-        assert(!selectedDate.isAfter(lastDate));
+        assert(selectedDate == null || !selectedDate.isBefore(firstDate)),  //< [EDIT]
+        assert(selectedDate == null || !selectedDate.isAfter(lastDate));    //< [EDIT]
 
   /// The currently selected date.
   ///
   /// This date is highlighted in the picker.
-  final DateTime selectedDate;
+  final DateTime? selectedDate; //< [EDIT]
 
   /// The current date at the time the picker is displayed.
   final DateTime currentDate;

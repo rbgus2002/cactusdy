@@ -12,8 +12,10 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/time_utility.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/comment_widget.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 import 'package:groupstudy/widgets/tags/notice_reaction_tag.dart';
 
@@ -34,6 +36,8 @@ class NoticeDetailRoute extends StatefulWidget {
 }
 
 class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
+  static const double _iconSize = 28;
+
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
 
@@ -57,12 +61,13 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     return Scaffold(
       appBar: AppBar(
         shape: InputBorder.none,
+        leading: const SlowBackButton(),
         actions: _noticePopupMenus(),),
       body: Column(
         children: [
           Flexible(
             fit: FlexFit.tight,
-            child: RefreshIndicator(
+            child: HapticRefreshIndicator(
               onRefresh: _refresh,
               child: SingleChildScrollView(
                 clipBehavior: Clip.none,
@@ -95,9 +100,10 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
 
     Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
-      widget.noticeSummary.notice = refreshedNotice;
-      _noticeRef = refreshedNotice;
-      setState(() {});
+      setState(() {
+        widget.noticeSummary.notice = refreshedNotice;
+        _noticeRef = refreshedNotice;
+      });
     });
   }
 
@@ -106,12 +112,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
       return [
         IconButton(
           icon: const Icon(CustomIcons.writing_outline),
-          iconSize: 28,
+          iconSize: _iconSize,
           onPressed: () => _editNotice(),),
 
         IconButton(
           icon: const Icon(CustomIcons.trash),
-          iconSize: 28,
+          iconSize: _iconSize,
           onPressed: () => _showDeleteNoticeDialog(context)),
       ];
     }
@@ -212,7 +218,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   void _showDeleteNoticeDialog(BuildContext context) {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
         context: context,
         text: context.local.confirmDeleteNotice,
 

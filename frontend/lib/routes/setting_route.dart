@@ -10,6 +10,7 @@ import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 
 class _ThemeModeData {
@@ -49,8 +50,8 @@ class _SettingRouteState extends State<SettingRoute> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.local.setting),
-      ),
+        leading: const SlowBackButton(),
+        title: Text(context.local.setting),),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -156,7 +157,7 @@ class _SettingRouteState extends State<SettingRoute> {
   }
 
   void _showSignOutDialog() {
-    TwoButtonDialog.showProfileDialog(
+    TwoButtonDialog.showDialog(
       context: context,
       text: context.local.ensureToDo(context.local.signOut),
 

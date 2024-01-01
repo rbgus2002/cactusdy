@@ -7,7 +7,6 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/stab_controller.dart';
 import 'package:groupstudy/utilities/toast.dart';
-import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/tasks/task_check_box.dart';
 
@@ -44,30 +43,25 @@ class _TaskWidget extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     _textEditor.text = widget.task.detail;
-    return Ink(
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: Util.doNothing, // For prevent miss touch
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TaskCheckBox(
-              task: widget.task,
-              activeColor: widget.color,
-              onChanged: _onChecked,
-              enable: widget.isOwner,),
-            Design.padding12,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TaskCheckBox(
+            task: widget.task,
+            activeColor: widget.color,
+            onChanged: _onChecked,
+            enable: widget.isOwner,),
+          Design.padding12,
 
-            _taskDetail(),
+          _taskDetail(),
 
-            (widget.isOwner) ?
-              _taskPopupMenu() :
-              _stabButton(),
-          ],),
-      ),
+          (widget.isOwner) ?
+            _taskPopupMenu() :
+            _stabButton(),
+        ],),
     );
   }
 
@@ -111,12 +105,16 @@ class _TaskWidget extends State<TaskWidget> {
         onTapOutside: (event) {
             // empty && tap outside => delete task
             if (_textEditor.text.isEmpty) {
-              _updateTask();
+              _deleteTask();
+              setState(() { });
             }},
         onSubmitted: (value) {
             // summit => update or delete task
             if (_isEdited || _textEditor.text.isEmpty) {
               _updateTask();
+              setState(() {
+                _isEdited = false;
+              });
             }},
       ),
     );
@@ -135,16 +133,14 @@ class _TaskWidget extends State<TaskWidget> {
         constraints: const BoxConstraints(),
         onPressed: () {
           HapticFeedback.lightImpact();
-          TwoButtonDialog.showProfileDialog(
+          TwoButtonDialog.showDialog(
             context: context,
             text: widget.task.detail,
 
             buttonText1: context.local.modify,
-            isOutlined1: true,
             onPressed1: () => _focusNode.requestFocus(),
 
             buttonText2: context.local.delete,
-            isOutlined2: false,
             onPressed2: () => widget.onDeleteTask(widget.task),);
         }),
     );
@@ -205,13 +201,12 @@ class _TaskWidget extends State<TaskWidget> {
 
     // #Case: detail is empty;
     else {
-      widget.onDeleteTask(widget.task);
+      _deleteTask();
     }
+  }
 
-    setState(() {
-      _focusNode.unfocus();
-      _isEdited = false;
-    });
+  void _deleteTask() {
+    widget.onDeleteTask(widget.task);
   }
 
   String _getStabMessage(int stabCount) {

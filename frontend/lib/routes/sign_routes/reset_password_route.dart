@@ -8,6 +8,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class ResetPasswordRoute extends StatefulWidget {
@@ -32,7 +33,9 @@ class _ResetPasswordRouteState extends State<ResetPasswordRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.local.resetPassword),),
+      appBar: AppBar(
+        leading: const SlowBackButton(),
+        title: Text(context.local.resetPassword),),
       body: SingleChildScrollView(
         padding: Design.edgePadding,
         child: Column(

@@ -8,6 +8,7 @@ import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 
 class NoticeCreateRoute extends StatefulWidget {
   final int studyId;
@@ -33,7 +34,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CloseButton(),
+        leading: const SlowBackButton(isClose: true,),
         actions: [ _completeButton(), ],
       ),
       body: Container(
@@ -55,6 +56,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   onEditingComplete: () => FocusScope.of(context).nextFocus(),
                   validator: _titleValidator,
                   decoration: InputDecoration(
+                    isDense: true,
                     hintText: context.local.inputHint1(context.local.title),
                     hintStyle: TextStyles.head3.copyWith(
                         color: context.extraColors.grey400),
@@ -63,7 +65,6 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                     errorBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: ColorStyles.errorColor),),
                   ),),
-                Design.padding16,
 
                 // [Contents]
                 TextFormField(
@@ -75,6 +76,7 @@ class _NoticeCreateRouteState extends State<NoticeCreateRoute> {
                   onChanged: (text) => _contents = text,
                   validator: _contentsValidator,
                   decoration: InputDecoration(
+                    isDense: true,
                     hintText: context.local.inputHint1(context.local.content),
                     hintStyle: TextStyles.body1.copyWith(
                         color: context.extraColors.grey400),

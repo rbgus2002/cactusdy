@@ -10,6 +10,11 @@ class KakaoService {
 
   static final Logger logger = Logger('KakaoSharing');
 
+  /// if download link is changed, then
+  /// in https://developers.kakao.com/
+  /// app > config > platforms > Web > siteDomain also need to be change
+  static const String downloadLink = 'https://linktr.ee/pricking_studygroup';
+
   static void init() {
     KakaoSdk.init(
       nativeAppKey: '5d97b9a890c6846794e0bebdf1f6cfa7',
@@ -69,8 +74,8 @@ class KakaoService {
       text: context.local.invitingMessage(invitingCode, studyName),
       buttonTitle: context.local.participate,
       link: Link(
-        webUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link
-        mobileWebUrl: Uri.parse('https://developers.kakao.com'), //< TODO: App Store link also
+        webUrl: Uri.parse(downloadLink),
+        mobileWebUrl: Uri.parse(downloadLink),
         iosExecutionParams: { "invitingCode": invitingCode, },
         androidExecutionParams: { "invitingCode": invitingCode, },
       ),
