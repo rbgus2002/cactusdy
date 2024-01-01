@@ -109,7 +109,7 @@ public class Round extends BaseEntity {
         return getAppointment().getStudyTime() == null;
     }
 
-    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite() {
+    public List<RoundParticipant> getRoundParticipantsOrderByInvite() {
         return this.roundParticipants.stream()
                 .filter(RoundParticipant::isAttendedOrExpectedOrLate)
                 .sorted(Comparator.comparing(RoundParticipant::getId))
