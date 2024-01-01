@@ -29,6 +29,10 @@ class Logger {
   }
 
   void successLog(String task) {
-    log('SUCCESS: success to $task');
+    log('DONE: $task');
+  }
+
+  void infoLog(String info) {
+    log('INFO: $info');
   }
 }
