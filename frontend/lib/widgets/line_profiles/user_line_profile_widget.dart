@@ -8,6 +8,7 @@ import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
 import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
@@ -59,19 +60,13 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
           ),
 
           // Popup button to edit profile and setting
-          SizedBox(
+          FocusedMenuButton(
             width: 24,
-            child: IconButton(
-              icon: Icon(
-                CustomIcons.more_vert,
-                color: context.extraColors.grey500,
-                size: _iconSize,),
-              padding: EdgeInsets.zero,
-              splashRadius: 0.1,
-              onPressed: () => FocusedMenuDialog.showDialog(
-                  context: context,
-                  items: _popupMenuBuilder(context)),),
-          ),
+            icon: Icon(
+              CustomIcons.more_vert,
+              color: context.extraColors.grey500,
+              size: _iconSize,),
+            items: _popupMenuBuilder(context)),
       ],)
     );
   }

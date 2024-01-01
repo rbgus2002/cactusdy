@@ -12,8 +12,8 @@ import 'package:groupstudy/utilities/color_util.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
-import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
@@ -162,21 +162,12 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   Widget _studyPopupMenu(Color iconColor) {
-    return SizedBox(
-      width: 48,
-      child: IconButton(
+    return FocusedMenuButton(
         icon: Icon(
           CustomIcons.more_vert,
           color: iconColor,
           size: _iconSize,),
-        splashRadius: _iconSize / 2,
-        padding: EdgeInsets.zero,
-        constraints: const BoxConstraints(minWidth: Design.popupWidth),
-        onPressed: () => FocusedMenuDialog.showDialog(
-            context: context,
-            isAppbar: true,
-            items: _popupMenuBuilder(context),),),
-    );
+        items:_popupMenuBuilder(context));
   }
 
   List<PopupMenuEntry> _popupMenuBuilder(BuildContext context) {

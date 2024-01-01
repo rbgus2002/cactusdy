@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/study_Info.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
-import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/color_util.dart';

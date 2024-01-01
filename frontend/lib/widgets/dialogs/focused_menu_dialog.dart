@@ -12,19 +12,16 @@ class FocusedMenuDialog {
   static Future<dynamic> showDialog({
     required BuildContext context,
     required List<PopupMenuEntry> items,
-    bool isAppbar = false,
   }) {
     final RenderBox button = context.findRenderObject()! as RenderBox;
     final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
     late Offset offset = Offset(0.0, button.size.height);
 
-    final RelativeRect position = (isAppbar)?
-      const RelativeRect.fromLTRB(0, 104, 16, 0) :
-      RelativeRect.fromRect(
-          Rect.fromPoints(
-            button.localToGlobal(offset, ancestor: overlay),
-            button.localToGlobal(button.size.bottomRight(Offset.zero) + offset, ancestor: overlay),),
-          Offset.zero & overlay.size,);
+    final RelativeRect position = RelativeRect.fromRect(
+        Rect.fromPoints(
+          button.localToGlobal(offset, ancestor: overlay),
+          button.localToGlobal(button.size.bottomRight(Offset.zero) + offset, ancestor: overlay),),
+        Offset.zero & overlay.size,);
 
     return showGeneralDialog(
         context: context,

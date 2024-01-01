@@ -10,8 +10,8 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/time_utility.dart';
 import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
-import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/input_field.dart';
@@ -248,32 +248,24 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Widget _roundPopupMenu() {
-    return SizedBox(
-      width: 48,
-      child: IconButton(
+    return FocusedMenuButton(
         icon: const Icon(
           CustomIcons.more_vert,
           size: _iconSize,),
-        splashRadius: 16,
-        constraints: const BoxConstraints(minWidth: Design.popupWidth),
-        onPressed: () => FocusedMenuDialog.showDialog(
-          context: context,
-          isAppbar: true,
-          items: [
-            ItemEntry(
+        items: [
+          ItemEntry(
+            text: context.local.deleteRound,
+            icon: const Icon(CustomIcons.trash),
+            onTap: () => TwoButtonDialog.showDialog(
+              context: context,
               text: context.local.deleteRound,
-              icon: const Icon(CustomIcons.trash),
-              onTap: () => TwoButtonDialog.showDialog(
-                  context: context,
-                  text: context.local.deleteRound,
 
-                  buttonText1: context.local.no,
-                  onPressed1: Util.doNothing,
+              buttonText1: context.local.no,
+              onPressed1: Util.doNothing,
 
-                  buttonText2: context.local.delete,
-                  onPressed2: () => _deleteRound(context),),),
-          ],),)
-    );
+              buttonText2: context.local.delete,
+              onPressed2: () => _deleteRound(context),),),
+        ]);
   }
 
   Future<void> _refresh() async {
