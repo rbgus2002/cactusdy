@@ -41,7 +41,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   final GlobalKey<InputFieldState> _commentEditor = GlobalKey();
   late final focusNode = FocusNode();
 
-  late Future<Map<String, dynamic>> _futureCommentInfo;
+  late Future<CommentsInfo> _futureCommentInfo;
   List<Comment> _comments = [];
   int _replyTo = Comment.noReplyTarget;
 
@@ -178,8 +178,8 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         future: _futureCommentInfo,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            int commentCount = snapshot.data!['commentCount'];
-            _comments = snapshot.data!['commentInfos'];
+            int commentCount = snapshot.data!.count;
+            _comments = snapshot.data!.comments;
 
             // update value for notice list
             widget.noticeSummary.commentCount = commentCount;
