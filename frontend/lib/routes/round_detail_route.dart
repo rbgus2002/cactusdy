@@ -54,6 +54,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   void initState() {
     super.initState();
     _roundRef = widget.round;
+    _tryGetRound();
   }
 
   @override
@@ -269,11 +270,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    Round.getDetail(_roundRef.roundId).then((refreshedRound) {
-      setState(() {
-        _roundRef = refreshedRound;
-      });
-    });
+    _tryGetRound();
   }
 
   void _updateDetail(PointerDownEvent notUseEvent) {
@@ -319,6 +316,23 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       });
     } on Exception catch(e) {
       if (mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
+  }
+
+  void _tryGetRound() async {
+    try {
+      await Round.getDetail(_roundRef.roundId).then((refreshedRound) {
+        setState(() {
+          _roundRef = refreshedRound;
+        });
+      });
+    } on Exception catch(e) {
+      if (mounted) {
+        Util.popRoute(context);
         Toast.showToast(
             context: context,
             message: Util.getExceptionMessage(e));

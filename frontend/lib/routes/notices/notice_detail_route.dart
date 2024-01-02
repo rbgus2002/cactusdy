@@ -53,6 +53,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     super.initState();
     _noticeRef = widget.noticeSummary.notice;
     _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
+    _tryGetNotice();
   }
 
   @override
@@ -97,13 +98,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   Future<void> _refresh() async {
     _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
-
-    Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
-      setState(() {
-        widget.noticeSummary.notice = refreshedNotice;
-        _noticeRef = refreshedNotice;
-      });
-    });
+    _tryGetNotice();
   }
 
   List<Widget>? _noticePopupMenus() {
@@ -350,5 +345,23 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
     return (_replyTo != Comment.noReplyTarget) ?
         _comments[_replyTo].commentId
         : null;
+  }
+
+  void _tryGetNotice() async {
+    try {
+      await Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
+        setState(() {
+          widget.noticeSummary.notice = refreshedNotice;
+          _noticeRef = refreshedNotice;
+        });
+      });
+    } on Exception catch(e) {
+      if (mounted) {
+        Util.popRoute(context);
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 }
