@@ -4,7 +4,8 @@ import 'package:groupstudy/services/auth.dart';
 class DatabaseService {
   DatabaseService._();
 
-  static const serverUrl = 'http://43.200.247.214:8080/';
+  static const serverUrl = 'http://3.39.16.245:8080/'; // main
+  //static const serverUrl = 'http://43.200.247.214:8080/'; //dev
   //static const serverUrl = 'http://localhost:8080/';
 
   static const header = <String, String>{
