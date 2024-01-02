@@ -22,10 +22,10 @@ public class Study extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 14)
     private String studyName;
 
-    @Column(length = 40)
+    @Column(length = 20)
     private String detail;
 
     @Column(nullable = false)
@@ -109,5 +109,12 @@ public class Study extends BaseEntity {
         this.studyName = studyName;
         this.detail = detail;
         this.participants.updateHostUser(hostUser);
+    }
+
+    public void kickParticipant(User user) {
+        if (!isParticipated(user)) {
+            throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
+        }
+        participants.removeParticipant(new Participant(user, this));
     }
 }

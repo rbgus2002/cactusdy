@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.StatusMessageRequest;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.dto.request.EditUserRequest;
+import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
@@ -18,19 +18,20 @@ import java.io.IOException;
 @Transactional(readOnly = true)
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository;
     private final S3Utils s3Utils;
 
     @Transactional
-    public void updateStatusMessage(User user, StatusMessageRequest request) {
-        user.setStatusMessage(request.getStatusMessage());
-        userRepository.save(user);
+    public UserInfoResponse editUser(EditUserRequest dto, MultipartFile profileImage, User user) throws IOException {
+        user.edit(dto.getNickname(), dto.getStatusMessage());
+        handleUploadProfileImage(user, profileImage);
+        return UserInfoResponse.from(user);
     }
 
-    @Transactional
-    public String updateProfileImage(User user, MultipartFile image) throws IOException {
+    private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
+        if (image == null) {
+            return;
+        }
         String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
         user.updatePicture(imageUrl);
-        return imageUrl;
     }
 }

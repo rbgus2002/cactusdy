@@ -30,10 +30,14 @@ public class Rule extends BaseEntity {
     @JoinColumn(name="studyId", nullable = false)
     private Study study;
 
-    public Rule(String detail, Study study){
+    private Rule(String detail, Study study){
         this.detail = detail;
         this.study = study;
         this.deleteYn = 'N';
+    }
+
+    public static Rule create(String detail, Study study){
+        return new Rule(detail, study);
     }
 
     public void delete() {

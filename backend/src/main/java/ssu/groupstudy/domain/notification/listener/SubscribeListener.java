@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -38,6 +41,22 @@ public class SubscribeListener {
         User user = event.getUser();
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
         log.info("## handleStudyTopicSubscribeEvent : ");
+    }
+
+    @EventListener
+    public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
+        User user = event.getUser();
+        fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        log.info("## handleStudyTopicUnSubscribeEvent : ");
+    }
+
+    @EventListener
+    public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
+        User user = event.getUser();
+        for (Notice notice : event.getNotices()) {
+            fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, notice.getNoticeId());
+        }
+        log.info("## handleNoticeTopicUnSubscribeEvent : ");
     }
 
 }

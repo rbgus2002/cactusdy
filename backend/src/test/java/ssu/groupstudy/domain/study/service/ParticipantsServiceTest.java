@@ -6,11 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.dto.DoneCount;
+import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,6 +29,8 @@ class ParticipantsServiceTest extends ServiceTest {
     private ParticipantsService participantsService;
     @Mock
     private StudyRepository studyRepository;
+    @Mock
+    private UserRepository userRepository;
     @Mock
     private ParticipantRepository participantRepository;
 
@@ -52,5 +61,52 @@ class ParticipantsServiceTest extends ServiceTest {
 //            // then
 //            assertEquals(2, participantSummaryList.size());
 //        }
+    }
+
+    @Nested
+    class GetParticipant{
+        @Test
+        @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
+        void studyNotFound(){
+            // given
+            // when
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> participantsService.getParticipant(-1L, -1L))
+                    .isInstanceOf(StudyNotFoundException.class)
+                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("사용자가 존재하지 않으면 예외를 던진다")
+        void userNotFound(){
+            // given
+            // when
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> participantsService.getParticipant(-1L, -1L))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage(ResultCode.USER_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("스터디에 초대되어 있는지 검사한다")
+        void isParticipated(){
+            // given
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
+            doReturn(List.of()).when(participantRepository).findParticipantInfoByUser(any(User.class));
+            doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(User.class), any(Study.class));
+
+            // when
+            ParticipantResponse response = participantsService.getParticipant(-1L, -1L);
+            char isParticipated = response.getIsParticipated();
+
+            // then
+            softly.assertThat(isParticipated).isEqualTo('Y');
+        }
     }
 }

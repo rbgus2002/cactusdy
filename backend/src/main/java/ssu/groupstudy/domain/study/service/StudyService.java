@@ -13,6 +13,8 @@ import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
@@ -48,6 +50,7 @@ public class StudyService {
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
+    private final RuleRepository ruleRepository;
     private final S3Utils s3Utils;
     private final ApplicationEventPublisher eventPublisher;
     private final int INVITE_CODE_LENGTH = 6;
@@ -58,7 +61,6 @@ public class StudyService {
         canCreateNewStudy(user);
         Study study = createNewStudy(dto, user);
         handleUploadProfileImage(study, image);
-        createDefaultRound(study);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
@@ -71,7 +73,10 @@ public class StudyService {
 
     private Study createNewStudy(CreateStudyRequest dto, User user) {
         String inviteCode = generateUniqueInviteCode();
-        return studyRepository.save(dto.toEntity(user, inviteCode));
+        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
+        createDefaultRound(study);
+        createDefaultRule(study);
+        return study;
     }
 
     private String generateUniqueInviteCode() {
@@ -90,6 +95,11 @@ public class StudyService {
                 .build();
         Round defaultRound = roundRepository.save(appointment.toEntity(study));
         createDefaultTask(defaultRound);
+    }
+
+    private void createDefaultRule(Study study) {
+        Rule rule = Rule.create("스터디 규칙을 추가해보세요!", study);
+        ruleRepository.save(rule);
     }
 
     private void createDefaultTask(Round defaultRound) {
@@ -135,7 +145,7 @@ public class StudyService {
 
     private Long handleRoundSeq(Study study, Round round) {
         if (round == null) {
-            return 1L;
+            return 0L;
         }
         if (round.isStudyTimeNull()) {
             // 스터디 약속 시간이 정해진 회차 + 1
@@ -163,5 +173,11 @@ public class StudyService {
     private void processEdit(EditStudyRequest dto, Study study, Participant participant, User newHostUser) {
         study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
         participant.setColor(dto.getColor());
+    }
+
+    public String getInviteCode(Long studyId) {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        return study.getInviteCode();
     }
 }

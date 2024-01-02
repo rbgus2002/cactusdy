@@ -97,7 +97,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지사항을 읽지 않은 사용자가 체크 버튼을 누르면 읽음 처리한다.")
         void read() {
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
 
             // when
             Character isChecked = noticeService.switchCheckNotice(-1L, 최규현);
@@ -110,7 +110,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지사항을 이미 읽은 사용자가 체크 버튼을 누르면 안읽음 처리한다.")
         void unread() {
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
 
             // when
             공지사항1.switchCheckNotice(최규현);
@@ -196,7 +196,7 @@ class NoticeServiceTest extends ServiceTest {
             @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
             void fail_noticeNotFound() {
                 // given
-                doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+                doReturn(Optional.empty()).when(noticeRepository).findById(any(Long.class));
 
                 // when, then
                 assertThatThrownBy(() -> noticeService.switchNoticePin(-1L))
@@ -215,7 +215,6 @@ class NoticeServiceTest extends ServiceTest {
             }
         }
 
-        // FIXME
         @Test
         @DisplayName("공지사항에 체크 표시를 한 사용자 프로필 사진 리스트를 불러온다")
         void getCheckUserImageListByNoticeId() {
@@ -241,7 +240,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지사항이 존재하지 않는 경우 예외를 던진다")
         void fail_noticeNotFound() {
             // given
-            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.empty()).when(noticeRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> noticeService.delete(-1L))
@@ -253,7 +252,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지사항을 삭제한다")
         void success() {
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
 
             // when
             noticeService.delete(-1L);

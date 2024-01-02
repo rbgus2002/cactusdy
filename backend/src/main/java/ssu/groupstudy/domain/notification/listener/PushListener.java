@@ -9,8 +9,9 @@ import ssu.groupstudy.domain.notification.domain.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
-import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.util.FcmUtils;
+
+import java.util.Map;
 
 @Component
 @Transactional
@@ -21,22 +22,25 @@ public class PushListener {
 
     @EventListener
     public void handleCommentCreationEvent(CommentCreationEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 댓글을 작성했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("공지사항", body, TopicCode.NOTICE, event.getNoticeId());
+        StringBuilder body = new StringBuilder();
+        body.append("새로운 댓글이 달렸어요: ").append(event.getCommentContents());
+        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.NOTICE, event.getNoticeId(), data);
     }
 
     @EventListener
     public void handleNoticeCreationEvent(NoticeCreationEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 공지사항을 작성했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
+        StringBuilder body = new StringBuilder();
+        body.append("새로운 공지사항이 작성되었어요: ").append(event.getNoticeTitle());
+        Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
     }
 
     @EventListener
     public void handleTaskDoneEvent(TaskDoneEvent event) {
-        User user = event.getUser();
-        String body = String.format("[%s]님이 과제를 완료했습니다.", user.getNickname());
-        fcmUtils.sendNotificationToTopic("스터디", body, TopicCode.STUDY, event.getStudyId());
+        StringBuilder body = new StringBuilder();
+        body.append("'").append(event.getNickname()).append("'").append("님이 과제를 완료했어요: ").append(event.getTaskDetail());
+        Map<String, String> data = Map.of("type", "round", "studyId", event.getStudyId().toString(), "roundId", event.getRoundId().toString(), "roundSeq", "0");
+        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
     }
 }

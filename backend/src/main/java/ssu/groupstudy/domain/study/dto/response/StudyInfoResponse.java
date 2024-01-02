@@ -11,7 +11,6 @@ import ssu.groupstudy.domain.task.domain.TaskType;
 import ssu.groupstudy.domain.task.dto.response.TaskGroup;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +22,7 @@ public class StudyInfoResponse {
     private String studyName;
     private String detail;
     private String picture;
+    private String inviteCode;
     private String color;
 
     private Long roundSeq;
@@ -40,6 +40,7 @@ public class StudyInfoResponse {
         this.studyName = study.getStudyName();
         this.detail = study.getDetail();
         this.picture = study.getPicture();
+        this.inviteCode = study.getInviteCode();
         this.color = participant.getColor();
 
         this.roundSeq = roundSeq;
@@ -48,8 +49,7 @@ public class StudyInfoResponse {
             Appointment appointment = latestRound.getAppointment();
             this.studyPlace = appointment.getStudyPlace();
             this.studyTime = appointment.getStudyTime();
-            this.profiles = latestRound.getRoundParticipants().stream()
-                    .sorted(Comparator.comparing(RoundParticipant::getId))
+            this.profiles = latestRound.getRoundParticipantsOrderByInvite().stream()
                     .map(ParticipantProfileResponse::from)
                     .collect(Collectors.toList());
             if(roundParticipant != null){

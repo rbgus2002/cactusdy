@@ -25,7 +25,7 @@ class CommentRepositoryTest{
     @DisplayName("공지사항에 작성된 댓글을 시간 순으로 가져온다")
     void getCommentsOrderByCreateDateAsc(){
         // given
-        Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+        Notice 공지사항 = noticeRepository.findById(1L).get();
 
         // when
         List<Comment> comments = commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(공지사항);
@@ -58,7 +58,7 @@ class CommentRepositoryTest{
     @DisplayName("공지사항에 작성된 댓글의 개수를 가져온다")
     void countCommentByNotice(){
         // given
-        Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+        Notice 공지사항 = noticeRepository.findById(1L).get();
 
         // when
         int 댓글개수 = commentRepository.countCommentByNotice(공지사항);

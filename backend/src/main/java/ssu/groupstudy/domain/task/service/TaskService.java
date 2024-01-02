@@ -13,8 +13,10 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.task.dto.request.CreateTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.CreateGroupTaskRequest;
+import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.domain.task.dto.response.GroupTaskInfoResponse;
 import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
@@ -47,21 +49,10 @@ public class TaskService {
     }
 
     @Transactional
-    public Long createTask(CreateTaskRequest request) {
+    public Long createPersonalTask(CreatePersonalTaskRequest request) {
         RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
-        String detail = request.getDetail();
-        TaskType taskType = request.getTaskType();
-
-        return handleTaskCreation(roundParticipant, detail, taskType);
-    }
-
-    private Long handleTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        if (taskType.isPersonalType()) {
-            return processTaskCreation(roundParticipant, detail, taskType);
-        } else {
-            return handleGroupTaskCreation(roundParticipant, detail, taskType);
-        }
+        return processTaskCreation(roundParticipant, request.getDetail(), TaskType.PERSONAL);
     }
 
     private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
@@ -69,24 +60,22 @@ public class TaskService {
         return taskRepository.save(task).getId();
     }
 
-    private Long handleGroupTaskCreation(RoundParticipant taskCreator, String detail, TaskType taskType) {
-        Round round = taskCreator.getRound();
-
-        // 태스크 생성 후 해당 태스크의 id 반환
-        Long taskId = processTaskCreation(taskCreator, detail, taskType);
-
-        // 다른 회차 참여자들 태스크 생성
-        processTaskCreationForOthers(taskCreator, detail, taskType, round);
-
-        return taskId;
+    @Transactional
+    public List<GroupTaskInfoResponse> createGroupTask(CreateGroupTaskRequest request) {
+        Round round = roundRepository.findById(request.getRoundId())
+                .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
+        return getGroupTaskInfoResponseList(request, round);
     }
 
-    private void processTaskCreationForOthers(RoundParticipant taskCreator, String detail, TaskType taskType, Round round) {
-        for (RoundParticipant roundParticipant : round.getRoundParticipants()) {
-            if (!roundParticipant.equals(taskCreator)) {
-                roundParticipant.createTask(detail, taskType);
-            }
-        }
+    private List<GroupTaskInfoResponse> getGroupTaskInfoResponseList(CreateGroupTaskRequest request, Round round) {
+        return round.getRoundParticipants().stream()
+                .map(roundParticipant -> {
+                    Long newTaskId = processTaskCreation(roundParticipant, request.getDetail(), TaskType.GROUP);
+                    Long roundParticipantId = roundParticipant.getId();
+                    Long userId = roundParticipant.getUser().getUserId();
+                    return GroupTaskInfoResponse.of(newTaskId, roundParticipantId, userId);
+                })
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -117,7 +106,7 @@ public class TaskService {
 
     private void processNotification(Task task, User user) {
         if (task.isDone()) {
-            eventPublisher.publishEvent(new TaskDoneEvent(user, task.getStudy()));
+            eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }
     }
 }

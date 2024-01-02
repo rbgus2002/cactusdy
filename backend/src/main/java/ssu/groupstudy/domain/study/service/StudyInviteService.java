@@ -5,13 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -26,11 +31,15 @@ import java.util.List;
 public class StudyInviteService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
-    private final RoundParticipantRepository roundParticipantRepository;
+    private final ParticipantRepository participantRepository;
+    private final NoticeRepository noticeRepository;
+
     private final ApplicationEventPublisher eventPublisher;
+    private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
     public Long inviteUser(User user, String inviteCode) {
+        canAddNewStudy(user);
         Study study = studyRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
         study.invite(user);
@@ -38,11 +47,16 @@ public class StudyInviteService {
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return study.getStudyId();
     }
+    private void canAddNewStudy(User user) {
+        if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
+            throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
+        }
+    }
 
     private void addUserToFutureRounds(Study study, User user) {
         List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (Round round : futureRounds) {
-            roundParticipantRepository.save(new RoundParticipant(user, round));
+            round.addParticipantWithoutDuplicates(new RoundParticipant(user, round));
         }
     }
 
@@ -50,6 +64,18 @@ public class StudyInviteService {
     public void leaveUser(User user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+
+        removeUserToFutureRounds(study, user);
+        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
+        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
         study.leave(user);
+    }
+
+    private void removeUserToFutureRounds(Study study, User user) {
+        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (Round round : futureRounds) {
+            round.removeParticipant(new RoundParticipant(user, round));
+        }
     }
 }

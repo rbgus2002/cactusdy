@@ -12,6 +12,7 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.domain.notice.dto.request.EditNoticeRequest;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -47,7 +48,7 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
 
-        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study));
+        eventPublisher.publishEvent(new NoticeCreationEvent(study, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         return NoticeInfoResponse.of(notice, writer);
@@ -55,7 +56,7 @@ public class NoticeService {
 
     @Transactional
     public Character switchCheckNotice(Long noticeId, User user) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchCheckNotice(user);
     }
@@ -91,13 +92,13 @@ public class NoticeService {
 
     @Transactional
     public Character switchNoticePin(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchPin();
     }
 
     public List<String> getCheckUserImageList(Long noticeId) {
-        Set<CheckNotice> checkNotices = noticeRepository.findByNoticeId(noticeId)
+        Set<CheckNotice> checkNotices = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 .getCheckNotices();
 
@@ -107,15 +108,22 @@ public class NoticeService {
     }
 
     public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return NoticeInfoResponse.of(notice, user);
     }
 
     @Transactional
     public void delete(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.deleteNotice();
+    }
+
+    @Transactional
+    public void updateNotice(Long noticeId, EditNoticeRequest dto) {
+        Notice notice = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        notice.updateTitleAndContents(dto.getTitle(), dto.getContents());
     }
 }

@@ -2,16 +2,32 @@ package ssu.groupstudy.domain.notification.domain.event.push;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.user.domain.User;
 
 @Getter
 @RequiredArgsConstructor
 public class TaskDoneEvent{
     private final User user;
-    private final Study study;
+    private final Task task;
 
     public Long getStudyId(){
-        return study.getStudyId();
+        return task.getStudy().getStudyId();
+    }
+
+    public Long getRoundId(){
+        return task.getRoundParticipant().getRound().getRoundId();
+    }
+
+    public String getStudyName(){
+        return task.getStudy().getStudyName();
+    }
+
+    public String getNickname(){
+        return user.getNickname();
+    }
+
+    public String getTaskDetail(){
+        return task.getDetail();
     }
 }

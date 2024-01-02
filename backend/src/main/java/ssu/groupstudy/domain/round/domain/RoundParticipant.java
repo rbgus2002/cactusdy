@@ -43,7 +43,7 @@ public class RoundParticipant {
     public RoundParticipant(User user, Round round) {
         this.user = user;
         this.round = round;
-        this.statusTag = StatusTag.ATTENDANCE_EXPECTED;
+        this.statusTag = StatusTag.ATTENDANCE;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class RoundParticipant {
     }
 
     public boolean isAttendedOrExpectedOrLate(){
-        return (this.statusTag == StatusTag.ATTENDANCE) || (this.statusTag == StatusTag.ATTENDANCE_EXPECTED) || (this.statusTag == StatusTag.LATE);
+        return (this.statusTag == StatusTag.ATTENDANCE) || (this.statusTag == StatusTag.LATE);
     }
 }
 

@@ -41,7 +41,7 @@ public class RoundDto {
             this.studyPlace = round.getAppointment().getStudyPlace();
             this.studyTime = round.getAppointment().getStudyTime();
             this.isPlanned = isStudyTimeAfterCurrent(studyTime);
-            this.roundParticipantInfos = round.getRoundParticipantsWithSelfFirstOrderByInvite().stream()
+            this.roundParticipantInfos = round.getRoundParticipantsOrderByInvite().stream()
                     .map(RoundParticipantInfo::from)
                     .collect(Collectors.toList());
         }

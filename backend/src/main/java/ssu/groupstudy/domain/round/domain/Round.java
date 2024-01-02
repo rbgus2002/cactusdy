@@ -13,10 +13,12 @@ import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -28,13 +30,13 @@ public class Round extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @Column(length = 100)
+    @Column(length = 255)
     private String detail;
 
     @Embedded
     private Appointment appointment;
 
-    @OneToMany(mappedBy = "round", cascade = PERSIST)
+    @OneToMany(mappedBy = "round", cascade = ALL, orphanRemoval = true)
     private final List<RoundParticipant> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
@@ -62,6 +64,17 @@ public class Round extends BaseEntity {
                 .forEach(roundParticipants::add);
     }
 
+    public void addParticipantWithoutDuplicates(RoundParticipant participant) {
+        if (roundParticipants.contains(participant)) {
+            return;
+        }
+        roundParticipants.add(participant);
+    }
+
+    public void removeParticipant(RoundParticipant participant){
+        roundParticipants.remove(participant);
+    }
+
     public void updateAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
@@ -82,7 +95,7 @@ public class Round extends BaseEntity {
     }
 
     public Appointment getAppointment() {
-        if(this.appointment == null){
+        if (this.appointment == null) {
             return Appointment.empty();
         }
         return this.appointment;
@@ -96,7 +109,7 @@ public class Round extends BaseEntity {
         return getAppointment().getStudyTime() == null;
     }
 
-    public List<RoundParticipant> getRoundParticipantsWithSelfFirstOrderByInvite() {
+    public List<RoundParticipant> getRoundParticipantsOrderByInvite() {
         return this.roundParticipants.stream()
                 .filter(RoundParticipant::isAttendedOrExpectedOrLate)
                 .sorted(Comparator.comparing(RoundParticipant::getId))

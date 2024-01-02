@@ -10,6 +10,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
@@ -40,6 +41,8 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private RoundRepository roundRepository;
     @Mock
+    private RuleRepository ruleRepository;
+    @Mock
     private ApplicationEventPublisher eventPublisher;
     @Mock
     private S3Utils s3Utils;
@@ -50,8 +53,8 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("프로필 사진을 함께 요청하면 스터디를 생성하면서 업로드한다.")
         void uploadStudyProfileImage() throws IOException {
             // given
-            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             final String PROFILE_IMAGE = "profileImage";
+            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             doReturn(PROFILE_IMAGE).when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
             doReturn(Round.builder()
                     .study(알고리즘스터디)
@@ -135,6 +138,36 @@ class StudyServiceTest extends ServiceTest {
 
             // then
             assertEquals("알고리즘", summaryResponse.getStudyName());
+        }
+    }
+
+    @Nested
+    class GetInviteCode {
+        @Test
+        @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
+        void studyNotFound(){
+            // given
+            // when
+            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+
+            // then
+            assertThatThrownBy(() -> studyService.getInviteCode(-1L))
+                    .isInstanceOf(StudyNotFoundException.class)
+                    .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        @DisplayName("스터디의 초대코드를 가져온다")
+        void getInviteCode(){
+            // given
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            final String originalInviteCode = 알고리즘스터디.getInviteCode();
+
+            // when
+            final String inviteCode = studyService.getInviteCode(-1L);
+
+            // then
+            softly.assertThat(inviteCode).isEqualTo(originalInviteCode);
         }
     }
 }

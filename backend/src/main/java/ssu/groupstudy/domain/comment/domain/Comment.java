@@ -20,7 +20,7 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 255)
     private String contents;
 
     @ManyToOne(fetch = LAZY)

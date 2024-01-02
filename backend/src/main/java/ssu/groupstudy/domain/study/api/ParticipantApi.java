@@ -23,17 +23,24 @@ public class ParticipantApi {
     private final StudyInviteService studyInviteService;
     private final ParticipantsService participantsService;
 
-    @Operation(summary = "스터디에 회원 초대")
+    @Operation(summary = "스터디 회원 초대")
     @PostMapping
     public ResponseDto inviteUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String inviteCode){
         final Long studyId = studyInviteService.inviteUser(userDetails.getUser(), inviteCode);
         return DataResponseDto.of("studyId", studyId);
     }
 
-    @Operation(summary = "스터디에서 회원 탈퇴")
+    @Operation(summary = "스터디 탈퇴하기")
     @DeleteMapping
     public ResponseDto leaveUser(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long studyId){
         studyInviteService.leaveUser(userDetails.getUser(), studyId);
+        return ResponseDto.success();
+    }
+
+    @Operation(summary = "스터디 회원 강퇴하기", description = "방장만 해당 기능을 이용할 수 있다")
+    @DeleteMapping("/kick")
+    public ResponseDto kickParticipant(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long userId, @RequestParam Long studyId){
+        participantsService.kickParticipant(userDetails.getUser(), userId, studyId);
         return ResponseDto.success();
     }
 

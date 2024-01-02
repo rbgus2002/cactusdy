@@ -30,7 +30,7 @@ public class Notice extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String contents;
 
     @Column(nullable = false)
@@ -104,5 +104,10 @@ public class Notice extends BaseEntity {
 
     public int countReadNotices(){
         return this.checkNotices.size();
+    }
+
+    public void updateTitleAndContents(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
     }
 }

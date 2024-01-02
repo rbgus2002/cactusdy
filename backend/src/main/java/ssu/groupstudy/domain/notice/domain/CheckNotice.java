@@ -18,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 public class CheckNotice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "check_notice_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

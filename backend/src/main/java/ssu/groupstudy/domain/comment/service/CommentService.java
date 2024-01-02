@@ -34,15 +34,17 @@ public class CommentService {
     private final NoticeRepository noticeRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+
     @Transactional
     public Long createComment(CreateCommentRequest dto, User writer) {
-        Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
+        Notice notice = noticeRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice));
+        eventPublisher.publishEvent(new CommentCreationEvent(notice, comment));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+
         return commentRepository.save(comment).getCommentId();
     }
 
@@ -64,7 +66,7 @@ public class CommentService {
     }
 
     public CommentInfoResponse getComments(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         int commentCount = commentRepository.countCommentByNotice(notice);
         List<Comment> parentComments = getParentComments(notice);
