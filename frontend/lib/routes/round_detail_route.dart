@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/round.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/themes/text_styles.dart';
-import 'package:group_study_app/utilities/toast.dart';
-import 'package:group_study_app/widgets/panels/panel.dart';
-import 'package:group_study_app/widgets/participant_info_list_widget.dart';
-import 'package:group_study_app/widgets/round_info_widget.dart';
-import 'package:group_study_app/widgets/title_widget.dart';
+import 'package:groupstudy/models/round.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/routes/date_time_picker_route.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/time_utility.dart';
+import 'package:groupstudy/utilities/toast.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
+import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
+import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
+import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
+import 'package:groupstudy/widgets/input_field.dart';
+import 'package:groupstudy/widgets/input_field_place.dart';
+import 'package:groupstudy/widgets/item_entry.dart';
+import 'package:groupstudy/widgets/participant_info_list_widget.dart';
+import 'package:groupstudy/widgets/tags/rectangle_tag.dart';
 
 class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
-  final int roundId;
-  final int studyId;
+  final Study study;
+  final Round round;
+  final Function? onRemove;
 
   const RoundDetailRoute({
     Key? key,
     required this.roundSeq,
-    required this.roundId,
-    required this.studyId,
+    required this.study,
+    required this.round,
+    this.onRemove,
   }) : super(key: key);
 
   @override
@@ -27,74 +39,67 @@ class RoundDetailRoute extends StatefulWidget {
 }
 
 class _RoundDetailRouteState extends State<RoundDetailRoute> {
-  static const String _deleteRoundCautionMessage = "해당 회차를 삭제하시겠어요?";
+  static const double _iconSize = 32;
 
-  static const String _checkText = "확인";
-  static const String _cancelText = "취소";
+  late final TextEditingController _placeEditingController = TextEditingController();
+  final GlobalKey<InputFieldState> _detailEditor = GlobalKey();
 
-  static const String _detailHintText = "상세 활동 내용을 입력해 주세요!";
-  static const String _deleteRoundText = "삭제하기";
-
-  final _detailRecordEditingController = TextEditingController();
   final _focusNode = FocusNode();
 
-  Round? round;
+  late Round _roundRef;
   bool _isEdited = false;
+  bool _isExpended = true;
+  
+  @override
+  void initState() {
+    super.initState();
+    _roundRef = widget.round;
+    _tryGetRound();
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool scheduled = TimeUtility.isScheduled(_roundRef.studyTime);
+    _placeEditingController.text = _roundRef.studyPlace;
+
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          _roundPopupMenu(),
-        ]
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async => setState(() {}),
+        leading: const SlowBackButton(),
+        shape: InputBorder.none,
+        actions: [ _roundPopupMenu(), ],),
+      body: HapticRefreshIndicator(
+        onRefresh: _refresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(Design.padding),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder(
-                future: getRoundDetail(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    round = snapshot.data;
-                    _detailRecordEditingController.text = round!.detail ?? "";
+              // Round Info & Detail Record
+              Container(
+                padding: Design.edgePadding,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: context.extraColors.grey50!,
+                      width: 7),),),
+                child: Column(
+                  children: [
+                    // Round Info
+                    _roundInfo(),
+                    Design.padding12,
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Round Info
-                        Panel(
-                          boxShadows: Design.basicShadows,
-                          child: RoundInfoWidget(
-                            roundSeq: widget.roundSeq,
-                            round: snapshot.data!,
-                            studyId: widget.studyId,
-                          ),
-                        ),
-                        Design.padding15,
-
-                        // Detail Record
-                        TitleWidget(
-                          title: "Detail Record", icon: AppIcons.edit,
-                          onTap: () => _focusNode.requestFocus()
-                        ),
-                        _detailRecord(),
-                      ]
-                    );
-                  }
-
-                  return Design.loadingIndicator;
-                },
+                    // Detail Record
+                    _detailRecord(),
+                    Design.padding12,
+                  ],),
               ),
-              Design.padding15,
 
-              ParticipantInfoListWidget(roundId: widget.roundId),
-            ],
-          ),
+              // Participant Information List
+              ParticipantInfoListWidget(
+                scheduled: scheduled,
+                roundId: _roundRef.roundId,
+                study: widget.study,),
+            ]),
         ),
       ),
     );
@@ -102,87 +107,236 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   @override
   void dispose() {
-    _detailRecordEditingController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
-  Future<Round> getRoundDetail() async {
-    if (widget.roundId == Round.nonAllocatedRoundId) {
-      round = Round(roundId: Round.nonAllocatedRoundId);
-      await Round.createRound(round!, widget.studyId);
-      return round!;
-    }
+  Widget _roundDateBoxWidget() {
+    return Container(
+      width: 46,
+      height: 56,
+      decoration: BoxDecoration(
+        color: widget.study.color.withOpacity(0.2),
+        borderRadius: Design.borderRadiusSmall,),
+      child: InkWell(
+        onTap: _editStudyTime,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // if there are studyTime => [ Month, Day ]
+            // else => [ -Mon, - ]
 
-    return Round.getDetail(widget.roundId);
+            // Month (or date)
+            Text(
+              (_roundRef.studyTime != null)?
+              '${_roundRef.studyTime!.month}${context.local.month}' :
+              '-${context.local.month}',
+              style: TextStyles.body2.copyWith(
+                  color: context.extraColors.grey800),),
+
+            // Day (or -)
+            Text(
+              (_roundRef.studyTime != null) ?
+              '${_roundRef.studyTime!.day}' :
+              '-',
+              style: TextStyles.head3.copyWith(
+                  color: context.extraColors.grey800),),
+          ],),
+      ),);
   }
 
-  Widget _detailRecord() {
-    return TextField(
-      minLines: 3, maxLines: 7,
-      controller: _detailRecordEditingController,
-      style: TextStyles.bodyLarge,
-      cursorHeight: TextStyles.bodyLarge.fontSize,
-      focusNode: _focusNode,
-      decoration: const InputDecoration(
-        hintText: _detailHintText,
-        filled: true,
-        fillColor: ColorStyles.grey,
-        border: OutlineInputBorder(borderSide: BorderSide.none),
-      ),
-      onChanged: (value) { _isEdited = true; },
-      onTapOutside: (event) {
-        if (_isEdited) {
-          Round.updateDetail(widget.roundId, _detailRecordEditingController.text);
-          _isEdited = false;
-        }
+  Widget _roundInfo() {
+    return Row(
+      children: [
+        _roundDateBoxWidget(),
+        Design.padding12,
 
-        _focusNode.unfocus();
-      },
-      maxLength: Round.detailMaxLength,
-    );
-  }
+        Flexible(
+          fit: FlexFit.tight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Round Sequence (Like 3Round)
+              Text(
+                '${widget.roundSeq}${context.local.round}',
+                style: TextStyles.head5.copyWith(color: context.extraColors.grey800),),
+              Design.padding4,
 
-  Widget _roundPopupMenu() {
-    return PopupMenuButton(
-      icon: AppIcons.moreVert,
-      splashRadius: 16,
-      offset: const Offset(0, 42),
+              // Time And Place of round
+              Row(
+                children: [
+                  // Study Time (time only like AM 2:20)
+                  Icon(CustomIcons.calendar, size: 14, color: context.extraColors.grey600),
+                  Design.padding4,
 
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: const Text(_deleteRoundText, style: TextStyles.bodyMedium,),
-          onTap: () => _showDeleteRoundDialog(context),
+                  InkWell(
+                    onTap: _editStudyTime,
+                    child: Text(
+                      (_roundRef.studyTime != null) ?
+                        TimeUtility.getTime(_roundRef.studyTime!) :
+                        context.local.inputHint1(context.local.time),
+                      style: (_roundRef.studyTime != null) ?
+                        TextStyles.body2.copyWith(color: context.extraColors.grey800) :
+                        TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
+                  ),
+                  Design.padding4,
+
+                  // Study Place
+                  Icon(CustomIcons.location, size: 14, color: context.extraColors.grey600),
+                  Design.padding4,
+
+                  Expanded(
+                    child: InputFieldPlace(
+                      placeEditingController: _placeEditingController,
+                      onUpdatePlace: _updateStudyPlace,),),
+                  Design.padding4,
+                ],),
+            ]),
         ),
+
+        // Scheduled Tag
+        Visibility(
+          visible: TimeUtility.isScheduled(_roundRef.studyTime),
+          child: _scheduledTag()),
       ],
     );
   }
 
-  void _showDeleteRoundDialog(BuildContext context) {
-    Future.delayed(Duration.zero, ()=> showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          content: const Text(_deleteRoundCautionMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(_cancelText),),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (round != null) _deleteRound(context);
-              },
-              child: const Text(_checkText),),
-          ],
-        )
-    ));
+  Widget _scheduledTag() {
+    return RectangleTag(
+      width: 36,
+      height: 22,
+      color: context.extraColors.pink!,
+      text: Text(
+        context.local.scheduled,
+        style: TextStyles.caption2.copyWith(
+          color: context.extraColors.grey800,),),
+      onTap: Util.doNothing,
+    );
   }
 
-  void _deleteRound(BuildContext context) {
-    Round.deleteRound(round!.roundId).then((result) {
-          if (result == true) Navigator.of(context).pop();
-        }).catchError((e) {
-      Toast.showToast(msg: e.toString().substring(10));
-    });
+  Widget _detailRecord() {
+    return ExpansionTile(
+      initiallyExpanded: true,
+      title: Text(
+        context.local.record,
+        style: TextStyles.head5.copyWith(
+            color: context.extraColors.grey900),),
+      onExpansionChanged: (value) => setState(() => _isExpended = !_isExpended),
+      trailing: AnimatedRotation(
+        turns: (_isExpended) ? 0 : 0.5,
+        duration: AnimationSetting.animationDurationShort,
+        curve: Curves.easeOutCirc,
+        child: Icon(
+          CustomIcons.chevron_down,
+          color: context.extraColors.grey500,),),
+      children: [
+        InputField(
+          key: _detailEditor,
+          initText: _roundRef.detail,
+          hintText: context.local.recordHint,
+          minLines: 4,
+          maxLines: 7,
+          maxLength: Round.detailMaxLength,
+          focusNode: _focusNode,
+          backgroundColor: context.extraColors.grey50,
+          onChanged: (input) => _isEdited = true,
+          onTapOutSide: _updateDetail,
+          counter: true,),
+      ],
+    );
+  }
+
+  Widget _roundPopupMenu() {
+    return FocusedMenuButton(
+        icon: const Icon(
+          CustomIcons.more_vert,
+          size: _iconSize,),
+        items: [
+          ItemEntry(
+            text: context.local.deleteRound,
+            icon: const Icon(CustomIcons.trash),
+            onTap: () => TwoButtonDialog.showDialog(
+              context: context,
+              text: context.local.deleteRound,
+
+              buttonText1: context.local.no,
+              onPressed1: Util.doNothing,
+
+              buttonText2: context.local.delete,
+              onPressed2: () => _deleteRound(context),),),
+        ]);
+  }
+
+  Future<void> _refresh() async {
+    _tryGetRound();
+  }
+
+  void _updateDetail(PointerDownEvent notUseEvent) {
+    if (_isEdited) {
+      Round.updateDetail(_roundRef.roundId, _detailEditor.currentState!.text);
+      _isEdited = false;
+    }
+
+    _focusNode.unfocus();
+  }
+
+  void _updateStudyPlace() {
+    _roundRef.studyPlace = _placeEditingController.text;
+    _updateRound(_roundRef);
+  }
+
+  void _editStudyTime() async {
+    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: _roundRef,)).then((value) => _refresh());
+  }
+
+  Future<void> _updateRound(Round round) async {
+    if (round.roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(round, widget.study.studyId);
+    }
+    else {
+      await Round.updateAppointment(round);
+    }
+
+    _refresh();
+  }
+
+  void _deleteRound(BuildContext context) async {
+    try {
+      await Round.deleteRound(_roundRef.roundId).then((result) {
+        if (result) {
+          Navigator.of(context).pop();
+
+          if (widget.onRemove != null) {
+            widget.onRemove!();
+          }
+        }
+      });
+    } on Exception catch(e) {
+      if (mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
+  }
+
+  void _tryGetRound() async {
+    try {
+      await Round.getDetail(_roundRef.roundId).then((refreshedRound) {
+        setState(() {
+          _roundRef = refreshedRound;
+        });
+      });
+    } on Exception catch(e) {
+      if (mounted) {
+        Util.popRoute(context);
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 }

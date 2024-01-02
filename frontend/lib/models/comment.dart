@@ -1,13 +1,17 @@
 import 'dart:convert';
 
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
 
 class Comment {
-  static const commentCreationError = -1;
-  static const commentWithNoParent = -1;
+  // string length limit
+  static const commentMaxLength = 255;
+
+  // state code
+  static const noReplyTarget = -1;
+
+  static Logger logger = Logger('Comment');
 
   final int userId;
   final String nickname;
@@ -17,9 +21,8 @@ class Comment {
   final String contents;
   final DateTime createDate;
 
-  List<Comment> replies;
-
   final bool deleteYn;
+  final List<Comment> replies;
 
   Comment({
     required this.userId,
@@ -30,21 +33,18 @@ class Comment {
     required this.contents,
     required this.createDate,
 
-    this.replies = const [],
-
     this.deleteYn = false,
+    this.replies = const [],
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
-    List<Comment> replies = const [];
-    if (json["replies"] != null) {
-      replies = (json["replies"] as List).map((e) => Comment.fromJson(e)).toList();
-    }
+    List<Comment> replies = ((json["replies"]??[]) as List).map(
+            (reply) => Comment.fromJson(reply)).toList();
 
     return Comment(
       userId: json["userId"],
       nickname: json["nickname"],
-      picture: json["picture"],
+      picture: json["picture"]??"",
       commentId: json["commentId"],
       contents: json["contents"],
       createDate: DateTime.parse(json["createDate"]),
@@ -53,17 +53,20 @@ class Comment {
     );
   }
 
-  static Future<List<Comment>> getComments(int noticeId) async {
+  static Future<CommentsInfo> getComments(int noticeId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/comments?noticeId=$noticeId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get comments (noticeId: $noticeId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to load comment");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['comments'];
-      return (responseJson as List).map((e) => Comment.fromJson(e)).toList();
+      var commentInfoJson = responseJson['data']['comments'];
+      return CommentsInfo.fromJson(commentInfoJson);
     }
   }
 
@@ -74,38 +77,55 @@ class Comment {
       'parentCommentId': parentCommentId
     };
 
-    try {
-      final response = await http.post(
-        Uri.parse('${DatabaseService.serverUrl}api/comments'),
-        headers: DatabaseService.getAuthHeader(),
-        body: json.encode(data),
-      );
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}api/comments'),
+      headers: await DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
 
-      if (response.statusCode != DatabaseService.successCode) {
-        throw Exception("Failed to write new comment");
-      } else {
-        int newCommentId = json.decode(response.body)['data']['commentId'];
-        return newCommentId;
-      }
-    }
-    catch (e) {
-      print(e);
-      return commentCreationError;
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('write comment (noticeId: $noticeId)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      int newCommentId = responseJson['data']['commentId'];
+      logger.infoLog('written commentId: $newCommentId');
+
+      return newCommentId;
     }
   }
 
   static Future<bool> deleteComment(int commentId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/comments?commentId=$commentId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('delete comment (commentId: $commentId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to delete comment");
+      throw Exception(responseJson['message']);
     } else {
-      print(response.body);
-      bool result = json.decode(response.body)['success'];
-      return result;
+      return responseJson['success'];
     }
+  }
+}
+
+class CommentsInfo {
+  final int count;
+  final List<Comment> comments;
+
+  CommentsInfo({
+    required this.count,
+    required this.comments,
+  });
+
+  factory CommentsInfo.fromJson(Map<String, dynamic> json) {
+    return CommentsInfo(
+      count: json['commentCount'],
+      comments: ((json['commentInfos']??[]) as List).map(
+              (e) => Comment.fromJson(e)).toList());
   }
 }

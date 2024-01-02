@@ -1,25 +1,23 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/notice.dart';
-import 'package:group_study_app/themes/color_styles.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/utilities/animation_setting.dart';
-import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/buttons/circle_button.dart';
-import 'package:group_study_app/widgets/circle_button_list.dart';
-import 'package:group_study_app/models/user.dart';
+import 'package:groupstudy/models/notice.dart';
+import 'package:groupstudy/themes/color_styles.dart';
+import 'package:groupstudy/themes/custom_icons.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/themes/text_styles.dart';
+import 'package:groupstudy/utilities/animation_setting.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/buttons/circle_button.dart';
 
 class NoticeReactionTag extends StatefulWidget {
-  final int noticeId;
-  int checkerNum;
-  bool isChecked;
+  final Notice notice;
+  final bool enabled;
 
-  NoticeReactionTag({
+  const NoticeReactionTag({
     Key? key,
-    required this.noticeId,
-    required this.isChecked,
-    required this.checkerNum,
+    required this.notice,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -27,54 +25,82 @@ class NoticeReactionTag extends StatefulWidget {
 }
 
 class _NoticeReactionTag extends State<NoticeReactionTag> {
-  static const double _height = 21;
-  static const double _padding = 2;
-  static const double _boarderRadius = _height + 2 * _padding;
+  // Widget options
+  static const double _height = 24;
+
+  // Checker profile images options
+  static const double _imageSize = 16;
   static const int _showCountMax = 5;
 
-  List<CircleButton> _checkerImages = [];
-  double _width = 0;
+  List<String> _checkerImages = [];
+  double _checkerImageListWidth = 0;
+
   bool _isNeedUpdate = true;
   bool _isExpended = false;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(_boarderRadius),
-      onTap: _switchCheck,
-      onLongPress: _switchExpend,
+    return Ink(
+      height: _height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(_height / 2),
+        border: Border.all(
+            color: (widget.notice.read) ?
+            ColorStyles.mainColor :
+            Colors.transparent),
+        color: (widget.notice.read) ?
+        context.extraColors.inputFieldBackgroundColor :
+        context.extraColors.grey100,),
 
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(_boarderRadius),
-          color: ColorStyles.grey,
-        ),
-        padding: const EdgeInsets.all(_padding),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(_height / 2),
+        onTap: (widget.enabled) ? _switchCheck : null,
+        onLongPress: (widget.enabled) ? _switchExpend : null,
 
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
 
-          children: [
-            // Check Icon
-            Icon(Icons.check_circle, color: (widget.isChecked)? ColorStyles.green : ColorStyles.darkGrey),
+            children: [
+              // Check Icon
+              Icon(
+                CustomIcons.check2,
+                size: 16,
+                color: (widget.notice.read) ?
+                  ColorStyles.mainColor :
+                  context.extraColors.grey600),
+              Design.padding(2),
 
-            // User List
-            AnimatedContainer(
-              padding: const EdgeInsets.fromLTRB(_padding, 0, 0, 0),
-              width: _width,
-              duration: AnimationSetting.animationDuration,
-              curve: Curves.fastOutSlowIn,
+              // Checker Num
+              Text(
+                  "${widget.notice.checkNoticeCount}",
+                  style: TextStyles.caption2.copyWith(
+                      color: (widget.notice.read) ?
+                        ColorStyles.mainColor :
+                        context.extraColors.grey600)),
+              Design.padding(2),
 
-              child: CircleButtonList(circleButtons: _checkerImages, paddingVertical: _padding * 2),
-            ),
-
-            // checker Num
-            Design.padding5,
-            Text("${widget.checkerNum}"),
-            Design.padding5,
-          ]
-        ),
+              // User List
+              AnimatedContainer(
+                width: _checkerImageListWidth,
+                duration: AnimationSetting.animationDuration,
+                curve: Curves.fastOutSlowIn,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _checkerImages.length,
+                  itemBuilder: (context, index) =>
+                      CircleButton(
+                        url: _checkerImages[index],
+                        size: _imageSize,
+                        borderWidth: 0,),
+                  separatorBuilder: (context, index) =>
+                      Design.padding4,),
+              ),
+            ]),
+          ),
       ),
     );
   }
@@ -82,16 +108,16 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {
-      widget.isChecked = !widget.isChecked;
-      (widget.isChecked)? ++widget.checkerNum: --widget.checkerNum;
+      widget.notice.read = !widget.notice.read;
+      (widget.notice.read)? ++widget.notice.checkNoticeCount: --widget.notice.checkNoticeCount;
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(widget.noticeId).then((value) {
-      if (value != widget.isChecked) {
+    Notice.switchCheckNotice(widget.notice.noticeId).then((value) {
+      if (value != widget.notice.read) {
         setState(() {
-          (widget.isChecked)? --widget.checkerNum: ++widget.checkerNum;
-          widget.isChecked = value;
+          (widget.notice.read)? --widget.notice.checkNoticeCount: ++widget.notice.checkNoticeCount;
+          widget.notice.read = value;
         });
       }
     });
@@ -106,21 +132,18 @@ class _NoticeReactionTag extends State<NoticeReactionTag> {
       if (_isExpended) {
         _getCheckerImages();
 
-        final int showCount = min(widget.checkerNum, _showCountMax);
-        _width = _boarderRadius * showCount;
+        final int showCount = min(widget.notice.checkNoticeCount, _showCountMax);
+        _checkerImageListWidth = (_imageSize + 4) * showCount - 4; // 4: padding size
       }
 
-      else { _width = 0; }
+      else { _checkerImageListWidth = 0; }
     });
   }
 
   void _getCheckerImages() async {
     if (_isNeedUpdate) {
-      Notice.getCheckUserImageList(widget.noticeId).then((profileURIs) {
-        setState(() {
-          _checkerImages = List.generate(profileURIs.length, //< FIXME
-                  (index) => const CircleButton(child: null)).toList();
-        });
+      Notice.getCheckUserImageList(widget.notice.noticeId).then((profileURIs) {
+        setState(() => _checkerImages = profileURIs);
       },);
     }
 

@@ -1,56 +1,50 @@
-import 'dart:async';
+
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/routes/backdoor_route.dart';
-import 'package:group_study_app/routes/start_route.dart';
-import 'package:group_study_app/services/auth.dart';
-import 'package:group_study_app/utilities/util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:groupstudy/routes/splash_route.dart';
+import 'package:groupstudy/services/kakao_service.dart';
+import 'package:groupstudy/services/message_service.dart';
+import 'package:groupstudy/services/uri_link_service.dart';
+import 'package:groupstudy/themes/app_theme.dart';
+import 'package:groupstudy/utilities/extensions.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'asd', //< FIXME
-    home: const MyApp(),
-    theme: ThemeData(
-      primaryColor: Colors.black87,
-      buttonTheme: const ButtonThemeData(buttonColor: Colors.black87),
-      appBarTheme: const AppBarTheme(color: Colors.black87),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.black87)),
-      focusColor: Colors.transparent,
-    ),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  LocalizationExtension.init();
+  MessageService.init();
+  KakaoService.init();
+  UriLinkService.init();
+  AppTheme.init();
+
+  runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  static final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  static const _splashDuration = Duration(seconds: 1);
-
-  @override
-  void initState() {
-    super.initState();
-    Auth.getSignInfo();
-    Timer(_splashDuration, () {
-      Navigator.of(context).pop();
-      if (Auth.signInfo == null) {
-        Util.pushRoute(context, (context) => const StartRoute());
-      }
-      else {
-        Util.pushRoute(context, (context) => const BackdoorRoute());
-      }
-    });
-  }
+  const MyApp({
+    Key? key
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      //< FIXME : Add Splash
-      child: Text("SPLASH~"),
+    return ValueListenableBuilder(
+      valueListenable: AppTheme.themeMode,
+      builder: (context, themeMode, child) =>
+        MaterialApp(
+          home: const SplashRoute(),
+          navigatorKey: navigationKey,
+
+          themeMode: themeMode,
+          theme: AppTheme.themeData,
+          darkTheme: AppTheme.darkThemeData,
+
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
     );
   }
 }

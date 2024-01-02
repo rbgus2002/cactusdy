@@ -1,46 +1,63 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/sign_info.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:groupstudy/models/sign_info.dart';
+import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Auth {
+  Auth._();
+
+  // string length limits
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
 
+  // const values
+  static const int verificationCodeLength = 6;
+  static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
+
+  static Logger logger = Logger('Auth');
   static SignInfo? signInfo;
 
   static Future<bool> signUp({
       required String name,
       required String nickname,
-      required String phoneModel,
-      required String picture,
       required String phoneNumber,
       required String password,
+      XFile? profileImage,
     }) async {
+
+    final request = http.MultipartRequest('Post',
+        Uri.parse('${DatabaseService.serverUrl}auth/signUp'),);
+
+    request.headers.addAll(DatabaseService.header);
+
     Map<String, dynamic> data = {
       'name': name,
       'nickname': nickname,
-      'phoneModel': phoneModel,
-      'picture': picture,
       'phoneNumber': phoneNumber,
       'password': password,
     };
 
-    final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/signUp'),
-      headers: DatabaseService.header,
-      body: json.encode(data),
-    );
+    request.files.add(http.MultipartFile.fromString(
+      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
-    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
+    }
+
+    final response = await request.send();
+    final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('sign up', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = responseJson['success'];
-      if (result) print("success to sign up");
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -48,6 +65,7 @@ class Auth {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'password': password,
+      'fcmToken': await FirebaseMessaging.instance.getToken(),
     };
 
     final response = await http.post(
@@ -57,41 +75,86 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('sign in', responseJson);
+    
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      print(signInfo!.token);
+      logger.infoLog('user auth token: ${signInfo!.token}');
       SignInfo.setSignInfo(signInfo!);
-      print("success to sign in");
 
-      return true;
+      return responseJson['success'];
     }
   }
 
-  static void signOut() {
+  static Future<bool> signOut() async {
+    bool result = true;
+
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      final response = await http.delete(
+        Uri.parse('${DatabaseService.serverUrl}api/notifications/tokens?token=$token'),
+        headers: await DatabaseService.getAuthHeader(),
+      );
+
+      var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+      logger.resultLog('sign out', responseJson);
+      
+      if (response.statusCode != DatabaseService.successCode) {
+        throw Exception(responseJson['message']);
+      } else {
+        logger.infoLog('firebase messaging token: $token is removed');
+        result = responseJson['success'];
+      }
+    }
+
     SignInfo.removeSignInfo();
     signInfo = null;
+
+    return result;
   }
 
-  static void getSignInfo() async {
+  static Future<void> loadSignInfo() async {
     signInfo ??= await SignInfo.readSignInfo();
+    logger.infoLog('user token: ${signInfo?.token??'null'}');
   }
 
-  static Future<bool> requestVerifyMessage(String phoneNumber) async {
-    //return true; // FIXME : BACKDOOR
-
+  static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/messages/send'),
+      Uri.parse('${DatabaseService.serverUrl}auth/signUp/send'),
       headers: DatabaseService.header,
       body: json.encode(data),
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('request signup verify message (phoneNumber: $phoneNumber)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
+  static Future<bool> requestResetPasswordVerifyMessage(String phoneNumber) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+    };
+
+    final response = await http.post(
+      Uri.parse('${DatabaseService.serverUrl}auth/passwords/send'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('request reset password verify message (phoneNumber: $phoneNumber)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
@@ -100,25 +163,46 @@ class Auth {
   }
 
   static Future<bool> verifyCode(String phoneNumber, String code) async {
-    //return true; // FIXME : BACKDOOR
-
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'code': code,
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}auth/messages/verify'),
+      Uri.parse('${DatabaseService.serverUrl}auth/verify'),
       headers: DatabaseService.header,
       body: json.encode(data),
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('verify code (code: $code)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print(responseJson);
       return responseJson['data']['isSuccess'];
+    }
+  }
+
+  static Future<bool> resetPassword(String phoneNumber, String newPassword) async {
+    Map<String, dynamic> data = {
+      'phoneNumber': phoneNumber,
+      'newPassword': newPassword
+    };
+
+    final response = await http.put(
+      Uri.parse('${DatabaseService.serverUrl}auth/passwords'),
+      headers: DatabaseService.header,
+      body: json.encode(data),
+    );
+
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('resetPassword (phoneNumber: $phoneNumber)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
     }
   }
 }

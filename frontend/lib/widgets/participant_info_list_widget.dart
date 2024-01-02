@@ -1,75 +1,79 @@
 
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/themes/design.dart';
-import 'package:group_study_app/widgets/participant_info_widget.dart';
-import 'package:group_study_app/widgets/tasks/task_group_widget.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/widgets/participant_info_widget.dart';
 
 class ParticipantInfoListWidget extends StatefulWidget {
   final int roundId;
+  final Study study;
+  final bool scheduled;
 
   const ParticipantInfoListWidget({
     Key? key,
     required this.roundId,
+    required this.study,
+    required this.scheduled,
   }) : super(key: key);
 
   @override
   State<ParticipantInfoListWidget> createState() => _ParticipantInfoListWidgetState();
 }
 
-class _Callback {
-  int key;
-  Function(Task) addTask;
-
-  _Callback(this.key, this.addTask);
-}
-
 class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
-  final Map<String, List<_Callback>> listeners = { };
+  final Map<String, Map<int, Function(Task)>> listeners = { };
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Task.getTasks(widget.roundId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List participantInfos = snapshot.data!;
-          return ListView.builder(
+      future: Task.getParticipantInfoList(widget.roundId),
+      builder: (context, snapshot) =>
+        (snapshot.hasData) ?
+          ListView.builder(
             shrinkWrap: true,
             primary: false,
 
-            itemCount: participantInfos.length,
+            itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return Container(
-                  padding: Design.bottom10,
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: context.extraColors.grey100!,
+                        width: 1,),),),
                   child: ParticipantInfoWidget(
-                    participantInfo: participantInfos[index],
-                    subscribe: addListener,
-                    notify: notify,
-                  )
+                    participantInfo: snapshot.data![index],
+                    roundId: widget.roundId,
+                    subscribe: _addListener,
+                    notify: _notify,
+                    study: widget.study,
+                    scheduled: widget.scheduled,)
               );
-            },);
-        }
-
-        return Design.loadingIndicator;
-      },
+            },
+          ) : Design.loadingIndicator,
     );
   }
 
-  void addListener(String taskType, int key, Function(Task) addTask) {
+  void _addListener(String taskType, int key, Function(Task) addTask) {
     if (!listeners.containsKey(taskType)) {
-      listeners[taskType] = [];
+      listeners[taskType] = { };
     }
 
-    listeners[taskType]!.add(_Callback(key, addTask));
+    listeners[taskType]![key] = addTask;
   }
 
-  void notify(String taskType, int notifierKey, Task newTask) {
-    if (listeners[taskType] != null) {
-      for (var callback in listeners[taskType]!) {
-        // exclude self
-        if (callback.key != notifierKey) {
-          callback.addTask(newTask);
+  void _notify(String taskType, int notifierId, String detail, List<TaskInfo> newTaskInfoList) {
+    if (listeners.containsKey(taskType)) {
+      for (var newTaskInfo in newTaskInfoList) {
+        // exclude it's self
+        if (newTaskInfo.roundParticipantId != notifierId) {
+          if (listeners[taskType]!.containsKey(newTaskInfo.roundParticipantId)) {
+            listeners[taskType]![newTaskInfo.roundParticipantId]!(
+              Task(taskId: newTaskInfo.taskId, detail: detail, isDone: false,),);
+          }
         }
       }
     }

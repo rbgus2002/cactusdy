@@ -1,25 +1,34 @@
 
+
 import 'package:flutter/material.dart';
-import 'package:group_study_app/models/task.dart';
-import 'package:group_study_app/models/task_group.dart';
-import 'package:group_study_app/themes/app_icons.dart';
-import 'package:group_study_app/utilities/list_model.dart';
-import 'package:group_study_app/utilities/test.dart';
-import 'package:group_study_app/widgets/tasks/task_widget.dart';
-import 'package:group_study_app/widgets/title_widget.dart';
+import 'package:flutter/services.dart';
+import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/task.dart';
+import 'package:groupstudy/themes/design.dart';
+import 'package:groupstudy/utilities/list_model.dart';
+import 'package:groupstudy/utilities/stab_controller.dart';
+import 'package:groupstudy/utilities/util.dart';
+import 'package:groupstudy/widgets/tasks/task_list_title.dart';
+import 'package:groupstudy/widgets/tasks/task_widget.dart';
 
 class TaskGroupWidget extends StatefulWidget {
+  final int userId;
+  final Study study;
+  final int roundId;
   final TaskGroup taskGroup;
   final Function? updateProgress;
 
   final Function(String, int, Function(Task))? subscribe;
-  final Function(String, int, Task)? notify;
+  final Function(String, int, String, List<TaskInfo>)? notify;
 
   const TaskGroupWidget({
     Key? key,
+    required this.userId,
     required this.taskGroup,
-    this.updateProgress,
+    required this.study,
+    required this.roundId,
 
+    this.updateProgress,
     this.subscribe,
     this.notify,
   }) : super(key: key);
@@ -29,105 +38,147 @@ class TaskGroupWidget extends StatefulWidget {
 }
 
 class TaskGroupWidgetState extends State<TaskGroupWidget> {
-  static const String _taskEmptyMessage = "Nothing to do...";
+  late GlobalKey<AnimatedListState> _taskListKey;
+  late ListModel<Task> _taskListModel;
 
-  final GlobalKey<AnimatedListState> _taskListKey = GlobalKey<AnimatedListState>();
-  late final ListModel<Task> _taskListModel;
+  late final bool _isOwner;
+  bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    _taskListModel = ListModel<Task>(
-        listKey: _taskListKey,
-        items: widget.taskGroup.tasks,
-        removedItemBuilder: _buildRemovedItem,
-    );
+    _initListModel();
+    _isOwner = Util.isOwner(widget.userId);
 
-    if (widget.subscribe != null && widget.taskGroup.isShared) {
-      widget!.subscribe!(
+    if (_isNeedToSubscribe()) {
+      widget.subscribe!(
           widget.taskGroup.taskType,
           widget.taskGroup.roundParticipantId,
-          addTask);
+          _addTask);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // refreshed from parents
-    if (_taskListModel.items != widget.taskGroup.tasks) {
-      _taskListModel.setItems(widget.taskGroup.tasks);
-    }
-
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TitleWidget(title: widget.taskGroup.taskType, icon: AppIcons.add,
-            onTap: () => addTask(Task())),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TaskListTitle(
+            enable: _isOwner,
+            title: widget.taskGroup.taskTypeName,
+            onTap: () {
+              HapticFeedback.lightImpact();
+              if (!_isProcessing && _isAddable()) {
+                _isProcessing = true;
 
-          AnimatedList(
+                _addTask(Task());
+                _isProcessing = false;
+              }
+            }),
+        Design.padding12,
+
+        InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: Util.doNothing,
+          child: AnimatedList(
             key: _taskListKey,
             shrinkWrap: true,
             primary: false,
+            reverse: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
 
             initialItemCount: _taskListModel.length,
-            itemBuilder: _buildTask,
-          ),
-
-          if (_taskListModel.length <= 0)
-            const Text(_taskEmptyMessage),
-        ]
-      );
+            itemBuilder: _buildTask,),
+        ),
+      ]
+    );
   }
 
-  void addTask(Task task) {
+  @override
+  void didUpdateWidget(covariant TaskGroupWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_taskListModel.items != widget.taskGroup.tasks) {
+      _initListModel();
+    }
+  }
+
+  bool _isNeedToSubscribe() {
+    return (widget.subscribe != null && widget.taskGroup.isShared);
+  }
+
+  void _initListModel() {
+    _taskListKey = GlobalKey<AnimatedListState>();
+    _taskListModel = ListModel<Task>(
+      listKey: _taskListKey,
+      items: widget.taskGroup.tasks,
+      removedItemBuilder: _buildRemovedItem,);
+  }
+
+  void _addTask(Task task) {
     _taskListModel.add(task);
-    setState(() { });
 
     if (widget.updateProgress != null) widget.updateProgress!();
   }
 
   Widget _buildRemovedItem(
       Task task, BuildContext context, Animation<double> animation) {
-    return TaskWidget(
-      index: 0,
-      task: task,
-      animation: animation,
-      onUpdateTaskDetail: updateTaskDetail,
-      onDeleteTask: deleteTask,
-      onCheckTask: widget.updateProgress,
+    return SizeTransition(
+      sizeFactor: animation,
+      child: TaskWidget(
+        isOwner: _isOwner,
+        task: task,
+        color: widget.study.color,
+        taskStabController: TaskStabController(
+          studyId: widget.study.studyId,
+          targetUserId: widget.userId,
+          roundId: widget.roundId,
+          taskId: task.taskId,),
+        onUpdateTaskDetail: _updateTaskDetail,
+        onDeleteTask: (task) => _deleteTask(task, -1),
+        onCheckTask: widget.updateProgress,
+      ),
     );
   }
 
   Widget _buildTask(
       BuildContext context, int index, Animation<double> animation) {
-    return TaskWidget(
-      index: index,
-      task: _taskListModel[index],
-      animation: animation,
-      onUpdateTaskDetail: updateTaskDetail,
-      onDeleteTask: deleteTask,
-      onCheckTask: widget.updateProgress,
+    return SizeTransition(
+      sizeFactor: animation,
+      child: TaskWidget(
+        isOwner: _isOwner,
+        task: _taskListModel[index],
+        color: widget.study.color,
+        taskStabController: TaskStabController(
+          studyId: widget.study.studyId,
+          targetUserId: widget.userId,
+          roundId: widget.roundId,
+          taskId: _taskListModel[index].taskId,),
+        onUpdateTaskDetail: _updateTaskDetail,
+        onDeleteTask: (task) => _deleteTask(task, index),
+        onCheckTask: widget.updateProgress,
+      ),
     );
   }
 
-  void updateTaskDetail(Task task) {
+  void _updateTaskDetail(Task task) {
     // #Case : added new task
     if (task.taskId == Task.nonAllocatedTaskId) {
-      Task.createTask(task, widget.taskGroup.taskType, widget.taskGroup.roundParticipantId);
+      if (task.detail.isNotEmpty) {
+        (widget.taskGroup.isShared) ?
+          Task.createGroupTask(
+              task: task,
+              roundId: widget.roundId,
+              roundParticipantId: widget.taskGroup.roundParticipantId,
+              notify: _notifyToOther) :
+          Task.createPersonalTask(
+              task: task,
+              roundParticipantId: widget.taskGroup.roundParticipantId);
 
-      // notify to other task groups
-      if (widget.notify != null && widget.taskGroup.isShared) {
-        widget.notify!(
-          widget.taskGroup.taskType,
-          widget.taskGroup.roundParticipantId,
-          Task(taskId: Task.nonAllocatedTaskId,
-            detail: task.detail,
-            isDone: task.isDone,
-          ),
-        );
+        // add new empty tasks
+        _addTask(Task());
       }
     }
     // #Case : modified the task
@@ -136,7 +187,19 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     }
   }
 
-  void deleteTask(Task task, int index) {
+  void _notifyToOther(String detail, List<TaskInfo> taskInfoList) {
+    if (widget.notify != null) {
+      widget.notify!(
+        widget.taskGroup.taskType,
+        widget.taskGroup.roundParticipantId,
+        detail,
+        taskInfoList);
+    }
+  }
+
+  void _deleteTask(Task task, int index) {
+    if (!_isValidIndex(index)) return;
+
     if (task.taskId != Task.nonAllocatedTaskId) {
       Task.deleteTask(task.taskId, widget.taskGroup.roundParticipantId);
     }
@@ -144,5 +207,14 @@ class TaskGroupWidgetState extends State<TaskGroupWidget> {
     setState(() { });
 
     if (widget.updateProgress != null) widget.updateProgress!();
+  }
+
+  bool _isAddable() {
+    return (_taskListModel.items.isEmpty ||
+        (_taskListModel.items.last.taskId != Task.nonAllocatedTaskId));
+  }
+
+  bool _isValidIndex(int index) {
+    return (index >= 0 && index < _taskListModel.length);
   }
 }
