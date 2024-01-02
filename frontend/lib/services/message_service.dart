@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:groupstudy/models/notice.dart';
-import 'package:groupstudy/models/notice_summary.dart';
 import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/routes/notices/notice_detail_route.dart';

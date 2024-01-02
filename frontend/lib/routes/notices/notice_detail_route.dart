@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/comment.dart';
 import 'package:groupstudy/models/notice.dart';
-import 'package:groupstudy/models/notice_summary.dart';
 import 'package:groupstudy/routes/notices/notice_edit_route.dart';
 import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/themes/color_styles.dart';
