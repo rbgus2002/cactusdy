@@ -117,6 +117,7 @@ class Auth {
 
   static Future<void> loadSignInfo() async {
     signInfo ??= await SignInfo.readSignInfo();
+    logger.infoLog('user token: ${signInfo?.token??'null'}');
   }
 
   static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {

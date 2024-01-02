@@ -121,7 +121,7 @@ class _HomeRouteState extends State<HomeRoute> {
         Util.pushRouteAndPopUntil(context, (context) =>
             const StartRoute());
       } else {
-        print(e);
+        debugPrint(message);
       }
     }
   }
