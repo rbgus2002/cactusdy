@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/date_time_picker_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/themes/color_styles.dart';
@@ -22,7 +23,7 @@ class RoundSummaryWidget extends StatefulWidget {
   final Round round;
   final Study study;
   final Function(int) onRemove;
-  final List<ParticipantProfile> participantProfileList;
+  final List<UserProfileSummary> participantProfileList;
 
   const RoundSummaryWidget({
     Key? key,

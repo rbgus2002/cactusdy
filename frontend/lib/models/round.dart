@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:groupstudy/models/round_participant_info.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -20,21 +20,21 @@ class Round {
   DateTime? studyTime;
   String? detail;
 
-  final List<RoundParticipantInfo>? roundParticipantInfos;
+  final List<UserProfileSummary>? participantProfileSummaries;
 
   Round({
     required this.roundId,
     this.studyPlace = "",
     this.studyTime,
     this.detail,
-    this.roundParticipantInfos,
+    this.participantProfileSummaries,
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
-    List<RoundParticipantInfo>? roundParticipantInfos;
+    List<UserProfileSummary>? roundParticipantInfos;
     if (json['roundParticipantInfos'] != null) {
       roundParticipantInfos = (json['roundParticipantInfos'] as List).map(
-              (r) => RoundParticipantInfo.fromJson(r)).toList();
+              (r) => UserProfileSummary.fromJson(r)).toList();
     }
 
     return Round(
@@ -42,7 +42,7 @@ class Round {
       studyPlace: json['studyPlace']??"",
       studyTime: (json['studyTime'] != null)? DateTime.parse(json['studyTime']) : null,
       detail: json['detail'],
-      roundParticipantInfos: roundParticipantInfos,
+      participantProfileSummaries: roundParticipantInfos,
     );
   }
 

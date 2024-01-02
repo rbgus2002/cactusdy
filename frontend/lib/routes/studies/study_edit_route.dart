@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
@@ -13,8 +14,8 @@ import 'package:groupstudy/widgets/bottom_sheets/bottom_sheets.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
-import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
 import 'package:groupstudy/widgets/input_field.dart';
+import 'package:groupstudy/widgets/pickers/image_picker_widget.dart';
 import 'package:groupstudy/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -187,7 +188,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
     );
   }
 
-  void _changeAdmin(ParticipantProfile newAdmin) {
+  void _changeAdmin(UserProfileSummary newAdmin) {
     TwoButtonDialog.showDialog(
         context: context,
         text: context.local.ensureToGiveAdminTo(newAdmin.nickname),

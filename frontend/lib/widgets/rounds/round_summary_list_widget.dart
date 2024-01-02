@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
@@ -28,7 +29,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   late GlobalKey<AnimatedListState> _roundListKey;
   late ListModel<Round> _roundListModel;
 
-  late final List<ParticipantProfile> _memberProfileImages;
+  late final List<UserProfileSummary> _memberProfileImages;
 
   @override
   void initState() {
@@ -140,10 +141,10 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     );
   }
 
-  List<ParticipantProfile> _getParticipantProfileList(Round round) {
-    if (round.roundParticipantInfos != null) {
-      return round.roundParticipantInfos!.map((r) =>
-          ParticipantProfile(
+  List<UserProfileSummary> _getParticipantProfileList(Round round) {
+    if (round.participantProfileSummaries != null) {
+      return round.participantProfileSummaries!.map((r) =>
+          UserProfileSummary(
               userId: r.userId,
               picture: r.picture,
               nickname: "")).toList();

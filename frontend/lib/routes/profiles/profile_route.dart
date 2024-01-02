@@ -58,7 +58,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
             (snapshot.hasData)?
               ListView(
                 children: [
-                  _userProfileWidget(snapshot.data!.participant),
+                  _userProfileWidget(snapshot.data!.user),
                   _studyListWidget(snapshot.data!.studyTags),
                   _attendanceRateWidget(snapshot.data!.attendanceRate),
                   _achievementRateWidget(snapshot.data!.doneRate),
@@ -222,7 +222,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
     );
   }
 
-  Widget _kickAndStabButton(ParticipantProfile participantProfile) {
+  Widget _kickAndStabButton(UserProfile participantProfile) {
     return Visibility(
       visible: (!Util.isOwner(widget.userId)
             && participantProfile.isParticipated),
@@ -250,7 +250,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
                   Toast.showToast(
                     context: context,
                     message: _getStabMessage(
-                        participantProfile.participant.nickname,
+                        participantProfile.user.nickname,
                         userStabController.stabCount),);
                 },
                 child: Container(
