@@ -63,7 +63,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         Design.padding20,
 
         FutureBuilder(
-          future: Round.getRoundInfoResponses(widget.study.studyId),
+          future: Round.getRoundList(widget.study.studyId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data != _roundListModel.items) {
@@ -143,11 +143,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
 
   List<UserProfileSummary> _getParticipantProfileList(Round round) {
     if (round.participantProfileSummaries != null) {
-      return round.participantProfileSummaries!.map((r) =>
-          UserProfileSummary(
-              userId: r.userId,
-              picture: r.picture,
-              nickname: "")).toList();
+      return round.participantProfileSummaries!;
     }
 
     return _memberProfileImages;
