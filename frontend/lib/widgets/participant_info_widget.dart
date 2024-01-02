@@ -2,7 +2,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:groupstudy/models/participant_info.dart';
 import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/models/task.dart';
 import 'package:groupstudy/themes/color_styles.dart';
