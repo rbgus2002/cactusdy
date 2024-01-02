@@ -30,11 +30,11 @@ class UriLinkService {
       try {
         final uri = await getInitialUri();
         if (uri != null) {
-          logger.log(uri.toString());
+          logger.infoLog(uri.toString());
           _invitingCodeHandler(uri);
         }
       } on Exception catch(e) {
-        logger.log(e.toString());
+        logger.infoLog(e.toString());
       }
     }
   }
@@ -45,11 +45,11 @@ class UriLinkService {
       uriLinkStream.listen(
         (Uri? uri) {
           if (uri != null) {
-            logger.log(uri.toString());
+            logger.infoLog(uri.toString());
             _invitingCodeHandler(uri);
           }},
         onError: (e) {
-          logger.log(e.toString());
+          logger.infoLog(e.toString());
         });
     }
   }
