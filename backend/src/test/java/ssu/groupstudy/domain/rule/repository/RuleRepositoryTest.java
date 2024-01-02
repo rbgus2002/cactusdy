@@ -23,8 +23,8 @@ class RuleRepositoryTest {
     void findRuleById(){
         // given
         // when
-        Optional<Rule> 규칙 = ruleRepository.findRuleById(1L);
-        Optional<Rule> 삭제된_규칙 = ruleRepository.findRuleById(3L);
+        Optional<Rule> 규칙 = ruleRepository.findById(1L);
+        Optional<Rule> 삭제된_규칙 = ruleRepository.findById(3L);
 
         // then
         softly.assertThat(규칙).isNotEmpty();
@@ -37,10 +37,8 @@ class RuleRepositoryTest {
         // given
         // when
         List<Rule> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(1L);
-        Rule 삭제된_규칙 = ruleRepository.findById(3L).get(); // 삭제된 규칙 가져오기 위해 기본 jpa data 메소드 사용
 
         // then
         softly.assertThat(rules.size()).isGreaterThanOrEqualTo(2);
-        softly.assertThat(rules.contains(삭제된_규칙)).isFalse();
     }
 }

@@ -98,7 +98,7 @@ class ParticipantsServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
-            doReturn(List.of()).when(participantRepository).findStudyNamesByUser(any(User.class));
+            doReturn(List.of()).when(participantRepository).findParticipantInfoByUser(any(User.class));
             doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(User.class), any(Study.class));
 
             // when

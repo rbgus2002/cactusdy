@@ -37,7 +37,7 @@ public class CommentService {
 
     @Transactional
     public Long createComment(CreateCommentRequest dto, User writer) {
-        Notice notice = noticeRepository.findByNoticeId(dto.getNoticeId())
+        Notice notice = noticeRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
         Comment comment = handleCommentCreationWithParent(dto, writer, notice);
@@ -60,13 +60,13 @@ public class CommentService {
     private Comment handleCommentCreationWithParent(CreateCommentRequest dto, User writer, Notice notice) {
         Comment parent = null;
         if(dto.getParentCommentId() != null){
-            parent = commentRepository.getReferenceById(dto.getParentCommentId()); // TODO : findById로 변경 후 deleteYn
+            parent = commentRepository.getReferenceById(dto.getParentCommentId());
         }
         return dto.toEntity(writer, notice, parent);
     }
 
     public CommentInfoResponse getComments(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         int commentCount = commentRepository.countCommentByNotice(notice);
         List<Comment> parentComments = getParentComments(notice);

@@ -36,14 +36,14 @@ public class RuleService {
 
     @Transactional
     public void deleteRule(Long ruleId) {
-        Rule rule = ruleRepository.findRuleById(ruleId)
+        Rule rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.delete();
     }
 
     @Transactional
     public void updateRule(Long ruleId, UpdateRuleRequest request) {
-        Rule rule = ruleRepository.findRuleById(ruleId)
+        Rule rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.updateDetail(request.getDetail());
     }

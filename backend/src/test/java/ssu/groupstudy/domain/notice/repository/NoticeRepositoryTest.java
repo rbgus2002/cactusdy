@@ -42,7 +42,7 @@ class NoticeRepositoryTest{
         void read() {
             // given
             User 최규현 = userRepository.findById(1L).get();
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
             Character isChecked = 공지사항.switchCheckNotice(최규현);
@@ -56,7 +56,7 @@ class NoticeRepositoryTest{
         void unread(){
             // given
             User 최규현 = userRepository.findById(1L).get();
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
             공지사항.switchCheckNotice(최규현);
@@ -71,10 +71,10 @@ class NoticeRepositoryTest{
     @DisplayName("해당 스터디의 공지사항 리스트를 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져온다")
     void findNoticesByStudyOrderByPinYnDescCreateDateDesc() {
         // given
-        Notice 공지사항1 = noticeRepository.findByNoticeId(1L).get();
-        Notice 공지사항2 = noticeRepository.findByNoticeId(2L).get();
-        Notice 공지사항3 = noticeRepository.findByNoticeId(3L).get();
-        Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
+        Notice 공지사항1 = noticeRepository.findById(1L).get();
+        Notice 공지사항2 = noticeRepository.findById(2L).get();
+        Notice 공지사항3 = noticeRepository.findById(3L).get();
+        Notice 공지사항4 = noticeRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
         Study 알고리즘_스터디 = studyRepository.findById(1L).get();
@@ -95,10 +95,10 @@ class NoticeRepositoryTest{
     @DisplayName("해당 스터디의 공지사항 리스트를 최대 3개 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져온다")
     void getNoticeListLimit3() {
         // given
-        Notice 공지사항1 = noticeRepository.findByNoticeId(1L).get();
-        Notice 공지사항2 = noticeRepository.findByNoticeId(2L).get();
-        Notice 공지사항3 = noticeRepository.findByNoticeId(3L).get();
-        Notice 공지사항4 = noticeRepository.findByNoticeId(4L).get();
+        Notice 공지사항1 = noticeRepository.findById(1L).get();
+        Notice 공지사항2 = noticeRepository.findById(2L).get();
+        Notice 공지사항3 = noticeRepository.findById(3L).get();
+        Notice 공지사항4 = noticeRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
         Study 알고리즘_스터디 = studyRepository.findById(1L).get();
@@ -117,7 +117,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항을 상단고정한다")
         void pin(){
             // given
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
             char pinYn = 공지사항.switchPin();
@@ -131,7 +131,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항 상단고정을 해제한다")
         void unPin(){
             // given
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
             공지사항.switchPin();
@@ -151,7 +151,7 @@ class NoticeRepositoryTest{
         void read_true(){
             // given
             User 최규현 = userRepository.findById(1L).get();
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
 
             // when
@@ -165,7 +165,7 @@ class NoticeRepositoryTest{
         @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
         void read_false(){
             User 최규현 = userRepository.findById(1L).get();
-            Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+            Notice 공지사항 = noticeRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
             공지사항.switchCheckNotice(최규현);
 
@@ -181,11 +181,11 @@ class NoticeRepositoryTest{
     @DisplayName("삭제된 공지사항을 읽는 경우 빈 값을 가져온다")
     void getNoticeDeleted(){
         // given
-        Notice 공지사항 = noticeRepository.findByNoticeId(1L).get();
+        Notice 공지사항 = noticeRepository.findById(1L).get();
 
         // when
         공지사항.deleteNotice();
-        Optional<Notice> notice = noticeRepository.findByNoticeId(공지사항.getNoticeId());
+        Optional<Notice> notice = noticeRepository.findById(공지사항.getNoticeId());
 
         // then
         softly.assertThat(notice).isEmpty();

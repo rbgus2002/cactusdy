@@ -70,7 +70,7 @@ public class ParticipantsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
-        List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(user);
+        List<ParticipantInfo> participantInfoList = participantRepository.findParticipantInfoByUser(user);
         List<StatusTagInfo> statusTagInfoList = handleStatusTagInfo(study, user);
         DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
         char isParticipated = (study.isParticipated(user)) ? 'Y' : 'N';
@@ -78,18 +78,14 @@ public class ParticipantsService {
         return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
-    // TODO : refactoring (modern java in action)
     private List<StatusTagInfo> handleStatusTagInfo(Study study, User user) {
         List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
-        EnumSet<StatusTag> statusTags = EnumSet.allOf(StatusTag.class);
-
         Map<StatusTag, StatusTagInfo> statusTagInfoMap = statusTagInfos.stream()
                 .collect(Collectors.toMap(StatusTagInfo::getStatusTag, Function.identity()));
 
-        for (StatusTag tag : statusTags) {
-            statusTagInfoMap.computeIfAbsent(tag, t -> new StatusTagInfo(t, 0L));
+        for (StatusTag tag : StatusTag.values()) {
+            statusTagInfoMap.putIfAbsent(tag, new StatusTagInfo(tag, 0L));
         }
-
         return new ArrayList<>(statusTagInfoMap.values());
     }
 
