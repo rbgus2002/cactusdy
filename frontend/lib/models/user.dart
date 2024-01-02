@@ -40,8 +40,6 @@ class User{
   }
 
   static Future<User> getUserProfileSummary() async {
-    logger.tryLog('get user profile summary');
-
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
       headers: await DatabaseService.getAuthHeader(),
@@ -66,12 +64,14 @@ class User{
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get user profile details(userId: $userId, studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception();
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
-      print('success to get participant profile');
-      return UserProfile.fromJson(responseJson);
+      var userProfileJson = responseJson['data']['participant'];
+      return UserProfile.fromJson(userProfileJson);
     }
   }
 
@@ -95,13 +95,12 @@ class User{
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('update user profile (userId: ${updatedUser.userId})', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print('sucess to update user profile');
       updatedUser.profileImage = responseJson['data']['user']['profileImage']??"";
-
       return responseJson['success'];
     }
   }
@@ -116,12 +115,12 @@ class User{
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('kick user (userId: $userId, studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = json.decode(response.body)['success'];
-      if (result) print("success to leave study");
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -136,10 +135,11 @@ class User{
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('stab user (userId: $targetUserId, count: $count)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      if (responseJson['success']) print('success to stab user($count times)');
       return responseJson['success'];
     }
   }
