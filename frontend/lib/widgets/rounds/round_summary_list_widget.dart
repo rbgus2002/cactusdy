@@ -36,7 +36,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     super.initState();
     _initListModel();
 
-    Study.getMemberProfileImages(widget.study.studyId).then((value) =>
+    Study.getMemberProfileSummaries(widget.study.studyId).then((value) =>
       _memberProfileImages = value);
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:groupstudy/models/study_Info.dart';
+import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/start_route.dart';
 import 'package:groupstudy/routes/studies/study_create_route.dart';
@@ -77,7 +77,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
                 // study panels
                 FutureBuilder(
-                  future: StudyInfo.getStudies(),
+                  future: StudySummary.getStudies(),
                   builder: (context, snapshot) =>
                     (snapshot.hasData)?
                       (snapshot.data!.isEmpty) ?
@@ -158,7 +158,7 @@ class _Panel extends StatelessWidget {
 }
 
 class _StudyPanel extends StatelessWidget {
-  final StudyInfo studyInfo;
+  final StudySummary studyInfo;
   final Function onRefresh;
 
   const _StudyPanel({

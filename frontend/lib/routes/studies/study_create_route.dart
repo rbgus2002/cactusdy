@@ -125,12 +125,11 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
             studyName: _studyName,
             studyDetail: _studyDetail,
             studyColor: _studyColor,
-            studyImage: _profileImage).then((map) {
-              _newStudyId = map['studyId'];
-              _invitingCode = map['inviteCode'];
-
-              _pageRouteTo(3);
-            });
+            studyImage: _profileImage,
+            onCreate: (newStudyId, invitingCode) {
+              _newStudyId = newStudyId;
+              _invitingCode = invitingCode;
+            }).then((map) => _pageRouteTo(3));
       } on Exception catch(e) {
         if (mounted) {
           Toast.showToast(
@@ -142,7 +141,6 @@ class _StudyCreateRouteState extends State<StudyCreateRoute> {
       _isProcessing = false;
     }
   }
-
 
   Future<bool> _onBack() async {
     // #Case: Study is created => view study detail

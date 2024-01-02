@@ -37,7 +37,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Study.getMemberProfileImages(widget.study.studyId),
+      future: Study.getMemberProfileSummaries(widget.study.studyId),
       builder: (context, snapshot) =>
         (snapshot.hasData) ?
           SizedBox(

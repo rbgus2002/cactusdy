@@ -2,8 +2,12 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:groupstudy/models/round.dart';
+import 'package:groupstudy/models/task.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/utilities/color_util.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +22,8 @@ class Study {
 
   // const values
   static const int invitingCodeLength = 6;
+
+  static Logger logger = Logger('Study');
 
   final int studyId;
   String studyName;
@@ -41,7 +47,7 @@ class Study {
       studyName: json['studyName'],
       detail: json['detail'],
       picture: json['picture']??"",
-      color : Color(int.parse((json['color'] as String).substring(2), radix: 16)),
+      color : ColorUtil.fromJson(json),
       hostId: json['hostUserId'],
     );
   }
@@ -52,19 +58,23 @@ class Study {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get study summary (studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to get Study Summary");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['studySummary'];
-      return Study.fromJson(responseJson);
+      var studyJson = responseJson['data']['studySummary'];
+      return Study.fromJson(studyJson);
     }
   }
 
-  static Future<Map<String, dynamic>> createStudy({
+  static Future<bool> createStudy({
     required String studyName,
     required String studyDetail,
     required Color studyColor,
-    required XFile? studyImage
+    required XFile? studyImage,
+    required Function(int, String) onCreate,
   }) async {
     final request = http.MultipartRequest('POST',
       Uri.parse('${DatabaseService.serverUrl}api/studies'),);
@@ -86,12 +96,17 @@ class Study {
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('create study', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print('success to create study');
-      return responseJson['data']['study'];
+      int newStudyId = responseJson['data']['study']['studyId'];
+      String invitingCode = responseJson['data']['study']['inviteCode'];
+      logger.infoLog('created study\'s studyId: $newStudyId');
+      
+      onCreate(newStudyId, invitingCode);
+      return responseJson['success'];
     }
   }
 
@@ -101,12 +116,13 @@ class Study {
       headers: await DatabaseService.getAuthHeader(),
     );
 
-    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('join study by inviting code(invitingCode: $invitingCode)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      int studyId = json.decode(utf8.decode(response.bodyBytes))['data']['studyId'];
-      print('success to join a study');
+      int studyId = responseJson['data']['studyId'];
       return studyId;
     }
   }
@@ -117,13 +133,13 @@ class Study {
       headers: await DatabaseService.getAuthHeader(),
     );
 
-    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('leave study (studyId: ${study.studyId})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = json.decode(response.body)['success'];
-      if (result) print("success to leave study");
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -141,7 +157,7 @@ class Study {
     };
 
     request.files.add(http.MultipartFile.fromString(
-      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
+        'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (studyImage != null) {
       request.files.add(await http.MultipartFile.fromPath('profileImage', studyImage.path));
@@ -149,11 +165,11 @@ class Study {
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('update study (studyId: ${updatedStudy.studyId})', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print('sucess to update study');
       return responseJson['success'];
     }
   }
@@ -164,38 +180,96 @@ class Study {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get study inviting code', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception("Failed to get Study inviting code");
     } else {
-      var invitingCode = json.decode(utf8.decode(response.bodyBytes))['data']['inviteCode'];
-      print('success to get inviting code($invitingCode)');
+      var invitingCode = responseJson['data']['inviteCode'];
+      logger.infoLog('inviting code: $invitingCode');
+
       return invitingCode;
     }
   }
 
-  static Future<List<UserProfileSummary>> getMemberProfileImages(int studyId) async {
+  static Future<List<UserProfileSummary>> getMemberProfileSummaries(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants/summary?studyId=$studyId'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get member profile images (studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to get Participants data (studyId = $studyId)");
+      throw Exception(responseJson['message']);
     } else {
-      print("successfully get Participants data (studyId = $studyId)");
+      var profileSummariesJson = json.decode(utf8.decode(response.bodyBytes))['data']['participantSummaryList'];
 
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participantSummaryList'];
+      List<UserProfileSummary> profileSummaries = (profileSummariesJson as List).map((p) =>
+          UserProfileSummary.fromJson(p)).toList();
+      logger.infoLog('member profile images length: ${profileSummaries.length}');
 
-      return (responseJson as List).map((p) => UserProfileSummary.fromJson(p)).toList();
+      return profileSummaries;
     }
-  }
-
-  static void _asd() {
-
   }
 
   static int getInvitingCode(String uriStr) {
     String invitingCode = uriStr.substring(uriStr.length - Study.invitingCodeLength);
     return int.parse(invitingCode);
+  }
+}
+
+class StudySummary {
+  final Study study;
+  final List<TaskGroup> taskGroups;
+  final List<String> profileImages;
+  final int roundSeq;
+  final Round round;
+
+  const StudySummary({
+    required this.study,
+    required this.taskGroups,
+    required this.profileImages,
+    required this.roundSeq,
+    required this.round,
+  });
+
+  factory StudySummary.fromJson(Map<String, dynamic> json) {
+    List<TaskGroup> taskGroups = ((json['taskGroups']??[]) as List).map((t)
+        => TaskGroup.fromJson(t, json['roundParticipantId'])).toList();
+
+    List<String> profileImages = ((json['profiles']??[]) as List).map((p)
+        => (p['picture']??"") as String).toList();
+
+    return StudySummary(
+      study: Study.fromJson(json),
+      taskGroups: taskGroups,
+      profileImages: profileImages,
+      roundSeq: json['roundSeq'],
+      round: Round.fromJson(json),
+    );
+  }
+
+  static Future<List<StudySummary>> getStudies() async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/studies/list'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    Study.logger.resultLog('get studies', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      var studySummariesJson = json.decode(utf8.decode(response.bodyBytes))['data']['studyInfos'];
+
+      List<StudySummary> studySummaries = (studySummariesJson as List).map((s) =>
+          StudySummary.fromJson(s)).toList();
+
+      return studySummaries;
+    }
   }
 }

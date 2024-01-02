@@ -1,7 +1,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:groupstudy/models/study_Info.dart';
+import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
@@ -13,7 +13,7 @@ import 'package:groupstudy/widgets/profile_lists/stacked_profile_list_widget.dar
 import 'package:groupstudy/widgets/tags/rectangle_tag.dart';
 
 class StudyProfileWidget extends StatefulWidget {
-  final StudyInfo studyInfo;
+  final StudySummary studyInfo;
   final Function onRefresh;
 
   const StudyProfileWidget({
@@ -29,7 +29,7 @@ class StudyProfileWidget extends StatefulWidget {
 class _StudyProfileWidgetState extends State<StudyProfileWidget> {
   static const double _imageSize = 88;
 
-  late StudyInfo _studyInfoRef;
+  late StudySummary _studyInfoRef;
 
   @override
   void initState() {
