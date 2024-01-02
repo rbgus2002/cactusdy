@@ -11,6 +11,7 @@ import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
 import 'package:groupstudy/services/firebase_options.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/services/notification_channel.dart';
 import 'package:groupstudy/utilities/util.dart';
 
@@ -20,6 +21,8 @@ class MessageService {
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   static bool _isInitLocalNotification = false;
 
+  static Logger logger = Logger('MessageService');
+
   static void init() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -28,7 +31,7 @@ class MessageService {
     await _setupInteractedMessage(_MessageInteractionHandler._handleMessageInteraction);
 
     // if you want to see firebase messaging token, uncomment under line.
-    print('Firebase Messaging Token : ${await FirebaseMessaging.instance.getToken()}');
+    logger.infoLog('firebase messaging token: ${await FirebaseMessaging.instance.getToken()}');
   }
 
   static Future<void> _initFCM() async {
@@ -46,7 +49,7 @@ class MessageService {
       sound: true,
     );
 
-    print('User granted permission: ${settings.authorizationStatus}');
+    logger.infoLog('user granted permission: ${settings.authorizationStatus}');
 
     FirebaseMessaging.onMessage.listen(_foregroundHandler);
 
@@ -91,7 +94,8 @@ class MessageService {
 
     String title = notification.title??"";
     String body = notification.body??"";
-    print('notification : { title : $title, body : $body }');
+
+    logger.infoLog('notification: { title: $title, body: $body }');
 
     // Android : in our app, { channel id == title }
     var channel = NotificationChannel.channels[title]??
@@ -120,7 +124,7 @@ class MessageService {
       _showNotification(message);
     }
 
-    print('Handling a foreground message ${message.messageId}');
+    logger.infoLog('handling a foreground message ${message.messageId}');
   }
 
   static Future<void> _setupInteractedMessage(Function(RemoteMessage) messageHandler) async {
@@ -140,7 +144,7 @@ class MessageService {
     await _initLocalNotification();
     _showNotification(message);
 
-    print('Handling a background message ${message.messageId}');
+    logger.infoLog('handling a background message ${message.messageId}');
   }
 
   static bool _isAndroid(RemoteMessage message) {
@@ -192,7 +196,7 @@ class _MessageInteractionHandler {
 
       return study;
     } on Exception catch (e) {
-      print(Util.getExceptionMessage(e));
+      debugPrint(Util.getExceptionMessage(e));
     }
 
     return null;
@@ -212,7 +216,7 @@ class _MessageInteractionHandler {
                 round: round,
                 study: study,));
         } on Exception catch (e) {
-          print(Util.getExceptionMessage(e));
+          debugPrint(Util.getExceptionMessage(e));
         }
       }
     });
@@ -239,7 +243,7 @@ class _MessageInteractionHandler {
                   studyId: studyId,
                   onDelete: Util.doNothing));
         } on Exception catch(e) {
-          print(Util.getExceptionMessage(e));
+          debugPrint(Util.getExceptionMessage(e));
         }
       }
     });
