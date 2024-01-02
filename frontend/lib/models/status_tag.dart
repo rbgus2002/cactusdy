@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,6 +18,8 @@ enum StatusTag {
 
   final String code;
   const StatusTag(this.code);
+
+  static Logger logger = Logger('StatusTag');
 
   factory StatusTag.getByCode(String code) {
     return StatusTag.values.firstWhere((value) => value.code == code);
@@ -67,12 +70,12 @@ enum StatusTag {
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update status (roundParticipateId: $roundParticipateId, Status: ${status.code})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = responseJson['success'];
-      if (result) print("Success to update Status");
-      return result;
+      return responseJson['success'];
     }
   }
 }
