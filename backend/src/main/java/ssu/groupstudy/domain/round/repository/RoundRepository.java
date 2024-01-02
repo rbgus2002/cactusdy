@@ -13,9 +13,6 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<Round> findById(Long roundId);
 
-    @Query("SELECT r FROM Round r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
-    Optional<Round> findByRoundIdAndDeleteYnIsN(Long roundId);
-
     /**
      * 스터디의 회차 목록 가져오기
      * order by studyTime (null 값 우선)

@@ -35,20 +35,20 @@ public class RoundService {
 
     @Transactional
     public void updateAppointment(long roundId, AppointmentRequest dto) {
-        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
+        Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
         round.updateAppointment(dto.toAppointment());
     }
 
     public RoundDto.RoundDetailResponse getDetail(long roundId) {
-        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
+        Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
         return RoundDto.createRoundDetail(round);
     }
 
     @Transactional
     public void updateDetail(long roundId, String detail) {
-        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
+        Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
         round.updateDetail(detail);
     }
@@ -63,7 +63,7 @@ public class RoundService {
 
     @Transactional
     public void deleteRound(long roundId, User user) {
-        Round round = roundRepository.findByRoundIdAndDeleteYnIsN(roundId)
+        Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
         round.deleteRound(user);
     }

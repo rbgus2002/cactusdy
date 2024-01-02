@@ -53,8 +53,8 @@ class RoundRepositoryTest{
     @DisplayName("삭제되지 않은 회차를 조회한다.")
     void findByRoundIdAndDeleteYnIsN(){
         // given, when
-        Optional<Round> 회차 = roundRepository.findByRoundIdAndDeleteYnIsN(1L);
-        Optional<Round> 삭제된회차 = roundRepository.findByRoundIdAndDeleteYnIsN(2L);
+        Optional<Round> 회차 = roundRepository.findById(1L);
+        Optional<Round> 삭제된회차 = roundRepository.findById(2L);
 
         // then
         softly.assertThat(회차).isNotEmpty();
