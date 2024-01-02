@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query("SELECT n FROM Notice n WHERE n.noticeId = :noticeId AND n.deleteYn = 'N'")
-    Optional<Notice> findByNoticeId(Long noticeId);
+    Optional<Notice> findById(Long noticeId);
 
     Page<Notice> findNoticesByStudyOrderByPinYnDescCreateDateDesc(Study study, Pageable pageable);
 

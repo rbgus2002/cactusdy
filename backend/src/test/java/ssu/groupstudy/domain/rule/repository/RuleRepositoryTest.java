@@ -23,8 +23,8 @@ class RuleRepositoryTest {
     void findRuleById(){
         // given
         // when
-        Optional<Rule> 규칙 = ruleRepository.findRuleById(1L);
-        Optional<Rule> 삭제된_규칙 = ruleRepository.findRuleById(3L);
+        Optional<Rule> 규칙 = ruleRepository.findById(1L);
+        Optional<Rule> 삭제된_규칙 = ruleRepository.findById(3L);
 
         // then
         softly.assertThat(규칙).isNotEmpty();

@@ -56,7 +56,7 @@ public class NoticeService {
 
     @Transactional
     public Character switchCheckNotice(Long noticeId, User user) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchCheckNotice(user);
     }
@@ -92,13 +92,13 @@ public class NoticeService {
 
     @Transactional
     public Character switchNoticePin(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchPin();
     }
 
     public List<String> getCheckUserImageList(Long noticeId) {
-        Set<CheckNotice> checkNotices = noticeRepository.findByNoticeId(noticeId)
+        Set<CheckNotice> checkNotices = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 .getCheckNotices();
 
@@ -108,21 +108,21 @@ public class NoticeService {
     }
 
     public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return NoticeInfoResponse.of(notice, user);
     }
 
     @Transactional
     public void delete(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.deleteNotice();
     }
 
     @Transactional
     public void updateNotice(Long noticeId, EditNoticeRequest dto) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId)
+        Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.updateTitleAndContents(dto.getTitle(), dto.getContents());
     }

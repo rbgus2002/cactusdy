@@ -43,7 +43,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 공지사항에 댓글을 작성하면 예외를 던진다")
         void noticeNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.empty()).when(noticeRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> commentService.createComment(댓글1CreateRequest, 최규현))
@@ -55,7 +55,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("댓글을 생성한다")
         void createNotice(){
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
             doReturn(댓글1).when(commentRepository).save(any(Comment.class));
 
             // when
@@ -72,7 +72,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("공지사항이 존재하지 않으면 예외를 던진다")
         void notFoundNotice(){
             // given, when
-            doReturn(Optional.empty()).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.empty()).when(noticeRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> commentService.getComments(-1L))
@@ -84,7 +84,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("공지사항에 작성된 댓글을 작성 시각 순으로 불러온다")
         void getCommentsOrderByCreateDateAsc(){
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
 
             // when
             CommentInfoResponse comments = commentService.getComments(-1L);
@@ -97,7 +97,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("공지사항에 작성된 댓글을 가져오고 각 댓글에 대댓글이 존재하면 추가한다")
         void getCommentWithReplies(){
             // given
-            doReturn(Optional.of(공지사항1)).when(noticeRepository).findByNoticeId(any(Long.class));
+            doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
 
             // when
             CommentInfoResponse comments = commentService.getComments(-1L);
