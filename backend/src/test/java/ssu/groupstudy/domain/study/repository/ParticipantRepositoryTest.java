@@ -160,7 +160,7 @@ class ParticipantRepositoryTest {
         participantRepository.save(new Participant(최규현, 영어스터디));
 
         // when
-        List<ParticipantInfo> participantInfoList = participantRepository.findStudyNamesByUser(최규현);
+        List<ParticipantInfo> participantInfoList = participantRepository.findParticipantInfoByUser(최규현);
 
         // then
         softly.assertThat(participantInfoList.size()).isEqualTo(2);

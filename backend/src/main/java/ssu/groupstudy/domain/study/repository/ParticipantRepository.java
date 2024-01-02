@@ -33,7 +33,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
             "WHERE p.user = :user " +
             "AND s.deleteYn ='N' " +
             "ORDER BY p.createDate ASC")
-    List<ParticipantInfo> findStudyNamesByUser(User user);
+    List<ParticipantInfo> findParticipantInfoByUser(User user);
 
     @Query("SELECT COUNT (p) " +
             "FROM Participant p " +
