@@ -1,0 +1,182 @@
+{
+    "@@locale": "ko",
+    "helloWorld": "Hello World!",
+
+    "appName": "뜨끔",
+    "appDescriptionFront": "여러분의 스터디그룹, \n이제는 ",
+    "appDescriptionBack": " 에서 \n관리해 드릴게요",
+
+    "invitingMessage": "\uD83C\uDF35[뜨끔] - 스터디 관리 앱\n\n'과제 해오셨어요?' (뜨끔!)\n\n스터디 관리를 \"뜨끔\"이 도와드릴게요.\n'{studyName}'에 참여하세요!\n\n초대 코드: [{invitingCode}]",
+
+    "confirm": "확인",
+    "cancel": "취소",
+    "complete": "완료",
+    "close": "닫기",
+    "next": "다음",
+    "no": "아니요",
+
+    "editing": "수정",
+    "modify": "수정하기",
+    "delete": "삭제하기",
+    "doneModify": "수정 완료",
+
+    "themeMode": "화면 스타일",
+    "lightMode": "밝은 모드",
+    "darkMode": "어두운 모드",
+    "systemMode": "기기 설정과 같이",
+
+    "year": "년",
+    "month": "월",
+    "day": "일",
+    "hour": "시간",
+    "min": "분",
+    "sec": "초",
+    "date": "날짜",
+
+    "justNow": "방금",
+    "yesterday": "어제",
+    "beforeOf": "{time}전",
+
+    "am": "오전",
+    "pm": "오후",
+
+    "undefined": "미정",
+
+    "undefinedOf": "{target} 미정",
+    "inputHint1": "{target}을 입력해주세요.",
+    "inputHint2": "{target}를 입력해주세요.",
+    "copyText1": "{target}이 복사되었어요",
+    "copyText2": "{target}가 복사되었어요",
+    "ensureToDo": "정말 {action}하시겠어요?",
+    "successToDo": "성공적으로 {action}했어요",
+    "willDo": "{action}할래요",
+
+
+    "unknownException": "알 수 없는 문제가 발생하였어요.",
+
+    "start": "시작하기",
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signUp": "가입하기",
+
+    "tokenExpired": "로그인 정보가 만료되었어요",
+    "alreadyHaveAnAccount": "이미 계정이 있나요?",
+    "successToSignUp": "가입이 완료되었어요.",
+
+    "phoneNumber": "휴대폰 번호",
+    "inputPhoneNumber": "휴대폰 번호를 입력해주세요",
+    "existPhoneNumber": "이미 가입된 휴대폰 번호에요.",
+
+    "password": "비밀번호",
+    "inputPassword": "비밀번호 입력해주세요",
+    "confirmPassword": "비밀번호 확인",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "resetPassword": "비밀번호 재설정",
+    "mismatchPassword": "비밀번호가 일치하지 않아요.",
+    "successToResetPassword": "비밀번호 변경이 완료되었어요.",
+
+    "receiveVerificationCode": "인증문자 받기",
+    "receiveVerificationCodeAgain": "인증문자 다시 받기",
+    "verificationCodeHint": "인증번호 6자리",
+    "sentVerificationCode": "인증번호가 문자로 전송되었어요.",
+    "wrongVerificationCode": "인증번호를 다시 입력해주세요.",
+
+    "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
+    "name": "이름",
+    "nickname": "닉네임",
+    "statusMessage": "상태 메세지",
+    "editProfile": "프로필 편집",
+    "setting": "설정",
+    "profile": "프로필",
+    "viewProfile": "프로필 조회",
+
+    "study": "스터디",
+    "myStudy": "나의 스터디",
+    "addStudy": "스터디 추가",
+    "createStudy": "스터디 만들기",
+    "leaveStudy": "스터디 탈퇴",
+    "editStudy": "스터디 편집",
+    "joinedStudy": "활동 스터디",
+    "studyName": "스터디 이름",
+    "studyDetail": "상세 설명",
+    "studyColor": "스터디 색상",
+    "studyStart": "스터디 시작!",
+
+    "studyColorHint": "색상은 개인별로 설정이 가능해요",
+    "setStudyInfo": "스터디 정보를 설정해 주세요",
+    "startStudyWithFriend": "친구들과 스터디를 시작해 보세요",
+    "notWithUsNow": "지금은 함께하지 않아요...",
+
+    "participate": "참여하기",
+    "invitingCode": "초대코드",
+    "shareInvitingCode": "초대코드 공유",
+    "inputCode": "코드를 입력해 주세요",
+    "invitingCodeHint": "코드 6자리",
+    "shortInvitingCode": "초대코드 6자리를 전부 입력해주세요",
+
+    "admin": "방장",
+    "chooseAdmin": "방장 선택",
+    "chooseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
+    "ensureToGiveAdminTo": "{nickname}에게\n방장을 위임할까요?",
+
+    "member": "멤버",
+    "kick": "내보내기",
+    "kicking": "추방",
+    "participateByCode": "코드로 참여하기",
+    "leave": "탈퇴",
+
+
+    "stab": "찌르기",
+    "stabUserAbout": "'{nickname}'님을 {prefix}콕 찔렀어요",
+    "stabTaskAbout": "과제를 {prefix}콕 찔렀어요",
+    "num": "번",
+    "even": "이나",
+
+    "rules": "규칙",
+    "writeRule": "규칙 작성",
+    "ruleIsLimitedTo": "규칙은 최대 {count}개 만들 수 있어요",
+
+    "task": "과제",
+    "scheduled": "예정",
+    "taskAchievementRateIs": "과제를 {rate}% 달성했어요",
+    "achievement": "달성",
+    "count": "회",
+
+    "round": "회차",
+    "roundList": "회차 리스트",
+    "addRound": "회차 추가",
+    "deleteRound": "회차 삭제",
+    "record": "기록",
+    "recordHint": "자세한 기록을 적어주세요",
+
+    "noti": "공지",
+    "notice": "공지사항",
+    "title": "제목",
+    "content": "내용",
+    "confirmDeleteNotice": "공지사항을 삭제하시겠어요?",
+    "tryToWriteNoti": "공지를 작성해보세요",
+
+    "comment": "댓글",
+    "writeReply": "답글쓰기",
+    "successToComment": "댓글을 작성했어요",
+    "confirmDeleteComment": "댓글을 삭제하시겠어요?",
+
+    "attendanceRate": "참석률",
+    "attendanceTag": "출석태그",
+    "attend": "참석",
+    "absent": "결석",
+    "late": "지각",
+
+    "place": "장소",
+    "time": "시간",
+
+    "feedback": "문의하기",
+    "send": "전송",
+    "feedbackType": "유형",
+    "feedbackTitle": "문의 제목",
+    "feedbackContent": "문의 내용",
+    "bug": "버그 제보",
+    "feat": "신규 기능",
+    "enhance": "기능 개선",
+    "etc": "기타"
+}

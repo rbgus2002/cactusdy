@@ -2,47 +2,51 @@
 
 import 'dart:convert';
 
-import 'package:group_study_app/models/round_participant_info.dart';
-import 'package:group_study_app/services/database_service.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class Round {
   // string length limits
-  static const int detailMaxLength = 100;
-  static const int placeMaxLength = 30;
+  static const int detailMaxLength = 255;
+  static const int placeMaxLength = 15;
 
   // state code
   static const int nonAllocatedRoundId = -1;
 
+  static Logger logger = Logger('Round');
+
   int roundId;
   String studyPlace;
   DateTime? studyTime;
-  String? detail;
+  String? detail; //< TODO: extract detail from round
 
-  final List<RoundParticipantInfo> roundParticipantInfos;
+  final List<UserProfileSummary>? participantProfileSummaries;
 
   Round({
     required this.roundId,
     this.studyPlace = "",
     this.studyTime,
     this.detail,
-    this.roundParticipantInfos = const[],
+    this.participantProfileSummaries,
   });
 
   factory Round.fromJson(Map<String, dynamic> json) {
-    List<RoundParticipantInfo> roundParticipantInfos = [];
-    if (json['roundParticipantInfos'] != null) {
-      roundParticipantInfos = (json['roundParticipantInfos'] as List).map(
-              (r) => RoundParticipantInfo.fromJson(r)).toList();
-    }
+    DateTime? studyTime = (json['studyTime'] != null)?
+        DateTime.parse(json['studyTime']) : null;
+
+    List<UserProfileSummary> participantProfileSummaries =
+      ((json['roundParticipantInfos']??[]) as List).map(
+              (p) => UserProfileSummary.fromJson(p)).toList();
 
     return Round(
       roundId: json['roundId']??nonAllocatedRoundId,
       studyPlace: json['studyPlace']??"",
-      studyTime: (json['studyTime'] != null)? DateTime.parse(json['studyTime']) : null,
+      studyTime: studyTime,
       detail: json['detail'],
-      roundParticipantInfos: roundParticipantInfos,
+      participantProfileSummaries: participantProfileSummaries,
     );
   }
 
@@ -57,19 +61,23 @@ class Round {
 
     final response = await http.post(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('create round (studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to create round");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
       bool success = responseJson['success'];
+
       if(success) {
         round.roundId = responseJson['data']['roundId'];
-        print("SUCCESS!!"); //< FIXME
+        logger.infoLog('created round\'s roundId: ${round.roundId}');
       }
+      
       return success;
     }
   }
@@ -77,14 +85,16 @@ class Round {
   static Future<bool> deleteRound(int roundId) async {
     final response = await http.delete(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('delete round (roundId: $roundId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception(json.decode(utf8.decode(response.bodyBytes))['message']);
+      throw Exception(responseJson['message']);
     } else {
-      bool success = json.decode(response.body)['success'];
-      return success;
+      return responseJson['success'];
     }
   }
 
@@ -101,31 +111,35 @@ class Round {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/rounds?roundId=${round.roundId}'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update round\'s appointment (roundId: ${round.roundId})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to update round appointment");
+      throw Exception(responseJson['message']);
     } else {
-      bool success = json.decode(response.body)['success'];
-      if(success) print("Success to update round appointment"); //< FIXME
-      return success;
+      return responseJson['success'];
     }
   }
 
   static Future<Round> getDetail(int roundId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to get round detail");
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['detail'];
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get detail (roundId: $roundId)', responseJson);
 
-      return Round.fromJson(responseJson);
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      var roundJson = responseJson['data']['detail'];
+
+      return Round.fromJson(roundJson);
     }
   }
 
@@ -137,31 +151,38 @@ class Round {
 
     final response = await http.patch(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/details?roundId=$roundId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update detail', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to update round detail");
+      throw Exception(responseJson['message']);
     } else {
-      bool success = json.decode(response.body)['success'];
-      if(success) print("SUCCESS!!");
-      return success;
+      return responseJson['success'];
     }
   }
 
-  static Future<List<Round>> getRoundInfoResponses(int studyId) async {
+  static Future<List<Round>> getRoundList(int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/rounds/list?studyId=$studyId'),
-      headers: DatabaseService.getAuthHeader(),
+      headers: await DatabaseService.getAuthHeader(),
     );
 
-    if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to get RoundInfos");
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['roundList'];
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get round Lists (studyId: $studyId)', responseJson);
 
-      return (responseJson as List).map((r) => Round.fromJson(r)).toList();
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      var roundListJson = responseJson['data']['roundList'];
+
+      List<Round> roundList = (roundListJson as List).map((r) =>
+          Round.fromJson(r)).toList();
+
+      return roundList;
     }
   }
 }
