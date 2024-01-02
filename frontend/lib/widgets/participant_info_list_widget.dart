@@ -28,7 +28,7 @@ class _ParticipantInfoListWidgetState extends State<ParticipantInfoListWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Task.getTasks(widget.roundId),
+      future: Task.getParticipantInfoList(widget.roundId),
       builder: (context, snapshot) =>
         (snapshot.hasData) ?
           ListView.builder(

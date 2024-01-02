@@ -4,8 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/utilities/extensions.dart';
-import 'package:groupstudy/utilities/util.dart';
 import 'package:http/http.dart' as http;
 
 enum AppFeedback {
@@ -23,6 +23,8 @@ enum AppFeedback {
   static const String featCode = 'FEAT';
   static const String enhanceCode = 'ENHANCE';
   static const String etcCode = 'ETC';
+
+  static Logger logger = Logger('Feedback');
 
   final String code;
   const AppFeedback(this.code);
@@ -46,7 +48,7 @@ enum AppFeedback {
         return context.local.etc;
 
       default:
-      // This should be never called
+        // This should be never called
         assert(false, 'Unknown status: $code');
         return "";
     }
@@ -86,10 +88,11 @@ enum AppFeedback {
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('send feedback', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Util.getExceptionMessage(responseJson['message']);
+      throw Exception(responseJson['message']);
     } else {
-      print("success to send a feedback");
       return responseJson['success'];
     }
   }

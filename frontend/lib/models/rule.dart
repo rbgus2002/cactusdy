@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
 
 class Rule {
@@ -14,6 +15,8 @@ class Rule {
 
   // const values
   static const int ruleLimitedCount = 5;
+
+  static Logger logger = Logger('Rule');
 
   int ruleId;
   String detail;
@@ -36,12 +39,18 @@ class Rule {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get rules (studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to get Rules");
+      throw Exception(responseJson['message']);
     } else {
-      print("Success to get study's rules");
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['rules'];
-      return (responseJson as List).map((r) => Rule.fromJson(r)).toList();
+      var ruleListJson = responseJson['data']['rules'];
+
+      List<Rule> rules = (ruleListJson as List).map((r) =>
+          Rule.fromJson(r)).toList();
+
+      return rules;
     }
   }
 
@@ -57,15 +66,19 @@ class Rule {
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('create rule', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to create rule");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
       bool success = responseJson['success'];
+
       if(success) {
         rule.ruleId = responseJson['data']['ruleId'];
-        print("New Rule is created successfully");
+        logger.infoLog('created rule\'s ruleId: ${rule.ruleId}');
       }
+
       return success;
     }
   }
@@ -78,16 +91,17 @@ class Rule {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('delete rule (ruleId: ${rule.ruleId})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to delete rule");
+      throw Exception(responseJson['message']);
     } else {
-      bool result = json.decode(response.body)['success'];
-      if (result) print("success to delete rule");
-      return result;
+      return json.decode(response.body)['success'];
     }
   }
 
-  static Future<bool> updateTaskDetail(Rule rule) async {
+  static Future<bool> updateRuleDetail(Rule rule) async {
     if (rule.ruleId == Rule.nonAllocatedRuleId) return false;
 
     Map<String, dynamic> data = {
@@ -100,12 +114,13 @@ class Rule {
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update rule detail (ruleId: ${rule.ruleId})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to update rule detail");
+      throw Exception(responseJson['message']);
     } else {
-      bool success = json.decode(response.body)['success'];
-      if (success) print("Success to update rule detail"); //< FIXME
-      return success;
+      return responseJson['success'];
     }
   }
 }

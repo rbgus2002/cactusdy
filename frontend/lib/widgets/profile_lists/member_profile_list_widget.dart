@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groupstudy/models/study.dart';
-import 'package:groupstudy/routes/studies/study_inviting_route.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/profiles/profile_route.dart';
+import 'package:groupstudy/routes/studies/study_inviting_route.dart';
 import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
@@ -15,7 +16,7 @@ import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 class MemberProfileListWidget extends StatefulWidget {
   final Study study;
   final double scale;
-  final Function(ParticipantProfile)? onTap;
+  final Function(UserProfileSummary)? onTap;
   final double paddingSize;
   final bool border;
 
@@ -36,7 +37,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Study.getMemberProfileImages(widget.study.studyId),
+      future: Study.getMemberProfileSummaries(widget.study.studyId),
       builder: (context, snapshot) =>
         (snapshot.hasData) ?
           SizedBox(
@@ -55,7 +56,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
     );
   }
 
-  Widget _userProfile(BuildContext context, ParticipantProfile participantSummary) {
+  Widget _userProfile(BuildContext context, UserProfileSummary participantSummary) {
     bool host = _isHost(participantSummary.userId);
 
     return Stack(

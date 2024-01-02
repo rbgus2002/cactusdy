@@ -40,8 +40,6 @@ class User{
   }
 
   static Future<User> getUserProfileSummary() async {
-    logger.tryLog('get user profile summary');
-
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
       headers: await DatabaseService.getAuthHeader(),
@@ -60,18 +58,20 @@ class User{
     }
   }
 
-  static Future<ParticipantProfile> getUserProfileDetail(int userId, int studyId) async {
+  static Future<UserProfile> getUserProfileDetail(int userId, int studyId) async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/studies/participants?userId=$userId&studyId=$studyId'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get user profile details(userId: $userId, studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception();
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['participant'];
-      print('success to get participant profile');
-      return ParticipantProfile.fromJson(responseJson);
+      var userProfileJson = responseJson['data']['participant'];
+      return UserProfile.fromJson(userProfileJson);
     }
   }
 
@@ -95,13 +95,12 @@ class User{
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('update user profile (userId: ${updatedUser.userId})', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print('sucess to update user profile');
       updatedUser.profileImage = responseJson['data']['user']['profileImage']??"";
-
       return responseJson['success'];
     }
   }
@@ -116,12 +115,12 @@ class User{
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('kick user (userId: $userId, studyId: $studyId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = json.decode(response.body)['success'];
-      if (result) print("success to leave study");
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -136,43 +135,64 @@ class User{
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('stab user (userId: $targetUserId, count: $count)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      if (responseJson['success']) print('success to stab user($count times)');
       return responseJson['success'];
     }
   }
 }
 
-class ParticipantProfile {
-  final User participant;
+class UserProfile {
+  final User user;
   final List<StudyTag> studyTags;
   final Map<String, int> attendanceRate;
   final int doneRate;
   final bool isParticipated;
 
-  ParticipantProfile({
-    required this.participant,
+  UserProfile({
+    required this.user,
     required this.studyTags,
     required this.attendanceRate,
     required this.doneRate,
     required this.isParticipated,
   });
 
-  factory ParticipantProfile.fromJson(Map<String, dynamic> json) {
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
     Map<String, int> attendanceRate = {};
     for (var status in json['statusTagInfoList']) {
       attendanceRate[status['statusTag']] = status['count'];
     }
 
-    return ParticipantProfile(
-      participant: User.fromJson(json),
+    return UserProfile(
+      user: User.fromJson(json),
       studyTags: (json['participantInfoList'] as List).map((studyTag) =>
           StudyTag.fromJson(studyTag)).toList(),
       attendanceRate: attendanceRate,
       doneRate: json['doneRate'],
       isParticipated: (json['isParticipated'] == 'Y'),
+    );
+  }
+}
+
+class UserProfileSummary {
+  final int userId;
+  final String picture;
+  final String nickname;
+
+  UserProfileSummary({
+    required this.userId,
+    required this.picture,
+    required this.nickname,
+  });
+
+  factory UserProfileSummary.fromJson(Map<String, dynamic> json) {
+    return UserProfileSummary(
+      userId: json['userId']??User.nonAllocatedUserId,
+      picture: json['picture']??"",
+      nickname: json['nickname']??"",
     );
   }
 }

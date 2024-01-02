@@ -21,4 +21,8 @@ class ColorUtil {
 
     return (value > 125.0);
   }
+
+  static Color fromJson(Map<String, dynamic> json) {
+    return Color(int.parse((json['color'] as String).substring(2), radix: 16));
+  }
 }

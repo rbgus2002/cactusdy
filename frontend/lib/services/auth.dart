@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:groupstudy/models/sign_info.dart';
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +20,7 @@ class Auth {
   static const int verificationCodeLength = 6;
   static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
 
+  static Logger logger = Logger('Auth');
   static SignInfo? signInfo;
 
   static Future<bool> signUp({
@@ -50,13 +52,12 @@ class Auth {
 
     final response = await request.send();
     final responseJson = jsonDecode(await response.stream.bytesToString());
+    logger.resultLog('sign up', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool result = responseJson['success'];
-      if (result) print("success to sign up");
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -74,15 +75,16 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('sign in', responseJson);
+    
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      print('User Auth Token : ${signInfo!.token}');
+      logger.infoLog('user auth token: ${signInfo!.token}');
       SignInfo.setSignInfo(signInfo!);
-      print("success to sign in");
 
-      return true;
+      return responseJson['success'];
     }
   }
 
@@ -97,22 +99,25 @@ class Auth {
       );
 
       var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+      logger.resultLog('sign out', responseJson);
+      
       if (response.statusCode != DatabaseService.successCode) {
         throw Exception(responseJson['message']);
       } else {
-        print('Firebase Messaging Token : $token is removed');
+        logger.infoLog('firebase messaging token: $token is removed');
         result = responseJson['success'];
       }
     }
+
     SignInfo.removeSignInfo();
     signInfo = null;
-    print('success to sign out');
 
     return result;
   }
 
   static Future<void> loadSignInfo() async {
     signInfo ??= await SignInfo.readSignInfo();
+    logger.infoLog('user token: ${signInfo?.token??'null'}');
   }
 
   static Future<bool> requestSingUpVerifyMessage(String phoneNumber) async {
@@ -127,6 +132,8 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('request signup verify message (phoneNumber: $phoneNumber)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
@@ -146,6 +153,8 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('request reset password verify message (phoneNumber: $phoneNumber)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
@@ -166,12 +175,11 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('verify code (code: $code)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      if (responseJson['data']['isSuccess']) {
-        print("verified the code");
-      }
       return responseJson['data']['isSuccess'];
     }
   }
@@ -189,10 +197,11 @@ class Auth {
     );
 
     var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('resetPassword (phoneNumber: $phoneNumber)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      print("success to reset password");
       return responseJson['success'];
     }
   }

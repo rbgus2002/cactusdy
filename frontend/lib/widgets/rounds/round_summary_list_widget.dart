@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
+import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
@@ -28,14 +29,14 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
   late GlobalKey<AnimatedListState> _roundListKey;
   late ListModel<Round> _roundListModel;
 
-  late final List<ParticipantProfile> _memberProfileImages;
+  late final List<UserProfileSummary> _memberProfileImages;
 
   @override
   void initState() {
     super.initState();
     _initListModel();
 
-    Study.getMemberProfileImages(widget.study.studyId).then((value) =>
+    Study.getMemberProfileSummaries(widget.study.studyId).then((value) =>
       _memberProfileImages = value);
   }
 
@@ -62,7 +63,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         Design.padding20,
 
         FutureBuilder(
-          future: Round.getRoundInfoResponses(widget.study.studyId),
+          future: Round.getRoundList(widget.study.studyId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data != _roundListModel.items) {
@@ -140,13 +141,9 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     );
   }
 
-  List<ParticipantProfile> _getParticipantProfileList(Round round) {
-    if (round.roundParticipantInfos != null) {
-      return round.roundParticipantInfos!.map((r) =>
-          ParticipantProfile(
-              userId: r.userId,
-              picture: r.picture,
-              nickname: "")).toList();
+  List<UserProfileSummary> _getParticipantProfileList(Round round) {
+    if (round.participantProfileSummaries != null) {
+      return round.participantProfileSummaries!;
     }
 
     return _memberProfileImages;

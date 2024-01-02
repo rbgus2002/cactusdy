@@ -189,8 +189,18 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    Study.getStudySummary(_study.studyId).then((study) =>
-      setState(() => _study = study));
+    try {
+      await
+      Study.getStudySummary(_study.studyId).then((study) =>
+          setState(() => _study = study));
+    } on Exception catch(e) {
+      if (mounted) {
+        Util.popRoute(context);
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 
   void _showLeaveStudyDialog() {

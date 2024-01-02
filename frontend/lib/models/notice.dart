@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/logger.dart';
 import 'package:http/http.dart' as http;
 
 class Notice {
@@ -11,12 +12,15 @@ class Notice {
   // state code
   static const noticeCreationError = -1;
 
+  static Logger logger = Logger('Notice');
+
+  final int writerId;
+  final String writerNickname;
+  final DateTime createDate;
+
   final int noticeId;
   String title;
   String contents;
-  final String writerNickname;
-  final int writerId;
-  final DateTime createDate;
   int checkNoticeCount;
   bool read;
 
@@ -50,13 +54,14 @@ class Notice {
         headers: await DatabaseService.getAuthHeader(),
       );
 
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      logger.resultLog('get notice (noticeId: $noticeId)', responseJson);
+
       if (response.statusCode != DatabaseService.successCode) {
-        throw Exception("Failed to load notice");
+        throw Exception(responseJson['message']);
       } else {
-        //print(json.decode(utf8.decode(response.bodyBytes)));
-        var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
-        print('success to get notice (noticeId: $noticeId)');
-        return Notice.fromJson(responseJson);
+        var noticeInfoJson = responseJson['data']['noticeInfo'];
+        return Notice.fromJson(noticeInfoJson);
       }
   }
 
@@ -73,12 +78,16 @@ class Notice {
       body: json.encode(data),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('create notice (studyId: $studyId, title: $title)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to create new notice");
+      throw Exception(responseJson['message']);
     } else {
-      print("success to create New notice");
-      var responseJson = json.decode(utf8.decode(response.bodyBytes))['data']['noticeInfo'];
-      return Notice.fromJson(responseJson);
+      var newNoticeInfoJson = responseJson['data']['noticeInfo'];
+      logger.infoLog('created noticeId: ${newNoticeInfoJson['noticeId']}');
+
+      return Notice.fromJson(newNoticeInfoJson);
     }
   }
 
@@ -94,13 +103,13 @@ class Notice {
       body: json.encode(data),
     );
 
-    var responseJson = json.decode(response.body);
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update notice (noticeId: ${notice.noticeId})', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      bool success = responseJson['success'];
-      if (success) print("Success to update task detail"); //< FIXME
-      return success;
+      return responseJson['success'];
     }
   }
 
@@ -110,12 +119,13 @@ class Notice {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('delete notice (noticeId: $noticeId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Fail to delete notice");
+      throw Exception(responseJson['message']);
     } else {
-      print(response.body);
-      bool result = json.decode(response.body)['success'];
-      return result;
+      return responseJson['success'];
     }
   }
 
@@ -125,10 +135,15 @@ class Notice {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('switch check notice (noticeId: $noticeId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to switch check notice");
+      throw Exception(responseJson['message']);
     } else {
-      String isChecked = json.decode(response.body)['data']["isChecked"];
+      String isChecked = responseJson['data']["isChecked"];
+      Notice.logger.infoLog('switch check notice as $isChecked');
+
       return (isChecked == "Y");
     }
   }
@@ -139,12 +154,78 @@ class Notice {
       headers: await DatabaseService.getAuthHeader(),
     );
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('get notice checker\'s profile images (noticeId: $noticeId)', responseJson);
+
     if (response.statusCode != DatabaseService.successCode) {
-      throw Exception("Failed to get Checked User Images");
+      throw Exception(responseJson['message']);
     } else {
-      var responseJson = json.decode(response.body)['data']['userImageList'];
-      return (responseJson as List).map((e) =>
-          (e == null) ? "" : e as String).toList();
+      var profileImagesJson = json.decode(response.body)['data']['userImageList'];
+
+      List<String> profileImages = (profileImagesJson as List).map((picture) =>
+              (picture == null) ? "" : picture as String).toList();
+
+      return profileImages;
+    }
+  }
+}
+
+class NoticeSummary {
+  Notice notice;
+  int commentCount;
+  bool pinYn;
+
+  NoticeSummary({
+    required this.notice,
+    required this.commentCount,
+    required this.pinYn,
+  });
+
+  factory NoticeSummary.fromJson(Map<String, dynamic> json) {
+    return NoticeSummary(
+      notice: Notice.fromJson(json),
+      commentCount: json['commentCount'],
+      pinYn: (json['pinYn'] == 'Y'),
+    );
+  }
+
+  static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId, int offset, int pageSize) async {
+    final response = await http.get(
+      Uri.parse('${DatabaseService.serverUrl}api/notices/list?studyId=$studyId&offset=$offset&pageSize=$pageSize'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    Notice.logger.resultLog('get notice summary list [$offset:${offset + pageSize}]', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      var noticeListJson = responseJson['data']['notices']['noticeList'];
+
+      List<NoticeSummary> noticeList = (noticeListJson as List).map((p)
+          => NoticeSummary.fromJson(p)).toList();
+
+      return noticeList;
+    }
+  }
+
+  static Future<bool> switchNoticePin(int noticeId) async {
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}api/notices/pin?noticeId=$noticeId'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    Notice.logger.resultLog('switch notice pin (noticeId: $noticeId)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool result = (responseJson['data']['pinYn'] == 'Y');
+      Notice.logger.infoLog('switch notice\'s pin as $result');
+
+      return result;
     }
   }
 }

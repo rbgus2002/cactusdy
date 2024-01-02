@@ -223,7 +223,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
 
     // #Case : modified the task
     else {
-      Rule.updateTaskDetail(rule);
+      Rule.updateRuleDetail(rule);
     }
   }
 
