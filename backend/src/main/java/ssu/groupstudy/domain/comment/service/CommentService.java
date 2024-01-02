@@ -60,7 +60,7 @@ public class CommentService {
     private Comment handleCommentCreationWithParent(CreateCommentRequest dto, User writer, Notice notice) {
         Comment parent = null;
         if(dto.getParentCommentId() != null){
-            parent = commentRepository.getReferenceById(dto.getParentCommentId()); // TODO : findById로 변경 후 deleteYn
+            parent = commentRepository.getReferenceById(dto.getParentCommentId());
         }
         return dto.toEntity(writer, notice, parent);
     }
