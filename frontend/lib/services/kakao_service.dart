@@ -27,8 +27,6 @@ class KakaoService {
     required BuildContext context,
     required String studyName,
     required String invitingCode, }) async {
-    logger.tryLog('kakao sharing');
-
     // check whether KakaoTalk Sharing is Available
     bool isSharable = await ShareClient.instance.isKakaoTalkSharingAvailable();
 
@@ -38,7 +36,7 @@ class KakaoService {
 
     // #Case: Available = (Native App && KakaoTalk is Installed) || (Mobile's Web);
     if (isSharable) {
-      logger.log('kakao sharing is available');
+      logger.infoLog('kakao sharing is available');
 
       try {
         Uri uri = await ShareClient.instance
@@ -53,7 +51,7 @@ class KakaoService {
 
     // #Case: Unavailable = (Native App && KakaoTalk is not Installed) || (Not mobile device);
     else {
-      logger.log('kakao sharing is not available');
+      logger.infoLog('kakao sharing is not available');
 
       try {
         // Access by Browser
