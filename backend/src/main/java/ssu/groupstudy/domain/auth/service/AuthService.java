@@ -48,9 +48,26 @@ public class AuthService {
     public SignInResponse signIn(SignInRequest request) {
         User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
-        validatePassword(request, user);
+        validateLogin(request, user);
         handleSuccessfulLogin(request, user);
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
+    }
+
+    private void validateLogin(SignInRequest request, User user) {
+        validatePassword(request, user);
+        validateDelete(user);
+    }
+
+    private void validatePassword(SignInRequest request, User user) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
+        }
+    }
+
+    private void validateDelete(User user) {
+        if (user.isDeleted()) {
+            throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
+        }
     }
 
     private void handleSuccessfulLogin(SignInRequest request, User user) {
@@ -61,12 +78,6 @@ public class AuthService {
     private void handleFcmToken(SignInRequest request, User user) {
         user.addFcmToken(request.getFcmToken());
         eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
-    }
-
-    private void validatePassword(SignInRequest request, User user) {
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
-        }
     }
 
     @Transactional
