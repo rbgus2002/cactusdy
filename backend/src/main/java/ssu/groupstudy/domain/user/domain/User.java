@@ -141,5 +141,9 @@ public class User extends BaseEntity {
     public void delete(){
         this.deleteYn = 'Y';
     }
+
+    public boolean isDeleted(){
+        return this.deleteYn == 'Y';
+    }
 }
 
