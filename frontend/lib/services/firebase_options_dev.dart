@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCkraMTZXSSu-dvUkRJttJXett3UC-4Nhc',
-    appId: '1:295774991714:web:9af5aa36be1b446763e83b',
-    messagingSenderId: '295774991714',
-    projectId: 'studygroup-8d056',
-    authDomain: 'studygroup-8d056.firebaseapp.com',
-    storageBucket: 'studygroup-8d056.appspot.com',
-    measurementId: 'G-YSJC32JWDY',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAFhVrSilrga3q7Q7rk_tddWcrXXo4ogIM',
-    appId: '1:295774991714:android:7c0cfa6c9a811dae63e83b',
+    appId: '1:295774991714:android:f72090466e55b21d63e83b',
     messagingSenderId: '295774991714',
     projectId: 'studygroup-8d056',
     storageBucket: 'studygroup-8d056.appspot.com',
@@ -63,19 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCgoBBGI8XHdaOlzplXfMJ8kPJjkvxr9WY',
-    appId: '1:295774991714:ios:4e1b76ea3063d78863e83b',
+    appId: '1:295774991714:ios:35ddac472067a49c63e83b',
     messagingSenderId: '295774991714',
     projectId: 'studygroup-8d056',
     storageBucket: 'studygroup-8d056.appspot.com',
-    iosBundleId: 'com.ssu.groupstudy',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCgoBBGI8XHdaOlzplXfMJ8kPJjkvxr9WY',
-    appId: '1:295774991714:ios:61cc680d19093f3663e83b',
-    messagingSenderId: '295774991714',
-    projectId: 'studygroup-8d056',
-    storageBucket: 'studygroup-8d056.appspot.com',
-    iosBundleId: 'com.example.groupstudy.RunnerTests',
+    iosBundleId: 'com.ssu.groupstudy.dev',
   );
 }

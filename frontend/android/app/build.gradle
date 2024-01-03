@@ -84,6 +84,21 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    flavorDimensions "build-type"
+
+    productFlavors {
+        dev {
+            dimension "build-type"
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "뜨끔 개발"
+        }
+
+        prod {
+            dimension "build-type"
+            resValue "string", "app_name", "뜨끔"
+        }
+    }
 }
 
 flutter {
