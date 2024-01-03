@@ -37,4 +37,11 @@ public class UserApi {
         final UserInfoResponse userInfo = userService.editUser(dto, profileImage, userDetails.getUser());
         return DataResponseDto.of("user", userInfo);
     }
+
+    @Operation(summary = "사용자 탈퇴")
+    @DeleteMapping
+    public ResponseDto deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userService.deleteUser(userDetails.getUser());
+        return DataResponseDto.of("userId", userId);
+    }
 }

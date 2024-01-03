@@ -22,7 +22,7 @@ public class UserService {
 
     @Transactional
     public UserInfoResponse editUser(EditUserRequest dto, MultipartFile profileImage, User user) throws IOException {
-        user.edit(dto.getNickname(), dto.getStatusMessage());
+        user.editProfile(dto.getNickname(), dto.getStatusMessage());
         handleUploadProfileImage(user, profileImage);
         return UserInfoResponse.from(user);
     }
@@ -33,5 +33,18 @@ public class UserService {
         }
         String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
         user.updatePicture(imageUrl);
+    }
+
+    @Transactional
+    public Long deleteUser(User user) {
+        preprocessDeleteUser(user);
+        user.delete();
+        return user.getUserId();
+    }
+
+    private void preprocessDeleteUser(User user) {
+        user.editProfile("-", "-");
+        user.updatePicture(null);
+        user.deleteAllFcmTokens();
     }
 }

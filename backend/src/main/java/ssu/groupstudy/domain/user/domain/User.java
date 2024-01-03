@@ -129,9 +129,17 @@ public class User extends BaseEntity {
         fcmTokens.remove(newToken);
     }
 
-    public void edit(String nickname, String statusMessage) {
+    public void deleteAllFcmTokens(){
+        fcmTokens.clear();
+    }
+
+    public void editProfile(String nickname, String statusMessage) {
         this.nickname = nickname;
         this.statusMessage = statusMessage;
+    }
+
+    public void delete(){
+        this.deleteYn = 'Y';
     }
 }
 
