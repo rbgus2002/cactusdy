@@ -40,8 +40,8 @@ public class UserApi {
 
     @Operation(summary = "사용자 탈퇴")
     @DeleteMapping
-    public ResponseDto deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long userId = userService.deleteUser(userDetails.getUser());
+    public ResponseDto removeUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userService.removeUser(userDetails.getUser());
         return DataResponseDto.of("userId", userId);
     }
 }

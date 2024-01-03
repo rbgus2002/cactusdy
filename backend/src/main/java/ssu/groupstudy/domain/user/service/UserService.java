@@ -36,15 +36,8 @@ public class UserService {
     }
 
     @Transactional
-    public Long deleteUser(User user) {
-        preprocessDeleteUser(user);
-        user.delete();
+    public Long removeUser(User user) {
+        user.deleteUserInfo();
         return user.getUserId();
-    }
-
-    private void preprocessDeleteUser(User user) {
-        user.editProfile("-", "-");
-        user.updatePicture(null);
-        user.deleteAllFcmTokens();
     }
 }

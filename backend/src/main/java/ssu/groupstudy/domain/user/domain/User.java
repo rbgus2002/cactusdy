@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     @Column
     private String picture;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -129,16 +129,16 @@ public class User extends BaseEntity {
         fcmTokens.remove(newToken);
     }
 
-    public void deleteAllFcmTokens(){
-        fcmTokens.clear();
-    }
-
     public void editProfile(String nickname, String statusMessage) {
         this.nickname = nickname;
         this.statusMessage = statusMessage;
     }
 
-    public void delete(){
+    public void deleteUserInfo(){
+        this.phoneNumber = null;
+        this.editProfile("-", "-");
+        this.updatePicture(null);
+        this.fcmTokens.clear();
         this.deleteYn = 'Y';
     }
 
