@@ -135,7 +135,7 @@ public class User extends BaseEntity {
     }
 
     public void deleteUserInfo(){
-        this.phoneNumber = null;
+        this.phoneNumber = "-";
         this.editProfile("-", "-");
         this.updatePicture(null);
         this.fcmTokens.clear();
