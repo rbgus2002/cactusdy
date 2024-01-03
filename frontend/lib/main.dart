@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:groupstudy/models/sign_info.dart';
 import 'package:groupstudy/routes/splash_route.dart';
+import 'package:groupstudy/services/database_service.dart';
+import 'package:groupstudy/services/flavor.dart';
 import 'package:groupstudy/services/kakao_service.dart';
 import 'package:groupstudy/services/message_service.dart';
 import 'package:groupstudy/services/uri_link_service.dart';
@@ -19,9 +22,12 @@ void main() async {
   UriLinkService.init();
   AppTheme.init();
 
-  String? flavor = await const MethodChannel('flavor')
-      .invokeMethod<String>('getFlavor');
-  print(flavor);
+  await Flavor.init((flavor) {
+    // for base url
+    DatabaseService.init(flavor);
+    // for sign key
+    SignInfo.init(flavor);
+  });
 
   runApp(const MyApp());
 }
