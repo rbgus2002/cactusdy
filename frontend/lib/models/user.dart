@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:groupstudy/models/study_tag.dart';
+import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;
@@ -136,6 +137,23 @@ class User{
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
     logger.resultLog('stab user (userId: $targetUserId, count: $count)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
+  /// it must be call before a signOut is called
+  static Future<bool> resign() async {
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/users'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('withdraw from service', responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
