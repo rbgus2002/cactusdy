@@ -11,6 +11,7 @@ import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
@@ -261,16 +262,36 @@ class _SettingRouteState extends State<SettingRoute> {
     );
   }
 
-  void _signOut() {
-    Auth.signOut();
-    Util.pushRouteAndPopUntil(context, (context)
-        => const StartRoute());
+  void _signOut() async {
+    try {
+      await Auth.removeFCMToken();
+      await Auth.signOut();
+
+      if (mounted) {
+        Util.pushRouteAndPopUntil(context, (context)
+            => const StartRoute());
+      }
+    } on Exception catch(e) {
+      if (mounted) {
+        Toast.showToast(
+            context: context,
+            message: Util.getExceptionMessage(e));
+      }
+    }
   }
 
   void _resignFromApp() {
-    User.resign();
-    Auth.signOut();
-    Util.pushRouteAndPopUntil(context, (context)
-        => const StartRoute());
+    try {
+      User.resign().then((result) {
+        if (result == true) {
+          Auth.signOut();
+          Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
+        }
+      });
+    } on Exception catch(e) {
+      Toast.showToast(
+          context: context,
+          message: Util.getExceptionMessage(e));
+    }
   }
 }
