@@ -17,7 +17,6 @@ class UserServiceTest extends ServiceTest {
     @Mock
     private S3Utils s3Utils;
 
-
     @Nested
     class DeleteUser{
         @Test

@@ -33,6 +33,7 @@ public class UserService {
         }
         String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
         user.updatePicture(imageUrl);
+
     }
 
     @Transactional
