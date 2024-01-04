@@ -12,5 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByPhoneNumber(String phoneNumber);
 
+    @Query("SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber AND u.deleteYn = 'N'")
     Optional<User> findByPhoneNumber(String phoneNumber);
 }
