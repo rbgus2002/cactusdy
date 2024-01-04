@@ -88,31 +88,32 @@ class Auth {
     }
   }
 
-  static Future<bool> signOut() async {
-    bool result = true;
+  static Future<void> signOut() async {
+    await SignInfo.removeSignInfo();
+    signInfo = null;
+  }
 
+  static Future<bool> removeFCMToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    if (token != null) {
-      final response = await http.delete(
-        Uri.parse('${DatabaseService.serverUrl}api/notifications/tokens?token=$token'),
-        headers: await DatabaseService.getAuthHeader(),
-      );
 
-      var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
-      logger.resultLog('sign out', responseJson);
-      
-      if (response.statusCode != DatabaseService.successCode) {
-        throw Exception(responseJson['message']);
-      } else {
-        logger.infoLog('firebase messaging token: $token is removed');
-        result = responseJson['success'];
-      }
+    if (token == null) {
+      return true;
     }
 
-    SignInfo.removeSignInfo();
-    signInfo = null;
+    final response = await http.delete(
+      Uri.parse('${DatabaseService.serverUrl}api/notifications/tokens?token=$token'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
 
-    return result;
+    var responseJson = jsonDecode(utf8.decode(response.bodyBytes));
+    logger.resultLog('remove fcm token', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      logger.infoLog('firebase messaging token is removed: $token');
+      return responseJson['success'];
+    }
   }
 
   static Future<void> loadSignInfo() async {

@@ -64,12 +64,12 @@ class SignInfo {
     return null;
   }
 
-  static void setSignInfo(SignInfo signInfo) async {
+  static Future<void> setSignInfo(SignInfo signInfo) async {
     await _storage.write(
         key: _signInfoKey, value: json.encode(signInfo.toMap()));
   }
 
-  static void removeSignInfo() {
-    _storage.delete(key: _signInfoKey);
+  static Future<void> removeSignInfo() async {
+    await _storage.delete(key: _signInfoKey);
   }
 }
