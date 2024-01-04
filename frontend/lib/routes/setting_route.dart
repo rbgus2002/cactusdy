@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/routes/feedback_route.dart';
 import 'package:groupstudy/routes/start_route.dart';
 import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/themes/app_theme.dart';
@@ -30,6 +32,8 @@ class SettingRoute extends StatefulWidget {
 }
 
 class _SettingRouteState extends State<SettingRoute> {
+  static const double _entityHeight = 40;
+
   late int _choseIdx;
   List<_ThemeModeData> _modes = [];
 
@@ -60,8 +64,8 @@ class _SettingRouteState extends State<SettingRoute> {
           // Theme Setting
           _themeSettingWidget(),
 
-          // Logout Button
-          _signOutButton(),
+          // ETC Setting
+          _etcSettingWidget(),
         ],),
     );
   }
@@ -76,7 +80,7 @@ class _SettingRouteState extends State<SettingRoute> {
             context.local.themeMode,
             style: TextStyles.head4.copyWith(
                 color: context.extraColors.grey800),),),
-        Design.padding20,
+        Design.padding16,
 
         // Light Mode
         _checkBox(context, 0),
@@ -90,25 +94,85 @@ class _SettingRouteState extends State<SettingRoute> {
     );
   }
 
-  Widget _signOutButton() {
+  /// etc = { signOut, resign, }
+  Widget _etcSettingWidget() {
     return Container(
-      padding: Design.edgePadding,
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: context.extraColors.grey200!,),),),
-      child: InkWell(
-        splashColor: Colors.transparent,
-          onTap: _showSignOutDialog,
-          child: Container(
-            width: double.maxFinite,
-            height: 40,
-            alignment: Alignment.centerLeft,
+        border: Border(top: BorderSide(
+          color: context.extraColors.grey200!,),),),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Design.padding28,
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              context.local.signOut,
+              '${context.local.etc} ${context.local.setting}',
               style: TextStyles.head4.copyWith(
                 color: context.extraColors.grey800,),),),
+          Design.padding16,
+
+          // Feedback Button
+          _feedbackButton(),
+
+          // Logout Button
+          _signOutButton(),
+
+          // Resign button
+          _resignButton(),
+          Design.padding20,
+        ],
       ),
+    );
+  }
+
+  Widget _feedbackButton() {
+    return InkWell(
+      splashColor: Colors.transparent,
+      onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+          const FeedbackRoute()),
+      child: Container(
+        width: double.maxFinite,
+        height: _entityHeight,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          context.local.feedback,
+          style: TextStyles.body1.copyWith(
+            color: context.extraColors.grey700,),),),
+    );
+  }
+
+  Widget _signOutButton() {
+    return InkWell(
+      splashColor: Colors.transparent,
+      onTap: _showSignOutDialog,
+      child: Container(
+        width: double.maxFinite,
+        height: _entityHeight,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          context.local.signOut,
+          style: TextStyles.body1.copyWith(
+            color: context.extraColors.grey700,),),),
+    );
+  }
+
+  Widget _resignButton() {
+    return Container(
+      width: 108,
+      height: _entityHeight,
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        onTap: _showResignDialog,
+        child: Text(
+          context.local.resign,
+          style: TextStyles.body1.copyWith(
+            color: context.extraColors.grey500,),),),
     );
   }
 
@@ -116,7 +180,7 @@ class _SettingRouteState extends State<SettingRoute> {
     return InkWell(
       onTap: () => _setMode(index),
       child: Container(
-        height: 56,
+        height: _entityHeight,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,8 +233,44 @@ class _SettingRouteState extends State<SettingRoute> {
     );
   }
 
+  void _showResignDialog() {
+    TwoButtonDialog.showDialog(
+      context: context,
+      text: context.local.ensureToResign,
+      maxLines: 5,
+
+      buttonText1: context.local.no,
+      onPressed1: Util.doNothing,
+
+      buttonText2: context.local.delete,
+      onPressed2: _showResignWarningDialog,
+    );
+  }
+
+  void _showResignWarningDialog() {
+    TwoButtonDialog.showDialog(
+      context: context,
+      text: context.local.resignWarning,
+      maxLines: 2,
+
+      buttonText1: context.local.cancel,
+      onPressed1: Util.doNothing,
+
+      buttonText2: context.local.resign,
+      onPressed2: _resignFromApp,
+    );
+  }
+
   void _signOut() {
     Auth.signOut();
-    Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
+    Util.pushRouteAndPopUntil(context, (context)
+        => const StartRoute());
+  }
+
+  void _resignFromApp() {
+    User.resign();
+    Auth.signOut();
+    Util.pushRouteAndPopUntil(context, (context)
+        => const StartRoute());
   }
 }
