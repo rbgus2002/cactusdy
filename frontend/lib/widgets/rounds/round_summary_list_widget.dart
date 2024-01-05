@@ -17,9 +17,9 @@ class RoundSummaryListWidget extends StatefulWidget {
   final Study study;
 
   const RoundSummaryListWidget({
-    Key? key,
+    super.key,
     required this.study
-  }) : super(key: key);
+  });
 
   @override
   State<RoundSummaryListWidget> createState() => RoundSummaryListWidgetState();

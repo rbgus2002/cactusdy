@@ -12,13 +12,13 @@ class DashLineChartWidget extends StatelessWidget {
   final Color deactivateColor;
 
   const DashLineChartWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.progress,
     required this.activateColor,
     required this.deactivateColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

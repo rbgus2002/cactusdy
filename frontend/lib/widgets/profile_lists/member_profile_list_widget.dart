@@ -21,13 +21,13 @@ class MemberProfileListWidget extends StatefulWidget {
   final bool border;
 
   const MemberProfileListWidget({
-    Key? key,
+    super.key,
     required this.study,
     this.scale = 40.0,
     this.paddingSize = 8,
     this.onTap,
     this.border = false,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _MemberProfileListWidgetState();

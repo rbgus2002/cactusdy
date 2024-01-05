@@ -9,10 +9,10 @@ class AutoScrollingBanner extends StatefulWidget {
   final String hintText;
 
   const AutoScrollingBanner({
-    Key? key,
+    super.key,
     required this.contents,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   State<AutoScrollingBanner> createState() => _AutoScrollingBannerState();

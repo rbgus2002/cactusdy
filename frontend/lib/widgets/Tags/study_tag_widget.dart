@@ -6,7 +6,6 @@ import 'package:groupstudy/models/study_tag.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/color_util.dart';
-import 'package:groupstudy/utilities/extensions.dart';
 
 class StudyTagWidget extends StatelessWidget {
   static const double size = 20;
@@ -14,9 +13,9 @@ class StudyTagWidget extends StatelessWidget {
   final StudyTag studyTag;
 
   const StudyTagWidget({
-    Key? key,
+    super.key,
     required this.studyTag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

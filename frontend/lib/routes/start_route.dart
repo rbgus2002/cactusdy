@@ -10,9 +10,7 @@ import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/primary_button.dart';
 
 class StartRoute extends StatelessWidget {
-  const StartRoute({
-    Key? key,
-  }) : super(key: key);
+  const StartRoute({ super.key, });
 
   @override
   Widget build(BuildContext context) {

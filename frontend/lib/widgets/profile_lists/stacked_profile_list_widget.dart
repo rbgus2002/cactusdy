@@ -18,8 +18,8 @@ class StackedProfileListWidget extends StatelessWidget {
 
   const StackedProfileListWidget({
     required this.profileImages,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

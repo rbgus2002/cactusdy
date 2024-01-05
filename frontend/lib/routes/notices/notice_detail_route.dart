@@ -24,11 +24,11 @@ class NoticeDetailRoute extends StatefulWidget {
   final VoidCallback onDelete;
 
   const NoticeDetailRoute({
-    Key? key,
+    super.key,
     required this.noticeSummary,
     required this.studyId,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeDetailRoute> createState() => _NoticeDetailRouteState();

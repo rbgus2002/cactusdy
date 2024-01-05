@@ -13,9 +13,9 @@ class NoticeListRoute extends StatefulWidget {
   final int studyId;
 
   const NoticeListRoute({
-    Key? key,
+    super.key,
     required this.studyId,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeListRoute> createState() => _NoticeListRouteState();

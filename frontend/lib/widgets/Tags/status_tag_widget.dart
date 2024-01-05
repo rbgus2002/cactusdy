@@ -8,7 +8,7 @@ import 'package:groupstudy/widgets/tags/rounded_tag.dart';
 
 class StatusTagWidget extends RoundedTag {
   StatusTagWidget({
-    Key? key,
+    super.key,
     required BuildContext context,
     required StatusTag status,
     required bool reserved,
@@ -16,7 +16,6 @@ class StatusTagWidget extends RoundedTag {
     super.width = 60,
     super.height = 36,
   }) : super(
-    key: key,
     text: Text(
       status.text(context, reserved),
       style: (width >= 60)?

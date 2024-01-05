@@ -27,12 +27,12 @@ class RoundDetailRoute extends StatefulWidget {
   final Function? onRemove;
 
   const RoundDetailRoute({
-    Key? key,
+    super.key,
     required this.roundSeq,
     required this.study,
     required this.round,
     this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   State<RoundDetailRoute> createState() => _RoundDetailRouteState();

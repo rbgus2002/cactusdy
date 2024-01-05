@@ -12,12 +12,12 @@ class SquircleWidget extends StatelessWidget {
   final Color? backgroundColor;
 
   const SquircleWidget({
-    Key? key,
+    super.key,
     this.child,
     required this.scale,
     this.side,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,11 @@ class SquircleWidget extends StatelessWidget {
 
 class SquircleImageWidget extends SquircleWidget {
   SquircleImageWidget({
-    Key? key,
+    super.key,
     required super.scale,
     required String url,
     super.side,
   }) : super(
-      key: key,
       child: (url.isNotEmpty) ?
         CachedNetworkImage(
           imageUrl: url,

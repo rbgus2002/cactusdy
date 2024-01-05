@@ -13,11 +13,11 @@ class ParticipantProfileListWidget extends StatelessWidget {
   final double size;
 
   const ParticipantProfileListWidget({
-    Key? key,
+    super.key,
     required this.roundParticipantSummaries,
     required this.studyId,
     this.size = 40,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

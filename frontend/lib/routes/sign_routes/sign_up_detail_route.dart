@@ -20,10 +20,10 @@ class SignUpDetailRoute extends StatefulWidget {
   final String password;
 
   const SignUpDetailRoute({
-    Key? key,
+    super.key,
     required this.phoneNumber,
     required this.password,
-  }) : super(key: key);
+  });
 
   @override
   State<SignUpDetailRoute> createState() => _SignUpDetailRouteState();

@@ -16,11 +16,11 @@ class NoticeSummaryWidget extends StatefulWidget {
   final VoidCallback onDelete;
 
   const NoticeSummaryWidget({
-    Key? key,
+    super.key,
     required this.noticeSummary,
     required this.studyId,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeSummaryWidget> createState() => _NoticeSummaryWidgetState();
@@ -147,6 +147,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
     );
   }
 
+  /*
   @Deprecated('deprecated for #26')
   void _switchCheck() async {
     // Fast Unsafe State Update
@@ -165,4 +166,5 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
       }
     });
   }
+   */
 }

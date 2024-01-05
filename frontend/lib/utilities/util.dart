@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:groupstudy/routes/studies/study_participating_route.dart';
-import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/main.dart';
+import 'package:groupstudy/services/auth.dart';
 
 class Util {
   static const int _exceptionTextLength = "Exception: ".length;

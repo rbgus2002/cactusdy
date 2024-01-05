@@ -12,11 +12,11 @@ class ParticipantInfoListWidget extends StatefulWidget {
   final bool scheduled;
 
   const ParticipantInfoListWidget({
-    Key? key,
+    super.key,
     required this.roundId,
     required this.study,
     required this.scheduled,
-  }) : super(key: key);
+  });
 
   @override
   State<ParticipantInfoListWidget> createState() => _ParticipantInfoListWidgetState();

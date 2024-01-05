@@ -13,9 +13,7 @@ import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class SignInRoute extends StatefulWidget {
-  const SignInRoute({
-    Key? key,
-  }) : super(key: key);
+  const SignInRoute({ super.key, });
 
   @override
   State<SignInRoute> createState() => _SignInRouteState();

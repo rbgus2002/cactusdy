@@ -16,9 +16,9 @@ class StudyCreatePage2 extends StatefulWidget {
   final Function(Color, XFile?) getNext;
 
   const StudyCreatePage2({
-    Key? key,
+    super.key,
     required this.getNext,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyCreatePage2> createState() => _StudyCreatePage2State();

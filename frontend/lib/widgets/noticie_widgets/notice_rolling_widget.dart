@@ -13,9 +13,9 @@ class NoticeRollingWidget extends StatefulWidget {
   final int studyId;
 
   const NoticeRollingWidget({
-    Key? key,
+    super.key,
     required this.studyId,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeRollingWidget> createState() => _NoticeRollingWidgetState();

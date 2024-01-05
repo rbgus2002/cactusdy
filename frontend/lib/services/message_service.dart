@@ -37,7 +37,6 @@ class MessageService {
   static Future<FirebaseOptions> _getCurrentPlatform() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String suffix = packageInfo.packageName.split('.').last;
-    print(suffix);
 
     switch (suffix) {
       case 'dev':

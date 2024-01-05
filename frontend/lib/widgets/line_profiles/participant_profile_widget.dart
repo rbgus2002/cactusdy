@@ -25,7 +25,7 @@ class ParticipantProfileWidget extends StatefulWidget {
   final ProgressText progressTextWidget;
 
   const ParticipantProfileWidget({
-    Key? key,
+    super.key,
     required this.user,
     required this.hostId,
     required this.studyId,
@@ -33,7 +33,7 @@ class ParticipantProfileWidget extends StatefulWidget {
     required this.status,
     required this.scheduled,
     required this.progressTextWidget,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _ParticipantProfileWidgetState();

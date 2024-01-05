@@ -11,7 +11,6 @@ import 'package:groupstudy/utilities/animation_setting.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/list_model.dart';
 import 'package:groupstudy/utilities/toast.dart';
-import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/add_button.dart';
 import 'package:groupstudy/widgets/rules/rule_widget.dart';
 
@@ -20,10 +19,10 @@ class RuleListWidget extends StatefulWidget {
   final int studyId;
 
   const RuleListWidget({
-    Key? key,
+    super.key,
     required this.rules,
     required this.studyId,
-  }) : super(key: key);
+  });
 
   @override
   State<RuleListWidget> createState() => _RuleListWidgetState();

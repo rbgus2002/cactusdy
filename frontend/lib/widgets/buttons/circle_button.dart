@@ -10,12 +10,12 @@ class CircleButton extends StatelessWidget {
   final Function? onTap;
 
   const CircleButton({
-    Key? key,
+    super.key,
     required this.url,
     this.size = 20.0,
     this.borderWidth = 1.5,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

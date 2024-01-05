@@ -12,11 +12,11 @@ class TaskListTitle extends StatelessWidget {
   final bool enable;
 
   const TaskListTitle({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
     required this.enable,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

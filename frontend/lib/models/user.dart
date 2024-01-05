@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:groupstudy/models/study_tag.dart';
-import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/services/database_service.dart';
 import 'package:http/http.dart' as http;

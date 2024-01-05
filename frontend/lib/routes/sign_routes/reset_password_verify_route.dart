@@ -17,9 +17,7 @@ import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/input_field.dart';
 
 class ResetPasswordVerifyRoute extends StatefulWidget {
-  const ResetPasswordVerifyRoute({
-    Key? key,
-  }) : super(key: key);
+  const ResetPasswordVerifyRoute({super.key,});
 
   @override
   State<ResetPasswordVerifyRoute> createState() => _ResetPasswordVerifyRouteState();
