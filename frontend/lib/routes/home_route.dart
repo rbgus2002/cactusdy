@@ -20,9 +20,7 @@ import 'package:groupstudy/widgets/line_profiles/user_line_profile_widget.dart';
 import 'package:groupstudy/widgets/tasks/task_group_widget.dart';
 
 class HomeRoute extends StatefulWidget {
-  const HomeRoute({
-    Key? key
-  }) : super(key: key);
+  const HomeRoute({ super.key, });
 
   @override
   State<HomeRoute> createState() => _HomeRouteState();
@@ -42,6 +40,7 @@ class _HomeRouteState extends State<HomeRoute> {
       body: HapticRefreshIndicator(
           onRefresh: _refresh,
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: _specialPadding,
             child: Column(
