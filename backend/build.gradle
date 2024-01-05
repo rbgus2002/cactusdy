@@ -22,6 +22,16 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2021.0.8")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -70,6 +80,9 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    // openfeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 test {
