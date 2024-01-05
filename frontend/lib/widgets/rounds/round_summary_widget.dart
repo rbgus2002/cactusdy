@@ -26,13 +26,13 @@ class RoundSummaryWidget extends StatefulWidget {
   final List<UserProfileSummary> participantProfileList;
 
   const RoundSummaryWidget({
-    Key? key,
+    super.key,
     required this.roundSeq,
     required this.round,
     required this.study,
     required this.onRemove,
     required this.participantProfileList,
-  }) : super(key: key);
+  });
 
   @override
   State<RoundSummaryWidget> createState() => _RoundSummaryWidgetState();

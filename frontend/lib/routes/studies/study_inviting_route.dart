@@ -13,10 +13,10 @@ class StudyInvitingRoute extends StatefulWidget {
   final int studyId;
 
   const StudyInvitingRoute({
-    Key? key,
+    super.key,
     required this.studyName,
     required this.studyId,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyInvitingRoute> createState() => _StudyInvitingRouteState();

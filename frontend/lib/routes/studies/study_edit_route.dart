@@ -23,9 +23,9 @@ class StudyEditRoute extends StatefulWidget {
   final Study study;
 
   const StudyEditRoute({
-    Key? key,
+    super.key,
     required this.study,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyEditRoute> createState() => _StudyEditRouteState();
@@ -251,10 +251,9 @@ class _TitleAndHintWidget extends StatelessWidget {
   final String hint;
 
   const _TitleAndHintWidget({
-    Key? key,
     required this.title,
     required this.hint,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

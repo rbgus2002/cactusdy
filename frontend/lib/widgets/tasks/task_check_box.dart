@@ -17,7 +17,7 @@ class TaskCheckBox extends StatefulWidget {
   final bool enable;
 
   const TaskCheckBox({
-    Key? key,
+    super.key,
     required this.task,
     required this.onChanged,
 
@@ -26,7 +26,7 @@ class TaskCheckBox extends StatefulWidget {
 
     this.size = 24,
     this.enable = true,
-  }) : super(key: key);
+  });
 
   @override
   State<TaskCheckBox> createState() => _TaskCheckBoxState();

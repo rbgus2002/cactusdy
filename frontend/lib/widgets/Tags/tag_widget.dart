@@ -11,14 +11,14 @@ class TagWidget extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TagWidget({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.text,
     required this.color,
     required this.radius,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

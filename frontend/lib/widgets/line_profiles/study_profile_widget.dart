@@ -17,10 +17,10 @@ class StudyProfileWidget extends StatelessWidget {
   final Function onRefresh;
 
   const StudyProfileWidget({
-    Key? key,
+    super.key,
     required this.studyInfo,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   static const double _imageSize = 88;
 

@@ -12,10 +12,10 @@ class PullDownButton extends StatefulWidget {
   final List<PopupMenuEntry> items;
 
   const PullDownButton({
-    Key? key,
+    super.key,
     required this.initText,
     required this.items,
-  }) : super(key: key);
+  });
 
   @override
   State<PullDownButton> createState() => PullDownButtonState();

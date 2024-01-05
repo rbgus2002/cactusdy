@@ -14,9 +14,9 @@ class StudyTagWidget extends StatelessWidget {
   final StudyTag studyTag;
 
   const StudyTagWidget({
-    Key? key,
+    super.key,
     required this.studyTag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

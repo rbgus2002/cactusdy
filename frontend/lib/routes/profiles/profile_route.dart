@@ -23,11 +23,11 @@ class ProfileRoute extends StatefulWidget {
   final VoidCallback? onKick;
 
   const ProfileRoute({
-    Key? key,
+    super.key,
     required this.userId,
     required this.studyId,
     this.onKick,
-  }) : super(key: key);
+  });
 
   @override
   State<ProfileRoute> createState() => _ProfileRouteState();
@@ -336,10 +336,9 @@ class _StatusSummaryWidget extends StatelessWidget {
   final int count;
 
   const _StatusSummaryWidget({
-    Key? key,
     required this.status,
     required this.count,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -380,12 +379,11 @@ class _GraphBarWidget extends StatelessWidget {
   final String headTag;
 
   const _GraphBarWidget({
-    Key? key,
     required this.color,
     required this.percent,
     this.textColor,
     this.headTag = "",
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -439,11 +437,10 @@ class _AttendanceRateChartWidget extends StatelessWidget {
   final int absentCount;
 
   const _AttendanceRateChartWidget({
-    Key? key,
     required this.attendanceCount,
     required this.lateCount,
     required this.absentCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,12 +6,11 @@ class ItemEntry extends PopupMenuItem {
   static const double _popupHeight = 44;
 
   ItemEntry({
-    Key? key,
+    super.key,
     required String text,
     required Icon icon,
     super.onTap,
   }) : super(
-      key: key,
       height: _popupHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

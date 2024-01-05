@@ -10,12 +10,12 @@ class FocusedMenuButton extends StatelessWidget {
   final List<PopupMenuEntry> items;
 
   const FocusedMenuButton({
-    Key? key,
+    super.key,
     this.width,
     this.splashRadius,
     required this.icon,
     required this.items,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

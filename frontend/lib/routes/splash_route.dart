@@ -13,9 +13,7 @@ import 'package:lottie/lottie.dart';
 /// 1. Show splash image.
 /// 2. Check Auth Info (sign in or not).
 class SplashRoute extends StatefulWidget {
-  const SplashRoute({
-    Key? key,
-  }) : super(key: key);
+  const SplashRoute({ super.key, });
 
   @override
   State<SplashRoute> createState() => _SplashRouteState();

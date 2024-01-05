@@ -5,7 +5,7 @@ import 'package:groupstudy/widgets/tags/tag_widget.dart';
 
 class RectangleTag extends TagWidget {
   const RectangleTag({
-    Key? key,
+    super.key,
     required super.text,
     required super.color,
     required super.onTap,
@@ -13,6 +13,5 @@ class RectangleTag extends TagWidget {
     required super.width,
     required super.height,
   }) : super(
-      key: key,
       radius: Design.radiusValueSmall,);
 }

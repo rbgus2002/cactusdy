@@ -10,10 +10,10 @@ class InputFieldPlace extends StatefulWidget {
   final VoidCallback onUpdatePlace;
 
   const InputFieldPlace({
-    Key? key,
+    super.key,
     required this.placeEditingController,
     required this.onUpdatePlace,
-  }) : super(key: key);
+  });
 
   @override
   State<InputFieldPlace> createState() => _InputFieldPlaceState();

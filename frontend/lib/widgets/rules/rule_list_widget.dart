@@ -20,10 +20,10 @@ class RuleListWidget extends StatefulWidget {
   final int studyId;
 
   const RuleListWidget({
-    Key? key,
+    super.key,
     required this.rules,
     required this.studyId,
-  }) : super(key: key);
+  });
 
   @override
   State<RuleListWidget> createState() => _RuleListWidgetState();

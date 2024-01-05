@@ -14,11 +14,11 @@ class AddButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const AddButton({
-    Key? key,
+    super.key,
     required this.iconData,
     required this.text,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

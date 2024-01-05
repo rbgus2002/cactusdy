@@ -131,10 +131,9 @@ class _Panel extends StatelessWidget {
   final Widget child;
 
   const _Panel({
-    Key? key,
     required this.onTap,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -161,10 +160,9 @@ class _StudyPanel extends StatelessWidget {
   final Function onRefresh;
 
   const _StudyPanel({
-    Key? key,
     required this.studyInfo,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -208,9 +206,8 @@ class _AddStudyPanel extends StatelessWidget {
   final Function onRefresh;
 
   const _AddStudyPanel({
-    Key? key,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -17,12 +17,12 @@ class ImagePickerWidget extends StatefulWidget {
   final Color? backgroundColor;
 
   const ImagePickerWidget({
-    Key? key,
+    super.key,
     required this.onPicked,
     this.backgroundColor,
     this.shape,
     this.url = "",
-  }) : super(key: key);
+  });
 
   @override
   State<ImagePickerWidget> createState() => _ImagePickerWidgetState();

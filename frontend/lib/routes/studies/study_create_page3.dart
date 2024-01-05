@@ -15,10 +15,10 @@ class StudyCreatePage3 extends StatefulWidget {
   final String invitingCode;
 
   const StudyCreatePage3({
-    Key? key,
+    super.key,
     required this.studyName,
     required this.invitingCode,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyCreatePage3> createState() => _StudyCreatePage3State();

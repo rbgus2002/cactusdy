@@ -10,9 +10,9 @@ class ProgressBarWidget extends StatefulWidget {
   final double initProgress;
 
   const ProgressBarWidget({
-    Key? key,
+    super.key,
     required this.initProgress,
-  }) : super(key: key);
+  });
 
   @override
   State<ProgressBarWidget> createState() => ProgressBarWidgetState();

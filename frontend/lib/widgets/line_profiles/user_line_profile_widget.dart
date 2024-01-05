@@ -18,9 +18,9 @@ class UserLineProfileWidget extends StatefulWidget {
   final User user;
 
   const UserLineProfileWidget({
-    Key? key,
+    super.key,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<UserLineProfileWidget> createState() => _UserLineProfileWidgetState();
