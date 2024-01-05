@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:groupstudy/themes/color_styles.dart';
 import 'package:groupstudy/utilities/animation_setting.dart';
 import 'package:groupstudy/utilities/extensions.dart';
-import 'package:groupstudy/utilities/util.dart';
 
 class ProgressBarWidget extends StatefulWidget {
   final double initProgress;

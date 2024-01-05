@@ -1,5 +1,4 @@
 
-import 'package:flutter/material.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/widgets/tags/tag_widget.dart';
 

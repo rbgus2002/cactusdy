@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:groupstudy/models/task.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/services/logger.dart';
-import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 
 abstract class StabController {

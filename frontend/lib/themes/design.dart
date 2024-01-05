@@ -43,7 +43,7 @@ class Design {
     return SizedBox(height: size, width: size);
   }
 
-  static const double _buttonTargetHeight = 52;
+  //static const double _buttonTargetHeight = 52;
 
   static const EdgeInsets buttonPadding     = EdgeInsets.symmetric(vertical: 10, horizontal: 20);
   static const EdgeInsets textFieldPadding  = EdgeInsets.symmetric(vertical: 16, horizontal: 20);

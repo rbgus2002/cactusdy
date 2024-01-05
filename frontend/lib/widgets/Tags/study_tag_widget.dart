@@ -6,7 +6,6 @@ import 'package:groupstudy/models/study_tag.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/color_util.dart';
-import 'package:groupstudy/utilities/extensions.dart';
 
 class StudyTagWidget extends StatelessWidget {
   static const double size = 20;

@@ -6,7 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/utilities/extensions.dart';
-import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 import 'package:groupstudy/widgets/diagrams/squircle.dart';
 import 'package:image_picker/image_picker.dart';
 

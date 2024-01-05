@@ -147,6 +147,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
     );
   }
 
+  /*
   @Deprecated('deprecated for #26')
   void _switchCheck() async {
     // Fast Unsafe State Update
@@ -165,4 +166,5 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
       }
     });
   }
+   */
 }
