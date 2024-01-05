@@ -46,7 +46,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   final _focusNode = FocusNode();
 
-  late Round _roundRef;
+  late final Round _roundRef;
   bool _isEdited = false;
   bool _isExpended = true;
   
@@ -325,11 +325,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   void _tryGetRound() async {
     try {
-      await Round.getDetail(_roundRef.roundId).then((refreshedRound) {
-        setState(() {
-          _roundRef = refreshedRound;
-        });
-      });
+      await Round.getDetail(_roundRef.roundId).then((refreshedRound) =>
+        setState(() { }));
     } on Exception catch(e) {
       if (mounted) {
         Util.popRoute(context);
