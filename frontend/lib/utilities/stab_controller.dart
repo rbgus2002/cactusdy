@@ -3,10 +3,14 @@ import 'dart:async';
 
 import 'package:groupstudy/models/task.dart';
 import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/utilities/util.dart';
 
 abstract class StabController {
   static const int _waitingTime = 3; // 3 sec
+
+  static Logger logger = Logger('stab');
 
   final int targetUserId;
   final int studyId;
@@ -51,7 +55,6 @@ abstract class StabController {
 }
 
 class UserStabController extends StabController {
-
   UserStabController({
     required super.targetUserId,
     required super.studyId,
@@ -66,7 +69,7 @@ class UserStabController extends StabController {
             studyId: studyId,
             count: _stabCount);
       } on Exception catch (e) {
-        print(Util.getExceptionMessage(e));
+        StabController.logger.infoLog(Util.getExceptionMessage(e));
       }
     }
     _reset();
@@ -95,7 +98,7 @@ class TaskStabController extends StabController {
             taskId: taskId,
             count: _stabCount);
       } on Exception catch (e) {
-        print(Util.getExceptionMessage(e));
+        StabController.logger.infoLog(Util.getExceptionMessage(e));
       }
     }
     _reset();
