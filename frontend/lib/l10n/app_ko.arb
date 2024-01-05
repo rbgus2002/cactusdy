@@ -51,6 +51,8 @@
     "successToDo": "성공적으로 {action}했어요",
     "willDo": "{action}할래요",
 
+    "ensureToResign": "정말 계정을 삭제하시나요?",
+    "resignWarning": "삭제 시 모든 데이터를\n다시는 복구할 수 없어요",
 
     "unknownException": "알 수 없는 문제가 발생하였어요.",
 
@@ -58,6 +60,7 @@
     "signIn": "로그인",
     "signOut": "로그아웃",
     "signUp": "가입하기",
+    "resign": "계정삭제",
 
     "tokenExpired": "로그인 정보가 만료되었어요",
     "alreadyHaveAnAccount": "이미 계정이 있나요?",
@@ -85,6 +88,7 @@
     "name": "이름",
     "nickname": "닉네임",
     "statusMessage": "상태 메세지",
+    "statusMessageRecommend": "상태 메세지를 입력해 보세요!",
     "editProfile": "프로필 편집",
     "setting": "설정",
     "profile": "프로필",

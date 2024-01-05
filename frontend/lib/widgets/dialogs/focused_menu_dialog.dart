@@ -58,6 +58,8 @@ class FocusedMenuDialog {
                 child: ListView.separated(
                   padding: EdgeInsets.zero,
                   itemCount: items.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context, index) =>
                     Container(
                       height: 0.1,

@@ -10,10 +10,12 @@ import 'package:groupstudy/routes/notices/notice_detail_route.dart';
 import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
-import 'package:groupstudy/services/firebase_options.dart';
+import 'package:groupstudy/services/firebase_options.dart' as prod;
+import 'package:groupstudy/services/firebase_options_dev.dart' as dev;
 import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/services/notification_channel.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class MessageService {
   MessageService._();
@@ -24,8 +26,6 @@ class MessageService {
   static Logger logger = Logger('MessageService');
 
   static void init() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
     await _initFCM();
     await _initLocalNotification();
     await _setupInteractedMessage(_MessageInteractionHandler._handleMessageInteraction);
@@ -34,8 +34,23 @@ class MessageService {
     logger.infoLog('firebase messaging token: ${await FirebaseMessaging.instance.getToken()}');
   }
 
+  static Future<FirebaseOptions> _getCurrentPlatform() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String suffix = packageInfo.packageName.split('.').last;
+    print(suffix);
+
+    switch (suffix) {
+      case 'dev':
+        return dev.DefaultFirebaseOptions.currentPlatform;
+
+      default:
+        return prod.DefaultFirebaseOptions.currentPlatform;
+    }
+  }
+
   static Future<void> _initFCM() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    FirebaseOptions currentPlatform = await _getCurrentPlatform();
+    await Firebase.initializeApp(options: currentPlatform);
 
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,

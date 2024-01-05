@@ -2,10 +2,14 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:groupstudy/services/flavor.dart';
 
 class SignInfo {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
-  static const String _signInfoKey = 'signInfo';
+
+  static late final String _signInfoKey;
+  static const String _signInfoDevKey = 'signInfoDev';
+  static const String _signInfoProdKey = 'signInfo';
 
   final int userId;
   final String token;
@@ -14,6 +18,19 @@ class SignInfo {
     required this.userId,
     required this.token,
   });
+
+  /// For Flavor
+  static void init(FlavorType flavor) {
+    switch (flavor) {
+      case FlavorType.dev:
+        _signInfoKey = _signInfoDevKey;
+        break;
+
+      case FlavorType.prod:
+        _signInfoKey = _signInfoProdKey;
+        break;
+    }
+  }
 
   @override
   String toString() {
@@ -47,12 +64,12 @@ class SignInfo {
     return null;
   }
 
-  static void setSignInfo(SignInfo signInfo) async {
+  static Future<void> setSignInfo(SignInfo signInfo) async {
     await _storage.write(
         key: _signInfoKey, value: json.encode(signInfo.toMap()));
   }
 
-  static void removeSignInfo() {
-    _storage.delete(key: _signInfoKey);
+  static Future<void> removeSignInfo() async {
+    await _storage.delete(key: _signInfoKey);
   }
 }

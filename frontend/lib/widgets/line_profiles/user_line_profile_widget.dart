@@ -32,6 +32,8 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final bool existStatusMessage = widget.user.statusMessage.isNotEmpty;
+
     return SizedBox(
       height: _height,
       child: Row(
@@ -53,8 +55,13 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                     widget.user.nickname,
                     style: TextStyles.head3.copyWith(color: context.extraColors.grey800)),
                 Text(
-                    widget.user.statusMessage,
-                    style: TextStyles.body2.copyWith(color: context.extraColors.grey500),
+                    (existStatusMessage) ?
+                      widget.user.statusMessage :
+                      context.local.statusMessageRecommend,
+                    style: TextStyles.body2.copyWith(
+                        color: (existStatusMessage)?
+                          context.extraColors.grey500 :
+                          context.extraColors.grey400,),
                     overflow: TextOverflow.ellipsis,),
               ],),
           ),
