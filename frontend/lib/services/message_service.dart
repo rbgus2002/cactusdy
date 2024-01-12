@@ -227,8 +227,9 @@ class _MessageInteractionHandler {
           Util.pushRouteByKey((context) =>
               RoundDetailRoute(
                 roundSeq: roundSeq,
-                round: round,
-                study: study,));
+                studyRound: StudyRound(
+                    round: round,
+                    study: study),),);
         } on Exception catch (e) {
           debugPrint(Util.getExceptionMessage(e));
         }
