@@ -20,9 +20,7 @@ import 'package:groupstudy/widgets/line_profiles/user_line_profile_widget.dart';
 import 'package:groupstudy/widgets/tasks/task_group_widget.dart';
 
 class HomeRoute extends StatefulWidget {
-  const HomeRoute({
-    Key? key
-  }) : super(key: key);
+  const HomeRoute({ super.key, });
 
   @override
   State<HomeRoute> createState() => _HomeRouteState();
@@ -42,6 +40,7 @@ class _HomeRouteState extends State<HomeRoute> {
       body: HapticRefreshIndicator(
           onRefresh: _refresh,
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: _specialPadding,
             child: Column(
@@ -70,7 +69,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       onTap: () {
                         HapticFeedback.lightImpact();
                         Util.pushRoute(context, (context) =>
-                            const StudyCreateRoute());
+                            const StudyCreateRoute()).then((value) => _refresh());
                       }),
                   ],),
                 Design.padding12,
@@ -132,10 +131,9 @@ class _Panel extends StatelessWidget {
   final Widget child;
 
   const _Panel({
-    Key? key,
     required this.onTap,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -162,10 +160,9 @@ class _StudyPanel extends StatelessWidget {
   final Function onRefresh;
 
   const _StudyPanel({
-    Key? key,
     required this.studyInfo,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -209,9 +206,8 @@ class _AddStudyPanel extends StatelessWidget {
   final Function onRefresh;
 
   const _AddStudyPanel({
-    Key? key,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

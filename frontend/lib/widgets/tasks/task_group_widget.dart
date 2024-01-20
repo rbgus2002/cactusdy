@@ -22,7 +22,7 @@ class TaskGroupWidget extends StatefulWidget {
   final Function(String, int, String, List<TaskInfo>)? notify;
 
   const TaskGroupWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.taskGroup,
     required this.study,
@@ -31,7 +31,7 @@ class TaskGroupWidget extends StatefulWidget {
     this.updateProgress,
     this.subscribe,
     this.notify,
-  }) : super(key: key);
+  });
 
   @override
   State<TaskGroupWidget> createState() => TaskGroupWidgetState();

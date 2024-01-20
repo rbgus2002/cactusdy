@@ -26,13 +26,13 @@ class RoundSummaryWidget extends StatefulWidget {
   final List<UserProfileSummary> participantProfileList;
 
   const RoundSummaryWidget({
-    Key? key,
+    super.key,
     required this.roundSeq,
     required this.round,
     required this.study,
     required this.onRemove,
     required this.participantProfileList,
-  }) : super(key: key);
+  });
 
   @override
   State<RoundSummaryWidget> createState() => _RoundSummaryWidgetState();
@@ -214,8 +214,9 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
         Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: widget.roundSeq,
-              round: widget.round,
-              study: widget.study,
+              studyRound: StudyRound(
+                round: widget.round,
+                study: widget.study,),
               onRemove: () => widget.onRemove(widget.roundSeq),))
           .then((value) => setState(() { } ));
       }

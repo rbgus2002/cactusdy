@@ -24,11 +24,11 @@ class NoticeDetailRoute extends StatefulWidget {
   final VoidCallback onDelete;
 
   const NoticeDetailRoute({
-    Key? key,
+    super.key,
     required this.noticeSummary,
     required this.studyId,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeDetailRoute> createState() => _NoticeDetailRouteState();
@@ -44,15 +44,12 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   List<Comment> _comments = [];
   int _replyTo = Comment.noReplyTarget;
 
-  late Notice _noticeRef;
-
   bool _isProcessing = false;
 
   @override
   void initState() {
     super.initState();
-    _noticeRef = widget.noticeSummary.notice;
-    _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
+    _futureCommentInfo = Comment.getComments(widget.noticeSummary.notice.noticeId);
     _tryGetNotice();
   }
 
@@ -97,7 +94,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   Future<void> _refresh() async {
-    _futureCommentInfo = Comment.getComments(_noticeRef.noticeId);
+    _futureCommentInfo = Comment.getComments(widget.noticeSummary.notice.noticeId);
     _tryGetNotice();
   }
 
@@ -119,7 +116,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
   }
 
   bool _isWriter() {
-    return _noticeRef.writerId == Auth.signInfo?.userId;
+    return widget.noticeSummary.notice.writerId == Auth.signInfo?.userId;
   }
 
   Widget _noticeBody() {
@@ -138,15 +135,15 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Writing Date and Writer Nickname
             Text(
-              '${TimeUtility.getElapsedTime(context, _noticeRef.createDate)} '
-                  '${_noticeRef.writerNickname}',
+              '${TimeUtility.getElapsedTime(context, widget.noticeSummary.notice.createDate)} '
+                  '${widget.noticeSummary.notice.writerNickname}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey500)),
             Design.padding12,
 
             // Title
             SelectableText(
-              _noticeRef.title,
+              widget.noticeSummary.notice.title,
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey900),
               textAlign: TextAlign.justify,),
@@ -154,7 +151,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Body
             SelectableText(
-              _noticeRef.contents,
+              widget.noticeSummary.notice.contents,
               style: TextStyles.body1.copyWith(
                   color: context.extraColors.grey800),
               textAlign: TextAlign.justify,),
@@ -162,7 +159,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
             // Reaction Tag
             NoticeReactionTag(
-                notice: _noticeRef,),
+                notice: widget.noticeSummary.notice,),
           ],),
     );
   }
@@ -277,7 +274,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         try {
           int? parentCommentId = _getParentId();
           await Comment.writeComment(
-              _noticeRef.noticeId, _commentEditor.currentState!.text,
+              widget.noticeSummary.notice.noticeId, _commentEditor.currentState!.text,
               parentCommentId).then((newCommentId) {
             // Reset writing box and reply target
             focusNode.unfocus();
@@ -321,7 +318,7 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   void _deleteNotice() async {
     try {
-      await Notice.deleteNotice(_noticeRef.noticeId).then((result) {
+      await Notice.deleteNotice(widget.noticeSummary.notice.noticeId).then((result) {
         if (result) {
           widget.onDelete();
           Navigator.of(context).pop();
@@ -349,11 +346,8 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
 
   void _tryGetNotice() async {
     try {
-      await Notice.getNotice(_noticeRef.noticeId).then((refreshedNotice) {
-        setState(() {
-          widget.noticeSummary.notice = refreshedNotice;
-          _noticeRef = refreshedNotice;
-        });
+      await Notice.getNotice(widget.noticeSummary.notice.noticeId).then((refreshedNotice) {
+        setState(() => widget.noticeSummary.notice = refreshedNotice);
       });
     } on Exception catch(e) {
       if (mounted) {

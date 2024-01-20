@@ -22,17 +22,15 @@ import 'package:groupstudy/widgets/tags/rectangle_tag.dart';
 
 class RoundDetailRoute extends StatefulWidget {
   final int roundSeq;
-  final Study study;
-  final Round round;
+  final StudyRound studyRound;
   final Function? onRemove;
 
   const RoundDetailRoute({
-    Key? key,
+    super.key,
     required this.roundSeq,
-    required this.study,
-    required this.round,
+    required this.studyRound,
     this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   State<RoundDetailRoute> createState() => _RoundDetailRouteState();
@@ -46,21 +44,19 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   final _focusNode = FocusNode();
 
-  late Round _roundRef;
   bool _isEdited = false;
   bool _isExpended = true;
   
   @override
   void initState() {
     super.initState();
-    _roundRef = widget.round;
     _tryGetRound();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool scheduled = TimeUtility.isScheduled(_roundRef.studyTime);
-    _placeEditingController.text = _roundRef.studyPlace;
+    bool scheduled = TimeUtility.isScheduled(widget.studyRound.round.studyTime);
+    _placeEditingController.text = widget.studyRound.round.studyPlace;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,8 +93,8 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
               // Participant Information List
               ParticipantInfoListWidget(
                 scheduled: scheduled,
-                roundId: _roundRef.roundId,
-                study: widget.study,),
+                roundId: widget.studyRound.round.roundId,
+                study: widget.studyRound.study,),
             ]),
         ),
       ),
@@ -116,7 +112,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       width: 46,
       height: 56,
       decoration: BoxDecoration(
-        color: widget.study.color.withOpacity(0.2),
+        color: widget.studyRound.study.color.withOpacity(0.2),
         borderRadius: Design.borderRadiusSmall,),
       child: InkWell(
         onTap: _editStudyTime,
@@ -129,16 +125,16 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
             // Month (or date)
             Text(
-              (_roundRef.studyTime != null)?
-              '${_roundRef.studyTime!.month}${context.local.month}' :
+              (widget.studyRound.round.studyTime != null)?
+              '${widget.studyRound.round.studyTime!.month}${context.local.month}' :
               '-${context.local.month}',
               style: TextStyles.body2.copyWith(
                   color: context.extraColors.grey800),),
 
             // Day (or -)
             Text(
-              (_roundRef.studyTime != null) ?
-              '${_roundRef.studyTime!.day}' :
+              (widget.studyRound.round.studyTime != null) ?
+              '${widget.studyRound.round.studyTime!.day}' :
               '-',
               style: TextStyles.head3.copyWith(
                   color: context.extraColors.grey800),),
@@ -173,10 +169,10 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                   InkWell(
                     onTap: _editStudyTime,
                     child: Text(
-                      (_roundRef.studyTime != null) ?
-                        TimeUtility.getTime(_roundRef.studyTime!) :
+                      (widget.studyRound.round.studyTime != null) ?
+                        TimeUtility.getTime(widget.studyRound.round.studyTime!) :
                         context.local.inputHint1(context.local.time),
-                      style: (_roundRef.studyTime != null) ?
+                      style: (widget.studyRound.round.studyTime != null) ?
                         TextStyles.body2.copyWith(color: context.extraColors.grey800) :
                         TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
                   ),
@@ -197,7 +193,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
         // Scheduled Tag
         Visibility(
-          visible: TimeUtility.isScheduled(_roundRef.studyTime),
+          visible: TimeUtility.isScheduled(widget.studyRound.round.studyTime),
           child: _scheduledTag()),
       ],
     );
@@ -234,7 +230,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       children: [
         InputField(
           key: _detailEditor,
-          initText: _roundRef.detail,
+          initText: widget.studyRound.round.detail,
           hintText: context.local.recordHint,
           minLines: 4,
           maxLines: 7,
@@ -275,7 +271,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   void _updateDetail(PointerDownEvent notUseEvent) {
     if (_isEdited) {
-      Round.updateDetail(_roundRef.roundId, _detailEditor.currentState!.text);
+      Round.updateDetail(widget.studyRound.round.roundId, _detailEditor.currentState!.text);
       _isEdited = false;
     }
 
@@ -283,18 +279,18 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
   }
 
   void _updateStudyPlace() {
-    _roundRef.studyPlace = _placeEditingController.text;
-    _updateRound(_roundRef);
+    widget.studyRound.round.studyPlace = _placeEditingController.text;
+    _updateRound(widget.studyRound.round);
   }
 
   void _editStudyTime() async {
     Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: _roundRef,)).then((value) => _refresh());
+        DateTimePickerRoute(round: widget.studyRound.round,)).then((value) => _refresh());
   }
 
   Future<void> _updateRound(Round round) async {
     if (round.roundId == Round.nonAllocatedRoundId) {
-      await Round.createRound(round, widget.study.studyId);
+      await Round.createRound(round, widget.studyRound.study.studyId);
     }
     else {
       await Round.updateAppointment(round);
@@ -305,7 +301,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   void _deleteRound(BuildContext context) async {
     try {
-      await Round.deleteRound(_roundRef.roundId).then((result) {
+      await Round.deleteRound(widget.studyRound.round.roundId).then((result) {
         if (result) {
           Navigator.of(context).pop();
 
@@ -325,11 +321,12 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
 
   void _tryGetRound() async {
     try {
-      await Round.getDetail(_roundRef.roundId).then((refreshedRound) {
+      await Round.getDetail(widget.studyRound.round.roundId).then((refreshedRound) =>
         setState(() {
-          _roundRef = refreshedRound;
-        });
-      });
+          widget.studyRound.round = refreshedRound;
+          _placeEditingController.text = widget.studyRound.round.studyPlace;
+          _detailEditor.currentState!.text = widget.studyRound.round.detail??"";
+        }));
     } on Exception catch(e) {
       if (mounted) {
         Util.popRoute(context);
@@ -339,4 +336,15 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       }
     }
   }
+}
+
+/// Container for Reference
+class StudyRound {
+  Study study;
+  Round round;
+
+  StudyRound({
+    required this.study,
+    required this.round,
+  });
 }

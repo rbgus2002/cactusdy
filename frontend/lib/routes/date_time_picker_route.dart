@@ -19,9 +19,9 @@ class DateTimePickerRoute extends StatefulWidget {
   final Round round;
 
   const DateTimePickerRoute({
-    Key? key,
+    super.key,
     required this.round,
-  }) : super(key: key);
+  });
 
   @override
   State<DateTimePickerRoute> createState() => _DateTimePickerRouteState();

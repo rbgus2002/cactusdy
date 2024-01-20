@@ -14,10 +14,10 @@ class NoticeEditRoute extends StatefulWidget {
   final NoticeSummary noticeSummary;
 
   const NoticeEditRoute({
-    Key? key,
+    super.key,
     required this.studyId,
     required this.noticeSummary,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _NoticeEditRouteState();

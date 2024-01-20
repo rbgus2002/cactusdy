@@ -26,9 +26,9 @@ class StudyDetailRoute extends StatefulWidget {
   final Study study;
 
   const StudyDetailRoute({
-    Key? key,
+    super.key,
     required this.study,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyDetailRoute> createState() => _StudyDetailRouteState();

@@ -10,7 +10,6 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/focused_menu_button.dart';
 import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
-import 'package:groupstudy/widgets/dialogs/focused_menu_dialog.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
 
 /// User Profile for main route
@@ -18,9 +17,9 @@ class UserLineProfileWidget extends StatefulWidget {
   final User user;
 
   const UserLineProfileWidget({
-    Key? key,
+    super.key,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<UserLineProfileWidget> createState() => _UserLineProfileWidgetState();

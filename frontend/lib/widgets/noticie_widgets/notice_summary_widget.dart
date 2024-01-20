@@ -16,30 +16,17 @@ class NoticeSummaryWidget extends StatefulWidget {
   final VoidCallback onDelete;
 
   const NoticeSummaryWidget({
-    Key? key,
+    super.key,
     required this.noticeSummary,
     required this.studyId,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeSummaryWidget> createState() => _NoticeSummaryWidgetState();
 }
 
 class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
-  late Notice _noticeRef;
-
-  @override
-  void initState() {
-    super.initState();
-    _noticeRef = widget.noticeSummary.notice;
-  }
-
-  @override
-  void didUpdateWidget(covariant NoticeSummaryWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _noticeRef = widget.noticeSummary.notice;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +47,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                   // Title
                   Flexible(child:
                     Text(
-                      _noticeRef.title,
+                      widget.noticeSummary.notice.title,
                       style: TextStyles.head4.copyWith(color: context.extraColors.grey900),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,),),
@@ -80,7 +67,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
 
               // Notice Body Summary
               Text(
-                _noticeRef.contents,
+                widget.noticeSummary.notice.contents,
                 style: TextStyles.body1.copyWith(color: context.extraColors.grey600),
                 textAlign: TextAlign.justify,
                 maxLines: 2,
@@ -93,8 +80,8 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                 children: [
                   // Writing Date & Writer
                   Text(
-                      '${TimeUtility.getElapsedTime(context, _noticeRef.createDate)}'
-                      ' • ${_noticeRef.writerNickname}',
+                      '${TimeUtility.getElapsedTime(context, widget.noticeSummary.notice.createDate)}'
+                      ' • ${widget.noticeSummary.notice.writerNickname}',
                       style: TextStyles.body3.copyWith(color: context.extraColors.grey500),),
 
                   // Reaction Tag and Comment count
@@ -102,7 +89,7 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                     children: [
                       // Reaction Tag
                       NoticeReactionTag(
-                          notice: _noticeRef,
+                          notice: widget.noticeSummary.notice,
                           enabled: false),
                       Design.padding8,
 
@@ -142,27 +129,29 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
     setState(() { widget.noticeSummary.pinYn = !widget.noticeSummary.pinYn; } );
 
     // Call API and Verify State
-    NoticeSummary.switchNoticePin(_noticeRef.noticeId).then((pinYn) =>
+    NoticeSummary.switchNoticePin(widget.noticeSummary.notice.noticeId).then((pinYn) =>
         setState(() { widget.noticeSummary.pinYn = pinYn; })
     );
   }
 
+  /*
   @Deprecated('deprecated for #26')
   void _switchCheck() async {
     // Fast Unsafe State Update
     setState(() {
-      _noticeRef.read = !_noticeRef.read;
-      (_noticeRef.read)? ++_noticeRef.checkNoticeCount: --_noticeRef.checkNoticeCount;
+      widget.noticeSummary.notice.read = !widget.noticeSummary.notice.read;
+      (widget.noticeSummary.notice.read)? ++widget.noticeSummary.notice.checkNoticeCount: --widget.noticeSummary.notice.checkNoticeCount;
     });
 
     // Call API and Verify State
-    Notice.switchCheckNotice(_noticeRef.noticeId).then((value) {
-      if (value != _noticeRef.read) {
+    Notice.switchCheckNotice(widget.noticeSummary.notice.noticeId).then((value) {
+      if (value != widget.noticeSummary.notice.read) {
         setState(() {
-          (_noticeRef.read)? --_noticeRef.checkNoticeCount: ++_noticeRef.checkNoticeCount;
-          _noticeRef.read = value;
+          (widget.noticeSummary.notice.read)? --widget.noticeSummary.notice.checkNoticeCount: ++widget.noticeSummary.notice.checkNoticeCount;
+          widget.noticeSummary.notice.read = value;
         });
       }
     });
   }
+   */
 }

@@ -15,10 +15,10 @@ class NoticeReactionTag extends StatefulWidget {
   final bool enabled;
 
   const NoticeReactionTag({
-    Key? key,
+    super.key,
     required this.notice,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   State<NoticeReactionTag> createState() => _NoticeReactionTag();

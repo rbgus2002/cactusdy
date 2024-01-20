@@ -22,14 +22,14 @@ class ParticipantInfoWidget extends StatelessWidget {
   final _progressController = GlobalKey<ProgressTextState>();
 
   ParticipantInfoWidget({
-    Key? key,
+    super.key,
     required this.participantInfo,
     required this.roundId,
     required this.subscribe,
     required this.notify,
     required this.study,
     required this.scheduled,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +76,9 @@ class ProgressText extends StatefulWidget {
   final double initProgress;
 
   const ProgressText({
-    Key? key,
+    super.key,
     this.initProgress = 0,
-  }) : super(key: key);
+  });
 
   @override
   State<ProgressText> createState() => ProgressTextState();

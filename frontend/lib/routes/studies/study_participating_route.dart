@@ -17,9 +17,9 @@ class StudyParticipantRoute extends StatefulWidget {
   final String invitingCode;
 
   const StudyParticipantRoute({
-    Key? key,
+    super.key,
     this.invitingCode = "",
-  }) : super(key: key);
+  });
 
   @override
   State<StudyParticipantRoute> createState() => _StudyParticipantRouteState();

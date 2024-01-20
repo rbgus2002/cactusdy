@@ -15,9 +15,9 @@ class ResetPasswordRoute extends StatefulWidget {
   final String phoneNumber;
 
   const ResetPasswordRoute({
-    Key? key,
+    super.key,
     required this.phoneNumber,
-  }) : super(key: key);
+  });
 
   @override
   State<ResetPasswordRoute> createState() => _ResetPasswordRouteState();

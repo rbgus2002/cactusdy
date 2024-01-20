@@ -15,11 +15,11 @@ class StudyCreatePage1 extends StatefulWidget {
   final String studyDetail;
 
   const StudyCreatePage1({
-    Key? key,
+    super.key,
     required this.getNext,
     required this.studyName,
     required this.studyDetail,
-  }) : super(key: key);
+  });
 
   @override
   State<StudyCreatePage1> createState() => _StudyCreatePage1State();

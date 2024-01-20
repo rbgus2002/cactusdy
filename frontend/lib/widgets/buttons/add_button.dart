@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
@@ -14,11 +13,11 @@ class AddButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const AddButton({
-    Key? key,
+    super.key,
     required this.iconData,
     required this.text,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

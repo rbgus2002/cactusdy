@@ -37,7 +37,6 @@ class MessageService {
   static Future<FirebaseOptions> _getCurrentPlatform() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String suffix = packageInfo.packageName.split('.').last;
-    print(suffix);
 
     switch (suffix) {
       case 'dev':
@@ -228,8 +227,9 @@ class _MessageInteractionHandler {
           Util.pushRouteByKey((context) =>
               RoundDetailRoute(
                 roundSeq: roundSeq,
-                round: round,
-                study: study,));
+                studyRound: StudyRound(
+                    round: round,
+                    study: study),),);
         } on Exception catch (e) {
           debugPrint(Util.getExceptionMessage(e));
         }

@@ -16,9 +16,9 @@ class ProfileEditRoute extends StatefulWidget {
   final User user;
 
   const ProfileEditRoute({
-    Key? key,
+    super.key,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<ProfileEditRoute> createState() => _ProfileEditRouteState();

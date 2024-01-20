@@ -14,12 +14,12 @@ class KakaoStyleButton extends StatelessWidget {
   final bool enabled;
 
   const KakaoStyleButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.width,
     required this.text,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

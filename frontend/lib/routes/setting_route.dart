@@ -24,9 +24,7 @@ class _ThemeModeData {
 }
 
 class SettingRoute extends StatefulWidget {
-  const SettingRoute({
-    Key? key
-  }) : super(key: key);
+  const SettingRoute({ super.key, });
 
   @override
   State<SettingRoute> createState() => _SettingRouteState();

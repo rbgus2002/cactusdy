@@ -14,13 +14,13 @@ class RuleWidget extends StatefulWidget {
   final double height;
 
   const RuleWidget({
-    Key? key,
+    super.key,
     required this.rule,
     required this.onUpdateRuleDetail,
     required this.onDeleteRule,
     required this.enable,
     this.height = 40,
-  }) : super(key: key);
+  });
 
   @override
   State<RuleWidget> createState() => _RuleWidgetState();

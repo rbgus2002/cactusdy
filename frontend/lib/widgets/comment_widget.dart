@@ -25,7 +25,7 @@ class CommentWidget extends StatelessWidget {
   final bool isSelected;
 
   const CommentWidget({
-    Key? key,
+    super.key,
     required this.comment,
     required this.studyId,
     required this.index,
@@ -33,7 +33,7 @@ class CommentWidget extends StatelessWidget {
     required this.onDelete,
     this.isReply = false,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

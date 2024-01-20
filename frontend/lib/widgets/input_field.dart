@@ -23,7 +23,7 @@ class InputField extends StatefulWidget {
   final TextInputType? keyboardType;
 
   const InputField({
-    Key? key,
+    super.key,
     this.initText,
     this.hintText,
     this.obscureText = false,
@@ -39,7 +39,7 @@ class InputField extends StatefulWidget {
     this.counter = false,
     this.backgroundColor,
     this.keyboardType
-  }) : super(key: key);
+  });
 
   @override
   State<InputField> createState() => InputFieldState();
@@ -170,10 +170,9 @@ class _TextCounter extends StatelessWidget {
   final int maxLength;
 
   const _TextCounter({
-    Key? key,
     required this.length,
     required this.maxLength,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

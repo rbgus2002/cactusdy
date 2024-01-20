@@ -17,9 +17,7 @@ import 'package:groupstudy/widgets/charts/progress_bar_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StudyCreateRoute extends StatefulWidget {
-  const StudyCreateRoute({
-    Key? key,
-  }) : super(key: key);
+  const StudyCreateRoute({ super.key, });
 
   @override
   State<StudyCreateRoute> createState() => _StudyCreateRouteState();
