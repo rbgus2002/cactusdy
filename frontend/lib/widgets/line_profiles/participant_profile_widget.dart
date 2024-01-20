@@ -41,12 +41,13 @@ class ParticipantProfileWidget extends StatefulWidget {
 
 class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
   static const double _imageSize = 48;
-  late StatusTag _statusRef;
+
+  late StatusTag _status;
 
   @override
   void initState() {
     super.initState();
-    _statusRef = widget.status;
+    _status = widget.status;
   }
 
   @override
@@ -87,7 +88,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
           width: 48,
           height: 30,
           context: context,
-          status: _statusRef,
+          status: _status,
           reserved: widget.scheduled,
           onTap: (_isEditable())?
             _showStatusPicker
@@ -106,10 +107,10 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
 
   void _updateStatus(StatusTag newStatus) async {
     HapticFeedback.lightImpact();
-    if (_statusRef != newStatus) {
+    if (_status != newStatus) {
       try {
         await StatusTag.updateStatus(widget.roundParticipantId, newStatus).then((value) =>
-            setState(() => _statusRef = newStatus),);
+            setState(() => _status = newStatus),);
       } on Exception catch(e) {
         if (context.mounted) {
           Toast.showToast(

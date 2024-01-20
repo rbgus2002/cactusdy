@@ -100,8 +100,9 @@ class StudyProfileWidget extends StatelessWidget {
         onTap: () => Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: studyInfo.roundSeq,
-              round: studyInfo.round,
-              study: studyInfo.study,),)
+              studyRound: StudyRound(
+                round: studyInfo.round,
+                study: studyInfo.study,),),)
           .then((value) => onRefresh()),
       ),
     );
@@ -122,8 +123,9 @@ class StudyProfileWidget extends StatelessWidget {
         onTap: () => Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: studyInfo.roundSeq,
-              round: studyInfo.round,
-              study: studyInfo.study,),)
+              studyRound: StudyRound(
+                round: studyInfo.round,
+                study: studyInfo.study,),),)
           .then((value) => onRefresh()),
       ),
     );

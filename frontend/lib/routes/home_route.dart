@@ -69,7 +69,7 @@ class _HomeRouteState extends State<HomeRoute> {
                       onTap: () {
                         HapticFeedback.lightImpact();
                         Util.pushRoute(context, (context) =>
-                            const StudyCreateRoute());
+                            const StudyCreateRoute()).then((value) => _refresh());
                       }),
                   ],),
                 Design.padding12,
