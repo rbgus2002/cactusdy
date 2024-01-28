@@ -14,6 +14,10 @@ import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -27,6 +31,8 @@ import ssu.groupstudy.global.util.RedisUtils;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,6 +40,7 @@ import java.io.IOException;
 @Slf4j
 public class AuthService {
     private final UserRepository userRepository;
+    private final ParticipantRepository participantRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
@@ -76,8 +83,20 @@ public class AuthService {
     }
 
     private void handleFcmToken(SignInRequest request, User user) {
-        user.addFcmToken(request.getFcmToken());
-        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
+        if(!user.existFcmToken(request.getFcmToken())){
+            user.addFcmToken(request.getFcmToken());
+            eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
+            subscribeParticipatingStudies(user);
+        }
+    }
+
+    private void subscribeParticipatingStudies(User user) {
+        List<Study> participatingStudies = participantRepository.findByUserOrderByCreateDate(user).stream()
+                .map(Participant::getStudy)
+                .collect(Collectors.toList());
+        for (Study study : participatingStudies) {
+            eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
+        }
     }
 
     @Transactional
