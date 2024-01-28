@@ -109,6 +109,11 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    public boolean existFcmToken(String token) {
+        FcmToken newToken = FcmToken.from(this, token);
+        return fcmTokens.contains(newToken);
+    }
+
     public void addFcmToken(String token) {
         FcmToken newToken = FcmToken.from(this, token);
         fcmTokens.stream()

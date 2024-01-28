@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
@@ -30,6 +31,8 @@ class AuthServiceTest extends ServiceTest {
     private AuthService authService;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private ParticipantRepository participantRepository;
     @Mock
     private MessageUtils messageUtils;
     @Mock
