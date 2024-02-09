@@ -1,4 +1,5 @@
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/routes/home_route.dart';
 import 'package:groupstudy/routes/sign_routes/reset_password_verify_route.dart';
@@ -118,7 +119,9 @@ class _SignInRouteState extends State<SignInRoute> {
         _isProcessing = true;
 
         try {
-          await Auth.signIn(_phoneNumber, _password).then((value) =>
+          String fcmToken = await FirebaseMessaging.instance.getToken()??"";
+
+          await Auth.signIn(_phoneNumber, _password, fcmToken).then((value) =>
             Util.pushRouteAndPopUntil(context, (context) => const HomeRoute()));
         }
         on Exception catch (e) {

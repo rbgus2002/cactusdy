@@ -13,10 +13,12 @@ class SignInfo {
 
   final int userId;
   final String token;
+  final String fcmToken;
 
   SignInfo({
     required this.userId,
     required this.token,
+    required this.fcmToken,
   });
 
   /// For Flavor
@@ -34,13 +36,14 @@ class SignInfo {
 
   @override
   String toString() {
-    return "{ userId : $userId, token : $token }";
+    return "{ userId : $userId, token : $token, fcmToken : $fcmToken }";
   }
 
   factory SignInfo.fromJson(Map<String, dynamic> json) {
     return SignInfo(
         userId: json['userId'],
-        token: json['token']
+        token: json['token'],
+        fcmToken: json['fcmToken'],
     );
   }
 
@@ -48,6 +51,7 @@ class SignInfo {
     Map<String, dynamic> data = {
       'userId': userId,
       'token': token,
+      'fcmToken': fcmToken,
     };
 
     return data;

@@ -61,11 +61,11 @@ class Auth {
     }
   }
 
-  static Future<bool> signIn(String phoneNumber, String password) async {
+  static Future<bool> signIn(String phoneNumber, String password, String fcmToken) async {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'password': password,
-      'fcmToken': await FirebaseMessaging.instance.getToken(),
+      'fcmToken': fcmToken,
     };
 
     final response = await http.post(
@@ -80,9 +80,14 @@ class Auth {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
+      //< FIXME
+      var signInfoJson = responseJson['data']['loginUser'];
+      signInfoJson['fcmToken'] = fcmToken;
+
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      logger.infoLog('user auth token: ${signInfo!.token}');
       SignInfo.setSignInfo(signInfo!);
+
+      logger.infoLog('user auth token: ${signInfo!.token}');
 
       return responseJson['success'];
     }

@@ -10,6 +10,7 @@ import 'package:groupstudy/routes/notices/notice_detail_route.dart';
 import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
+import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/services/firebase_options.dart' as prod;
 import 'package:groupstudy/services/firebase_options_dev.dart' as dev;
 import 'package:groupstudy/services/logger.dart';
@@ -30,7 +31,6 @@ class MessageService {
     await _initLocalNotification();
     await _setupInteractedMessage(_MessageInteractionHandler._handleMessageInteraction);
 
-    // if you want to see firebase messaging token, uncomment under line.
     logger.infoLog('firebase messaging token: ${await FirebaseMessaging.instance.getToken()}');
   }
 
@@ -149,6 +149,18 @@ class MessageService {
     }
 
     FirebaseMessaging.onMessageOpenedApp.listen(messageHandler);
+  }
+
+  static Future<bool> checkFCMToken() async {
+    String? currentToken = await FirebaseMessaging.instance.getToken();
+    String? savedToken = Auth.signInfo?.fcmToken;
+
+    if ((currentToken == null) || (savedToken == null)) {
+      return false;
+    }
+
+    logger.infoLog('current fcm token is different from saved one');
+    return (currentToken.compareTo(savedToken) == 0);
   }
 
   // terminated : it's only work in release mode
