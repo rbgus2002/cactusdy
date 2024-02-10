@@ -85,6 +85,8 @@
     "wrongVerificationCode": "인증번호를 다시 입력해주세요.",
 
     "setProfileAndNickname": "프로필과 닉네임을 설정해주세요",
+    "nameLengthHint": "2글자 이상 입력해주세요",
+    "nameHint": "이름은 한글과 영어만 입력 가능해요",
     "name": "이름",
     "nickname": "닉네임",
     "statusMessage": "상태 메세지",

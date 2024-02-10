@@ -15,10 +15,12 @@ class Auth {
   // string length limits
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
+  static const int nameMinLength = 2;
 
   // const values
   static const int verificationCodeLength = 6;
   static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
+  static final RegExp nameRegex = RegExp(r"^[ㄱ-ㅎ가-힣a-zA-Z+]*$"); // only allow korean and english
 
   static Logger logger = Logger('Auth');
   static SignInfo? signInfo;

@@ -90,6 +90,15 @@ class _SignUpDetailRouteState extends State<SignUpDetailRoute> {
     if (input == null || input.isEmpty) {
       return context.local.inputHint1(context.local.name);
     }
+
+    if (input.length < Auth.nameMinLength) {
+      return context.local.nameLengthHint;
+    }
+
+    if (!Auth.nameRegex.hasMatch(input)) {
+      return context.local.nameHint;
+    }
+
     return null;
   }
 
