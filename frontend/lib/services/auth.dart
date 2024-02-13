@@ -15,10 +15,12 @@ class Auth {
   // string length limits
   static const int phoneNumberMaxLength = 255;
   static const int passwordMaxLength = 255;
+  static const int nameMinLength = 2;
 
   // const values
   static const int verificationCodeLength = 6;
   static const int expireTime = 60 * 3; // Verification Code Expire Time : 3 min
+  static final RegExp nameRegex = RegExp(r"^[ㄱ-ㅎ가-힣a-zA-Z+]*$"); // only allow korean and english
 
   static Logger logger = Logger('Auth');
   static SignInfo? signInfo;
@@ -61,11 +63,11 @@ class Auth {
     }
   }
 
-  static Future<bool> signIn(String phoneNumber, String password) async {
+  static Future<bool> signIn(String phoneNumber, String password, String fcmToken) async {
     Map<String, dynamic> data = {
       'phoneNumber': phoneNumber,
       'password': password,
-      'fcmToken': await FirebaseMessaging.instance.getToken(),
+      'fcmToken': fcmToken,
     };
 
     final response = await http.post(
@@ -80,9 +82,14 @@ class Auth {
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
+      //< FIXME
+      var signInfoJson = responseJson['data']['loginUser'];
+      signInfoJson['fcmToken'] = fcmToken;
+
       signInfo = SignInfo.fromJson(responseJson['data']['loginUser']);
-      logger.infoLog('user auth token: ${signInfo!.token}');
       SignInfo.setSignInfo(signInfo!);
+
+      logger.infoLog('user auth token: ${signInfo!.token}');
 
       return responseJson['success'];
     }

@@ -29,6 +29,17 @@ class HomeRoute extends StatefulWidget {
 class _HomeRouteState extends State<HomeRoute> {
   static const EdgeInsets _specialPadding = EdgeInsets.all(16);
 
+  late Future _futureUser;
+  late Future _futureStudySummary;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _futureUser = _getUserProfile();
+    _futureStudySummary = StudySummary.getStudies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +60,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
                 // User Profile
                 FutureBuilder(
-                  future: _getUserProfile(),
+                  future: _futureUser,
                   builder: (context, snapshot) =>
                     (snapshot.hasData) ?
                       UserLineProfileWidget(user: snapshot.data!) :
@@ -76,7 +87,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
                 // study panels
                 FutureBuilder(
-                  future: StudySummary.getStudies(),
+                  future: _futureStudySummary,
                   builder: (context, snapshot) =>
                     (snapshot.hasData)?
                       (snapshot.data!.isEmpty) ?
@@ -101,10 +112,13 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Future<void> _refresh() async {
+    _futureUser = _getUserProfile();
+    _futureStudySummary = StudySummary.getStudies();
+
     return setState(() { });
   }
 
-  Future _getUserProfile() async {
+  Future<User?> _getUserProfile() async {
     try {
       return await User.getUserProfileSummary();
     } on Exception catch (e) {
@@ -122,6 +136,8 @@ class _HomeRouteState extends State<HomeRoute> {
       } else {
         debugPrint(message);
       }
+
+      return null;
     }
   }
 }
