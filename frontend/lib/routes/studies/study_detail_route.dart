@@ -132,7 +132,7 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
             top: -320,
             child: Container(
               height: 480,
-              width: double.maxFinite,
+              width: 30000, //< FIXME
               color: study.color),),
 
           Positioned(
