@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:groupstudy/routes/home_route.dart';
 import 'package:groupstudy/routes/start_route.dart';
 import 'package:groupstudy/services/auth.dart';
+import 'package:groupstudy/services/message_service.dart';
 import 'package:groupstudy/services/uri_link_service.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/utilities/util.dart';
@@ -11,7 +12,7 @@ import 'package:lottie/lottie.dart';
 
 /// in Splash Route, these works will happened.
 /// 1. Show splash image.
-/// 2. Check Auth Info (sign in or not).
+/// 2. Check Auth Info with FCM token (sign in or not).
 class SplashRoute extends StatefulWidget {
   const SplashRoute({ super.key, });
 
@@ -29,13 +30,19 @@ class _SplashRouteState extends State<SplashRoute> {
     Auth.loadSignInfo();
 
     Timer(_splashDuration, () {
-      if (Auth.signInfo == null) {
-        Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const StartRoute());
-      }
-      else {
-        Util.replaceRouteWithFade(context, (context, animation, secondaryAnimation) => const HomeRoute());
-        UriLinkService.handleInitialUri();
-      }
+      MessageService.checkFCMToken().then((sameFCMToken) {
+        // check: 1. signInfo 2. FCM Token
+        if ((Auth.signInfo == null) || (!sameFCMToken)) {
+          Auth.signOut();
+          Util.replaceRouteWithFade(context, (context, animation,
+              secondaryAnimation) => const StartRoute());
+        }
+        else {
+          Util.replaceRouteWithFade(context, (context, animation,
+              secondaryAnimation) => const HomeRoute());
+          UriLinkService.handleInitialUri();
+        }
+      });
     });
   }
 
