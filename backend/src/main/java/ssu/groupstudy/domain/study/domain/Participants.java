@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
@@ -59,7 +60,13 @@ public class Participants {
         return participants.isEmpty();
     }
 
-    protected void updateHostUser(User user) {
+    protected void changeHostUser(User user) {
         this.hostUser = user;
+    }
+
+    public Optional<Participant> getHostParticipant() {
+        return participants.stream()
+                .filter(participant -> participant.getUser().equals(hostUser))
+                .findFirst();
     }
 }

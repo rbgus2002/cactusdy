@@ -101,9 +101,9 @@ class StudyInviteServiceTest extends ServiceTest {
             studyInviteService.inviteUser(장재우, "000000");
 
             // then
-            softly.assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(2);
-            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(최규현, 알고리즘스터디)));
-            softly.assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipantList().size()).isEqualTo(2);
+            softly.assertThat(알고리즘스터디.getParticipantList().contains(new Participant(최규현, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipantList().contains(new Participant(장재우, 알고리즘스터디)));
         }
     }
 
@@ -134,8 +134,8 @@ class StudyInviteServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(알고리즘스터디.getParticipants().size()).isEqualTo(1),
-                    () -> assertThat(알고리즘스터디.getParticipants().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipantList().size()).isEqualTo(1),
+                    () -> assertThat(알고리즘스터디.getParticipantList().contains(new Participant(장재우, 알고리즘스터디)))
             );
         }
     }

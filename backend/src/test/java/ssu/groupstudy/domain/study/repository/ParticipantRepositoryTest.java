@@ -140,7 +140,7 @@ class ParticipantRepositoryTest {
         participantRepository.save(new Participant(장재우, 스터디));
 
         // when
-        List<Participant> participants = 스터디.getParticipants().stream()
+        List<Participant> participants = 스터디.getParticipantList().stream()
                 .sorted(Comparator.comparing(Participant::getCreateDate))
                 .collect(Collectors.toList());
 

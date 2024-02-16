@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
 import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.global.constant.Color;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -38,7 +39,13 @@ public class Participant extends BaseEntity {
     public Participant(User user, Study study) {
         this.user = user;
         this.study = study;
-        this.color = getDefaultColor();
+        this.color = Color.DEFAULT.getHex();
+    }
+
+    public static Participant createWithColor(User user, Study study, String color) {
+        Participant participant = new Participant(user, study);
+        participant.setColor(color);
+        return participant;
     }
 
     @Override
@@ -54,10 +61,6 @@ public class Participant extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(user.getUserId(), study.getStudyId());
-    }
-
-    private String getDefaultColor() {
-        return "0xFFE8F5E9";
     }
 
     public void setColor(String color) {

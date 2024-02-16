@@ -37,6 +37,7 @@ public enum ResultCode {
 
     // 404
     USER_NOT_FOUND(404, "존재하지 않는 사용자에요"),
+    HOST_USER_NOT_FOUND(404, "방장이 존재하지 않아요"),
     STUDY_NOT_FOUND(404, "존재하지 않는 스터디에요"),
     STUDY_INVITE_CODE_NOT_FOUND(404, "존재하지 않는 코드번호에요"),
     NOTICE_NOT_FOUND(404, "존재하지 않는 공지사항이에요"),

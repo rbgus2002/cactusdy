@@ -7,11 +7,13 @@ import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
+import ssu.groupstudy.global.constant.Color;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -69,7 +71,13 @@ public class Study extends BaseEntity {
         if (isParticipated(user)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
-        participants.addParticipant(new Participant(user, this));
+        Optional<Participant> hostParticipant = this.participants.getHostParticipant();
+        String color = Color.DEFAULT.getHex();
+        if(hostParticipant.isPresent()){
+            color = hostParticipant.get().getColor();
+        }
+        Participant participant = Participant.createWithColor(user, this, color);
+        participants.addParticipant(participant);
     }
 
     public void leave(User user) {
@@ -89,7 +97,7 @@ public class Study extends BaseEntity {
         return participants.isHostUser(user);
     }
 
-    public List<Participant> getParticipants() {
+    public List<Participant> getParticipantList() {
         return this.participants.getParticipants();
     }
 
@@ -108,7 +116,7 @@ public class Study extends BaseEntity {
     public void edit(String studyName, String detail, User hostUser) {
         this.studyName = studyName;
         this.detail = detail;
-        this.participants.updateHostUser(hostUser);
+        this.participants.changeHostUser(hostUser);
     }
 
     public void kickParticipant(User user) {

@@ -81,7 +81,7 @@ class StudyServiceTest extends ServiceTest {
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
 
             // then
-            Participant participant = 알고리즘스터디.getParticipants().get(0);
+            Participant participant = 알고리즘스터디.getParticipantList().get(0);
             softly.assertThat(participant.getColor()).isEqualTo(알고리즘스터디CreateRequest.getColor());
         }
 
