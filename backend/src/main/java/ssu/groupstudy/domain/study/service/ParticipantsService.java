@@ -58,7 +58,7 @@ public class ParticipantsService {
     }
 
     private List<Participant> getParticipantListOrderByCreateDateAsc(Study study) {
-        return study.getParticipants().stream()
+        return study.getParticipantList().stream()
                 .sorted(Comparator.comparing((Participant p) -> !p.getUser().equals(study.getHostUser()))
                         .thenComparing(Participant::getCreateDate))
                 .collect(Collectors.toList());

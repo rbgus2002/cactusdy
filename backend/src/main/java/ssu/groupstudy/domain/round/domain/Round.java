@@ -48,7 +48,7 @@ public class Round extends BaseEntity {
 
     @Builder
     public Round(Study study, String studyPlace, LocalDateTime studyTime) {
-        addParticipants(study.getParticipants());
+        addParticipants(study.getParticipantList());
         this.study = study;
         this.appointment = Appointment.of(studyPlace, studyTime);
         this.deleteYn = 'N';
