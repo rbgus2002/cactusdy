@@ -16,7 +16,7 @@ class TaskGroupWidget extends StatefulWidget {
   final Study study;
   final int roundId;
   final TaskGroup taskGroup;
-  final Function? updateProgress;
+  final VoidCallback? updateProgress;
 
   final Function(String, int, Function(Task))? subscribe;
   final Function(String, int, String, List<TaskInfo>)? notify;
