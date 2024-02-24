@@ -44,4 +44,11 @@ public class UserApi {
         Long userId = userService.removeUser(userDetails.getUser());
         return DataResponseDto.of("userId", userId);
     }
+
+    @Operation(summary = "사용자가 활동한 시간을 갱신한다", description = "홈화면 갱신 시에 함께 호출된다")
+    @PatchMapping("/activate-date")
+    public ResponseDto updateActivateDate(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.updateActivateDate(userDetails.getUser());
+        return ResponseDto.success();
+    }
 }
