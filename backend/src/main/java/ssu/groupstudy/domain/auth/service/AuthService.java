@@ -25,10 +25,9 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.constant.S3Code;
+import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
-import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +44,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
-    private final S3Utils s3Utils;
+    private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
@@ -78,7 +77,6 @@ public class AuthService {
     }
 
     private void handleSuccessfulLogin(SignInRequest request, User user) {
-        user.updateActivateDate();
         handleFcmToken(request, user);
     }
 
@@ -103,23 +101,15 @@ public class AuthService {
     public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
         assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
         User user = processUserSaving(request);
-        user.addUserRole();
-        handleUploadProfileImage(user, image);
+        imageManager.updateImage(user, image);
         return user.getUserId();
     }
 
     private User processUserSaving(SignUpRequest request) {
         String password = passwordEncoder.encode(request.getPassword());
         User user = request.toEntity(password);
+        user.addUserRole();
         return userRepository.save(user);
-    }
-
-    private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
-        if (image == null) {
-            return;
-        }
-        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
-        user.updatePicture(imageUrl);
     }
 
     private void assertPhoneNumberDoesNotExistOrThrow(String phoneNumber) {

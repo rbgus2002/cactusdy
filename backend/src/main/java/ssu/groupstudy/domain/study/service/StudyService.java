@@ -32,8 +32,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.constant.S3Code;
-import ssu.groupstudy.global.util.S3Utils;
+import ssu.groupstudy.global.util.ImageManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,7 +50,7 @@ public class StudyService {
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
     private final RuleRepository ruleRepository;
-    private final S3Utils s3Utils;
+    private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
     private final int INVITE_CODE_LENGTH = 6;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
@@ -60,7 +59,7 @@ public class StudyService {
     public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
         Study study = createNewStudy(dto, user);
-        handleUploadProfileImage(study, image);
+        imageManager.updateImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
@@ -110,14 +109,6 @@ public class StudyService {
         });
     }
 
-    private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {
-        if (image == null) {
-            return;
-        }
-        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.STUDY_IMAGE, study.getStudyId());
-        study.updatePicture(imageUrl);
-    }
-
     public StudySummaryResponse getStudySummary(long studyId, User user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
@@ -164,7 +155,7 @@ public class StudyService {
         User newHostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        handleUploadProfileImage(study, image);
+        imageManager.updateImage(study, image);
         processEdit(dto, study, participant, newHostUser);
 
         return study.getStudyId();
