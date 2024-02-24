@@ -53,7 +53,7 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     Optional<Round> findLatestRound(Long studyId);
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N'")
-    Long countRoundByStudy(Study study);
+    Long countRoundsByStudy(Study study);
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime <= :studyTime")
     Long countByStudyTimeLessThanEqual(Study study, LocalDateTime studyTime);

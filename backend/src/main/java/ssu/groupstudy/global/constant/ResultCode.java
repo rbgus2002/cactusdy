@@ -25,6 +25,7 @@ public enum ResultCode {
     USER_NOT_PARTICIPATED(400, "스터디에 참여 중인 사용자가 아니에요"),
     HOST_USER_CAN_NOT_LEAVE_STUDY(400, "다른 멤버가 있을때, 방장은 탈퇴할 수 없어요"),
     USER_CAN_NOT_CREATE_STUDY(400, "스터디는 최대 5개까지만 생성할 수 있어요"),
+    USER_CAN_NOT_CREATE_ROUND(400, "회차 최대 30개까지만 생성할 수 있어요"),
     INVALID_TASK_ACCESS(400, "본인이 생성한 태스크만 접근이 가능합니다"),
     HOST_USER_ONLY_CAN_DELETE_ROUND(400, "방장만 회차를 삭제할 수 있습니다"),
     USER_CAN_NOT_KICK_PARTICIPANT(400, "방장만 스터디 회원을 강퇴할 수 있어요"),
