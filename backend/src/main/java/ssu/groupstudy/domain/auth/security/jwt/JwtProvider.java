@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ssu.groupstudy.domain.auth.service.CustomUserDetailService;
-import ssu.groupstudy.domain.user.domain.Authority;
+import ssu.groupstudy.domain.auth.domain.Authority;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
