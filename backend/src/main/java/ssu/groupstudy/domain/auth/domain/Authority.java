@@ -1,9 +1,10 @@
-package ssu.groupstudy.domain.user.domain;
+package ssu.groupstudy.domain.auth.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.user.domain.User;
 
 import javax.persistence.*;
 
