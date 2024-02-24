@@ -78,6 +78,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    protected ResponseEntity<ErrorResponseDto> handleIllegalStateException(IllegalStateException e) {
+        log.error("IllegalStateException : {}", e.getMessage());
+        final ErrorResponseDto response = ErrorResponseDto.of(ResultCode.INVALID_METHOD_ARGUMENT, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
+    }
+
+
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponseDto> handleBusinessException(BusinessException e) {
         log.warn("BusinessException : {}", e.getMessage());
