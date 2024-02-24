@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notification.domain;
+package ssu.groupstudy.domain.notification.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
