@@ -64,4 +64,8 @@ public class FcmToken {
     public void updateActivateDate(){
         this.activateDate = LocalDateTime.now();
     }
+
+    public boolean isExpired(){
+        return this.activateDate.isBefore(LocalDateTime.now().minusDays(30));
+    }
 }
