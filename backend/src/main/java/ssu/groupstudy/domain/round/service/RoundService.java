@@ -13,10 +13,11 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ssu.groupstudy.global.constant.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,37 +26,45 @@ import java.util.stream.Collectors;
 public class RoundService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
+    private final int ROUND_LIMIT = 30;
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {
         Study study = studyRepository.findById(studyId)
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+        checkRoundMoreThanLimit(study);
         return roundRepository.save(dto.toEntity(study)).getRoundId();
+    }
+
+    private void checkRoundMoreThanLimit(Study study) {
+        if (roundRepository.countRoundsByStudy(study) >= ROUND_LIMIT) {
+            throw new IllegalStateException(USER_CAN_NOT_CREATE_ROUND.getMessage());
+        }
     }
 
     @Transactional
     public void updateAppointment(long roundId, AppointmentRequest dto) {
         Round round = roundRepository.findById(roundId)
-                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+                .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.updateAppointment(dto.toAppointment());
     }
 
     public RoundDto.RoundDetailResponse getDetail(long roundId) {
         Round round = roundRepository.findById(roundId)
-                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+                .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return RoundDto.createRoundDetail(round);
     }
 
     @Transactional
     public void updateDetail(long roundId, String detail) {
         Round round = roundRepository.findById(roundId)
-                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+                .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.updateDetail(detail);
     }
 
     public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId) {
         Study study = studyRepository.findById(studyId)
-                .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
+                .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundDto::createRoundInfo)
                 .collect(Collectors.toList());
@@ -64,7 +73,7 @@ public class RoundService {
     @Transactional
     public void deleteRound(long roundId, User user) {
         Round round = roundRepository.findById(roundId)
-                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
+                .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.deleteRound(user);
     }
 }

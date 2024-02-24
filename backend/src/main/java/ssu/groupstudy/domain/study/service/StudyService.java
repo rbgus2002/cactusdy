@@ -58,14 +58,14 @@ public class StudyService {
 
     @Transactional
     public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
-        canCreateNewStudy(user);
+        checkParticipatingStudyMoreThanLimit(user);
         Study study = createNewStudy(dto, user);
         handleUploadProfileImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
 
-    private void canCreateNewStudy(User user) {
+    private void checkParticipatingStudyMoreThanLimit(User user) {
         if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
             throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
         }
