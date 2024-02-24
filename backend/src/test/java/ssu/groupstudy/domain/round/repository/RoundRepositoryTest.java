@@ -102,7 +102,7 @@ class RoundRepositoryTest{
         Study 스터디 = studyRepository.findById(2L).get();
 
         // when
-        Long roundCount = roundRepository.countRoundByStudy(스터디);
+        Long roundCount = roundRepository.countRoundsByStudy(스터디);
 
         // then
         softly.assertThat(roundCount).isEqualTo(1);
