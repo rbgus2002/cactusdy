@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.notification.domain.FcmToken;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
