@@ -38,7 +38,7 @@ public class ExampleStudyCreateService {
         Study studyEntity = studyRepository.save(study);
         createExampleOthers(user, studyEntity);
 
-        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/ed6d73ff-0076-49cc-81eb-bf6392887a34");
+        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
     }
 
     private void createExampleOthers(User user, Study study) {
@@ -63,7 +63,7 @@ public class ExampleStudyCreateService {
         Rule rule1 = Rule.create("지각하면 벌금 5000원", study);
         Rule rule2 = Rule.create("매일 영단어 20개 외우고 인증 사진 올리기", study);
         Rule rule3 = Rule.create("공부 시간 기록하고 인증하기", study);
-        Rule rule4 = Rule.create("예시 스터디에는 알림이 오지 않아요", study);
+        Rule rule4 = Rule.create("(예시 스터디에는 알림이 오지 않아요)", study);
         List<Rule> rules = List.of(rule1, rule2, rule3, rule4);
         ruleRepository.saveAll(rules);
     }
@@ -74,6 +74,11 @@ public class ExampleStudyCreateService {
         Round round2 = createRoundEntity(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12));
         List<Round> rounds = List.of(round1, round2);
         roundRepository.saveAll(rounds);
+        createExampleTask(round1);
+    }
+
+    private void createExampleTask(Round round) {
+
     }
 
     private Round createRoundEntity(Study study, String studyPlace, LocalDateTime studyTime) {
