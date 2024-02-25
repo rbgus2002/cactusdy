@@ -65,8 +65,7 @@ public class ExampleStudyCreateService {
         Rule rule1 = Rule.create("지각하면 벌금 5000원", study);
         Rule rule2 = Rule.create("매일 영단어 20개 암기", study);
         Rule rule3 = Rule.create("공부 시간 기록하고 공지사항에 인증하기", study);
-        Rule rule4 = Rule.create("(예시 스터디에는 알림이 오지 않아요)", study);
-        List<Rule> rules = List.of(rule1, rule2, rule3, rule4);
+        List<Rule> rules = List.of(rule1, rule2, rule3);
         ruleRepository.saveAll(rules);
     }
 
