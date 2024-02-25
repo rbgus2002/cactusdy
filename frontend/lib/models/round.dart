@@ -16,6 +16,9 @@ class Round {
   // state code
   static const int nonAllocatedRoundId = -1;
 
+  // const value
+  static const int roundLimitedCount = 60;
+
   static Logger logger = Logger('Round');
 
   int roundId;
