@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +31,7 @@ import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.constant.S3Code;
-import ssu.groupstudy.global.util.S3Utils;
+import ssu.groupstudy.global.util.ImageManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,22 +43,25 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyService {
+    private final StudyInviteService studyInviteService;
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final ParticipantRepository participantRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
     private final RuleRepository ruleRepository;
-    private final S3Utils s3Utils;
+    private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
-    private final int INVITE_CODE_LENGTH = 6;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
     public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
-        Study study = createNewStudy(dto, user);
-        handleUploadProfileImage(study, image);
+        String inviteCode = studyInviteService.generateUniqueInviteCode();
+        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
+        createDefaultOthers(study);
+
+        imageManager.updateImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
@@ -71,29 +72,9 @@ public class StudyService {
         }
     }
 
-    private Study createNewStudy(CreateStudyRequest dto, User user) {
-        String inviteCode = generateUniqueInviteCode();
-        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
-        createDefaultRound(study);
+    private void createDefaultOthers(Study study) {
         createDefaultRule(study);
-        return study;
-    }
-
-    private String generateUniqueInviteCode() {
-        String newInviteCode;
-        do {
-            newInviteCode = RandomStringUtils.randomNumeric(INVITE_CODE_LENGTH);
-        } while (studyRepository.findByInviteCode(newInviteCode).isPresent());
-
-        return newInviteCode;
-    }
-
-    private void createDefaultRound(Study study) {
-        AppointmentRequest appointment = AppointmentRequest.builder()
-                .studyPlace(null)
-                .studyTime(null)
-                .build();
-        Round defaultRound = roundRepository.save(appointment.toEntity(study));
+        Round defaultRound = createDefaultRound(study);
         createDefaultTask(defaultRound);
     }
 
@@ -102,20 +83,20 @@ public class StudyService {
         ruleRepository.save(rule);
     }
 
+    private Round createDefaultRound(Study study) {
+        AppointmentRequest appointment = AppointmentRequest.builder()
+                .studyPlace(null)
+                .studyTime(null)
+                .build();
+        return roundRepository.save(appointment.toEntity(study));
+    }
+
     private void createDefaultTask(Round defaultRound) {
         List<RoundParticipant> roundParticipants = defaultRound.getRoundParticipants();
         roundParticipants.forEach(roundParticipant -> {
             roundParticipant.createTask(TaskType.PERSONAL.getDetail(), TaskType.PERSONAL);
             roundParticipant.createTask(TaskType.GROUP.getDetail(), TaskType.GROUP);
         });
-    }
-
-    private void handleUploadProfileImage(Study study, MultipartFile image) throws IOException {
-        if (image == null) {
-            return;
-        }
-        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.STUDY_IMAGE, study.getStudyId());
-        study.updatePicture(imageUrl);
     }
 
     public StudySummaryResponse getStudySummary(long studyId, User user) {
@@ -164,7 +145,7 @@ public class StudyService {
         User newHostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
-        handleUploadProfileImage(study, image);
+        imageManager.updateImage(study, image);
         processEdit(dto, study, participant, newHostUser);
 
         return study.getStudyId();
