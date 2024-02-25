@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ public class StudyInviteService {
 
     private final ApplicationEventPublisher eventPublisher;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
+    private final int INVITE_CODE_LENGTH = 6;
 
     @Transactional
     public Long inviteUser(User user, String inviteCode) {
@@ -83,5 +85,14 @@ public class StudyInviteService {
         for (Round round : futureRounds) {
             round.removeParticipant(new RoundParticipant(user, round));
         }
+    }
+
+    protected String generateUniqueInviteCode() {
+        String newInviteCode;
+        do {
+            newInviteCode = RandomStringUtils.randomNumeric(INVITE_CODE_LENGTH);
+        } while (studyRepository.findByInviteCode(newInviteCode).isPresent());
+
+        return newInviteCode;
     }
 }

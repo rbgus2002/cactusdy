@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +43,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyService {
+    private final StudyInviteService studyInviteService;
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final ParticipantRepository participantRepository;
@@ -52,13 +52,15 @@ public class StudyService {
     private final RuleRepository ruleRepository;
     private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
-    private final int INVITE_CODE_LENGTH = 6;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
     public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
-        Study study = createNewStudy(dto, user);
+        String inviteCode = studyInviteService.generateUniqueInviteCode();
+        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
+        createDefaultOthers(study);
+
         imageManager.updateImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
@@ -70,35 +72,23 @@ public class StudyService {
         }
     }
 
-    private Study createNewStudy(CreateStudyRequest dto, User user) {
-        String inviteCode = generateUniqueInviteCode();
-        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
-        createDefaultRound(study);
+    private void createDefaultOthers(Study study) {
         createDefaultRule(study);
-        return study;
-    }
-
-    private String generateUniqueInviteCode() {
-        String newInviteCode;
-        do {
-            newInviteCode = RandomStringUtils.randomNumeric(INVITE_CODE_LENGTH);
-        } while (studyRepository.findByInviteCode(newInviteCode).isPresent());
-
-        return newInviteCode;
-    }
-
-    private void createDefaultRound(Study study) {
-        AppointmentRequest appointment = AppointmentRequest.builder()
-                .studyPlace(null)
-                .studyTime(null)
-                .build();
-        Round defaultRound = roundRepository.save(appointment.toEntity(study));
+        Round defaultRound = createDefaultRound(study);
         createDefaultTask(defaultRound);
     }
 
     private void createDefaultRule(Study study) {
         Rule rule = Rule.create("스터디 규칙을 추가해보세요!", study);
         ruleRepository.save(rule);
+    }
+
+    private Round createDefaultRound(Study study) {
+        AppointmentRequest appointment = AppointmentRequest.builder()
+                .studyPlace(null)
+                .studyTime(null)
+                .build();
+        return roundRepository.save(appointment.toEntity(study));
     }
 
     private void createDefaultTask(Round defaultRound) {
