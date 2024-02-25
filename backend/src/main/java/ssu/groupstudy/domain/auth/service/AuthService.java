@@ -18,6 +18,7 @@ import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubsc
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
+import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 public class AuthService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final ExampleStudyCreateService exampleStudyCreateService;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
@@ -99,9 +101,11 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
-        assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
+        checkPhoneNumberExist(request.getPhoneNumber());
         User user = processUserSaving(request);
         imageManager.updateImage(user, image);
+        exampleStudyCreateService.createExampleStudy(user);
+
         return user.getUserId();
     }
 
@@ -112,7 +116,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    private void assertPhoneNumberDoesNotExistOrThrow(String phoneNumber) {
+    private void checkPhoneNumberExist(String phoneNumber) {
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
         }
@@ -120,7 +124,7 @@ public class AuthService {
 
     public void sendMessageToSignUp(MessageRequest request) {
         String phoneNumber = request.getPhoneNumber();
-        assertPhoneNumberDoesNotExistOrThrow(phoneNumber);
+        checkPhoneNumberExist(phoneNumber);
 
         String verificationMessage = generateVerificationMessage(phoneNumber);
         messageUtils.sendMessage(phoneNumber, verificationMessage);
