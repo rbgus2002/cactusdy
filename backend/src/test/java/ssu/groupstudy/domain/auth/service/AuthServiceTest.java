@@ -6,17 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
+import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.S3Utils;
 
@@ -29,6 +30,8 @@ import static org.mockito.Mockito.doReturn;
 class AuthServiceTest extends ServiceTest {
     @InjectMocks
     private AuthService authService;
+    @Mock
+    private ExampleStudyCreateService exampleStudyCreateService;
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -43,6 +46,8 @@ class AuthServiceTest extends ServiceTest {
     private S3Utils s3Utils;
     @Mock
     private ApplicationEventPublisher eventPublisher;
+    @Mock
+    private ImageManager imageManager;
 
 
     @Nested
@@ -70,22 +75,6 @@ class AuthServiceTest extends ServiceTest {
             final Long userId = authService.signUp(최규현SignUpRequest, null);
 
             // then
-            softly.assertThat(userId).isNotNull();
-        }
-
-        @Test
-        @DisplayName("회원 가입 시에 프로필 이미지를 함께 업로드한다.")
-        void 회원가입() throws IOException {
-            // given
-            doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
-            doReturn(최규현).when(userRepository).save(any(User.class));
-            doReturn("profileImageUrl").when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
-
-            // when
-            final Long userId = authService.signUp(최규현SignUpRequest, new MockMultipartFile("tmp", new byte[1]));
-
-            // then
-            softly.assertThat(최규현.getPicture()).isEqualTo("profileImageUrl");
             softly.assertThat(userId).isNotNull();
         }
     }

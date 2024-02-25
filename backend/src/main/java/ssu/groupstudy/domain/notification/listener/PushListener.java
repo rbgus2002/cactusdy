@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.domain.TopicCode;
+import ssu.groupstudy.domain.notification.constants.TopicCode;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;

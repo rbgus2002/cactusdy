@@ -6,14 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.mock.web.MockMultipartFile;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -21,6 +19,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
@@ -35,6 +34,8 @@ class StudyServiceTest extends ServiceTest {
     @InjectMocks
     private StudyService studyService;
     @Mock
+    private StudyInviteService studyInviteService;
+    @Mock
     private StudyRepository studyRepository;
     @Mock
     private ParticipantRepository participantRepository;
@@ -45,33 +46,17 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private ApplicationEventPublisher eventPublisher;
     @Mock
+    private ImageManager imageManager;
+    @Mock
     private S3Utils s3Utils;
 
     @Nested
     class 스터디생성 {
         @Test
-        @DisplayName("프로필 사진을 함께 요청하면 스터디를 생성하면서 업로드한다.")
-        void uploadStudyProfileImage() throws IOException {
-            // given
-            final String PROFILE_IMAGE = "profileImage";
-            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
-            doReturn(PROFILE_IMAGE).when(s3Utils).uploadProfileImage(any(), any(), any(Long.class));
-            doReturn(Round.builder()
-                    .study(알고리즘스터디)
-                    .build()).when(roundRepository).save(any(Round.class));
-
-            // when
-            StudyCreateResponse studyCreateResponse = studyService.createStudy(알고리즘스터디CreateRequest, new MockMultipartFile("tmp", new byte[1]), 최규현);
-
-            // then
-            softly.assertThat(studyCreateResponse.getStudyId()).isNotNull();
-            softly.assertThat(알고리즘스터디.getPicture()).isEqualTo(PROFILE_IMAGE);
-        }
-
-        @Test
         @DisplayName("스터디를 생성하면서 스터디 색상을 지정한다.")
         void setColor() throws IOException {
             // given
+            doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
             doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
             doReturn(Round.builder()
                     .study(알고리즘스터디)

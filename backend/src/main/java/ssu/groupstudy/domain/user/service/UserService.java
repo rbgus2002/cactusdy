@@ -41,4 +41,9 @@ public class UserService {
         user.deleteUserInfo();
         return user.getUserId();
     }
+
+    @Transactional
+    public void updateActivateDate(User user) {
+        user.updateActivateDate();
+    }
 }

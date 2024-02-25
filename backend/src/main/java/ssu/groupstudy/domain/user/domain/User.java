@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.auth.domain.Authority;
+import ssu.groupstudy.domain.notification.domain.FcmToken;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -123,7 +125,7 @@ public class User extends BaseEntity {
         fcmTokens.add(newToken);
     }
 
-    public List<String> getFcmTokenList(){
+    public List<String> getFcmTokenList() {
         return fcmTokens.stream()
                 .map(FcmToken::getToken)
                 .collect(Collectors.toList());
@@ -139,7 +141,7 @@ public class User extends BaseEntity {
         this.statusMessage = statusMessage;
     }
 
-    public void deleteUserInfo(){
+    public void deleteUserInfo() {
         this.phoneNumber = "-";
         this.editProfile("-", "-");
         this.updatePicture(null);
@@ -147,7 +149,7 @@ public class User extends BaseEntity {
         this.deleteYn = 'Y';
     }
 
-    public boolean isDeleted(){
+    public boolean isDeleted() {
         return this.deleteYn == 'Y';
     }
 }

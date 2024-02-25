@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ssu.groupstudy.domain.notification.domain.TopicCode;
+import ssu.groupstudy.domain.notification.constants.TopicCode;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;

@@ -12,9 +12,9 @@ import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,9 +33,6 @@ class RoundServiceTest extends ServiceTest {
     private RoundRepository roundRepository;
     @Mock
     private StudyRepository studyRepository;
-    @Mock
-    private UserRepository userRepository;
-
 
     @Nested
     class CreateRound {
@@ -55,14 +52,29 @@ class RoundServiceTest extends ServiceTest {
         @DisplayName("회차 생성 시에 스터디 장소와 약속 시간은 빈 값으로 둘수 있다")
         void success_emptyTimeAndPlace() {
             // given
-            doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(10L).when(roundRepository).countRoundsByStudy(any(Study.class));
+            doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
 
             // when
             Long roundId = roundService.createRound(-1L, 회차2AppointmentRequest_EmptyTimeAndPlace);
 
             // then
             assertThat(roundId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("회차는 30개 이상 생성할 수 없다")
+        void CreateRound(){
+            // given
+            // when
+            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(30L).when(roundRepository).countRoundsByStudy(any(Study.class));
+
+            // then
+            assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentRequest))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage(USER_CAN_NOT_CREATE_ROUND.getMessage());
         }
 
         @Test

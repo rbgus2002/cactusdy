@@ -18,6 +18,7 @@ import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubsc
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
+import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.domain.User;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
@@ -25,10 +26,9 @@ import ssu.groupstudy.domain.user.dto.response.SignInResponse;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.constant.S3Code;
+import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
-import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,11 +41,12 @@ import java.util.stream.Collectors;
 public class AuthService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final ExampleStudyCreateService exampleStudyCreateService;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
     private final RedisUtils redisUtils;
-    private final S3Utils s3Utils;
+    private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
@@ -78,7 +79,6 @@ public class AuthService {
     }
 
     private void handleSuccessfulLogin(SignInRequest request, User user) {
-        user.updateActivateDate();
         handleFcmToken(request, user);
     }
 
@@ -101,28 +101,22 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
-        assertPhoneNumberDoesNotExistOrThrow(request.getPhoneNumber());
+        checkPhoneNumberExist(request.getPhoneNumber());
         User user = processUserSaving(request);
-        user.addUserRole();
-        handleUploadProfileImage(user, image);
+        imageManager.updateImage(user, image);
+        exampleStudyCreateService.createExampleStudy(user);
+
         return user.getUserId();
     }
 
     private User processUserSaving(SignUpRequest request) {
         String password = passwordEncoder.encode(request.getPassword());
         User user = request.toEntity(password);
+        user.addUserRole();
         return userRepository.save(user);
     }
 
-    private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
-        if (image == null) {
-            return;
-        }
-        String imageUrl = s3Utils.uploadProfileImage(image, S3Code.USER_IMAGE, user.getUserId());
-        user.updatePicture(imageUrl);
-    }
-
-    private void assertPhoneNumberDoesNotExistOrThrow(String phoneNumber) {
+    private void checkPhoneNumberExist(String phoneNumber) {
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
         }
@@ -130,7 +124,7 @@ public class AuthService {
 
     public void sendMessageToSignUp(MessageRequest request) {
         String phoneNumber = request.getPhoneNumber();
-        assertPhoneNumberDoesNotExistOrThrow(phoneNumber);
+        checkPhoneNumberExist(phoneNumber);
 
         String verificationMessage = generateVerificationMessage(phoneNumber);
         messageUtils.sendMessage(phoneNumber, verificationMessage);
