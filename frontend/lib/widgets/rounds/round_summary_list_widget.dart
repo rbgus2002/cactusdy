@@ -93,6 +93,10 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         removedItemBuilder: _buildRemovedItem);
   }
 
+  void _refresh() {
+    setState(() { });
+  }
+
   Widget _buildRemovedItem(
       Round round, BuildContext context, Animation<double> animation) {
 
@@ -110,6 +114,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
           round: round,
           study: widget.study,
           onRemove: _removeRound,
+          onChanged: _refresh,
           participantProfileList: _getParticipantProfileList(round)),),
     );
   }
@@ -132,6 +137,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
               round: _roundListModel[index],
               study: widget.study,
               onRemove: _removeRound,
+              onChanged: _refresh,
               participantProfileList: _getParticipantProfileList(_roundListModel[index]),
           ),),
     );
