@@ -242,9 +242,21 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
   }
 
   void _editStudyTime() async {
-    Util.pushRouteWithSlideUp(
-        context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: widget.round,)).then((value) =>
-          widget.onChanged());
+    if (widget.round.roundId == Round.nonAllocatedRoundId) {
+      if (!_isProcessing) {
+        _isProcessing = true;
+
+        await Round.createRound(widget.round, widget.study.studyId);
+
+        _isProcessing = false;
+      }
+    }
+
+    if (mounted) {
+      Util.pushRouteWithSlideUp(
+          context, (context, animation, secondaryAnimation) =>
+          DateTimePickerRoute(round: widget.round,)).then((value) =>
+            widget.onChanged());
+    }
   }
 }
