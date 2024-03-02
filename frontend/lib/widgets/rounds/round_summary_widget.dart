@@ -23,6 +23,7 @@ class RoundSummaryWidget extends StatefulWidget {
   final Round round;
   final Study study;
   final Function(int) onRemove;
+  final VoidCallback onChanged;
   final List<UserProfileSummary> participantProfileList;
 
   const RoundSummaryWidget({
@@ -31,6 +32,7 @@ class RoundSummaryWidget extends StatefulWidget {
     required this.round,
     required this.study,
     required this.onRemove,
+    required this.onChanged,
     required this.participantProfileList,
   });
 
@@ -218,31 +220,31 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
                 round: widget.round,
                 study: widget.study,),
               onRemove: () => widget.onRemove(widget.roundSeq),))
-          .then((value) => setState(() { } ));
+          .then((value) => widget.onChanged());
       }
 
       _isProcessing = false;
     }
   }
 
-  void _updateStudyPlace() {
+  void _updateStudyPlace() async {
     widget.round.studyPlace = _placeEditingController.text;
-    _updateRound(widget.round);
+
+    if (widget.round.roundId == Round.nonAllocatedRoundId) {
+      await Round.createRound(widget.round, widget.study.studyId);
+    }
+    else {
+      await Round.updateAppointment(widget.round);
+    }
+
+    // update self only (not widget.onChanged())
+    setState(() { });
   }
 
   void _editStudyTime() async {
-    Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-        DateTimePickerRoute(round: widget.round,)).then((value) => setState((){ }));
-  }
-
-  void _updateRound(Round round) async {
-    if (round.roundId == Round.nonAllocatedRoundId) {
-      await Round.createRound(round, widget.study.studyId);
-    }
-    else {
-      await Round.updateAppointment(round);
-    }
-
-    setState(() { });
+    Util.pushRouteWithSlideUp(
+        context, (context, animation, secondaryAnimation) =>
+        DateTimePickerRoute(round: widget.round,)).then((value) =>
+          widget.onChanged());
   }
 }
