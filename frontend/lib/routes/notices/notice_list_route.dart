@@ -7,7 +7,7 @@ import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
-import 'package:groupstudy/widgets/noticie_widgets/notice_summary_widget.dart';
+import 'package:groupstudy/widgets/notices_widgets/notice_summary_widget.dart';
 
 class NoticeListRoute extends StatefulWidget {
   final int studyId;

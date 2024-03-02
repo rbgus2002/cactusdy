@@ -17,7 +17,7 @@ import 'package:groupstudy/widgets/buttons/slow_back_button.dart';
 import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/haptic_refresh_indicator.dart';
 import 'package:groupstudy/widgets/item_entry.dart';
-import 'package:groupstudy/widgets/noticie_widgets/notice_rolling_widget.dart';
+import 'package:groupstudy/widgets/notices_widgets/notice_rolling_widget.dart';
 import 'package:groupstudy/widgets/profile_lists/member_profile_list_widget.dart';
 import 'package:groupstudy/widgets/rounds/round_summary_list_widget.dart';
 import 'package:groupstudy/widgets/rules/rule_list_widget.dart';
