@@ -26,7 +26,7 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 public class RoundService {
     private final StudyRepository studyRepository;
     private final RoundRepository roundRepository;
-    private final int ROUND_LIMIT = 30;
+    private final int ROUND_LIMIT = 60;
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {

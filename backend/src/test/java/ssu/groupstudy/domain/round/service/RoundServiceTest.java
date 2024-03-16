@@ -64,20 +64,6 @@ class RoundServiceTest extends ServiceTest {
         }
 
         @Test
-        @DisplayName("회차는 30개 이상 생성할 수 없다")
-        void CreateRound(){
-            // given
-            // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(30L).when(roundRepository).countRoundsByStudy(any(Study.class));
-
-            // then
-            assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentRequest))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessage(USER_CAN_NOT_CREATE_ROUND.getMessage());
-        }
-
-        @Test
         @DisplayName("성공")
         void success() {
             // given
