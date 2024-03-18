@@ -16,7 +16,7 @@ class TaskWidget extends StatefulWidget {
   final Color color;
   final Function(Task) onUpdateTaskDetail;
   final Function(Task) onDeleteTask;
-  final Function? onCheckTask;
+  final VoidCallback? onCheckTask;
   final bool isOwner;
 
   const TaskWidget({
@@ -52,7 +52,9 @@ class _TaskWidget extends State<TaskWidget> {
           TaskCheckBox(
             task: widget.task,
             activeColor: widget.color,
-            onChanged: _onChecked,
+
+            onUpdate: _onChecked,
+            onClick: widget.onCheckTask,
             enable: widget.isOwner,),
           Design.padding12,
 
@@ -174,21 +176,12 @@ class _TaskWidget extends State<TaskWidget> {
   void _onChecked() {
     if (widget.task.taskId == Task.nonAllocatedTaskId) return;
 
-    HapticFeedback.lightImpact();
-
-    // Fast Unsafe State Update
-    setState(() => widget.task.isDone = !widget.task.isDone);
-
     // Call API and Verify State
     Task.switchTask(widget.task.taskId).then((result) {
       if (result != widget.task.isDone) {
         setState(() => widget.task.isDone = result);
       }
     });
-
-    if (widget.onCheckTask != null) {
-      widget.onCheckTask!();
-    }
   }
 
   void _updateTask() {

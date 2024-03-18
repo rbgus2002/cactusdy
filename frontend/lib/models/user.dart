@@ -39,6 +39,22 @@ class User{
     );
   }
 
+  static Future<bool> updateUserActivationDate() async {
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}api/users/activate-date'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('update user\'s activation-date', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
   static Future<User> getUserProfileSummary() async {
     final response = await http.get(
       Uri.parse('${DatabaseService.serverUrl}api/users'),
