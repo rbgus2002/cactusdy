@@ -42,6 +42,9 @@ class _HomeRouteState extends State<HomeRoute> {
 
   @override
   Widget build(BuildContext context) {
+    // when build home_route, update User's activation-date
+    User.updateUserActivationDate();
+
     return Scaffold(
       backgroundColor: context.extraColors.baseBackgroundColor,
       appBar: AppBar(

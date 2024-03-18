@@ -9,6 +9,7 @@ import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 import 'package:groupstudy/utilities/list_model.dart';
+import 'package:groupstudy/utilities/toast.dart';
 import 'package:groupstudy/widgets/buttons/add_button.dart';
 import 'package:groupstudy/widgets/buttons/squircle_widget.dart';
 import 'package:groupstudy/widgets/rounds/round_summary_widget.dart';
@@ -53,12 +54,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
             AddButton(
                 iconData: CustomIcons.plus_square_outline,
                 text: context.local.addRound,
-                onTap:() {
-                  HapticFeedback.lightImpact();
-                  if (_isAddable()) {
-                    _addNewRound();
-                  }
-                }),
+                onTap: _addRound),
           ],),
         Design.padding20,
 
@@ -97,6 +93,10 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
         removedItemBuilder: _buildRemovedItem);
   }
 
+  void _refresh() {
+    setState(() { });
+  }
+
   Widget _buildRemovedItem(
       Round round, BuildContext context, Animation<double> animation) {
 
@@ -114,6 +114,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
           round: round,
           study: widget.study,
           onRemove: _removeRound,
+          onChanged: _refresh,
           participantProfileList: _getParticipantProfileList(round)),),
     );
   }
@@ -136,6 +137,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
               round: _roundListModel[index],
               study: widget.study,
               onRemove: _removeRound,
+              onChanged: _refresh,
               participantProfileList: _getParticipantProfileList(_roundListModel[index]),
           ),),
     );
@@ -172,9 +174,25 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     );
   }
 
-  void _addNewRound() {
-    _roundListModel.insert(0, Round(
-        roundId: Round.nonAllocatedRoundId,));
+  void _addRound() {
+    HapticFeedback.lightImpact();
+
+    // check round limits
+    if (_roundListModel.length >= Round.roundLimitedCount) {
+      return Toast.showToast(
+          context: context,
+          message: context.local.roundLimitWarning(Round.roundLimitedCount));
+    }
+
+    // check top is not empty round
+    if (_isNotAdded()) {
+      _addRoundOnTop();
+    }
+  }
+
+  void _addRoundOnTop() {
+    _roundListModel.insert(0,
+        Round(roundId: Round.nonAllocatedRoundId,));
   }
 
   void _removeRound(int roundSeq) {
@@ -182,7 +200,7 @@ class RoundSummaryListWidgetState extends State<RoundSummaryListWidget> {
     _roundListModel.removeAt(index);
   }
 
-  bool _isAddable() {
+  bool _isNotAdded() {
     // will add in first(top)
     return (_roundListModel.items.isEmpty ||
         (_roundListModel.items.first.roundId != Round.nonAllocatedRoundId));
