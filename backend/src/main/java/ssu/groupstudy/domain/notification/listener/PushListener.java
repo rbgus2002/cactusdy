@@ -13,6 +13,8 @@ import ssu.groupstudy.global.util.FcmUtils;
 
 import java.util.Map;
 
+import static ssu.groupstudy.global.util.StringUtils.buildMessage;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -22,25 +24,28 @@ public class PushListener {
 
     @EventListener
     public void handleCommentCreationEvent(CommentCreationEvent event) {
-        StringBuilder body = new StringBuilder();
-        body.append("새로운 댓글이 달렸어요: ").append(event.getCommentContents());
+        String title = buildMessage("댓글 | ", event.getCommentWriterNickname());
+        String body = buildMessage("\"", event.getCommentContents(), "\"");
+
         Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
-        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.NOTICE, event.getNoticeId(), data);
+        fcmUtils.sendNotificationToTopic(title, body, TopicCode.NOTICE, event.getNoticeId(), data);
     }
 
     @EventListener
     public void handleNoticeCreationEvent(NoticeCreationEvent event) {
-        StringBuilder body = new StringBuilder();
-        body.append("새로운 공지사항이 작성되었어요: ").append(event.getNoticeTitle());
+        String title = buildMessage("공지사항 | ", event.getNoticeWriterNickname());
+        String body = buildMessage("\"", event.getNoticeTitle(), "\"");
+
         Map<String, String> data = Map.of("type", "notice", "noticeId", event.getNoticeId().toString(), "studyId", event.getStudyId().toString());
-        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
+        fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
     }
 
     @EventListener
     public void handleTaskDoneEvent(TaskDoneEvent event) {
-        StringBuilder body = new StringBuilder();
-        body.append("'").append(event.getNickname()).append("'").append("님이 과제를 완료했어요: ").append(event.getTaskDetail());
-        Map<String, String> data = Map.of("type", "round", "studyId", event.getStudyId().toString(), "roundId", event.getRoundId().toString(), "roundSeq", "0");
-        fcmUtils.sendNotificationToTopic(event.getStudyName(), body.toString(), TopicCode.STUDY, event.getStudyId(), data);
+        String title = buildMessage("과제 완료 | ", event.getNickname());
+        String body = buildMessage("\"", event.getTaskDetail(), "\"");
+
+        Map<String, String> data = Map.of("type", "round", "studyId", event.getStudyId().toString(), "roundId", event.getRoundId().toString(), "roundSeq", "-");
+        fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
     }
 }

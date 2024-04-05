@@ -26,4 +26,8 @@ public class NoticeCreationEvent {
     public String getNoticeTitle(){
         return notice.getTitle();
     }
+
+    public String getNoticeWriterNickname(){
+        return notice.getWriter().getNickname();
+    }
 }
