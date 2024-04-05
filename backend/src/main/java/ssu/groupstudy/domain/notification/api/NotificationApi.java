@@ -22,7 +22,7 @@ public class NotificationApi {
                                          @RequestParam Long targetUserId,
                                          @RequestParam Long studyId,
                                          @RequestParam int count) {
-        notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId, count);
+        notificationService.stabParticipant(userDetails.getUser(), targetUserId, studyId, count);
         return ResponseDto.success();
     }
 
@@ -34,7 +34,7 @@ public class NotificationApi {
                                   @RequestParam Long roundId,
                                   @RequestParam Long taskId,
                                   @RequestParam int count) {
-        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
+        notificationService.stabParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
         return ResponseDto.success();
     }
 

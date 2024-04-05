@@ -11,16 +11,19 @@ public class CommentCreationEvent {
     private final Notice notice;
     private final Comment comment;
 
-    public Long getStudyId(){
+    public Long getStudyId() {
         return notice.getStudy().getStudyId();
     }
-    public Long getNoticeId(){
+
+    public Long getNoticeId() {
         return notice.getNoticeId();
     }
-    public String getStudyName(){
-        return notice.getStudy().getStudyName();
-    }
-    public String getCommentContents(){
+
+    public String getCommentContents() {
         return comment.getContents();
+    }
+
+    public String getCommentWriterNickname() {
+        return comment.getWriter().getNickname();
     }
 }
