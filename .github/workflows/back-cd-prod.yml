@@ -11,9 +11,9 @@ permissions:
 
 env:
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: groupstudy-jar
-  CODE_DEPLOY_APPLICATION_NAME: groupstudy-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-application-prod
+  S3_BUCKET_NAME: jar-s3-bucket
+  CODE_DEPLOY_APPLICATION_NAME: groupstudy-codedeploy
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-codedeploy-group
   APPLICATION: ${{ secrets.APPLICATION }}
   wd: ./backend
 
