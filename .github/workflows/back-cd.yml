@@ -1,9 +1,9 @@
-name: groupstudy-dev CD
+name: groupstudy-prod CD
 
 on:
   push:
     branches:
-      - dev/back
+      - main
     paths: 'backend/**'
 
 permissions:
@@ -11,9 +11,9 @@ permissions:
 
 env:
   AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: groupstudy-jar
-  CODE_DEPLOY_APPLICATION_NAME: groupstudy-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-application-dev
+  S3_BUCKET_NAME: jar-s3-bucket
+  CODE_DEPLOY_APPLICATION_NAME: groupstudy-codedeploy
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-codedeploy-group
   APPLICATION: ${{ secrets.APPLICATION }}
   wd: ./backend
 
@@ -40,9 +40,9 @@ jobs:
             mkdir -p ./src/main/resources
           fi
           touch ./src/main/resources/application.yml
-          echo "${{ secrets.APPLICATION_FOR_DEV }}" > ./src/main/resources/application.yml
-          touch ./src/main/resources/application-dev.yml
-          echo "${{ secrets.APPLICATION_DEV }}" > ./src/main/resources/application-dev.yml
+          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+          touch ./src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
