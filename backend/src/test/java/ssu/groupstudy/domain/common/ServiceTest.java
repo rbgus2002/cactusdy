@@ -18,7 +18,7 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
-import ssu.groupstudy.domain.task.entity.TaskType;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 

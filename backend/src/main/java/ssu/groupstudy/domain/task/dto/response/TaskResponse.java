@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.task.dto.response;
 import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
-import ssu.groupstudy.domain.task.entity.TaskType;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;

@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
-import ssu.groupstudy.domain.task.entity.TaskType;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.task.dto.request.CreateGroupTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;

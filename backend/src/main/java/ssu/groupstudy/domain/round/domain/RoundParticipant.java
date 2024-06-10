@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
-import ssu.groupstudy.domain.task.entity.TaskType;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
