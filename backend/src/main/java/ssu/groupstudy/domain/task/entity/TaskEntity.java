@@ -32,6 +32,7 @@ public class TaskEntity {
     private TaskType taskType;
 
     @Column(nullable = false)
+//    @Convert(converter = YNBooleanConverter.class) // [2024-06-10:최규현] TODO: 적용하면서 api spec 변경 필요
     private char doneYn;
 
     @ManyToOne(fetch = LAZY)
