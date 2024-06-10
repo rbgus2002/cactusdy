@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 
@@ -144,7 +144,7 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
             Page<Notice> noticePage = generateNoticePage();
-            doReturn(noticePage).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(Study.class), any(Pageable.class));
+            doReturn(noticePage).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(StudyEntity.class), any(Pageable.class));
 
             doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
 
@@ -179,7 +179,7 @@ class NoticeServiceTest extends ServiceTest {
             void success() {
                 // given
                 doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-                doReturn(List.of(공지사항1, 공지사항2, 공지사항3)).when(noticeRepository).findTop3ByStudyOrderByPinYnDescCreateDateDesc(any(Study.class));
+                doReturn(List.of(공지사항1, 공지사항2, 공지사항3)).when(noticeRepository).findTop3ByStudyOrderByPinYnDescCreateDateDesc(any(StudyEntity.class));
 
                 // when
                 List<NoticeSummary> noticeList = noticeService.getNoticeSummaryListLimit3(-1L);

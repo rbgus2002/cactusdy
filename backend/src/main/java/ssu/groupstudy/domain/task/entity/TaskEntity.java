@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 import javax.persistence.*;
 
@@ -86,7 +86,7 @@ public class TaskEntity {
         return doneYn == 'Y';
     }
 
-    public Study getStudy(){
+    public StudyEntity getStudy(){
         return getRoundParticipant().getRound().getStudy();
     }
 }

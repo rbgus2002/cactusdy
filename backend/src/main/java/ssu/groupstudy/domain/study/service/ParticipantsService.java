@@ -11,8 +11,8 @@ import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
@@ -48,24 +48,24 @@ public class ParticipantsService {
     private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
-        List<Participant> participantList = getParticipantListOrderByCreateDateAsc(study);
+        List<ParticipantEntity> participantList = getParticipantListOrderByCreateDateAsc(study);
         return participantList.stream()
                 .map(ParticipantSummaryResponse::from)
                 .collect(Collectors.toList());
     }
 
-    private List<Participant> getParticipantListOrderByCreateDateAsc(Study study) {
+    private List<ParticipantEntity> getParticipantListOrderByCreateDateAsc(StudyEntity study) {
         return study.getParticipantList().stream()
-                .sorted(Comparator.comparing((Participant p) -> !p.getUser().equals(study.getHostUser()))
-                        .thenComparing(Participant::getCreateDate))
+                .sorted(Comparator.comparing((ParticipantEntity p) -> !p.getUser().equals(study.getHostUser()))
+                        .thenComparing(ParticipantEntity::getCreateDate))
                 .collect(Collectors.toList());
     }
 
     public ParticipantResponse getParticipant(Long userId, Long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
@@ -78,7 +78,7 @@ public class ParticipantsService {
         return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
-    private List<StatusTagInfo> handleStatusTagInfo(Study study, UserEntity user) {
+    private List<StatusTagInfo> handleStatusTagInfo(StudyEntity study, UserEntity user) {
         List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
         Map<StatusTag, StatusTagInfo> statusTagInfoMap = statusTagInfos.stream()
                 .collect(Collectors.toMap(StatusTagInfo::getStatusTag, Function.identity()));
@@ -91,7 +91,7 @@ public class ParticipantsService {
 
     @Transactional
     public void kickParticipant(UserEntity user, Long userId, Long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         UserEntity targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
@@ -105,14 +105,14 @@ public class ParticipantsService {
         study.kickParticipant(targetUser);
     }
 
-    private void removeUserToFutureRounds(Study study, UserEntity user) {
+    private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
         List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (Round round : futureRounds) {
             round.removeParticipant(new RoundParticipant(user, round));
         }
     }
 
-    private void assertUserIsHostOrThrow(UserEntity user, Study study) {
+    private void assertUserIsHostOrThrow(UserEntity user, StudyEntity study) {
         if(!study.isHostUser(user)) {
             throw new CanNotKickParticipantException(USER_CAN_NOT_KICK_PARTICIPANT);
         }

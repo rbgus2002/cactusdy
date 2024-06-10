@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -45,13 +45,13 @@ public class Notice extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
-    private Study study;
+    private StudyEntity study;
 
     @OneToMany(mappedBy = "notice", cascade = ALL, orphanRemoval = true)
     private final Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder
-    public Notice(String title, String contents, UserEntity writer, Study study) {
+    public Notice(String title, String contents, UserEntity writer, StudyEntity study) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;

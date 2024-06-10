@@ -15,8 +15,8 @@ import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -91,10 +91,10 @@ public class AuthService {
     }
 
     private void subscribeParticipatingStudies(UserEntity user) {
-        List<Study> participatingStudies = participantRepository.findByUserOrderByCreateDate(user).stream()
-                .map(Participant::getStudy)
+        List<StudyEntity> participatingStudies = participantRepository.findByUserOrderByCreateDate(user).stream()
+                .map(ParticipantEntity::getStudy)
                 .collect(Collectors.toList());
-        for (Study study : participatingStudies) {
+        for (StudyEntity study : participatingStudies) {
             eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         }
     }

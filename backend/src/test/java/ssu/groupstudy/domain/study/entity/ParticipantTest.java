@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.domain;
+package ssu.groupstudy.domain.study.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +17,7 @@ class ParticipantTest {
         // given
 
         // when
-        Participant participant = new Participant(null, null);
+        ParticipantEntity participant = new ParticipantEntity(null, null);
 
         // then
         assertThatThrownBy(() -> participant.setColor(colorCode))
@@ -30,7 +30,7 @@ class ParticipantTest {
     @ValueSource(strings = {"0xAA", "0x123", "0xAF", "0x1"})
     void setColor(String colorCode) {
         // given
-        Participant participant = new Participant(null, null);
+        ParticipantEntity participant = new ParticipantEntity(null, null);
 
         // when
         participant.setColor(colorCode);

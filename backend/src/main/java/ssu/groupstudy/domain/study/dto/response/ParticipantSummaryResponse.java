@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.study.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.study.domain.Participant;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @Getter
@@ -13,14 +13,14 @@ public class ParticipantSummaryResponse {
     private String picture;
     private String nickname;
 
-    private ParticipantSummaryResponse(Participant participant) {
+    private ParticipantSummaryResponse(ParticipantEntity participant) {
         UserEntity user = participant.getUser();
         this.userId = user.getUserId();
         this.picture = user.getPicture();
         this.nickname = user.getNickname();
     }
 
-    public static ParticipantSummaryResponse from(Participant participant){
+    public static ParticipantSummaryResponse from(ParticipantEntity participant){
         return new ParticipantSummaryResponse(participant);
     }
 }

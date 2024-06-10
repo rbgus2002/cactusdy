@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.rule.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -28,15 +28,15 @@ public class Rule extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="studyId", nullable = false)
-    private Study study;
+    private StudyEntity study;
 
-    private Rule(String detail, Study study){
+    private Rule(String detail, StudyEntity study){
         this.detail = detail;
         this.study = study;
         this.deleteYn = 'N';
     }
 
-    public static Rule create(String detail, Study study){
+    public static Rule create(String detail, StudyEntity study){
         return new Rule(detail, study);
     }
 

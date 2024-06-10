@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/studies")
 @RequiredArgsConstructor
-@Tag(name = "Study", description = "스터디 API")
+@Tag(name = "StudyEntity", description = "스터디 API")
 public class StudyApi {
     private final StudyService studyService;
 

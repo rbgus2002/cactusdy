@@ -33,7 +33,7 @@ class NoticeApiTest extends ApiTest {
                 .build();
     }
 
-//    private Study getStudy() {
+//    private StudyEntity getStudy() {
 //        return getRegisterStudyRequest().toEntity(getUser());
 //    }
 

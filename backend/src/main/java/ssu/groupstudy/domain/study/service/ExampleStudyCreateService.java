@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -36,21 +36,21 @@ public class ExampleStudyCreateService {
     @Transactional
     public void createExampleStudy(UserEntity user) {
         String inviteCode = studyInviteService.generateUniqueInviteCode();
-        Study study = Study.init("2주 완성 토익 스터디 (예시)", "토익", Color.DEFAULT.getHex(), user, inviteCode);
-        Study studyEntity = studyRepository.save(study);
+        StudyEntity study = StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", Color.DEFAULT.getHex(), user, inviteCode);
+        StudyEntity studyEntity = studyRepository.save(study);
         createExampleOthers(user, studyEntity);
 
         // [2024-06-10:최규현] TODO: default 이미지 추가 후 주석 해제
 //        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
     }
 
-    private void createExampleOthers(UserEntity user, Study study) {
+    private void createExampleOthers(UserEntity user, StudyEntity study) {
         createExampleNotice(user, study);
         createExampleRules(study);
         createExampleRounds(study);
     }
 
-    private void createExampleNotice(UserEntity user, Study study) {
+    private void createExampleNotice(UserEntity user, StudyEntity study) {
         Notice notice = Notice.builder()
                 .title("스터디 교재")
                 .contents(
@@ -62,7 +62,7 @@ public class ExampleStudyCreateService {
         noticeRepository.save(notice);
     }
 
-    private void createExampleRules(Study study) {
+    private void createExampleRules(StudyEntity study) {
         Rule rule1 = Rule.create("지각하면 벌금 5000원", study);
         Rule rule2 = Rule.create("매일 영단어 20개 암기", study);
         Rule rule3 = Rule.create("공부 시간 기록하고 공지사항에 인증하기", study);
@@ -70,7 +70,7 @@ public class ExampleStudyCreateService {
         ruleRepository.saveAll(rules);
     }
 
-    private void createExampleRounds(Study study) {
+    private void createExampleRounds(StudyEntity study) {
         Round round1 = createRound(study, "스타벅스 동숭길 입구점", LocalDateTime.now().minusDays(1).withHour(15).withMinute(0));
         round1.updateDetail("스터디 첫날👏👏\n\n스타벅스 동숭길 입구점에서 만나요!");
         Round round2 = createRound(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12).withMinute(0));
@@ -78,7 +78,7 @@ public class ExampleStudyCreateService {
         createExampleTask(round1);
     }
 
-    private Round createRound(Study study, String studyPlace, LocalDateTime studyTime) {
+    private Round createRound(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
         AppointmentRequest appointment = AppointmentRequest.builder()
                 .studyPlace(studyPlace)
                 .studyTime(studyTime)

@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
 import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -28,7 +28,7 @@ public class RuleService {
 
     @Transactional
     public Long createRule(CreateRuleRequest dto) {
-        Study study = studyRepository.findById(dto.getStudyId())
+        StudyEntity study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Rule rule = dto.toEntity(study);
         return ruleRepository.save(rule).getId();

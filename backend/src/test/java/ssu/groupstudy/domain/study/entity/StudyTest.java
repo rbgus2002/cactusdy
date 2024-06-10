@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.domain;
+package ssu.groupstudy.domain.study.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ class StudyTest {
     void generateInviteCode(){
         // given
         final String generatedInviteCode = "123456";
-        Study study = Study.init("스터디", "스터디 설명", "0x00", null, generatedInviteCode);
+        StudyEntity study = StudyEntity.init("스터디", "스터디 설명", "0x00", null, generatedInviteCode);
 
         // when
         String inviteCode = study.getInviteCode();

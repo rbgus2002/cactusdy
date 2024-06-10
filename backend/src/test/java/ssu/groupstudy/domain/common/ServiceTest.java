@@ -14,8 +14,8 @@ import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
@@ -39,10 +39,10 @@ public class ServiceTest {
 
     protected CreateStudyRequest 알고리즘스터디CreateRequest;
     protected CreateStudyRequest 영어스터디CreateRequest;
-    protected Study 알고리즘스터디;
-    protected Study 영어스터디;
+    protected StudyEntity 알고리즘스터디;
+    protected StudyEntity 영어스터디;
 
-    protected Participant 스터디참여자_최규현;
+    protected ParticipantEntity 스터디참여자_최규현;
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
     protected Notice 공지사항1;
@@ -137,7 +137,7 @@ public class ServiceTest {
     }
 
     private void initParticipant() {
-        스터디참여자_최규현 = new Participant(최규현, 알고리즘스터디);
+        스터디참여자_최규현 = new ParticipantEntity(최규현, 알고리즘스터디);
     }
 
     private void initNotice() {

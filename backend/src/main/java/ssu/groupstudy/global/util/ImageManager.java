@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.S3Code;
 
@@ -25,7 +25,7 @@ public class ImageManager {
         user.updatePicture(imageUrl);
     }
 
-    public void updateImage(Study study, MultipartFile image) throws IOException {
+    public void updateImage(StudyEntity study, MultipartFile image) throws IOException {
         if (image == null) {
             return;
         }

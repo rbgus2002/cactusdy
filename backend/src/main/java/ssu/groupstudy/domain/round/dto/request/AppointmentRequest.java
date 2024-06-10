@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +18,7 @@ public class AppointmentRequest {
     private LocalDateTime studyTime;
     private String studyPlace;
 
-    public Round toEntity(Study study) {
+    public Round toEntity(StudyEntity study) {
         return Round.builder()
                 .study(study)
                 .studyPlace(this.studyPlace)

@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.domain;
+package ssu.groupstudy.domain.study.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "rel_user_study")
 @Getter
-public class Participant extends BaseEntity {
+public class ParticipantEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_study_id")
@@ -31,19 +31,19 @@ public class Participant extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
-    private Study study;
+    private StudyEntity study;
 
     @Column(nullable = false)
     private String color;
 
-    public Participant(UserEntity user, Study study) {
+    public ParticipantEntity(UserEntity user, StudyEntity study) {
         this.user = user;
         this.study = study;
         this.color = Color.DEFAULT.getHex();
     }
 
-    public static Participant createWithColor(UserEntity user, Study study, String color) {
-        Participant participant = new Participant(user, study);
+    public static ParticipantEntity createWithColor(UserEntity user, StudyEntity study, String color) {
+        ParticipantEntity participant = new ParticipantEntity(user, study);
         participant.setColor(color);
         return participant;
     }
@@ -51,10 +51,10 @@ public class Participant extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Participant)) {
+        if (!(o instanceof ParticipantEntity)) {
             return false;
         }
-        Participant that = (Participant) o;
+        ParticipantEntity that = (ParticipantEntity) o;
         return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.study.getStudyId(), that.getStudy().getStudyId());
     }
 

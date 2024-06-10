@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
@@ -41,13 +41,13 @@ public class Round extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
-    private Study study;
+    private StudyEntity study;
 
     @Column(nullable = false)
     private char deleteYn;
 
     @Builder
-    public Round(Study study, String studyPlace, LocalDateTime studyTime) {
+    public Round(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
         addParticipants(study.getParticipantList());
         this.study = study;
         this.appointment = Appointment.of(studyPlace, studyTime);
@@ -58,7 +58,7 @@ public class Round extends BaseEntity {
         this.appointment = appointment;
     }
 
-    private void addParticipants(List<Participant> participants) {
+    private void addParticipants(List<ParticipantEntity> participants) {
         participants.stream()
                 .map(participant -> new RoundParticipant(participant.getUser(), this))
                 .forEach(roundParticipants::add);

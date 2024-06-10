@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -77,7 +77,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -101,7 +101,7 @@ class NoticeRepositoryTest{
         Notice 공지사항4 = noticeRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> noticeList = noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
@@ -195,7 +195,7 @@ class NoticeRepositoryTest{
     @DisplayName("스터디에 속한 공지사항을 모두 가져온다")
     void findNoticesByStudy(){
         // given
-        Study 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Notice> notices = noticeRepository.findNoticesByStudy(알고리즘_스터디);

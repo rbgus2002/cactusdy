@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.round.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
             "CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, " +
             "r.appointment.studyTime DESC, " +
             "r.roundId DESC")
-    List<Round> findRoundsByStudyOrderByStudyTime(Study study);
+    List<Round> findRoundsByStudyOrderByStudyTime(StudyEntity study);
 
     /**
      * 스터디가 보여줄 가장 최신의 회차를 하나 가져온다.
@@ -53,13 +53,13 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     Optional<Round> findLatestRound(Long studyId);
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N'")
-    Long countRoundsByStudy(Study study);
+    Long countRoundsByStudy(StudyEntity study);
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime <= :studyTime")
-    Long countByStudyTimeLessThanEqual(Study study, LocalDateTime studyTime);
+    Long countByStudyTimeLessThanEqual(StudyEntity study, LocalDateTime studyTime);
 
     @Query("SELECT COUNT(r) FROM Round r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime IS NOT NULL")
-    Long countByStudyTimeIsNotNull(Study study);
+    Long countByStudyTimeIsNotNull(StudyEntity study);
 
     /**
      * 시각 기준으로 남은 회차들 가져오기
@@ -70,5 +70,5 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
             "WHERE r.study = :study AND " +
             "r.deleteYn = 'N' AND " +
             "(r.appointment.studyTime IS NULL OR r.appointment.studyTime > :time)")
-    List<Round> findFutureRounds(Study study, LocalDateTime time);
+    List<Round> findFutureRounds(StudyEntity study, LocalDateTime time);
 }

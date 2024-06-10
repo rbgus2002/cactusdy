@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/studies/participants")
 @RequiredArgsConstructor
-@Tag(name = "Study Participants", description = "스터디 참여자 API")
+@Tag(name = "StudyEntity Participants", description = "스터디 참여자 API")
 public class ParticipantApi {
     private final StudyInviteService studyInviteService;
     private final ParticipantsService participantsService;

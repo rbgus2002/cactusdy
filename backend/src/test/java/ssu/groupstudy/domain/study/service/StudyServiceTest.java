@@ -10,8 +10,8 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -57,7 +57,7 @@ class StudyServiceTest extends ServiceTest {
         void setColor() throws IOException {
             // given
             doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
-            doReturn(알고리즘스터디).when(studyRepository).save(any(Study.class));
+            doReturn(알고리즘스터디).when(studyRepository).save(any(StudyEntity.class));
             doReturn(Round.builder()
                     .study(알고리즘스터디)
                     .build()).when(roundRepository).save(any(Round.class));
@@ -66,7 +66,7 @@ class StudyServiceTest extends ServiceTest {
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
 
             // then
-            Participant participant = 알고리즘스터디.getParticipantList().get(0);
+            ParticipantEntity participant = 알고리즘스터디.getParticipantList().get(0);
             softly.assertThat(participant.getColor()).isEqualTo(알고리즘스터디CreateRequest.getColor());
         }
 
@@ -103,7 +103,7 @@ class StudyServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(Study.class));
+            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
 
             // then
             assertThatThrownBy(() -> studyService.getStudySummary(-1L, 최규현))
@@ -116,7 +116,7 @@ class StudyServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(Study.class));
+            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
 
             // when
             StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L, 최규현);

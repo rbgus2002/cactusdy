@@ -10,8 +10,8 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -95,15 +95,15 @@ class StudyInviteServiceTest extends ServiceTest {
             // given
             doReturn(4).when(participantRepository).countParticipationStudy(any(UserEntity.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
-            doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
+            doReturn(List.of()).when(roundRepository).findFutureRounds(any(StudyEntity.class), any());
 
             // when
             studyInviteService.inviteUser(장재우, "000000");
 
             // then
             softly.assertThat(알고리즘스터디.getParticipantList().size()).isEqualTo(2);
-            softly.assertThat(알고리즘스터디.getParticipantList().contains(new Participant(최규현, 알고리즘스터디)));
-            softly.assertThat(알고리즘스터디.getParticipantList().contains(new Participant(장재우, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipantList().contains(new ParticipantEntity(최규현, 알고리즘스터디)));
+            softly.assertThat(알고리즘스터디.getParticipantList().contains(new ParticipantEntity(장재우, 알고리즘스터디)));
         }
     }
 
@@ -126,7 +126,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(List.of()).when(noticeRepository).findNoticesByStudy(any(Study.class));
+            doReturn(List.of()).when(noticeRepository).findNoticesByStudy(any(StudyEntity.class));
 
             // when
             알고리즘스터디.invite(장재우);
@@ -135,7 +135,7 @@ class StudyInviteServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(알고리즘스터디.getParticipantList().size()).isEqualTo(1),
-                    () -> assertThat(알고리즘스터디.getParticipantList().contains(new Participant(장재우, 알고리즘스터디)))
+                    () -> assertThat(알고리즘스터디.getParticipantList().contains(new ParticipantEntity(장재우, 알고리즘스터디)))
             );
         }
     }

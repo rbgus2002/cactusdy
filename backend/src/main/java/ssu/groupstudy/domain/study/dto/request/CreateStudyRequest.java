@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.study.dto.request;
 
 import lombok.*;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class CreateStudyRequest {
     @NotBlank(message = "색상을 입력하세요")
     private String color;
 
-    public Study toEntity(UserEntity hostUser, String inviteCode){
-        return Study.init(this.studyName, this.detail, this.color, hostUser, inviteCode);
+    public StudyEntity toEntity(UserEntity hostUser, String inviteCode){
+        return StudyEntity.init(this.studyName, this.detail, this.color, hostUser, inviteCode);
     }
 }

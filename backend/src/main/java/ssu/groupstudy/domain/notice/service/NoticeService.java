@@ -20,7 +20,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.notification.domain.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -44,7 +44,7 @@ public class NoticeService {
 
     @Transactional
     public NoticeInfoResponse createNotice(CreateNoticeRequest dto, UserEntity writer) {
-        Study study = studyRepository.findById(dto.getStudyId())
+        StudyEntity study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
 
@@ -62,12 +62,12 @@ public class NoticeService {
     }
 
     public NoticeSummaries getNoticeSummaries(Long studyId, Pageable pageable, UserEntity user) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return transformNoticeSummaries(study, pageable, user);
     }
 
-    private NoticeSummaries transformNoticeSummaries(Study study, Pageable pageable, UserEntity user) {
+    private NoticeSummaries transformNoticeSummaries(StudyEntity study, Pageable pageable, UserEntity user) {
         Page<Notice> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study, pageable);
         List<NoticeSummary> noticeSummaries = noticePage.getContent().stream()
                 .map(notice -> createNoticeSummary(notice, user))
@@ -83,7 +83,7 @@ public class NoticeService {
     }
 
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
                 .map(NoticeSummary::from)

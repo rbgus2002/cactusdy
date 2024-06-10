@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -32,10 +32,10 @@ class RoundRepositoryTest{
 
     @Test
     @DisplayName("회차 생성 시에 회차 참여인원을 자동 생성한다.")
-    // Study 생성자에서 방장을 Participants에 추가함 => 해당 코드에서는 participants.size에 포함 안됨
+    // StudyEntity 생성자에서 방장을 Participants에 추가함 => 해당 코드에서는 participants.size에 포함 안됨
     void getUserRound() {
         // given
-        Study 스터디 = studyRepository.findById(1L).get();
+        StudyEntity 스터디 = studyRepository.findById(1L).get();
         UserEntity 장재우 = userRepository.findById(2L).get();
         스터디.invite(장재우);
 
@@ -67,7 +67,7 @@ class RoundRepositoryTest{
         @DisplayName("스터디의 회차 목록을 null 값 우선, studyTime을 역순으로 정렬해서 가져온다")
         void orderByStudyTimeDesc(){
             // given
-            Study 스터디 = studyRepository.findById(1L).get();
+            StudyEntity 스터디 = studyRepository.findById(1L).get();
 
             // when
             List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
@@ -83,7 +83,7 @@ class RoundRepositoryTest{
         @DisplayName("studyTime이 null인 회차가 여러 개면 roundId 역순으로 정렬해서 가져온다")
         void orderByStudyTimeDescAndRoundIdDesc(){
             // given
-            Study 스터디 = studyRepository.findById(1L).get();
+            StudyEntity 스터디 = studyRepository.findById(1L).get();
 
             // when
             List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
@@ -99,7 +99,7 @@ class RoundRepositoryTest{
     @DisplayName("스터디가 가지는 회차의 개수를 가져온다")
     void countRoundByStudy(){
         // given
-        Study 스터디 = studyRepository.findById(2L).get();
+        StudyEntity 스터디 = studyRepository.findById(2L).get();
 
         // when
         Long roundCount = roundRepository.countRoundsByStudy(스터디);
@@ -112,7 +112,7 @@ class RoundRepositoryTest{
     @DisplayName("스터디가 보여줄 가장 최신의 회차를 하나 가져온다")
     void findLatestRound(){
         // given
-        Study 스터디 = studyRepository.findById(1L).get();
+        StudyEntity 스터디 = studyRepository.findById(1L).get();
         Round 회차 = roundRepository.findById(1L).get();
         Appointment appointment = Appointment.of(null, LocalDateTime.now().plusDays(1L));
 
@@ -128,7 +128,7 @@ class RoundRepositoryTest{
     @DisplayName("회차 약속시간이 더 이른 회차의 개수를 가져온다")
     void countByStudyTimeLessThanEqual(){
         // given
-        Study 스터디 = studyRepository.findById(1L).get();
+        StudyEntity 스터디 = studyRepository.findById(1L).get();
 
         // when
         Long count = roundRepository.countByStudyTimeLessThanEqual(스터디, LocalDateTime.now());
@@ -141,7 +141,7 @@ class RoundRepositoryTest{
     @DisplayName("회차 약속시간이 정해진 회차의 개수를 가져온다")
     void countByStudyTimeIsNotNull(){
         // given
-        Study 스터디 = studyRepository.findById(1L).get();
+        StudyEntity 스터디 = studyRepository.findById(1L).get();
 
         // when
         Long count = roundRepository.countByStudyTimeIsNotNull(스터디);
@@ -155,7 +155,7 @@ class RoundRepositoryTest{
     @DisplayName("현재 시각 기준으로 남은 회차들을 가져온다")
     void findFutureRounds(){
         // given
-        Study 스터디 = studyRepository.findById(1L).get();
+        StudyEntity 스터디 = studyRepository.findById(1L).get();
 
         // when
         List<Round> futureRounds = roundRepository.findFutureRounds(스터디, LocalDateTime.now());

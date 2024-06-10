@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.domain;
+package ssu.groupstudy.domain.study.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,27 +24,27 @@ public class Participants {
     private UserEntity hostUser;
 
     @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
-    private final List<Participant> participants = new ArrayList<>();
+    private final List<ParticipantEntity> participants = new ArrayList<>();
 
-    public static Participants empty(Participant participant, String color) {
+    public static Participants empty(ParticipantEntity participant, String color) {
         participant.setColor(color);
         return new Participants(participant);
     }
 
-    private Participants(Participant participant) {
+    private Participants(ParticipantEntity participant) {
         participants.add(participant);
         this.hostUser = participant.getUser();
     }
 
-    protected boolean existParticipant(Participant participant) {
+    protected boolean existParticipant(ParticipantEntity participant) {
         return participants.contains(participant);
     }
 
-    protected void addParticipant(Participant participant) {
+    protected void addParticipant(ParticipantEntity participant) {
         participants.add(participant);
     }
 
-    protected void removeParticipant(Participant participant) {
+    protected void removeParticipant(ParticipantEntity participant) {
         participants.remove(participant);
     }
 
@@ -64,7 +64,7 @@ public class Participants {
         this.hostUser = user;
     }
 
-    public Optional<Participant> getHostParticipant() {
+    public Optional<ParticipantEntity> getHostParticipant() {
         return participants.stream()
                 .filter(participant -> participant.getUser().equals(hostUser))
                 .findFirst();

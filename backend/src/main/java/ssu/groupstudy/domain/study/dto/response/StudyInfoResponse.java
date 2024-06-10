@@ -5,8 +5,8 @@ import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.response.ParticipantProfileResponse;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.task.dto.response.TaskGroup;
 
@@ -33,8 +33,8 @@ public class StudyInfoResponse {
     private Long roundParticipantId;
     private List<TaskGroup> taskGroups;
 
-    public StudyInfoResponse(Participant participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
-        Study study = participant.getStudy();
+    public StudyInfoResponse(ParticipantEntity participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
+        StudyEntity study = participant.getStudy();
         this.studyId = study.getStudyId();
         this.hostUserId = study.getHostUser().getUserId();
         this.studyName = study.getStudyName();
@@ -61,7 +61,7 @@ public class StudyInfoResponse {
         }
     }
 
-    public static StudyInfoResponse of(Participant participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant){
+    public static StudyInfoResponse of(ParticipantEntity participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant){
         return new StudyInfoResponse(participant, roundSeq, latestRound, roundParticipant);
     }
 }

@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.study.domain;
+package ssu.groupstudy.domain.study.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "study")
-public class Study extends BaseEntity {
+public class StudyEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
@@ -42,41 +42,41 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    private Study(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
+    private StudyEntity(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
         this.studyName = studyName;
         this.detail = detail;
-        this.participants = Participants.empty(new Participant(hostUser, this), color);
+        this.participants = Participants.empty(new ParticipantEntity(hostUser, this), color);
         this.inviteCode = inviteCode;
         this.deleteYn = 'N';
     }
 
-    private Study(String studyName, String detail) {
+    private StudyEntity(String studyName, String detail) {
         this.studyName = studyName;
         this.detail = detail;
     }
 
-    public static Study init(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
-        return new Study(studyName, detail, color, hostUser, inviteCode);
+    public static StudyEntity init(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
+        return new StudyEntity(studyName, detail, color, hostUser, inviteCode);
     }
 
-    public static Study create(String studyName, String detail) {
-        return new Study(studyName, detail);
+    public static StudyEntity create(String studyName, String detail) {
+        return new StudyEntity(studyName, detail);
     }
 
     public boolean isParticipated(UserEntity user) {
-        return participants.existParticipant(new Participant(user, this));
+        return participants.existParticipant(new ParticipantEntity(user, this));
     }
 
     public void invite(UserEntity user) {
         if (isParticipated(user)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
-        Optional<Participant> hostParticipant = this.participants.getHostParticipant();
+        Optional<ParticipantEntity> hostParticipant = this.participants.getHostParticipant();
         String color = Color.DEFAULT.getHex();
         if(hostParticipant.isPresent()){
             color = hostParticipant.get().getColor();
         }
-        Participant participant = Participant.createWithColor(user, this, color);
+        ParticipantEntity participant = ParticipantEntity.createWithColor(user, this, color);
         participants.addParticipant(participant);
     }
 
@@ -87,7 +87,7 @@ public class Study extends BaseEntity {
         if (isHostUser(user) && participants.isGreaterThanOne()) {
             throw new CanNotLeaveStudyException(ResultCode.HOST_USER_CAN_NOT_LEAVE_STUDY);
         }
-        participants.removeParticipant(new Participant(user, this));
+        participants.removeParticipant(new ParticipantEntity(user, this));
         if (participants.isNoOne()) {
             delete();
         }
@@ -97,7 +97,7 @@ public class Study extends BaseEntity {
         return participants.isHostUser(user);
     }
 
-    public List<Participant> getParticipantList() {
+    public List<ParticipantEntity> getParticipantList() {
         return this.participants.getParticipants();
     }
 
@@ -123,6 +123,6 @@ public class Study extends BaseEntity {
         if (!isParticipated(user)) {
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
-        participants.removeParticipant(new Participant(user, this));
+        participants.removeParticipant(new ParticipantEntity(user, this));
     }
 }

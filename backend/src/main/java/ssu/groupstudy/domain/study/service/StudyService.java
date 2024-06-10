@@ -14,8 +14,8 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.domain.Rule;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
 import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
@@ -58,7 +58,7 @@ public class StudyService {
     public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
         String inviteCode = studyInviteService.generateUniqueInviteCode();
-        Study study = studyRepository.save(dto.toEntity(user, inviteCode));
+        StudyEntity study = studyRepository.save(dto.toEntity(user, inviteCode));
         createDefaultOthers(study);
 
         imageManager.updateImage(study, image);
@@ -72,18 +72,18 @@ public class StudyService {
         }
     }
 
-    private void createDefaultOthers(Study study) {
+    private void createDefaultOthers(StudyEntity study) {
         createDefaultRule(study);
         Round defaultRound = createDefaultRound(study);
         createDefaultTask(defaultRound);
     }
 
-    private void createDefaultRule(Study study) {
+    private void createDefaultRule(StudyEntity study) {
         Rule rule = Rule.create("스터디 규칙을 추가해보세요!", study);
         ruleRepository.save(rule);
     }
 
-    private Round createDefaultRound(Study study) {
+    private Round createDefaultRound(StudyEntity study) {
         AppointmentRequest appointment = AppointmentRequest.builder()
                 .studyPlace(null)
                 .studyTime(null)
@@ -100,22 +100,22 @@ public class StudyService {
     }
 
     public StudySummaryResponse getStudySummary(long studyId, UserEntity user) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-        Participant participant = participantRepository.findByUserAndStudy(user, study)
+        ParticipantEntity participant = participantRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
         return StudySummaryResponse.from(study, participant);
     }
 
     public List<StudyInfoResponse> getStudies(UserEntity user) {
-        List<Participant> participants = participantRepository.findByUserOrderByCreateDate(user);
+        List<ParticipantEntity> participants = participantRepository.findByUserOrderByCreateDate(user);
         return participants.stream()
                 .map(this::createStudyInfo)
                 .collect(Collectors.toList());
     }
 
-    private StudyInfoResponse createStudyInfo(Participant participant) {
-        Study study = participant.getStudy();
+    private StudyInfoResponse createStudyInfo(ParticipantEntity participant) {
+        StudyEntity study = participant.getStudy();
 
         Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
@@ -124,7 +124,7 @@ public class StudyService {
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
-    private Long handleRoundSeq(Study study, Round round) {
+    private Long handleRoundSeq(StudyEntity study, Round round) {
         if (round == null) {
             return 0L;
         }
@@ -138,9 +138,9 @@ public class StudyService {
 
     @Transactional
     public Long editStudy(Long studyId, EditStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-        Participant participant = participantRepository.findByUserAndStudy(user, study)
+        ParticipantEntity participant = participantRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
         UserEntity newHostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
@@ -151,13 +151,13 @@ public class StudyService {
         return study.getStudyId();
     }
 
-    private void processEdit(EditStudyRequest dto, Study study, Participant participant, UserEntity newHostUser) {
+    private void processEdit(EditStudyRequest dto, StudyEntity study, ParticipantEntity participant, UserEntity newHostUser) {
         study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
         participant.setColor(dto.getColor());
     }
 
     public String getInviteCode(Long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         return study.getInviteCode();
     }

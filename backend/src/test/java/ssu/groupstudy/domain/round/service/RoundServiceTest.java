@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 
@@ -53,7 +53,7 @@ class RoundServiceTest extends ServiceTest {
         void success_emptyTimeAndPlace() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(10L).when(roundRepository).countRoundsByStudy(any(Study.class));
+            doReturn(10L).when(roundRepository).countRoundsByStudy(any(StudyEntity.class));
             doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
 
             // when

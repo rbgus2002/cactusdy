@@ -3,12 +3,12 @@ package ssu.groupstudy.domain.notification.domain.event.push;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 @Getter
 @RequiredArgsConstructor
 public class NoticeCreationEvent {
-    private final Study study;
+    private final StudyEntity study;
     private final Notice notice;
 
     public Long getStudyId(){

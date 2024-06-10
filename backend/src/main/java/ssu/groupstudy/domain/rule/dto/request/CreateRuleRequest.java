@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.rule.dto.request;
 
 import lombok.*;
 import ssu.groupstudy.domain.rule.domain.Rule;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,7 +18,7 @@ public class CreateRuleRequest {
     @NotBlank
     private String detail;
 
-    public Rule toEntity(Study study){
+    public Rule toEntity(StudyEntity study){
         return Rule.create(this.detail, study);
     }
 }

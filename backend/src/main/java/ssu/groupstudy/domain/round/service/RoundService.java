@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -30,13 +30,13 @@ public class RoundService {
 
     @Transactional
     public long createRound(long studyId, AppointmentRequest dto) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         checkRoundMoreThanLimit(study);
         return roundRepository.save(dto.toEntity(study)).getRoundId();
     }
 
-    private void checkRoundMoreThanLimit(Study study) {
+    private void checkRoundMoreThanLimit(StudyEntity study) {
         if (roundRepository.countRoundsByStudy(study) >= ROUND_LIMIT) {
             throw new IllegalStateException(USER_CAN_NOT_CREATE_ROUND.getMessage());
         }
@@ -63,7 +63,7 @@ public class RoundService {
     }
 
     public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId) {
-        Study study = studyRepository.findById(studyId)
+        StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return roundRepository.findRoundsByStudyOrderByStudyTime(study).stream()
                 .map(RoundDto::createRoundInfo)

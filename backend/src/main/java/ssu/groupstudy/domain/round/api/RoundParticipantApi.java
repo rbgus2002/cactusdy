@@ -11,7 +11,7 @@ import ssu.groupstudy.global.dto.ResponseDto;
 @RestController
 @RequestMapping("/api/rounds/participants")
 @RequiredArgsConstructor
-@Tag(name = "Round Participant", description = "회차 참여자 API")
+@Tag(name = "Round ParticipantEntity", description = "회차 참여자 API")
 public class RoundParticipantApi {
     private final RoundParticipantService roundParticipantService;
 

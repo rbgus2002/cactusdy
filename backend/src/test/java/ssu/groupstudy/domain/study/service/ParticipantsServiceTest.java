@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -99,7 +99,7 @@ class ParticipantsServiceTest extends ServiceTest {
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(List.of()).when(participantRepository).findParticipantInfoByUser(any(UserEntity.class));
-            doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(UserEntity.class), any(Study.class));
+            doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(UserEntity.class), any(StudyEntity.class));
 
             // when
             ParticipantResponse response = participantsService.getParticipant(-1L, -1L);

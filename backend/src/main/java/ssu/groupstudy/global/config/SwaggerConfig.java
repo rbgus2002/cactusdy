@@ -19,7 +19,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("Group Study API Document")
+                .title("Group StudyEntity API Document")
                 .version("v0.0.1")
                 .description("API documentation");
 

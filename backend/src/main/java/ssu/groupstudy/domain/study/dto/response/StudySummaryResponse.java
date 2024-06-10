@@ -3,8 +3,8 @@ package ssu.groupstudy.domain.study.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,7 +16,7 @@ public class StudySummaryResponse {
     private String color;
     private Long hostUserId;
 
-    private StudySummaryResponse(Study study, Participant participant){
+    private StudySummaryResponse(StudyEntity study, ParticipantEntity participant){
         this.studyId = study.getStudyId();
         this.studyName = study.getStudyName();
         this.detail = study.getDetail();
@@ -25,7 +25,7 @@ public class StudySummaryResponse {
         this.hostUserId = study.getHostUser().getUserId();
     }
 
-    public static StudySummaryResponse from(Study study, Participant participant){
+    public static StudySummaryResponse from(StudyEntity study, ParticipantEntity participant){
         return new StudySummaryResponse(study, participant);
     }
 }
