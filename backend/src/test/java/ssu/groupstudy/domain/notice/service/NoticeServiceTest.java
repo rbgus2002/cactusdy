@@ -10,14 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
+import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.param.NoticeSummaries;
 import ssu.groupstudy.domain.notice.param.NoticeSummary;
-import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -30,7 +30,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static ssu.groupstudy.domain.common.enums.ResultCode.NOTICE_NOT_FOUND;
@@ -258,7 +258,7 @@ class NoticeServiceTest extends ServiceTest {
             noticeService.delete(-1L);
 
             // then
-            assertEquals('Y', 공지사항1.getDeleteYn());
+            assertTrue(공지사항1.isDeleteYn());
         }
     }
 }

@@ -27,7 +27,7 @@ class UserServiceTest extends ServiceTest {
             userService.removeUser(최규현);
 
             // then
-            softly.assertThat(최규현.isDeleted()).isEqualTo('Y');
+            softly.assertThat(최규현.isDeleted()).isTrue();
             softly.assertThat(최규현.getNickname()).isEqualTo("-");
             softly.assertThat(최규현.getStatusMessage()).isEqualTo("-");
             softly.assertThat(최규현.getPicture()).isNull();

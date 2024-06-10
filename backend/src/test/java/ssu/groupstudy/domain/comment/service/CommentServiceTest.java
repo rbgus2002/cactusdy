@@ -6,21 +6,21 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -131,7 +131,7 @@ class CommentServiceTest extends ServiceTest {
             commentService.deleteComment(-1L);
 
             // then
-            assertEquals('Y', 댓글1.getDeleteYn());
+            assertTrue(댓글1.isDeleted());
         }
     }
 }

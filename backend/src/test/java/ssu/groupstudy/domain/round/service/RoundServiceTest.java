@@ -244,7 +244,7 @@ class RoundServiceTest extends ServiceTest {
             roundService.deleteRound(-1L, 최규현);
 
             // then
-            softly.assertThat(회차1.getDeleteYn()).isEqualTo('Y');
+            softly.assertThat(회차1.isDeleteYn()).isEqualTo(true);
         }
     }
 }
