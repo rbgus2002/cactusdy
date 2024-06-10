@@ -9,8 +9,8 @@ import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.domain.comment.service.CommentService;
-import ssu.groupstudy.global.dto.DataResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
+import ssu.groupstudy.api.common.vo.DataResVo;
+import ssu.groupstudy.api.common.vo.ResVo;
 
 import javax.validation.Valid;
 
@@ -23,22 +23,22 @@ public class CommentController {
 
     @Operation(summary = "새로운 댓글 작성", description = "대댓글 작성의 경우에만 parentCommentId에 부모 댓글의 id를 포함해서 요청한다")
     @PostMapping
-    public ResponseDto writeComment(@Valid @RequestBody CreateCommentReqVo dto, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResVo writeComment(@Valid @RequestBody CreateCommentReqVo dto, @AuthenticationPrincipal CustomUserDetails userDetails){
         Long commentId = commentService.createComment(dto, userDetails.getUser());
-        return DataResponseDto.of("commentId", commentId);
+        return DataResVo.of("commentId", commentId);
     }
 
     @Operation(summary = "공지사항에 작성된 댓글 가져오기")
     @GetMapping
-    public ResponseDto viewComments(@RequestParam Long noticeId){
+    public ResVo viewComments(@RequestParam Long noticeId){
         CommentInfoResVo comments = commentService.getComments(noticeId);
-        return DataResponseDto.of("comments", comments);
+        return DataResVo.of("comments", comments);
     }
 
     @Operation(summary = "댓글 삭제")
     @DeleteMapping
-    public ResponseDto deleteComment(@RequestParam Long commentId){
+    public ResVo deleteComment(@RequestParam Long commentId){
         commentService.deleteComment(commentId);
-        return ResponseDto.success();
+        return ResVo.success();
     }
 }

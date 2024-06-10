@@ -16,7 +16,7 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.constant.Color;
+import ssu.groupstudy.domain.common.enums.ColorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ExampleStudyCreateService {
     @Transactional
     public void createExampleStudy(UserEntity user) {
         String inviteCode = studyInviteService.generateUniqueInviteCode();
-        StudyEntity study = StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", Color.DEFAULT.getHex(), user, inviteCode);
+        StudyEntity study = StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", ColorCode.DEFAULT.getHex(), user, inviteCode);
         StudyEntity studyEntity = studyEntityRepository.save(study);
         createExampleOthers(user, studyEntity);
 

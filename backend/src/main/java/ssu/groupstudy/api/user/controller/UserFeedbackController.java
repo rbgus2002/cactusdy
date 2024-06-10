@@ -9,8 +9,8 @@ import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.common.enums.FeedbackType;
 import ssu.groupstudy.api.user.vo.SendFeedbackReqVo;
 import ssu.groupstudy.domain.feedback.service.UserFeedbackService;
-import ssu.groupstudy.global.dto.DataResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
+import ssu.groupstudy.api.common.vo.DataResVo;
+import ssu.groupstudy.api.common.vo.ResVo;
 
 import javax.validation.Valid;
 
@@ -23,8 +23,8 @@ public class UserFeedbackController {
 
     @Operation(summary = "피드백 전송", description = "사용자 피드백을 전송한다")
     @PostMapping("/{feedbackType}")
-    public ResponseDto sendFeedback(@PathVariable FeedbackType feedbackType, @Valid @RequestBody SendFeedbackReqVo request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResVo sendFeedback(@PathVariable FeedbackType feedbackType, @Valid @RequestBody SendFeedbackReqVo request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long feedbackId = userFeedbackService.sendFeedback(feedbackType, request, userDetails.getUser());
-        return DataResponseDto.of("feedbackId", feedbackId);
+        return DataResVo.of("feedbackId", feedbackId);
     }
 }

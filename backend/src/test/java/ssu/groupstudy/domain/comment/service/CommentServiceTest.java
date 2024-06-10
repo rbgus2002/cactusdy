@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Optional;
 

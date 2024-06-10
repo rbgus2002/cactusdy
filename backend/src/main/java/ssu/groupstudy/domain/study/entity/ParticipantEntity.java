@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.constant.Color;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ColorCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -39,7 +39,7 @@ public class ParticipantEntity extends BaseEntity {
     public ParticipantEntity(UserEntity user, StudyEntity study) {
         this.user = user;
         this.study = study;
-        this.color = Color.DEFAULT.getHex();
+        this.color = ColorCode.DEFAULT.getHex();
     }
 
     public static ParticipantEntity createWithColor(UserEntity user, StudyEntity study, String color) {

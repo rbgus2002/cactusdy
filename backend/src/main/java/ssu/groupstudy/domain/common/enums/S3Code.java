@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.constant;
+package ssu.groupstudy.domain.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

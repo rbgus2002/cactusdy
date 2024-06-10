@@ -2,7 +2,7 @@ package ssu.groupstudy.global.exception;
 
 import lombok.Builder;
 import lombok.Getter;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 
 @Getter
 public class BusinessException extends RuntimeException {

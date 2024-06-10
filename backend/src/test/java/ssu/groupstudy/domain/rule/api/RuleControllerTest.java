@@ -121,9 +121,9 @@ class RuleControllerTest {
 //            // then
 //            resultActions.andExpect(status().isOk());
 //
-//            ResponseDto response = gson.fromJson(resultActions.andReturn()
+//            ResVo response = gson.fromJson(resultActions.andReturn()
 //                    .getResponse()
-//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResVo.class);
 //
 //            assertThat(response.getMessage()).isEqualTo(ResultCode.OK.getMessage());
 //        }

@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Optional;
 

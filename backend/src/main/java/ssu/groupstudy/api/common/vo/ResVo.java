@@ -1,23 +1,23 @@
-package ssu.groupstudy.global.dto;
+package ssu.groupstudy.api.common.vo;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class ResponseDto {
+public class ResVo {
     private final Boolean success;
     private final Integer statusCode;
     private final String message;
 
-    public static ResponseDto of(Boolean success, ResultCode resultCode){
-        return new ResponseDto(success, resultCode.getStatusCode(), resultCode.getMessage());
+    public static ResVo of(Boolean success, ResultCode resultCode){
+        return new ResVo(success, resultCode.getStatusCode(), resultCode.getMessage());
     }
 
-    public static ResponseDto success(){
-        return new ResponseDto(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
+    public static ResVo success(){
+        return new ResVo(true, ResultCode.OK.getStatusCode(), ResultCode.OK.getMessage());
     }
 
     @Override

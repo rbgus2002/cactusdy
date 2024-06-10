@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.NOTICE_NOT_FOUND;
-import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
+import static ssu.groupstudy.domain.common.enums.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.domain.common.enums.ResultCode.STUDY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor

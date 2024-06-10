@@ -1,6 +1,6 @@
 package ssu.groupstudy.domain.task.exception;
 
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.exception.BusinessException;
 
 public class TaskNotFoundException extends BusinessException {

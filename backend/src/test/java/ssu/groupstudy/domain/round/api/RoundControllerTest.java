@@ -82,9 +82,9 @@ class RoundControllerTest extends ApiTest {
 //            // then
 //            resultActions.andExpect(status().isOk());
 //
-//            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+//            DataResVo response = gson.fromJson(resultActions.andReturn()
 //                    .getResponse()
-//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResVo.class);
 //
 //            assertThat(response.getData().get("notice")).isNotNull();
 //        }

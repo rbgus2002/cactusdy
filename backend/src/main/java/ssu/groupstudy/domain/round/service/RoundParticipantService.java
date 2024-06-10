@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 
-import static ssu.groupstudy.global.constant.ResultCode.ROUND_PARTICIPANT_NOT_FOUND;
+import static ssu.groupstudy.domain.common.enums.ResultCode.ROUND_PARTICIPANT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor

@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
-import static ssu.groupstudy.global.constant.ResultCode.INVALID_TASK_ACCESS;
+import static ssu.groupstudy.domain.common.enums.ResultCode.INVALID_TASK_ACCESS;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

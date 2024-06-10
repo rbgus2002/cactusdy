@@ -16,7 +16,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.S3Utils;

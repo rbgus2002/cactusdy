@@ -9,8 +9,8 @@ import ssu.groupstudy.api.rule.vo.CreateRuleReqVo;
 import ssu.groupstudy.api.rule.vo.UpdateRuleReqVo;
 import ssu.groupstudy.api.rule.vo.RuleResVo;
 import ssu.groupstudy.domain.rule.service.RuleService;
-import ssu.groupstudy.global.dto.DataResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
+import ssu.groupstudy.api.common.vo.DataResVo;
+import ssu.groupstudy.api.common.vo.ResVo;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,29 +24,29 @@ public class RuleController {
 
     @Operation(summary = "규칙 생성")
     @PostMapping
-    public ResponseDto createRule(@Valid @RequestBody CreateRuleReqVo dto){
+    public ResVo createRule(@Valid @RequestBody CreateRuleReqVo dto){
         Long ruleId = ruleService.createRule(dto);
-        return DataResponseDto.of("ruleId", ruleId);
+        return DataResVo.of("ruleId", ruleId);
     }
 
     @Operation(summary = "규칙 삭제")
     @DeleteMapping("/{ruleId}")
-    public ResponseDto deleteRule(@PathVariable Long ruleId){
+    public ResVo deleteRule(@PathVariable Long ruleId){
         ruleService.deleteRule(ruleId);
-        return ResponseDto.success();
+        return ResVo.success();
     }
 
     @Operation(summary = "규칙 수정")
     @PutMapping("/{ruleId}")
-    public ResponseDto updateRule(@PathVariable Long ruleId, @Valid @RequestBody UpdateRuleReqVo request){
+    public ResVo updateRule(@PathVariable Long ruleId, @Valid @RequestBody UpdateRuleReqVo request){
         ruleService.updateRule(ruleId, request);
-        return ResponseDto.success();
+        return ResVo.success();
     }
 
     @Operation(summary = "규칙 조회", description = "특정 스터디의 규칙을 모두 조회한다.")
     @GetMapping("{studyId}")
-    public ResponseDto getRules(@PathVariable Long studyId){
+    public ResVo getRules(@PathVariable Long studyId){
         List<RuleResVo> rules = ruleService.getRules(studyId);
-        return DataResponseDto.of("rules", rules);
+        return DataResVo.of("rules", rules);
     }
 }

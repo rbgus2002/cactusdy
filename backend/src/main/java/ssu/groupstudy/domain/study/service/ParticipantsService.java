@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.*;
+import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor

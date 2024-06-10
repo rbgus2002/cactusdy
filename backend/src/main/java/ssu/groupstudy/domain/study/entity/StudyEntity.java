@@ -7,8 +7,8 @@ import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.global.constant.Color;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ColorCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -72,7 +72,7 @@ public class StudyEntity extends BaseEntity {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
         Optional<ParticipantEntity> hostParticipant = this.participants.getHostParticipant();
-        String color = Color.DEFAULT.getHex();
+        String color = ColorCode.DEFAULT.getHex();
         if(hostParticipant.isPresent()){
             color = hostParticipant.get().getColor();
         }

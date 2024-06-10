@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.round.service.RoundParticipantService;
-import ssu.groupstudy.global.dto.ResponseDto;
+import ssu.groupstudy.api.common.vo.ResVo;
 
 @RestController
 @RequestMapping("/api/rounds/participants")
@@ -17,8 +17,8 @@ public class RoundParticipantController {
 
     @Operation(summary = "출석 태그 수정", description = "[NONE, ATTENDANCE, ATTENDANCE_EXPECTED, LATE, ABSENT] 중에 하나로 출석 태그를 변경한다")
     @PutMapping("/{roundParticipantId}")
-    public ResponseDto updateStatusTag(@PathVariable Long roundParticipantId, @RequestParam StatusTag statusTag){
+    public ResVo updateStatusTag(@PathVariable Long roundParticipantId, @RequestParam StatusTag statusTag){
         roundParticipantService.updateStatusTag(roundParticipantId, statusTag);
-        return ResponseDto.success();
+        return ResVo.success();
     }
 }

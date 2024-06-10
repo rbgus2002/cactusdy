@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.api.user.vo.UserInfoResVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.api.user.vo.EditUserReqVo;
-import ssu.groupstudy.global.constant.S3Code;
+import ssu.groupstudy.domain.common.enums.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;

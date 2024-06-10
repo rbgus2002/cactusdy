@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.constant.S3Code;
+import ssu.groupstudy.domain.common.enums.S3Code;
 
 import java.io.IOException;
 

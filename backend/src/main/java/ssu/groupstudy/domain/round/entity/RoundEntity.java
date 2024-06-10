@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
