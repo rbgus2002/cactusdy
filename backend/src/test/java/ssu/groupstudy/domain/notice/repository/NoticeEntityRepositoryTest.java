@@ -12,9 +12,9 @@ import org.springframework.data.domain.Pageable;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,15 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @CustomRepositoryTest
-class NoticeRepositoryTest{
+class NoticeEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyEntityRepository studyEntityRepository;
     @Autowired
-    private NoticeRepository noticeRepository;
+    private NoticeEntityRepository noticeEntityRepository;
 
     @Nested
     class switchCheckNotice {
@@ -41,8 +41,8 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항 읽음 상태로 전환한다")
         void read() {
             // given
-            UserEntity 최규현 = userRepository.findById(1L).get();
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
             Character isChecked = 공지사항.switchCheckNotice(최규현);
@@ -55,8 +55,8 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항을 안읽음 상태로 전환한다")
         void unread(){
             // given
-            UserEntity 최규현 = userRepository.findById(1L).get();
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
             공지사항.switchCheckNotice(최규현);
@@ -71,18 +71,18 @@ class NoticeRepositoryTest{
     @DisplayName("해당 스터디의 공지사항 리스트를 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져온다")
     void findNoticesByStudyOrderByPinYnDescCreateDateDesc() {
         // given
-        NoticeEntity 공지사항1 = noticeRepository.findById(1L).get();
-        NoticeEntity 공지사항2 = noticeRepository.findById(2L).get();
-        NoticeEntity 공지사항3 = noticeRepository.findById(3L).get();
-        NoticeEntity 공지사항4 = noticeRepository.findById(4L).get();
+        NoticeEntity 공지사항1 = noticeEntityRepository.findById(1L).get();
+        NoticeEntity 공지사항2 = noticeEntityRepository.findById(2L).get();
+        NoticeEntity 공지사항3 = noticeEntityRepository.findById(3L).get();
+        NoticeEntity 공지사항4 = noticeEntityRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyEntityRepository.findById(1L).get();
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        Page<NoticeEntity> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디, pageable);
+        Page<NoticeEntity> noticePage = noticeEntityRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디, pageable);
         List<NoticeEntity> noticeList = noticePage.getContent();
 
         // then
@@ -95,16 +95,16 @@ class NoticeRepositoryTest{
     @DisplayName("해당 스터디의 공지사항 리스트를 최대 3개 가져온다. 순서는 상단 고정 되어있는 공지사항을 우선으로 하고 작성 시각 기준 최신순으로 가져온다")
     void getNoticeListLimit3() {
         // given
-        NoticeEntity 공지사항1 = noticeRepository.findById(1L).get();
-        NoticeEntity 공지사항2 = noticeRepository.findById(2L).get();
-        NoticeEntity 공지사항3 = noticeRepository.findById(3L).get();
-        NoticeEntity 공지사항4 = noticeRepository.findById(4L).get();
+        NoticeEntity 공지사항1 = noticeEntityRepository.findById(1L).get();
+        NoticeEntity 공지사항2 = noticeEntityRepository.findById(2L).get();
+        NoticeEntity 공지사항3 = noticeEntityRepository.findById(3L).get();
+        NoticeEntity 공지사항4 = noticeEntityRepository.findById(4L).get();
         공지사항3.switchPin(); // 공지사항3 상단 고정
 
-        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyEntityRepository.findById(1L).get();
 
         // when
-        List<NoticeEntity> noticeList = noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
+        List<NoticeEntity> noticeList = noticeEntityRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(알고리즘_스터디);
 
         // then
         softly.assertThat(noticeList.size()).isEqualTo(3);
@@ -117,7 +117,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항을 상단고정한다")
         void pin(){
             // given
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
             char pinYn = 공지사항.switchPin();
@@ -131,7 +131,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항 상단고정을 해제한다")
         void unPin(){
             // given
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
             공지사항.switchPin();
@@ -150,8 +150,8 @@ class NoticeRepositoryTest{
         @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
         void read_true(){
             // given
-            UserEntity 최규현 = userRepository.findById(1L).get();
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
 
             // when
@@ -164,8 +164,8 @@ class NoticeRepositoryTest{
         @Test
         @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
         void read_false(){
-            UserEntity 최규현 = userRepository.findById(1L).get();
-            NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
             공지사항.switchCheckNotice(최규현);
 
@@ -181,11 +181,11 @@ class NoticeRepositoryTest{
     @DisplayName("삭제된 공지사항을 읽는 경우 빈 값을 가져온다")
     void getNoticeDeleted(){
         // given
-        NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+        NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
         // when
         공지사항.deleteNotice();
-        Optional<NoticeEntity> notice = noticeRepository.findById(공지사항.getNoticeId());
+        Optional<NoticeEntity> notice = noticeEntityRepository.findById(공지사항.getNoticeId());
 
         // then
         softly.assertThat(notice).isEmpty();
@@ -195,10 +195,10 @@ class NoticeRepositoryTest{
     @DisplayName("스터디에 속한 공지사항을 모두 가져온다")
     void findNoticesByStudy(){
         // given
-        StudyEntity 알고리즘_스터디 = studyRepository.findById(1L).get();
+        StudyEntity 알고리즘_스터디 = studyEntityRepository.findById(1L).get();
 
         // when
-        List<NoticeEntity> notices = noticeRepository.findNoticesByStudy(알고리즘_스터디);
+        List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(알고리즘_스터디);
 
         // then
         softly.assertThat(notices.size()).isGreaterThan(1);

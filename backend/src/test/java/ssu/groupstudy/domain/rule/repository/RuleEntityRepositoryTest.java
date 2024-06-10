@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 @CustomRepositoryTest
-class RuleRepositoryTest {
+class RuleEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private RuleRepository ruleRepository;
+    private RuleEntityRepository ruleEntityRepository;
 
     @Test
     @DisplayName("삭제되지 않은 규칙을 가져온다.")
     void findRuleById(){
         // given
         // when
-        Optional<RuleEntity> 규칙 = ruleRepository.findById(1L);
-        Optional<RuleEntity> 삭제된_규칙 = ruleRepository.findById(3L);
+        Optional<RuleEntity> 규칙 = ruleEntityRepository.findById(1L);
+        Optional<RuleEntity> 삭제된_규칙 = ruleEntityRepository.findById(3L);
 
         // then
         softly.assertThat(규칙).isNotEmpty();
@@ -36,7 +36,7 @@ class RuleRepositoryTest {
     void findRulesByStudy(){
         // given
         // when
-        List<RuleEntity> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(1L);
+        List<RuleEntity> rules = ruleEntityRepository.findRulesByStudyIdOrderByCreateDate(1L);
 
         // then
         softly.assertThat(rules.size()).isGreaterThanOrEqualTo(2);

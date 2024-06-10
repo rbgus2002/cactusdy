@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 
 import java.util.List;
 
-public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
+public interface CommentEntityRepository extends JpaRepository<CommentEntity, Long> {
     /**
      * 시간 순으로 모든 부모 댓글을 가져온다
      */

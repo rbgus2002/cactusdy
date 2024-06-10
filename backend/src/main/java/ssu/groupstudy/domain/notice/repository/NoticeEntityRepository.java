@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
+public interface NoticeEntityRepository extends JpaRepository<NoticeEntity, Long> {
     @Query("SELECT n FROM NoticeEntity n WHERE n.noticeId = :noticeId AND n.deleteYn = 'N'")
     Optional<NoticeEntity> findById(Long noticeId);
 

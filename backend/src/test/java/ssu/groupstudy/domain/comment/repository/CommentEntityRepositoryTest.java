@@ -8,27 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 
 import java.util.List;
 
 @CustomRepositoryTest
-class CommentRepositoryTest{
+class CommentEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private NoticeRepository noticeRepository;
+    private NoticeEntityRepository noticeEntityRepository;
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentEntityRepository commentEntityRepository;
 
     @Test
     @DisplayName("공지사항에 작성된 댓글을 시간 순으로 가져온다")
     void getCommentsOrderByCreateDateAsc(){
         // given
-        NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+        NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
         // when
-        List<CommentEntity> comments = commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(공지사항);
+        List<CommentEntity> comments = commentEntityRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(공지사항);
         CommentEntity 댓글1 = comments.get(0);
         CommentEntity 댓글2 = comments.get(1);
 
@@ -42,10 +42,10 @@ class CommentRepositoryTest{
     @DisplayName("특정 댓글의 대댓글을 모두 가져온다")
     void getReplies(){
         // given
-        CommentEntity 댓글 = commentRepository.findById(1L).get();
+        CommentEntity 댓글 = commentEntityRepository.findById(1L).get();
 
         // when
-        List<CommentEntity> replies = commentRepository.findCommentsByParentCommentOrderByCreateDate(댓글);
+        List<CommentEntity> replies = commentEntityRepository.findCommentsByParentCommentOrderByCreateDate(댓글);
         CommentEntity 대댓글1 = replies.get(0);
         CommentEntity 대댓글2 = replies.get(1);
 
@@ -58,10 +58,10 @@ class CommentRepositoryTest{
     @DisplayName("공지사항에 작성된 댓글의 개수를 가져온다")
     void countCommentByNotice(){
         // given
-        NoticeEntity 공지사항 = noticeRepository.findById(1L).get();
+        NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
         // when
-        int 댓글개수 = commentRepository.countCommentByNotice(공지사항);
+        int 댓글개수 = commentEntityRepository.countCommentByNotice(공지사항);
         
         // then
         softly.assertThat(댓글개수).isEqualTo(4);

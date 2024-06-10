@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface StudyRepository extends JpaRepository<StudyEntity, Long> {
+public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> {
     @Query("SELECT s FROM StudyEntity s WHERE s.studyId = :studyId AND s.deleteYn = 'N'")
     Optional<StudyEntity> findById(Long studyId);
 

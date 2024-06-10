@@ -11,10 +11,10 @@ import ssu.groupstudy.domain.comment.dto.response.ChildCommentInfoResponse;
 import ssu.groupstudy.domain.comment.dto.response.CommentDto;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
-import ssu.groupstudy.domain.comment.repository.CommentRepository;
+import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
-import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -30,14 +30,14 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class CommentService {
-    private final CommentRepository commentRepository;
-    private final NoticeRepository noticeRepository;
+    private final CommentEntityRepository commentEntityRepository;
+    private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
 
     @Transactional
     public Long createComment(CreateCommentRequest dto, UserEntity writer) {
-        NoticeEntity notice = noticeRepository.findById(dto.getNoticeId())
+        NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
@@ -45,7 +45,7 @@ public class CommentService {
         eventPublisher.publishEvent(new CommentCreationEvent(notice, comment));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
-        return commentRepository.save(comment).getCommentId();
+        return commentEntityRepository.save(comment).getCommentId();
     }
 
     private void validateUser(UserEntity writer, NoticeEntity notice) {
@@ -60,22 +60,22 @@ public class CommentService {
     private CommentEntity handleCommentCreationWithParent(CreateCommentRequest dto, UserEntity writer, NoticeEntity notice) {
         CommentEntity parent = null;
         if(dto.getParentCommentId() != null){
-            parent = commentRepository.getReferenceById(dto.getParentCommentId());
+            parent = commentEntityRepository.getReferenceById(dto.getParentCommentId());
         }
         return dto.toEntity(writer, notice, parent);
     }
 
     public CommentInfoResponse getComments(Long noticeId) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        int commentCount = commentRepository.countCommentByNotice(notice);
+        int commentCount = commentEntityRepository.countCommentByNotice(notice);
         List<CommentEntity> parentComments = getParentComments(notice);
         List<CommentDto> commentDtoList = transformToCommentsWithReplies(parentComments);
         return CommentInfoResponse.of(commentCount, commentDtoList);
     }
 
     private List<CommentEntity> getParentComments(NoticeEntity notice) {
-        return commentRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
+        return commentEntityRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
     }
 
     private List<CommentDto> transformToCommentsWithReplies(List<CommentEntity> parentComments){
@@ -93,7 +93,7 @@ public class CommentService {
     }
 
     private List<CommentEntity> getChildComments(CommentEntity comment) {
-        return commentRepository.findCommentsByParentCommentOrderByCreateDate(comment);
+        return commentEntityRepository.findCommentsByParentCommentOrderByCreateDate(comment);
     }
 
     private List<ChildCommentInfoResponse> transformToChildComments(List<CommentEntity> childComments) {
@@ -104,7 +104,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId) {
-        CommentEntity comment = commentRepository.findById(commentId)
+        CommentEntity comment = commentEntityRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND));
         comment.delete();
     }

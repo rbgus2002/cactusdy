@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface ParticipantRepository extends JpaRepository<ParticipantEntity, Long> {
+public interface ParticipantEntityRepository extends JpaRepository<ParticipantEntity, Long> {
     @Query("SELECT p " +
             "FROM ParticipantEntity p " +
             "WHERE p.user = :user " +

@@ -3,13 +3,13 @@ package ssu.groupstudy.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
-import ssu.groupstudy.domain.task.repository.TaskRepository;
+import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.FcmUtils;
 
@@ -21,13 +21,13 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class NotificationService {
-    private final UserRepository userRepository;
-    private final StudyRepository studyRepository;
-    private final TaskRepository taskRepository;
+    private final UserEntityRepository userEntityRepository;
+    private final StudyEntityRepository studyEntityRepository;
+    private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
 
     public void stabParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
-        UserEntity target = userRepository.findById(targetUserId)
+        UserEntity target = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         String title = buildMessage("콕찌르기 | ", me.getNickname());
@@ -45,9 +45,9 @@ public class NotificationService {
     }
 
     public void stabParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
-        UserEntity target = userRepository.findById(targetUserId)
+        UserEntity target = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-        TaskEntity task = taskRepository.findById(taskId)
+        TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
         String title = buildMessage("과제 콕찌르기 | ", me.getNickname());

@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface RuleRepository extends JpaRepository<RuleEntity, Long> {
+public interface RuleEntityRepository extends JpaRepository<RuleEntity, Long> {
     @Query("SELECT r FROM RuleEntity r WHERE r.id = :ruleId AND r.deleteYn = 'N'")
     Optional<RuleEntity> findById(Long ruleId);
 

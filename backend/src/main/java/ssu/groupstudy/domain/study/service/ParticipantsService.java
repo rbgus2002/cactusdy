@@ -6,11 +6,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.common.enums.StatusTag;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.DoneCount;
@@ -22,11 +22,11 @@ import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscri
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.ParticipantRepository;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,15 +40,15 @@ import static ssu.groupstudy.global.constant.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class ParticipantsService {
-    private final StudyRepository studyRepository;
-    private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
-    private final RoundRepository roundRepository;
-    private final NoticeRepository noticeRepository;
+    private final StudyEntityRepository studyEntityRepository;
+    private final UserEntityRepository userEntityRepository;
+    private final ParticipantEntityRepository participantEntityRepository;
+    private final RoundEntityRepository roundEntityRepository;
+    private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
-        StudyEntity study = studyRepository.findById(studyId)
+        StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         List<ParticipantEntity> participantList = getParticipantListOrderByCreateDateAsc(study);
@@ -65,21 +65,21 @@ public class ParticipantsService {
     }
 
     public ParticipantResponse getParticipant(Long userId, Long studyId) {
-        StudyEntity study = studyRepository.findById(studyId)
+        StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
-        List<ParticipantInfo> participantInfoList = participantRepository.findParticipantInfoByUser(user);
+        List<ParticipantInfo> participantInfoList = participantEntityRepository.findParticipantInfoByUser(user);
         List<StatusTagInfo> statusTagInfoList = handleStatusTagInfo(study, user);
-        DoneCount doneCount = studyRepository.calculateDoneCount(user, study);
+        DoneCount doneCount = studyEntityRepository.calculateDoneCount(user, study);
         char isParticipated = (study.isParticipated(user)) ? 'Y' : 'N';
 
         return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
     private List<StatusTagInfo> handleStatusTagInfo(StudyEntity study, UserEntity user) {
-        List<StatusTagInfo> statusTagInfos = studyRepository.calculateStatusTag(user, study);
+        List<StatusTagInfo> statusTagInfos = studyEntityRepository.calculateStatusTag(user, study);
         Map<StatusTag, StatusTagInfo> statusTagInfoMap = statusTagInfos.stream()
                 .collect(Collectors.toMap(StatusTagInfo::getStatusTag, Function.identity()));
 
@@ -91,11 +91,11 @@ public class ParticipantsService {
 
     @Transactional
     public void kickParticipant(UserEntity user, Long userId, Long studyId) {
-        StudyEntity study = studyRepository.findById(studyId)
+        StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity targetUser = userRepository.findById(userId)
+        UserEntity targetUser = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        List<NoticeEntity> notices = noticeRepository.findNoticesByStudy(study);
+        List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
         assertUserIsHostOrThrow(user, study);
 
@@ -106,7 +106,7 @@ public class ParticipantsService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.removeParticipant(new RoundParticipantEntity(user, round));
         }

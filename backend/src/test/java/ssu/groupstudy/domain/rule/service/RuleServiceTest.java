@@ -10,9 +10,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
-import ssu.groupstudy.domain.rule.repository.RuleRepository;
+import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.Optional;
@@ -27,10 +27,10 @@ class RuleServiceTest extends ServiceTest {
     private RuleService ruleService;
 
     @Mock
-    private RuleRepository ruleRepository;
+    private RuleEntityRepository ruleEntityRepository;
 
     @Mock
-    private StudyRepository studyRepository;
+    private StudyEntityRepository studyEntityRepository;
 
     private RuleEntity 규칙;
 
@@ -46,7 +46,7 @@ class RuleServiceTest extends ServiceTest {
         @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> ruleService.createRule(new CreateRuleRequest(-1L, "detail")))
@@ -58,8 +58,8 @@ class RuleServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(규칙).when(ruleRepository).save(any(RuleEntity.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
+            doReturn(규칙).when(ruleEntityRepository).save(any(RuleEntity.class));
 
             // when
             Long ruleId = ruleService.createRule(new CreateRuleRequest(-1L, "detail"));

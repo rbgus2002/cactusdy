@@ -9,10 +9,10 @@ import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
 import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
-import ssu.groupstudy.domain.rule.repository.RuleRepository;
+import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.List;
@@ -23,33 +23,33 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Slf4j
 public class RuleService {
-    private final StudyRepository studyRepository;
-    private final RuleRepository ruleRepository;
+    private final StudyEntityRepository studyEntityRepository;
+    private final RuleEntityRepository ruleEntityRepository;
 
     @Transactional
     public Long createRule(CreateRuleRequest dto) {
-        StudyEntity study = studyRepository.findById(dto.getStudyId())
+        StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         RuleEntity rule = dto.toEntity(study);
-        return ruleRepository.save(rule).getId();
+        return ruleEntityRepository.save(rule).getId();
     }
 
     @Transactional
     public void deleteRule(Long ruleId) {
-        RuleEntity rule = ruleRepository.findById(ruleId)
+        RuleEntity rule = ruleEntityRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.delete();
     }
 
     @Transactional
     public void updateRule(Long ruleId, UpdateRuleRequest request) {
-        RuleEntity rule = ruleRepository.findById(ruleId)
+        RuleEntity rule = ruleEntityRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.updateDetail(request.getDetail());
     }
 
     public List<RuleResponse> getRules(Long studyId) {
-        List<RuleEntity> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(studyId);
+        List<RuleEntity> rules = ruleEntityRepository.findRulesByStudyIdOrderByCreateDate(studyId);
         return rules.stream()
                 .map(RuleResponse::of)
                 .collect(Collectors.toList());

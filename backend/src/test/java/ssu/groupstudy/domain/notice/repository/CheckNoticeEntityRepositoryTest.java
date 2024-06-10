@@ -10,17 +10,17 @@ import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @CustomRepositoryTest
-class CheckNoticeRepositoryTest {
+class CheckNoticeEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private CheckNoticeRepository checkNoticeRepository;
+    private CheckNoticeEntityRepository checkNoticeEntityRepository;
 
     @Test
     @DisplayName("지연 로딩 테스트")
     void equalsAndHashTest(){
         // given
-        CheckNoticeEntity 최규현꺼 = checkNoticeRepository.findById(1L).get();
+        CheckNoticeEntity 최규현꺼 = checkNoticeEntityRepository.findById(1L).get();
 
         // when
         UserEntity 최규현Proxy = 최규현꺼.getUser();

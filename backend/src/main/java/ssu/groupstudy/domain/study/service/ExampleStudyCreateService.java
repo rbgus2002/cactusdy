@@ -5,15 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
-import ssu.groupstudy.domain.rule.repository.RuleRepository;
+import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.Color;
@@ -27,17 +27,17 @@ import java.util.List;
 @Slf4j
 public class ExampleStudyCreateService {
     private final StudyInviteService studyInviteService;
-    private final NoticeRepository noticeRepository;
-    private final StudyRepository studyRepository;
-    private final RuleRepository ruleRepository;
-    private final RoundRepository roundRepository;
+    private final NoticeEntityRepository noticeEntityRepository;
+    private final StudyEntityRepository studyEntityRepository;
+    private final RuleEntityRepository ruleEntityRepository;
+    private final RoundEntityRepository roundEntityRepository;
 
 
     @Transactional
     public void createExampleStudy(UserEntity user) {
         String inviteCode = studyInviteService.generateUniqueInviteCode();
         StudyEntity study = StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", Color.DEFAULT.getHex(), user, inviteCode);
-        StudyEntity studyEntity = studyRepository.save(study);
+        StudyEntity studyEntity = studyEntityRepository.save(study);
         createExampleOthers(user, studyEntity);
 
         // [2024-06-10:최규현] TODO: default 이미지 추가 후 주석 해제
@@ -59,7 +59,7 @@ public class ExampleStudyCreateService {
                 .study(study)
                 .writer(user)
                 .build();
-        noticeRepository.save(notice);
+        noticeEntityRepository.save(notice);
     }
 
     private void createExampleRules(StudyEntity study) {
@@ -67,14 +67,14 @@ public class ExampleStudyCreateService {
         RuleEntity rule2 = RuleEntity.create("매일 영단어 20개 암기", study);
         RuleEntity rule3 = RuleEntity.create("공부 시간 기록하고 공지사항에 인증하기", study);
         List<RuleEntity> rules = List.of(rule1, rule2, rule3);
-        ruleRepository.saveAll(rules);
+        ruleEntityRepository.saveAll(rules);
     }
 
     private void createExampleRounds(StudyEntity study) {
         RoundEntity round1 = createRound(study, "스타벅스 동숭길 입구점", LocalDateTime.now().minusDays(1).withHour(15).withMinute(0));
         round1.updateDetail("스터디 첫날👏👏\n\n스타벅스 동숭길 입구점에서 만나요!");
         RoundEntity round2 = createRound(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12).withMinute(0));
-        roundRepository.saveAll(List.of(round1, round2));
+        roundEntityRepository.saveAll(List.of(round1, round2));
         createExampleTask(round1);
     }
 

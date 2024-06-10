@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoundRepository extends JpaRepository<RoundEntity, Long> {
+public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> {
     @Query("SELECT r FROM RoundEntity r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
     Optional<RoundEntity> findById(Long roundId);
 

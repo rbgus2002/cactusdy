@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.comment.repository.CommentRepository;
+import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
@@ -17,12 +17,12 @@ import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
-import ssu.groupstudy.domain.notice.repository.NoticeRepository;
+import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
@@ -37,16 +37,16 @@ import static ssu.groupstudy.global.constant.ResultCode.STUDY_NOT_FOUND;
 @Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
-    private final StudyRepository studyRepository;
-    private final NoticeRepository noticeRepository;
-    private final CommentRepository commentRepository;
+    private final StudyEntityRepository studyEntityRepository;
+    private final NoticeEntityRepository noticeEntityRepository;
+    private final CommentEntityRepository commentEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public NoticeInfoResponse createNotice(CreateNoticeRequest dto, UserEntity writer) {
-        StudyEntity study = studyRepository.findById(dto.getStudyId())
+        StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        NoticeEntity notice = noticeRepository.save(dto.toEntity(writer, study));
+        NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 
         eventPublisher.publishEvent(new NoticeCreationEvent(study, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
@@ -56,19 +56,19 @@ public class NoticeService {
 
     @Transactional
     public Character switchCheckNotice(Long noticeId, UserEntity user) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchCheckNotice(user);
     }
 
     public NoticeSummaries getNoticeSummaries(Long studyId, Pageable pageable, UserEntity user) {
-        StudyEntity study = studyRepository.findById(studyId)
+        StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return transformNoticeSummaries(study, pageable, user);
     }
 
     private NoticeSummaries transformNoticeSummaries(StudyEntity study, Pageable pageable, UserEntity user) {
-        Page<NoticeEntity> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study, pageable);
+        Page<NoticeEntity> noticePage = noticeEntityRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study, pageable);
         List<NoticeSummary> noticeSummaries = noticePage.getContent().stream()
                 .map(notice -> createNoticeSummary(notice, user))
                 .collect(Collectors.toList());
@@ -76,29 +76,29 @@ public class NoticeService {
     }
 
     private NoticeSummary createNoticeSummary(NoticeEntity notice, UserEntity user) {
-        int commentCount = commentRepository.countCommentByNotice(notice);
+        int commentCount = commentEntityRepository.countCommentByNotice(notice);
         int readCount = notice.countReadNotices();
         boolean isRead = notice.isRead(user);
         return NoticeSummary.of(notice, commentCount, readCount, isRead);
     }
 
     public List<NoticeSummary> getNoticeSummaryListLimit3(Long studyId) {
-        StudyEntity study = studyRepository.findById(studyId)
+        StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        return noticeRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
+        return noticeEntityRepository.findTop3ByStudyOrderByPinYnDescCreateDateDesc(study).stream()
                 .map(NoticeSummary::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public Character switchNoticePin(Long noticeId) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchPin();
     }
 
     public List<String> getCheckUserImageList(Long noticeId) {
-        Set<CheckNoticeEntity> checkNotices = noticeRepository.findById(noticeId)
+        Set<CheckNoticeEntity> checkNotices = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 .getCheckNotices();
 
@@ -108,21 +108,21 @@ public class NoticeService {
     }
 
     public NoticeInfoResponse getNoticeById(Long noticeId, UserEntity user) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return NoticeInfoResponse.of(notice, user);
     }
 
     @Transactional
     public void delete(Long noticeId) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.deleteNotice();
     }
 
     @Transactional
     public void updateNotice(Long noticeId, EditNoticeRequest dto) {
-        NoticeEntity notice = noticeRepository.findById(noticeId)
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.updateTitleAndContents(dto.getTitle(), dto.getContents());
     }

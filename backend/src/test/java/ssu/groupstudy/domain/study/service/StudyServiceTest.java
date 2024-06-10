@@ -8,15 +8,15 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.rule.repository.RuleRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.ParticipantRepository;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
+import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
@@ -36,13 +36,13 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private StudyInviteService studyInviteService;
     @Mock
-    private StudyRepository studyRepository;
+    private StudyEntityRepository studyEntityRepository;
     @Mock
-    private ParticipantRepository participantRepository;
+    private ParticipantEntityRepository participantEntityRepository;
     @Mock
-    private RoundRepository roundRepository;
+    private RoundEntityRepository roundEntityRepository;
     @Mock
-    private RuleRepository ruleRepository;
+    private RuleEntityRepository ruleEntityRepository;
     @Mock
     private ApplicationEventPublisher eventPublisher;
     @Mock
@@ -57,10 +57,10 @@ class StudyServiceTest extends ServiceTest {
         void setColor() throws IOException {
             // given
             doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
-            doReturn(알고리즘스터디).when(studyRepository).save(any(StudyEntity.class));
+            doReturn(알고리즘스터디).when(studyEntityRepository).save(any(StudyEntity.class));
             doReturn(RoundEntity.builder()
                     .study(알고리즘스터디)
-                    .build()).when(roundRepository).save(any(RoundEntity.class));
+                    .build()).when(roundEntityRepository).save(any(RoundEntity.class));
 
             // when
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
@@ -89,7 +89,7 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 스터디인 경우 예외를 던진다")
         void 실패_유저존재하지않음() {
             // given, when
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> studyService.getStudySummary(-1L, null))
@@ -102,8 +102,8 @@ class StudyServiceTest extends ServiceTest {
         void participantNotFound() {
             // given
             // when
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(participantEntityRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
 
             // then
             assertThatThrownBy(() -> studyService.getStudySummary(-1L, 최규현))
@@ -115,8 +115,8 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("성공")
         void success() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(스터디참여자_최규현)).when(participantEntityRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
 
             // when
             StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L, 최규현);
@@ -133,7 +133,7 @@ class StudyServiceTest extends ServiceTest {
         void studyNotFound(){
             // given
             // when
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> studyService.getInviteCode(-1L))
@@ -145,7 +145,7 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("스터디의 초대코드를 가져온다")
         void getInviteCode(){
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
             final String originalInviteCode = 알고리즘스터디.getInviteCode();
 
             // when

@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.feedback.entity.FeedbackEntity;
 import ssu.groupstudy.domain.common.enums.FeedbackType;
 import ssu.groupstudy.domain.feedback.dto.CreateNotionPageDto;
 import ssu.groupstudy.domain.feedback.dto.SendFeedbackRequest;
-import ssu.groupstudy.domain.feedback.repsoitory.FeedbackRepository;
+import ssu.groupstudy.domain.feedback.repsoitory.FeedbackEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.openfeign.NotionOpenFeign;
 
@@ -17,14 +17,14 @@ import ssu.groupstudy.global.openfeign.NotionOpenFeign;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserFeedbackService {
-    private final FeedbackRepository feedbackRepository;
+    private final FeedbackEntityRepository feedbackEntityRepository;
     private final NotionOpenFeign notionOpenFeign;
 
     @Transactional
     public Long sendFeedback(FeedbackType type, SendFeedbackRequest request, UserEntity writer) {
         FeedbackEntity feedback = FeedbackEntity.create(type, request.getTitle(), request.getContents(), writer);
         saveToNotion(feedback);
-        return feedbackRepository.save(feedback).getId();
+        return feedbackEntityRepository.save(feedback).getId();
     }
 
     private void saveToNotion(FeedbackEntity feedback) {
