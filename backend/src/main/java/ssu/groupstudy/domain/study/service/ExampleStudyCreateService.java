@@ -40,7 +40,8 @@ public class ExampleStudyCreateService {
         Study studyEntity = studyRepository.save(study);
         createExampleOthers(user, studyEntity);
 
-        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
+        // [2024-06-10:최규현] TODO: default 이미지 추가 후 주석 해제
+//        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
     }
 
     private void createExampleOthers(User user, Study study) {
