@@ -12,8 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.notice.domain.CheckNotice;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
 import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
@@ -68,7 +68,7 @@ class NoticeServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(공지사항1).when(noticeRepository).save(any(Notice.class));
+            doReturn(공지사항1).when(noticeRepository).save(any(NoticeEntity.class));
 
             // when
             NoticeInfoResponse noticeInfoResponse = noticeService.createNotice(공지사항1CreateRequest, 최규현);
@@ -143,10 +143,10 @@ class NoticeServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
 
-            Page<Notice> noticePage = generateNoticePage();
+            Page<NoticeEntity> noticePage = generateNoticePage();
             doReturn(noticePage).when(noticeRepository).findNoticesByStudyOrderByPinYnDescCreateDateDesc(any(StudyEntity.class), any(Pageable.class));
 
-            doReturn(1).when(commentRepository).countCommentByNotice(any(Notice.class));
+            doReturn(1).when(commentRepository).countCommentByNotice(any(NoticeEntity.class));
 
             // when
             NoticeSummaries noticeSummaries = noticeService.getNoticeSummaries(-1L, pageable, 최규현);
@@ -155,8 +155,8 @@ class NoticeServiceTest extends ServiceTest {
             assertThat(noticeSummaries.getNoticeList().size()).isEqualTo(4);
         }
 
-        private Page<Notice> generateNoticePage() {
-            List<Notice> 공지사항_리스트 = List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4);
+        private Page<NoticeEntity> generateNoticePage() {
+            List<NoticeEntity> 공지사항_리스트 = List.of(공지사항1, 공지사항2, 공지사항3, 공지사항4);
             return new PageImpl<>(공지사항_리스트, pageable, 공지사항_리스트.size());
         }
 
@@ -222,9 +222,9 @@ class NoticeServiceTest extends ServiceTest {
 
             // when
             공지사항1.switchCheckNotice(최규현);
-            Set<CheckNotice> checkNotices = 공지사항1.getCheckNotices();
+            Set<CheckNoticeEntity> checkNotices = 공지사항1.getCheckNotices();
             List<String> profileImageList = new ArrayList<>();
-            for (CheckNotice checkNotice : checkNotices) {
+            for (CheckNoticeEntity checkNotice : checkNotices) {
                 profileImageList.add(checkNotice.getUser().getPicture());
             }
 

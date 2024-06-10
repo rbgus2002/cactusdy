@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
@@ -51,7 +51,7 @@ public class ExampleStudyCreateService {
     }
 
     private void createExampleNotice(UserEntity user, StudyEntity study) {
-        Notice notice = Notice.builder()
+        NoticeEntity notice = NoticeEntity.builder()
                 .title("스터디 교재")
                 .contents(
                         "안녕하세요, 여러분! \n\n다들 원하는 목표 점수를 달성하고\n원하는 바를 이루길 바라요🙏\n\n저희 다음주부터 있을 스터디의 교재로 해커스 교재를 이용해볼까 해요 !\n\n교재:해커스 토익 1000 제(RC / LC)\n\n다들 교재 꼭꼭 구매해 오세요!🥹"

@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
-@Tag(name = "Comment", description = "댓글 API")
+@Tag(name = "CommentEntity", description = "댓글 API")
 public class CommentApi {
     private final CommentService commentService;
 

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
@@ -72,7 +72,7 @@ public class StudyInviteService {
     public void leaveUser(UserEntity user, Long studyId) {
         StudyEntity study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+        List<NoticeEntity> notices = noticeRepository.findNoticesByStudy(study);
 
         removeUserToFutureRounds(study, user);
         eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));

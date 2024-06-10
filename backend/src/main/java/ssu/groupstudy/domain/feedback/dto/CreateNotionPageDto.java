@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.feedback.dto;
 
 import lombok.Getter;
 import lombok.ToString;
-import ssu.groupstudy.domain.feedback.domain.FeedbackType;
+import ssu.groupstudy.domain.common.enums.FeedbackType;
 
 import java.util.Arrays;
 import java.util.HashMap;

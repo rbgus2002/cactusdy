@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.notice.dto.response;
 
 import lombok.*;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +19,7 @@ public class NoticeSummary {
     private int readCount;
     private boolean read;
 
-    private NoticeSummary(Notice notice, int commentCount, int readCount, boolean isRead) {
+    private NoticeSummary(NoticeEntity notice, int commentCount, int readCount, boolean isRead) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -32,7 +32,7 @@ public class NoticeSummary {
         this.read = isRead;
     }
 
-    private NoticeSummary(Notice notice) {
+    private NoticeSummary(NoticeEntity notice) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -41,11 +41,11 @@ public class NoticeSummary {
         this.createDate = notice.getCreateDate();;
     }
 
-    public static NoticeSummary from(Notice notice){
+    public static NoticeSummary from(NoticeEntity notice){
         return new NoticeSummary(notice);
     }
 
-    public static NoticeSummary of(Notice notice, int commentCount, int readCount, boolean isRead){
+    public static NoticeSummary of(NoticeEntity notice, int commentCount, int readCount, boolean isRead){
         return new NoticeSummary(notice, commentCount, readCount, isRead);
     }
 }

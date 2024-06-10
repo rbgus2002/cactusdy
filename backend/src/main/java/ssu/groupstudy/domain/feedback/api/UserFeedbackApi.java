@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
-import ssu.groupstudy.domain.feedback.domain.FeedbackType;
+import ssu.groupstudy.domain.common.enums.FeedbackType;
 import ssu.groupstudy.domain.feedback.dto.SendFeedbackRequest;
 import ssu.groupstudy.domain.feedback.service.UserFeedbackService;
 import ssu.groupstudy.global.dto.DataResponseDto;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/feedbacks")
 @RequiredArgsConstructor
-@Tag(name = "Feedback", description = "사용자 피드백 API")
+@Tag(name = "FeedbackEntity", description = "사용자 피드백 API")
 public class UserFeedbackApi {
     private final UserFeedbackService userFeedbackService;
 

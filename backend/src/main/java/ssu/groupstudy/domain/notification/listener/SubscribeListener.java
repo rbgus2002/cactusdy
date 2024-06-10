@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
@@ -54,7 +54,7 @@ public class SubscribeListener {
     public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
         UserEntity user = event.getUser();
-        for (Notice notice : event.getNotices()) {
+        for (NoticeEntity notice : event.getNotices()) {
             fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, notice.getNoticeId());
         }
     }

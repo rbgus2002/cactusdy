@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentRepository;
@@ -56,7 +56,7 @@ class CommentServiceTest extends ServiceTest {
         void createNotice(){
             // given
             doReturn(Optional.of(공지사항1)).when(noticeRepository).findById(any(Long.class));
-            doReturn(댓글1).when(commentRepository).save(any(Comment.class));
+            doReturn(댓글1).when(commentRepository).save(any(CommentEntity.class));
 
             // when
             Long commentId = commentService.createComment(댓글1CreateRequest, 최규현);

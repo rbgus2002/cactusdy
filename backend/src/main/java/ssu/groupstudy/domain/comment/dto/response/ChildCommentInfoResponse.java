@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.comment.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class ChildCommentInfoResponse {
     private LocalDateTime createDate;
     private char deleteYn;
 
-    private ChildCommentInfoResponse(Comment comment) {
+    private ChildCommentInfoResponse(CommentEntity comment) {
         UserEntity writer = comment.getWriter();
         this.userId = writer.getUserId();
         this.nickname = writer.getNickname();
@@ -33,7 +33,7 @@ public class ChildCommentInfoResponse {
         processDeletedComment(comment);
     }
 
-    private void processDeletedComment(Comment comment) {
+    private void processDeletedComment(CommentEntity comment) {
         if(comment.isDeleted()){
             this.nickname = "(삭제)";
             this.contents = "삭제된 댓글입니다.";
@@ -41,7 +41,7 @@ public class ChildCommentInfoResponse {
         }
     }
 
-    public static ChildCommentInfoResponse from(Comment comment) {
+    public static ChildCommentInfoResponse from(CommentEntity comment) {
         return new ChildCommentInfoResponse(comment);
     }
 }

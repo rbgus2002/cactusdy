@@ -2,14 +2,14 @@ package ssu.groupstudy.domain.notification.event.push;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ssu.groupstudy.domain.comment.domain.Comment;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 
 @Getter
 @RequiredArgsConstructor
 public class CommentCreationEvent {
-    private final Notice notice;
-    private final Comment comment;
+    private final NoticeEntity notice;
+    private final CommentEntity comment;
 
     public Long getStudyId() {
         return notice.getStudy().getStudyId();

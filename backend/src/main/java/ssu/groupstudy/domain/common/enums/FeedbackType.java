@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.feedback.domain;
+package ssu.groupstudy.domain.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

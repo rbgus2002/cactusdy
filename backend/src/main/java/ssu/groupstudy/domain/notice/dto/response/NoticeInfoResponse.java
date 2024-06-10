@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notice.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class NoticeInfoResponse {
     private int readCount;
     private LocalDateTime createDate;
 
-    private NoticeInfoResponse(Notice notice, UserEntity user) {
+    private NoticeInfoResponse(NoticeEntity notice, UserEntity user) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -31,7 +31,7 @@ public class NoticeInfoResponse {
         this.read = notice.isRead(user);
     }
 
-    public static NoticeInfoResponse of(Notice notice, UserEntity user){
+    public static NoticeInfoResponse of(NoticeEntity notice, UserEntity user){
         return new NoticeInfoResponse(notice, user);
     }
 }

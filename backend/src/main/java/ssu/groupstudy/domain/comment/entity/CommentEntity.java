@@ -1,9 +1,9 @@
-package ssu.groupstudy.domain.comment.domain;
+package ssu.groupstudy.domain.comment.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "comment")
-public class Comment extends BaseEntity {
+public class CommentEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
@@ -29,16 +29,16 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="noticeId")
-    private Notice notice;
+    private NoticeEntity notice;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="parentCommentId")
-    private Comment parentComment;
+    private CommentEntity parentComment;
 
     @Column(nullable = false)
     private char deleteYn;
 
-    public Comment(String contents, UserEntity writer, Notice notice) {
+    public CommentEntity(String contents, UserEntity writer, NoticeEntity notice) {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;
@@ -46,7 +46,7 @@ public class Comment extends BaseEntity {
         this.parentComment = null;
     }
 
-    public Comment(String contents, UserEntity writer, Notice notice, Comment parentComment) {
+    public CommentEntity(String contents, UserEntity writer, NoticeEntity notice, CommentEntity parentComment) {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;

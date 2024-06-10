@@ -86,7 +86,7 @@ class NoticeApiTest extends ApiTest {
 //        void 성공() throws Exception {
 //            // given
 //            final String url = "/notice";
-//            Notice notice = getCreateNoticeRequest().toEntity(getUser(), getStudy());
+//            NoticeEntity notice = getCreateNoticeRequest().toEntity(getUser(), getStudy());
 //            doReturn(notice).when(noticeService).createNotice(any(CreateNoticeRequest.class));
 //            ReflectionTestUtils.setField(notice, "noticeId", 1L);
 //

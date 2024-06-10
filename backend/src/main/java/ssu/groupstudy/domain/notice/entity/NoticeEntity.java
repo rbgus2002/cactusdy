@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notice.domain;
+package ssu.groupstudy.domain.notice.entity;
 
 
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "notice")
 @Where(clause = "delete_yn = 'N'")
-public class Notice extends BaseEntity {
+public class NoticeEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
@@ -48,10 +48,10 @@ public class Notice extends BaseEntity {
     private StudyEntity study;
 
     @OneToMany(mappedBy = "notice", cascade = ALL, orphanRemoval = true)
-    private final Set<CheckNotice> checkNotices = new HashSet<>();
+    private final Set<CheckNoticeEntity> checkNotices = new HashSet<>();
 
     @Builder
-    public Notice(String title, String contents, UserEntity writer, StudyEntity study) {
+    public NoticeEntity(String title, String contents, UserEntity writer, StudyEntity study) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
@@ -65,14 +65,14 @@ public class Notice extends BaseEntity {
     }
 
     public boolean isRead(UserEntity user){
-        return checkNotices.contains(new CheckNotice(this, user));
+        return checkNotices.contains(new CheckNoticeEntity(this, user));
     }
 
     /**
      * 공지사항을 읽은 사용자를 안읽음 처리한다
      */
     private Character unreadNotice(UserEntity user){
-        checkNotices.remove(new CheckNotice(this, user));
+        checkNotices.remove(new CheckNoticeEntity(this, user));
         return 'N';
     }
 
@@ -80,7 +80,7 @@ public class Notice extends BaseEntity {
      * 공지사항을 읽지 않은 사용자를 읽음 처리한다
      */
     private Character readNotice(UserEntity user){
-        checkNotices.add(new CheckNotice(this, user));
+        checkNotices.add(new CheckNoticeEntity(this, user));
         return 'Y';
     }
 

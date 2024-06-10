@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.auth.domain.Authority;
+import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
 import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -43,7 +43,7 @@ public class UserEntity extends BaseEntity {
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = PERSIST)
-    private final List<Authority> roles = new ArrayList<>();
+    private final List<AuthorityEntity> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL, orphanRemoval = true)
     private final Set<FcmTokenEntity> fcmTokens = new HashSet<>();
@@ -96,7 +96,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public void addUserRole() {
-        roles.add(Authority.init(this));
+        roles.add(AuthorityEntity.init(this));
     }
 
     public void updateActivateDate() {

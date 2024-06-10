@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
-import ssu.groupstudy.domain.notice.domain.CheckNotice;
+import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @CustomRepositoryTest
@@ -20,7 +20,7 @@ class CheckNoticeRepositoryTest {
     @DisplayName("지연 로딩 테스트")
     void equalsAndHashTest(){
         // given
-        CheckNotice 최규현꺼 = checkNoticeRepository.findById(1L).get();
+        CheckNoticeEntity 최규현꺼 = checkNoticeRepository.findById(1L).get();
 
         // when
         UserEntity 최규현Proxy = 최규현꺼.getUser();

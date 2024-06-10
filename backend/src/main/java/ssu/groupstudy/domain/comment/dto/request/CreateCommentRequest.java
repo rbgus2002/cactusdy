@@ -1,8 +1,8 @@
 package ssu.groupstudy.domain.comment.dto.request;
 
 import lombok.*;
-import ssu.groupstudy.domain.comment.domain.Comment;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class CreateCommentRequest {
 
     private Long parentCommentId;
 
-    public Comment toEntity(UserEntity writer, Notice notice, Comment parentComment){
-        return new Comment(contents, writer, notice, parentComment);
+    public CommentEntity toEntity(UserEntity writer, NoticeEntity notice, CommentEntity parentComment){
+        return new CommentEntity(contents, writer, notice, parentComment);
     }
 }

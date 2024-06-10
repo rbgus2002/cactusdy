@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.notice.dto.request;
 
 import lombok.*;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
@@ -20,8 +20,8 @@ public class CreateNoticeRequest {
     @NotNull
     private Long studyId;
 
-    public Notice toEntity(UserEntity writer, StudyEntity study){
-        return Notice.builder()
+    public NoticeEntity toEntity(UserEntity writer, StudyEntity study){
+        return NoticeEntity.builder()
                 .title(this.title)
                 .contents(this.contents)
                 .writer(writer)

@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/notices")
 @RequiredArgsConstructor
-@Tag(name = "Notice", description = "공지사항 API")
+@Tag(name = "NoticeEntity", description = "공지사항 API")
 public class NoticeApi {
     private final NoticeService noticeService;
 

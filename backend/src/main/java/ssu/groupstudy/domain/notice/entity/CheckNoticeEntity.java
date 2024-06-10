@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notice.domain;
+package ssu.groupstudy.domain.notice.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "check_notice")
-public class CheckNotice {
+public class CheckNoticeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "check_notice_id")
@@ -23,13 +23,13 @@ public class CheckNotice {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "notice_id", nullable = false)
-    private Notice notice;
+    private NoticeEntity notice;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    public CheckNotice(Notice notice, UserEntity user) {
+    public CheckNoticeEntity(NoticeEntity notice, UserEntity user) {
         this.notice = notice;
         this.user = user;
     }
@@ -39,10 +39,10 @@ public class CheckNotice {
         if (this == o){
             return true;
         }
-        if (!(o instanceof CheckNotice)) {
+        if (!(o instanceof CheckNoticeEntity)) {
             return false;
         }
-        CheckNotice that = (CheckNotice) o;
+        CheckNoticeEntity that = (CheckNoticeEntity) o;
         return Objects.equals(this.notice.getNoticeId(), that.getNotice().getNoticeId()) && Objects.equals(this.user.getUserId(), that.getUser().getUserId());
     }
 

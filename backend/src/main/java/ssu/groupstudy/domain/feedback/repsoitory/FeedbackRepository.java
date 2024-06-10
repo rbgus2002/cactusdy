@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.feedback.repsoitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ssu.groupstudy.domain.feedback.domain.Feedback;
+import ssu.groupstudy.domain.feedback.entity.FeedbackEntity;
 
-public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
+public interface FeedbackRepository extends JpaRepository<FeedbackEntity, Long> {
 }

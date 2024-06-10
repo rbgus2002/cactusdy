@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
@@ -95,7 +95,7 @@ public class ParticipantsService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         UserEntity targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        List<Notice> notices = noticeRepository.findNoticesByStudy(study);
+        List<NoticeEntity> notices = noticeRepository.findNoticesByStudy(study);
 
         assertUserIsHostOrThrow(user, study);
 

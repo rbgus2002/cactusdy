@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import ssu.groupstudy.domain.comment.domain.Comment;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
-import ssu.groupstudy.domain.notice.domain.Notice;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
@@ -45,17 +45,17 @@ public class ServiceTest {
     protected ParticipantEntity 스터디참여자_최규현;
 
     protected CreateNoticeRequest 공지사항1CreateRequest;
-    protected Notice 공지사항1;
-    protected Notice 공지사항2;
-    protected Notice 공지사항3;
-    protected Notice 공지사항4;
+    protected NoticeEntity 공지사항1;
+    protected NoticeEntity 공지사항2;
+    protected NoticeEntity 공지사항3;
+    protected NoticeEntity 공지사항4;
 
     protected CreateCommentRequest 댓글1CreateRequest;
     protected CreateCommentRequest 댓글2CreateRequest;
     protected CreateCommentRequest 대댓글1CreateRequest;
-    protected Comment 댓글1;
-    protected Comment 댓글2;
-    protected Comment 대댓글1;
+    protected CommentEntity 댓글1;
+    protected CommentEntity 댓글2;
+    protected CommentEntity 대댓글1;
 
     protected AppointmentRequest 회차1AppointmentRequest;
     protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
