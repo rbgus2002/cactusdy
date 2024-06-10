@@ -11,8 +11,8 @@ import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.task.entity.TaskType;
 import ssu.groupstudy.domain.task.dto.request.CreateGroupTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
 import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
@@ -56,7 +56,7 @@ public class TaskService {
     }
 
     private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        Task task = Task.of(detail, taskType, roundParticipant);
+        TaskEntity task = TaskEntity.of(detail, taskType, roundParticipant);
         return taskRepository.save(task).getId();
     }
 
@@ -80,7 +80,7 @@ public class TaskService {
 
     @Transactional
     public void deleteTask(Long taskId, Long roundParticipantId) {
-        Task task = taskRepository.findById(taskId)
+        TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
@@ -90,21 +90,21 @@ public class TaskService {
 
     @Transactional
     public void updateTaskDetail(UpdateTaskRequest request) {
-        Task task = taskRepository.findById(request.getTaskId())
+        TaskEntity task = taskRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         task.setDetail(request.getDetail());
     }
 
     @Transactional
     public char switchTask(Long taskId, UserEntity user) {
-        Task task = taskRepository.findById(taskId)
+        TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         char doneYn = task.switchDoneYn();
         processNotification(task, user);
         return doneYn;
     }
 
-    private void processNotification(Task task, UserEntity user) {
+    private void processNotification(TaskEntity task, UserEntity user) {
         if (task.isDone()) {
             eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }

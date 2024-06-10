@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.task.domain;
+package ssu.groupstudy.domain.task.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

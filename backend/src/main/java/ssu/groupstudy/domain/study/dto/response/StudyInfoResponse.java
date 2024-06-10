@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.dto.response.ParticipantProfileResponse;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskType;
 import ssu.groupstudy.domain.task.dto.response.TaskGroup;
 
 import java.time.LocalDateTime;

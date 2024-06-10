@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.task.domain;
+package ssu.groupstudy.domain.task.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

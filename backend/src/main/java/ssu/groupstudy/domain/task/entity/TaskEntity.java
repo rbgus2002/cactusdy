@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.task.domain;
+package ssu.groupstudy.domain.task.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import static ssu.groupstudy.global.constant.ResultCode.INVALID_TASK_ACCESS;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "task")
 @Getter
-public class Task{
+public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -38,15 +38,15 @@ public class Task{
     private RoundParticipant roundParticipant;
 
     @Builder
-    public Task(String detail, TaskType taskType, RoundParticipant roundParticipant) {
+    public TaskEntity(String detail, TaskType taskType, RoundParticipant roundParticipant) {
         this.detail = detail;
         this.taskType = taskType;
         this.doneYn = 'N';
         this.roundParticipant = roundParticipant;
     }
 
-    public static Task of(String detail, TaskType type, RoundParticipant roundParticipant){
-        return Task.builder()
+    public static TaskEntity of(String detail, TaskType type, RoundParticipant roundParticipant){
+        return TaskEntity.builder()
                 .detail(detail)
                 .taskType(type)
                 .roundParticipant(roundParticipant)

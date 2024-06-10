@@ -34,7 +34,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             "FROM Study s " +
             "JOIN Round r ON s.studyId = r.study.studyId " +
             "JOIN RoundParticipant rp ON r.roundId = rp.round.roundId " +
-            "JOIN Task t ON rp.id = t.roundParticipant.id " +
+            "JOIN TaskEntity t ON rp.id = t.roundParticipant.id " +
             "WHERE s = :study " +
             "AND rp.user = :user " +
             "AND s.deleteYn = 'N' " +

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskType;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

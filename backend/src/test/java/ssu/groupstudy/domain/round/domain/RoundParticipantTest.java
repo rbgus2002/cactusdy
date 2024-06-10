@@ -3,8 +3,8 @@ package ssu.groupstudy.domain.round.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.task.entity.TaskType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,9 +15,9 @@ class RoundParticipantTest {
     private void init(){
         roundParticipant = new RoundParticipant(null, null);
 
-        Task task1 = roundParticipant.createTask("", TaskType.PERSONAL);
-        Task task2 = roundParticipant.createTask("", TaskType.PERSONAL);
-        Task task3 = roundParticipant.createTask("", TaskType.PERSONAL);
+        TaskEntity task1 = roundParticipant.createTask("", TaskType.PERSONAL);
+        TaskEntity task2 = roundParticipant.createTask("", TaskType.PERSONAL);
+        TaskEntity task3 = roundParticipant.createTask("", TaskType.PERSONAL);
 
         task1.switchDoneYn();
         task2.switchDoneYn();

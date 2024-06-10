@@ -17,8 +17,8 @@ import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.task.entity.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
@@ -65,8 +65,8 @@ public class ServiceTest {
     protected RoundParticipant 회차1_최규현;
     protected RoundParticipant 회차1_장재우;
 
-    protected Task 그룹태스크;
-    protected Task 개인태스크;
+    protected TaskEntity 그룹태스크;
+    protected TaskEntity 개인태스크;
 
     @BeforeEach
     void initDummyData() {
@@ -199,13 +199,13 @@ public class ServiceTest {
     }
 
     private void initTask() {
-        그룹태스크 = Task.builder()
+        그룹태스크 = TaskEntity.builder()
                 .detail("그룹태스크 detail")
                 .taskType(TaskType.GROUP)
                 .roundParticipant(회차1_최규현)
                 .build();
         ReflectionTestUtils.setField(그룹태스크, "id", 19L);
-        개인태스크 = Task.builder()
+        개인태스크 = TaskEntity.builder()
                 .detail("개인태스크 detail")
                 .taskType(TaskType.PERSONAL)
                 .roundParticipant(회차1_최규현)

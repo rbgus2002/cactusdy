@@ -2,8 +2,8 @@ package ssu.groupstudy.domain.task.dto.response;
 
 import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.task.entity.TaskType;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,8 +20,8 @@ public class TaskGroup {
         this.taskTypeName = taskType.getDetail();
         this.tasks = roundParticipant.getTasks().stream()
                 .filter(task -> task.isSameTypeOf(taskType))
-                .sorted(Comparator.comparing(Task::getDoneYn, Comparator.reverseOrder())
-                        .thenComparing(Task::getId))
+                .sorted(Comparator.comparing(TaskEntity::getDoneYn, Comparator.reverseOrder())
+                        .thenComparing(TaskEntity::getId))
                 .map(TaskInfo::from)
                 .collect(Collectors.toList());
     }

@@ -3,8 +3,8 @@ package ssu.groupstudy.domain.round.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.task.entity.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
@@ -38,7 +38,7 @@ public class RoundParticipant {
     private StatusTag statusTag;
 
     @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
-    private final Set<Task> tasks = new HashSet<>();
+    private final Set<TaskEntity> tasks = new HashSet<>();
 
     public RoundParticipant(UserEntity user, Round round) {
         this.user = user;
@@ -67,15 +67,15 @@ public class RoundParticipant {
         this.statusTag = statusTag;
     }
 
-    public Task createTask(String detail, TaskType type) {
-        Task task = Task.of(detail, type, this);
+    public TaskEntity createTask(String detail, TaskType type) {
+        TaskEntity task = TaskEntity.of(detail, type, this);
         tasks.add(task);
         return task;
     }
 
     public double calculateTaskProgress() {
         long totalTaskCount = tasks.size();
-        long doneTaskCount = tasks.stream().filter(Task::isDone).count();
+        long doneTaskCount = tasks.stream().filter(TaskEntity::isDone).count();
         double progress = (double) doneTaskCount / totalTaskCount;
         return Math.round(progress * 100.0) / 100.0;
     }
