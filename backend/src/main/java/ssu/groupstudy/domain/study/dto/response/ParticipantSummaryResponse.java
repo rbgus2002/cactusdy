@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

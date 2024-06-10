@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notification.domain.event.push;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @Getter
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.EditUserRequest;
 import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
 import ssu.groupstudy.global.constant.S3Code;

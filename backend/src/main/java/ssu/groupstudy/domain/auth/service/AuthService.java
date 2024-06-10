@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.SignInResponse;

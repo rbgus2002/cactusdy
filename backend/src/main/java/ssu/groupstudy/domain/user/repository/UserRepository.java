@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.Optional;
 

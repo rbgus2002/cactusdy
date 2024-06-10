@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 

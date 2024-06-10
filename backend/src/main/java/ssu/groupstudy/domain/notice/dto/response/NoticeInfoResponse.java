@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
 

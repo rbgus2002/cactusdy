@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notification.domain.event.unsubscribe;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 @Getter
 @RequiredArgsConstructor

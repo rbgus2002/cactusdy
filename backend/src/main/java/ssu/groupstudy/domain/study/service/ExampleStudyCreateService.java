@@ -15,7 +15,7 @@ import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.Color;
 
 import java.time.LocalDateTime;

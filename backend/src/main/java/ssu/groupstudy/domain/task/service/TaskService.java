@@ -20,7 +20,7 @@ import ssu.groupstudy.domain.task.dto.response.GroupTaskInfoResponse;
 import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.Comparator;
 import java.util.List;

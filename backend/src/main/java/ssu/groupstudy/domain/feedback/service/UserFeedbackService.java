@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.feedback.domain.FeedbackType;
 import ssu.groupstudy.domain.feedback.dto.CreateNotionPageDto;
 import ssu.groupstudy.domain.feedback.dto.SendFeedbackRequest;
 import ssu.groupstudy.domain.feedback.repsoitory.FeedbackRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.openfeign.NotionOpenFeign;
 
 @Service

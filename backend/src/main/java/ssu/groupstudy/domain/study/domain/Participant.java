@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.Color;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;

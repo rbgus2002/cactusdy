@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.user.domain;
+package ssu.groupstudy.domain.user.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

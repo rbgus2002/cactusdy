@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notice.dto.request;
 import lombok.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;

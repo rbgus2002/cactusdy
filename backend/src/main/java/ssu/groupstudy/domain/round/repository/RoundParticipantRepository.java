@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.round.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.Optional;
 

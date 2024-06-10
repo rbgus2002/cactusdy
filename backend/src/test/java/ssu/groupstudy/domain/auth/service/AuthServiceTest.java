@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;

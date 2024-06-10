@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.S3Code;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.feedback.domain;
 
 import lombok.*;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
 

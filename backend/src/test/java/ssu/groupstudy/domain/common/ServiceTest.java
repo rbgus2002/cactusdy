@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
 import java.time.LocalDateTime;

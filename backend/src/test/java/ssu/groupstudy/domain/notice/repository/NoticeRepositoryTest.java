@@ -13,7 +13,7 @@ import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.user.domain;
+package ssu.groupstudy.domain.user.entity;
 
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;

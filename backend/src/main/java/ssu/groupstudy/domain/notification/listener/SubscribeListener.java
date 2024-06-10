@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubs
 import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.util.FcmUtils;
 
 @Component

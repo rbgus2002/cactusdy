@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;

@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;

@@ -27,7 +27,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;

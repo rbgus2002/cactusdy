@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;

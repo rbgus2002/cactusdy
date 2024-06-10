@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

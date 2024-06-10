@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.user.dto.request;
 
 import lombok.*;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 

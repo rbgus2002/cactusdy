@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.ParticipantInfo;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;

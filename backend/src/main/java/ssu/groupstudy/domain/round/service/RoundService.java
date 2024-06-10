@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;

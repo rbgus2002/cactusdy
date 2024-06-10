@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;

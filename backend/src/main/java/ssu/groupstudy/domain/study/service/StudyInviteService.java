@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.time.LocalDateTime;

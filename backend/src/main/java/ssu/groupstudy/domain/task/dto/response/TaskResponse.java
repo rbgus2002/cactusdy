@@ -4,7 +4,7 @@ import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;

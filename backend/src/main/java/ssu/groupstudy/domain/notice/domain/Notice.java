@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.UserEntity;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
