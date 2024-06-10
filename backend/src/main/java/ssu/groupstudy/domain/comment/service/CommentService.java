@@ -6,10 +6,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
-import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
-import ssu.groupstudy.domain.comment.dto.response.ChildCommentInfoResponse;
-import ssu.groupstudy.domain.comment.dto.response.CommentDto;
-import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
+import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
+import ssu.groupstudy.api.comment.vo.ChildCommentInfoResVo;
+import ssu.groupstudy.domain.comment.param.CommentDto;
+import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
@@ -36,7 +36,7 @@ public class CommentService {
 
 
     @Transactional
-    public Long createComment(CreateCommentRequest dto, UserEntity writer) {
+    public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
@@ -57,7 +57,7 @@ public class CommentService {
     /**
      * 부모 댓글이 존재하는 경우를 구분해서 생성할 CommentEntity 객체를 생성한다
      */
-    private CommentEntity handleCommentCreationWithParent(CreateCommentRequest dto, UserEntity writer, NoticeEntity notice) {
+    private CommentEntity handleCommentCreationWithParent(CreateCommentReqVo dto, UserEntity writer, NoticeEntity notice) {
         CommentEntity parent = null;
         if(dto.getParentCommentId() != null){
             parent = commentEntityRepository.getReferenceById(dto.getParentCommentId());
@@ -65,13 +65,13 @@ public class CommentService {
         return dto.toEntity(writer, notice, parent);
     }
 
-    public CommentInfoResponse getComments(Long noticeId) {
+    public CommentInfoResVo getComments(Long noticeId) {
         NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         int commentCount = commentEntityRepository.countCommentByNotice(notice);
         List<CommentEntity> parentComments = getParentComments(notice);
         List<CommentDto> commentDtoList = transformToCommentsWithReplies(parentComments);
-        return CommentInfoResponse.of(commentCount, commentDtoList);
+        return CommentInfoResVo.of(commentCount, commentDtoList);
     }
 
     private List<CommentEntity> getParentComments(NoticeEntity notice) {
@@ -96,9 +96,9 @@ public class CommentService {
         return commentEntityRepository.findCommentsByParentCommentOrderByCreateDate(comment);
     }
 
-    private List<ChildCommentInfoResponse> transformToChildComments(List<CommentEntity> childComments) {
+    private List<ChildCommentInfoResVo> transformToChildComments(List<CommentEntity> childComments) {
         return childComments.stream()
-                .map(ChildCommentInfoResponse::from)
+                .map(ChildCommentInfoResVo::from)
                 .collect(Collectors.toList());
     }
 

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
-import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
+import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
 import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
@@ -50,9 +50,9 @@ public class ServiceTest {
     protected NoticeEntity 공지사항3;
     protected NoticeEntity 공지사항4;
 
-    protected CreateCommentRequest 댓글1CreateRequest;
-    protected CreateCommentRequest 댓글2CreateRequest;
-    protected CreateCommentRequest 대댓글1CreateRequest;
+    protected CreateCommentReqVo 댓글1CreateRequest;
+    protected CreateCommentReqVo 댓글2CreateRequest;
+    protected CreateCommentReqVo 대댓글1CreateRequest;
     protected CommentEntity 댓글1;
     protected CommentEntity 댓글2;
     protected CommentEntity 대댓글1;
@@ -152,15 +152,15 @@ public class ServiceTest {
     }
 
     private void initCreateCommentRequest(){
-        댓글1CreateRequest = CreateCommentRequest.builder()
+        댓글1CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("댓글 내용1")
                 .build();
-        댓글2CreateRequest = CreateCommentRequest.builder()
+        댓글2CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("댓글 내용2")
                 .build();
-        대댓글1CreateRequest = CreateCommentRequest.builder()
+        대댓글1CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("대댓글 내용1")
                 .build();

@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.comment.dto.request;
+package ssu.groupstudy.api.comment.vo;
 
 import lombok.*;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
-public class CreateCommentRequest {
+public class CreateCommentReqVo {
     @NotNull
     private Long noticeId;
     @NotBlank

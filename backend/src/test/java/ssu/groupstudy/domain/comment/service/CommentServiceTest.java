@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
-import ssu.groupstudy.domain.comment.dto.response.CommentInfoResponse;
+import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
@@ -87,7 +87,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeEntityRepository).findById(any(Long.class));
 
             // when
-            CommentInfoResponse comments = commentService.getComments(-1L);
+            CommentInfoResVo comments = commentService.getComments(-1L);
 
             // then
 //            assertEquals(0, comments.size());
@@ -100,7 +100,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(Optional.of(공지사항1)).when(noticeEntityRepository).findById(any(Long.class));
 
             // when
-            CommentInfoResponse comments = commentService.getComments(-1L);
+            CommentInfoResVo comments = commentService.getComments(-1L);
 
             // then
             System.out.println(comments);

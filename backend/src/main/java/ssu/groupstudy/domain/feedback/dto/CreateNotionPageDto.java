@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Getter
 @ToString
-public class CreateNotionPageDto {
+public class CreateNotionPageDto { // [2024-06-10:최규현] TODO: 일괄 리팩토링 필요 (feign option 사용)
     private Map<String, String> parent;
     private Map<String, Object> properties;
     private List<Map<String, Object>> children;

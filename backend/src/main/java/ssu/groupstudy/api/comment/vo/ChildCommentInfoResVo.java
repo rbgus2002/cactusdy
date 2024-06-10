@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.comment.dto.response;
+package ssu.groupstudy.api.comment.vo;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ChildCommentInfoResponse {
+public class ChildCommentInfoResVo {
     private Long userId;
     private String nickname;
     private String picture;
@@ -20,7 +20,7 @@ public class ChildCommentInfoResponse {
     private LocalDateTime createDate;
     private char deleteYn;
 
-    private ChildCommentInfoResponse(CommentEntity comment) {
+    private ChildCommentInfoResVo(CommentEntity comment) {
         UserEntity writer = comment.getWriter();
         this.userId = writer.getUserId();
         this.nickname = writer.getNickname();
@@ -41,7 +41,7 @@ public class ChildCommentInfoResponse {
         }
     }
 
-    public static ChildCommentInfoResponse from(CommentEntity comment) {
-        return new ChildCommentInfoResponse(comment);
+    public static ChildCommentInfoResVo from(CommentEntity comment) {
+        return new ChildCommentInfoResVo(comment);
     }
 }

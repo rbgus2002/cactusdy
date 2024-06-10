@@ -1,8 +1,9 @@
-package ssu.groupstudy.domain.comment.dto.response;
+package ssu.groupstudy.domain.comment.param;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.api.comment.vo.ChildCommentInfoResVo;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentDto {
+public class CommentDto { // [2024-06-10:최규현] TODO: 얘 뭐야 param이야?
     private Long userId;
     private String nickname;
     private String picture;
@@ -21,7 +22,7 @@ public class CommentDto {
     private LocalDateTime createDate;
     private char deleteYn;
 
-    private List<ChildCommentInfoResponse> replies = null;
+    private List<ChildCommentInfoResVo> replies = null;
 
     private CommentDto(CommentEntity comment) {
         UserEntity writer = comment.getWriter();
@@ -48,7 +49,7 @@ public class CommentDto {
         return new CommentDto(comment);
     }
 
-    public void appendReplies(List<ChildCommentInfoResponse> replies){
+    public void appendReplies(List<ChildCommentInfoResVo> replies){
         this.replies = replies;
     }
 

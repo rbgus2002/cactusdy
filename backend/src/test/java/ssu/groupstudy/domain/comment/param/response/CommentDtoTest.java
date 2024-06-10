@@ -1,7 +1,8 @@
-package ssu.groupstudy.domain.comment.dto.response;
+package ssu.groupstudy.domain.comment.param.response;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ssu.groupstudy.domain.comment.param.CommentDto;
 import ssu.groupstudy.domain.common.ServiceTest;
 
 import static org.junit.jupiter.api.Assertions.*;

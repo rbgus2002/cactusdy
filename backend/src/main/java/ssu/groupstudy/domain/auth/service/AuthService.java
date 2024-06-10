@@ -8,9 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.auth.dto.request.MessageRequest;
-import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
-import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
+import ssu.groupstudy.api.user.vo.MessageReqVo;
+import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
+import ssu.groupstudy.api.user.vo.VerifyReqVo;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
@@ -122,7 +122,7 @@ public class AuthService {
         }
     }
 
-    public void sendMessageToSignUp(MessageRequest request) {
+    public void sendMessageToSignUp(MessageReqVo request) {
         String phoneNumber = request.getPhoneNumber();
         checkPhoneNumberExist(phoneNumber);
 
@@ -130,7 +130,7 @@ public class AuthService {
         messageUtils.sendMessage(phoneNumber, verificationMessage);
     }
 
-    public void sendMessageToResetPassword(MessageRequest request) {
+    public void sendMessageToResetPassword(MessageReqVo request) {
         String phoneNumber = request.getPhoneNumber();
         assertPhoneNumberDoesExistOrThrow(phoneNumber);
 
@@ -154,7 +154,7 @@ public class AuthService {
         redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNumber
     }
 
-    public boolean verifyCode(VerifyRequest request) {
+    public boolean verifyCode(VerifyReqVo request) {
         String retrievedPhoneNumber = getPhoneNumberFromCode(request);
         boolean isValidCode = isSamePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
         if (isValidCode) {
@@ -163,7 +163,7 @@ public class AuthService {
         return isValidCode;
     }
 
-    private String getPhoneNumberFromCode(VerifyRequest request) {
+    private String getPhoneNumberFromCode(VerifyReqVo request) {
         return redisUtils.getData(request.getCode());
     }
 
@@ -176,7 +176,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void resetPassword(PasswordResetRequest request) {
+    public void resetPassword(PasswordResetReqVo request) {
         UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.USER_NOT_FOUND));
         String password = passwordEncoder.encode(request.getNewPassword());

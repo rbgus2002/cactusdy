@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.feedback.dto;
+package ssu.groupstudy.api.user.vo;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @ToString
-public class SendFeedbackRequest {
+public class SendFeedbackReqVo {
     @NotBlank(message = "제목을 입력하세요")
     private String title;
 

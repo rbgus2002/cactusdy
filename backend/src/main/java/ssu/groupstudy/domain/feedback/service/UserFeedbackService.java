@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.feedback.entity.FeedbackEntity;
 import ssu.groupstudy.domain.common.enums.FeedbackType;
 import ssu.groupstudy.domain.feedback.dto.CreateNotionPageDto;
-import ssu.groupstudy.domain.feedback.dto.SendFeedbackRequest;
+import ssu.groupstudy.api.user.vo.SendFeedbackReqVo;
 import ssu.groupstudy.domain.feedback.repsoitory.FeedbackEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.openfeign.NotionOpenFeign;
@@ -21,7 +21,7 @@ public class UserFeedbackService {
     private final NotionOpenFeign notionOpenFeign;
 
     @Transactional
-    public Long sendFeedback(FeedbackType type, SendFeedbackRequest request, UserEntity writer) {
+    public Long sendFeedback(FeedbackType type, SendFeedbackReqVo request, UserEntity writer) {
         FeedbackEntity feedback = FeedbackEntity.create(type, request.getTitle(), request.getContents(), writer);
         saveToNotion(feedback);
         return feedbackEntityRepository.save(feedback).getId();
