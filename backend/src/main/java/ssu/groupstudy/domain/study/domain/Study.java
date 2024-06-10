@@ -30,7 +30,7 @@ public class Study extends BaseEntity {
     @Column(length = 20)
     private String detail;
 
-    @Column(nullable = false)
+    @Column
     private String picture;
 
     @Column(nullable = false, unique = true, length = 6)
