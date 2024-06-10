@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.DoneCount;
-import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
+import ssu.groupstudy.domain.study.param.DoneCount;
+import ssu.groupstudy.api.study.vo.ParticipantResVo;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
@@ -102,7 +102,7 @@ class ParticipantsServiceTest extends ServiceTest {
             doReturn(new DoneCount(0L,0L,0L)).when(studyEntityRepository).calculateDoneCount(any(UserEntity.class), any(StudyEntity.class));
 
             // when
-            ParticipantResponse response = participantsService.getParticipant(-1L, -1L);
+            ParticipantResVo response = participantsService.getParticipant(-1L, -1L);
             char isParticipated = response.getIsParticipated();
 
             // then

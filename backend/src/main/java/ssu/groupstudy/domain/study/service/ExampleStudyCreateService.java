@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
@@ -79,7 +79,7 @@ public class ExampleStudyCreateService {
     }
 
     private RoundEntity createRound(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
-        AppointmentRequest appointment = AppointmentRequest.builder()
+        AppointmentReqVo appointment = AppointmentReqVo.builder()
                 .studyPlace(studyPlace)
                 .studyTime(studyTime)
                 .build();

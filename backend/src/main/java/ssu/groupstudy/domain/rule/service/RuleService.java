@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
-import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
-import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
-import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
+import ssu.groupstudy.api.rule.vo.CreateRuleReqVo;
+import ssu.groupstudy.api.rule.vo.UpdateRuleReqVo;
+import ssu.groupstudy.api.rule.vo.RuleResVo;
 import ssu.groupstudy.domain.rule.exception.RuleNotFoundException;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -27,7 +27,7 @@ public class RuleService {
     private final RuleEntityRepository ruleEntityRepository;
 
     @Transactional
-    public Long createRule(CreateRuleRequest dto) {
+    public Long createRule(CreateRuleReqVo dto) {
         StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         RuleEntity rule = dto.toEntity(study);
@@ -42,16 +42,16 @@ public class RuleService {
     }
 
     @Transactional
-    public void updateRule(Long ruleId, UpdateRuleRequest request) {
+    public void updateRule(Long ruleId, UpdateRuleReqVo request) {
         RuleEntity rule = ruleEntityRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.updateDetail(request.getDetail());
     }
 
-    public List<RuleResponse> getRules(Long studyId) {
+    public List<RuleResVo> getRules(Long studyId) {
         List<RuleEntity> rules = ruleEntityRepository.findRulesByStudyIdOrderByCreateDate(studyId);
         return rules.stream()
-                .map(RuleResponse::of)
+                .map(RuleResVo::of)
                 .collect(Collectors.toList());
     }
 }

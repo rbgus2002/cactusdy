@@ -9,9 +9,9 @@ import ssu.groupstudy.domain.auth.dto.request.MessageRequest;
 import ssu.groupstudy.domain.auth.dto.request.PasswordResetRequest;
 import ssu.groupstudy.domain.auth.dto.request.VerifyRequest;
 import ssu.groupstudy.domain.auth.service.AuthService;
-import ssu.groupstudy.domain.user.dto.request.SignInRequest;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.SignInResponse;
+import ssu.groupstudy.api.user.vo.SignInReqVo;
+import ssu.groupstudy.api.user.vo.SignUpReqVo;
+import ssu.groupstudy.api.user.vo.SignInResVo;
 import ssu.groupstudy.global.dto.DataResponseDto;
 import ssu.groupstudy.global.dto.ResponseDto;
 
@@ -27,14 +27,14 @@ public class AuthApi {
 
     @Operation(summary = "로그인", description = "로그인에 성공하면 JWT를 발급한다.")
     @PostMapping("/signIn")
-    public ResponseDto signIn(@Valid @RequestBody SignInRequest request) {
-        SignInResponse signInResponse = authService.signIn(request);
-        return DataResponseDto.of("loginUser", signInResponse);
+    public ResponseDto signIn(@Valid @RequestBody SignInReqVo request) {
+        SignInResVo signInResVo = authService.signIn(request);
+        return DataResponseDto.of("loginUser", signInResVo);
     }
 
     @Operation(summary = "회원가입")
     @PostMapping("/signUp")
-    public ResponseDto signUp(@Valid @RequestPart("dto") SignUpRequest dto, @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
+    public ResponseDto signUp(@Valid @RequestPart("dto") SignUpReqVo dto, @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) throws IOException {
         Long userId = authService.signUp(dto, profileImage);
         return DataResponseDto.of("userId", userId);
     }

@@ -13,11 +13,11 @@ import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.DoneCount;
-import ssu.groupstudy.domain.study.dto.ParticipantInfo;
-import ssu.groupstudy.domain.study.dto.StatusTagInfo;
-import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
-import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
+import ssu.groupstudy.domain.study.param.DoneCount;
+import ssu.groupstudy.domain.study.param.ParticipantInfo;
+import ssu.groupstudy.domain.study.param.StatusTagInfo;
+import ssu.groupstudy.api.study.vo.ParticipantResVo;
+import ssu.groupstudy.api.study.vo.ParticipantSummaryResVo;
 import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
@@ -47,13 +47,13 @@ public class ParticipantsService {
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<ParticipantSummaryResponse> getParticipantsProfileImageList(Long studyId) {
+    public List<ParticipantSummaryResVo> getParticipantsProfileImageList(Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
         List<ParticipantEntity> participantList = getParticipantListOrderByCreateDateAsc(study);
         return participantList.stream()
-                .map(ParticipantSummaryResponse::from)
+                .map(ParticipantSummaryResVo::from)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public class ParticipantsService {
                 .collect(Collectors.toList());
     }
 
-    public ParticipantResponse getParticipant(Long userId, Long studyId) {
+    public ParticipantResVo getParticipant(Long userId, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         UserEntity user = userEntityRepository.findById(userId)
@@ -75,7 +75,7 @@ public class ParticipantsService {
         DoneCount doneCount = studyEntityRepository.calculateDoneCount(user, study);
         char isParticipated = (study.isParticipated(user)) ? 'Y' : 'N';
 
-        return ParticipantResponse.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
+        return ParticipantResVo.of(user, participantInfoList, statusTagInfoList, doneCount, isParticipated);
     }
 
     private List<StatusTagInfo> handleStatusTagInfo(StudyEntity study, UserEntity user) {

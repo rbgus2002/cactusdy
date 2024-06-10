@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ssu.groupstudy.api.user.vo.UserInfoResVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.dto.request.EditUserRequest;
-import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
+import ssu.groupstudy.api.user.vo.EditUserReqVo;
 import ssu.groupstudy.global.constant.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
@@ -21,10 +21,10 @@ public class UserService {
     private final S3Utils s3Utils;
 
     @Transactional
-    public UserInfoResponse editUser(EditUserRequest dto, MultipartFile profileImage, UserEntity user) throws IOException {
+    public UserInfoResVo editUser(EditUserReqVo dto, MultipartFile profileImage, UserEntity user) throws IOException {
         user.editProfile(dto.getNickname(), dto.getStatusMessage());
         handleUploadProfileImage(user, profileImage);
-        return UserInfoResponse.from(user);
+        return UserInfoResVo.from(user);
     }
 
     private void handleUploadProfileImage(UserEntity user, MultipartFile image) throws IOException {

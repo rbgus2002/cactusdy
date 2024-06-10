@@ -7,20 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
-import ssu.groupstudy.domain.study.dto.request.EditStudyRequest;
-import ssu.groupstudy.domain.study.dto.response.StudyCreateResponse;
-import ssu.groupstudy.domain.study.dto.response.StudyInfoResponse;
-import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
+import ssu.groupstudy.api.study.vo.CreateStudyReqVo;
+import ssu.groupstudy.api.study.vo.EditStudyReqVo;
+import ssu.groupstudy.api.study.vo.StudyCreateResVo;
+import ssu.groupstudy.api.study.vo.StudyInfoResVo;
+import ssu.groupstudy.api.study.vo.StudySummaryResVo;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -55,7 +55,7 @@ public class StudyService {
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
-    public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
+    public StudyCreateResVo createStudy(CreateStudyReqVo dto, MultipartFile image, UserEntity user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
         String inviteCode = studyInviteService.generateUniqueInviteCode();
         StudyEntity study = studyEntityRepository.save(dto.toEntity(user, inviteCode));
@@ -63,7 +63,7 @@ public class StudyService {
 
         imageManager.updateImage(study, image);
         eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
-        return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
+        return StudyCreateResVo.of(study.getStudyId(), study.getInviteCode());
     }
 
     private void checkParticipatingStudyMoreThanLimit(UserEntity user) {
@@ -84,7 +84,7 @@ public class StudyService {
     }
 
     private RoundEntity createDefaultRound(StudyEntity study) {
-        AppointmentRequest appointment = AppointmentRequest.builder()
+        AppointmentReqVo appointment = AppointmentReqVo.builder()
                 .studyPlace(null)
                 .studyTime(null)
                 .build();
@@ -99,29 +99,29 @@ public class StudyService {
         });
     }
 
-    public StudySummaryResponse getStudySummary(long studyId, UserEntity user) {
+    public StudySummaryResVo getStudySummary(long studyId, UserEntity user) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         ParticipantEntity participant = participantEntityRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
-        return StudySummaryResponse.from(study, participant);
+        return StudySummaryResVo.from(study, participant);
     }
 
-    public List<StudyInfoResponse> getStudies(UserEntity user) {
+    public List<StudyInfoResVo> getStudies(UserEntity user) {
         List<ParticipantEntity> participants = participantEntityRepository.findByUserOrderByCreateDate(user);
         return participants.stream()
                 .map(this::createStudyInfo)
                 .collect(Collectors.toList());
     }
 
-    private StudyInfoResponse createStudyInfo(ParticipantEntity participant) {
+    private StudyInfoResVo createStudyInfo(ParticipantEntity participant) {
         StudyEntity study = participant.getStudy();
 
         RoundEntity latestRound = roundEntityRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
         RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
-        return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
+        return StudyInfoResVo.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
     private Long handleRoundSeq(StudyEntity study, RoundEntity round) {
@@ -137,7 +137,7 @@ public class StudyService {
     }
 
     @Transactional
-    public Long editStudy(Long studyId, EditStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
+    public Long editStudy(Long studyId, EditStudyReqVo dto, MultipartFile image, UserEntity user) throws IOException {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         ParticipantEntity participant = participantEntityRepository.findByUserAndStudy(user, study)
@@ -151,7 +151,7 @@ public class StudyService {
         return study.getStudyId();
     }
 
-    private void processEdit(EditStudyRequest dto, StudyEntity study, ParticipantEntity participant, UserEntity newHostUser) {
+    private void processEdit(EditStudyReqVo dto, StudyEntity study, ParticipantEntity participant, UserEntity newHostUser) {
         study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
         participant.setColor(dto.getColor());
     }

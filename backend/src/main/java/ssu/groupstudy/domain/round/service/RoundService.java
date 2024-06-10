@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.round.dto.response.RoundDto;
+import ssu.groupstudy.api.round.vo.RoundDtoVo;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -29,7 +29,7 @@ public class RoundService {
     private final int ROUND_LIMIT = 60;
 
     @Transactional
-    public long createRound(long studyId, AppointmentRequest dto) {
+    public long createRound(long studyId, AppointmentReqVo dto) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         checkRoundMoreThanLimit(study);
@@ -43,16 +43,16 @@ public class RoundService {
     }
 
     @Transactional
-    public void updateAppointment(long roundId, AppointmentRequest dto) {
+    public void updateAppointment(long roundId, AppointmentReqVo dto) {
         RoundEntity round = roundEntityRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.updateAppointment(dto.toAppointment());
     }
 
-    public RoundDto.RoundDetailResponse getDetail(long roundId) {
+    public RoundDtoVo.RoundDetailResVo getDetail(long roundId) {
         RoundEntity round = roundEntityRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
-        return RoundDto.createRoundDetail(round);
+        return RoundDtoVo.createRoundDetail(round);
     }
 
     @Transactional
@@ -62,11 +62,11 @@ public class RoundService {
         round.updateDetail(detail);
     }
 
-    public List<RoundDto.RoundInfoResponse> getRoundInfoResponses(long studyId) {
+    public List<RoundDtoVo.RoundInfoResVo> getRoundInfoResponses(long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return roundEntityRepository.findRoundsByStudyOrderByStudyTime(study).stream()
-                .map(RoundDto::createRoundInfo)
+                .map(RoundDtoVo::createRoundInfo)
                 .collect(Collectors.toList());
     }
 

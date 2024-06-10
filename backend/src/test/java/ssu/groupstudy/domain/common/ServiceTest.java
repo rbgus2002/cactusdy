@@ -9,18 +9,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
+import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
+import ssu.groupstudy.api.study.vo.CreateStudyReqVo;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
+import ssu.groupstudy.api.user.vo.SignUpReqVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
 import java.time.LocalDateTime;
 
@@ -32,19 +32,19 @@ import java.time.LocalDateTime;
 public class ServiceTest {
     @InjectSoftAssertions
     protected SoftAssertions softly;
-    protected SignUpRequest 최규현SignUpRequest;
-    protected SignUpRequest 장재우SignUpRequest;
+    protected SignUpReqVo 최규현SignUpReqVo;
+    protected SignUpReqVo 장재우SignUpReqVo;
     protected UserEntity 최규현;
     protected UserEntity 장재우;
 
-    protected CreateStudyRequest 알고리즘스터디CreateRequest;
-    protected CreateStudyRequest 영어스터디CreateRequest;
+    protected CreateStudyReqVo 알고리즘스터디CreateRequest;
+    protected CreateStudyReqVo 영어스터디CreateRequest;
     protected StudyEntity 알고리즘스터디;
     protected StudyEntity 영어스터디;
 
     protected ParticipantEntity 스터디참여자_최규현;
 
-    protected CreateNoticeRequest 공지사항1CreateRequest;
+    protected CreateNoticeReqVo 공지사항1CreateRequest;
     protected NoticeEntity 공지사항1;
     protected NoticeEntity 공지사항2;
     protected NoticeEntity 공지사항3;
@@ -57,8 +57,8 @@ public class ServiceTest {
     protected CommentEntity 댓글2;
     protected CommentEntity 대댓글1;
 
-    protected AppointmentRequest 회차1AppointmentRequest;
-    protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
+    protected AppointmentReqVo 회차1AppointmentReqVo;
+    protected AppointmentReqVo 회차2AppointmentReqVo_EmptyTimeAndPlace;
     protected RoundEntity 회차1;
     protected RoundEntity 회차2_EmptyTimeAndPlace;
 
@@ -86,13 +86,13 @@ public class ServiceTest {
     }
 
     private void initSignUpRequest() {
-        최규현SignUpRequest = SignUpRequest.builder()
+        최규현SignUpReqVo = SignUpReqVo.builder()
                 .name("최규현")
                 .phoneNumber("rbgus200@naver.com")
                 .password("valid")
                 .nickname("규규")
                 .build();
-        장재우SignUpRequest = SignUpRequest.builder()
+        장재우SignUpReqVo = SignUpReqVo.builder()
                 .name("장재우")
                 .phoneNumber("arkady@naver.com")
                 .password("password")
@@ -101,19 +101,19 @@ public class ServiceTest {
     }
 
     private void initUser() {
-        최규현 = 최규현SignUpRequest.toEntity("password");
+        최규현 = 최규현SignUpReqVo.toEntity("password");
         ReflectionTestUtils.setField(최규현, "userId", 1L);
-        장재우 = 장재우SignUpRequest.toEntity("password");
+        장재우 = 장재우SignUpReqVo.toEntity("password");
         ReflectionTestUtils.setField(장재우, "userId", 2L);
     }
 
     private void initCreateStudyRequest() {
-        알고리즘스터디CreateRequest = CreateStudyRequest.builder()
+        알고리즘스터디CreateRequest = CreateStudyReqVo.builder()
                 .studyName("알고리즘")
                 .detail("내용1")
                 .color("0x00")
                 .build();
-        영어스터디CreateRequest = CreateStudyRequest.builder()
+        영어스터디CreateRequest = CreateStudyReqVo.builder()
                 .studyName("영어")
                 .detail("내용2")
                 .color("0x00")
@@ -129,7 +129,7 @@ public class ServiceTest {
     }
 
     private void initCreateNoticeRequest() {
-        공지사항1CreateRequest = CreateNoticeRequest.builder()
+        공지사항1CreateRequest = CreateNoticeReqVo.builder()
                 .studyId(-1L)
                 .title("공지사항1")
                 .contents("내용1")
@@ -176,20 +176,20 @@ public class ServiceTest {
     }
 
     private void initCreateRoundRequest() {
-        회차1AppointmentRequest = AppointmentRequest.builder()
+        회차1AppointmentReqVo = AppointmentReqVo.builder()
                 .studyPlace("규현집")
                 .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
                 .build();
-        회차2AppointmentRequest_EmptyTimeAndPlace = AppointmentRequest.builder()
+        회차2AppointmentReqVo_EmptyTimeAndPlace = AppointmentReqVo.builder()
                 .studyPlace("재우집")
                 .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
                 .build();
     }
 
     private void initRound() {
-        회차1 = 회차1AppointmentRequest.toEntity(알고리즘스터디);
+        회차1 = 회차1AppointmentReqVo.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차1, "roundId", 15L);
-        회차2_EmptyTimeAndPlace = 회차2AppointmentRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        회차2_EmptyTimeAndPlace = 회차2AppointmentReqVo_EmptyTimeAndPlace.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차2_EmptyTimeAndPlace, "roundId", 18L);
     }
 

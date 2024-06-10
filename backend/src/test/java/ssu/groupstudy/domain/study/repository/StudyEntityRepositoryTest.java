@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.DoneCount;
-import ssu.groupstudy.domain.study.dto.StatusTagInfo;
+import ssu.groupstudy.domain.study.param.DoneCount;
+import ssu.groupstudy.domain.study.param.StatusTagInfo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 

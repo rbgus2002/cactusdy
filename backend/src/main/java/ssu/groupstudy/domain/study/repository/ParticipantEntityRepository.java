@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.ParticipantInfo;
+import ssu.groupstudy.domain.study.param.ParticipantInfo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "ORDER BY p.createDate ASC")
     List<ParticipantEntity> findByUserOrderByCreateDate(UserEntity user);
 
-    @Query("SELECT new ssu.groupstudy.domain.study.dto.ParticipantInfo(s.studyName, p.color, s.picture) " +
+    @Query("SELECT new ssu.groupstudy.domain.study.param.ParticipantInfo(s.studyName, p.color, s.picture) " +
             "FROM ParticipantEntity p " +
             "JOIN StudyEntity s ON s.studyId = p.study.studyId " +
             "WHERE p.user = :user " +

@@ -13,7 +13,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.dto.request.SignInRequest;
+import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -59,7 +59,7 @@ class AuthServiceTest extends ServiceTest {
             doReturn(true).when(userEntityRepository).existsByPhoneNumber(any(String.class));
 
             // when, then
-            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest, null))
+            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpReqVo, null))
                     .isInstanceOf(PhoneNumberExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_PHONE_NUMBER.getMessage());
         }
@@ -72,7 +72,7 @@ class AuthServiceTest extends ServiceTest {
             doReturn(최규현).when(userEntityRepository).save(any(UserEntity.class));
 
             // when
-            final Long userId = authService.signUp(최규현SignUpRequest, null);
+            final Long userId = authService.signUp(최규현SignUpReqVo, null);
 
             // then
             softly.assertThat(userId).isNotNull();
@@ -81,13 +81,13 @@ class AuthServiceTest extends ServiceTest {
 
     @Nested
     class SignIn{
-        private final SignInRequest request = SignInRequest.builder()
+        private final SignInReqVo request = SignInReqVo.builder()
                 .phoneNumber("")
                 .password("valid")
                 .fcmToken("")
                 .build();
 
-        private final SignInRequest requestInvalidPassword = SignInRequest.builder()
+        private final SignInReqVo requestInvalidPassword = SignInReqVo.builder()
                 .phoneNumber("")
                 .password("invalid")
                 .fcmToken("fcm token")

@@ -9,13 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
+import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
-import ssu.groupstudy.domain.notice.dto.request.EditNoticeRequest;
-import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
-import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
-import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
+import ssu.groupstudy.api.notice.vo.EditNoticeReqVo;
+import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
+import ssu.groupstudy.domain.notice.param.NoticeSummaries;
+import ssu.groupstudy.domain.notice.param.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
@@ -43,7 +43,7 @@ public class NoticeService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public NoticeInfoResponse createNotice(CreateNoticeRequest dto, UserEntity writer) {
+    public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, UserEntity writer) {
         StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
@@ -51,7 +51,7 @@ public class NoticeService {
         eventPublisher.publishEvent(new NoticeCreationEvent(study, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
-        return NoticeInfoResponse.of(notice, writer);
+        return NoticeInfoResVo.of(notice, writer);
     }
 
     @Transactional
@@ -107,10 +107,10 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeById(Long noticeId, UserEntity user) {
+    public NoticeInfoResVo getNoticeById(Long noticeId, UserEntity user) {
         NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        return NoticeInfoResponse.of(notice, user);
+        return NoticeInfoResVo.of(notice, user);
     }
 
     @Transactional
@@ -121,7 +121,7 @@ public class NoticeService {
     }
 
     @Transactional
-    public void updateNotice(Long noticeId, EditNoticeRequest dto) {
+    public void updateNotice(Long noticeId, EditNoticeReqVo dto) {
         NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         notice.updateTitleAndContents(dto.getTitle(), dto.getContents());

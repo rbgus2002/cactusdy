@@ -3,8 +3,8 @@ package ssu.groupstudy.domain.study.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.DoneCount;
-import ssu.groupstudy.domain.study.dto.StatusTagInfo;
+import ssu.groupstudy.domain.study.param.DoneCount;
+import ssu.groupstudy.domain.study.param.StatusTagInfo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> 
     @Query("SELECT s FROM StudyEntity s WHERE s.inviteCode = :inviteCode AND s.deleteYn = 'N'")
     Optional<StudyEntity> findByInviteCode(String inviteCode);
 
-    @Query("SELECT new ssu.groupstudy.domain.study.dto.StatusTagInfo(rp.statusTag, COUNT(r.roundId)) " +
+    @Query("SELECT new ssu.groupstudy.domain.study.param.StatusTagInfo(rp.statusTag, COUNT(r.roundId)) " +
             "FROM StudyEntity s " +
             "JOIN RoundEntity r ON s.studyId = r.study.studyId " +
             "JOIN RoundParticipantEntity rp ON r.roundId = rp.round.roundId " +
@@ -28,7 +28,7 @@ public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> 
             "GROUP BY rp.statusTag")
     List<StatusTagInfo> calculateStatusTag(UserEntity user, StudyEntity study);
 
-    @Query("SELECT new ssu.groupstudy.domain.study.dto.DoneCount(SUM(CASE WHEN t.doneYn = 'Y' THEN 1 ELSE 0 END), " +
+    @Query("SELECT new ssu.groupstudy.domain.study.param.DoneCount(SUM(CASE WHEN t.doneYn = 'Y' THEN 1 ELSE 0 END), " +
             "SUM(CASE WHEN t.doneYn = 'N' THEN 1 ELSE 0 END), " +
             "COUNT(t.doneYn))" +
             "FROM StudyEntity s " +

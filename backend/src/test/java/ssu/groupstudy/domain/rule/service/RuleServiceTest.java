@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.api.rule.vo.CreateRuleReqVo;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
-import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
@@ -36,7 +36,7 @@ class RuleServiceTest extends ServiceTest {
 
     @BeforeEach
     void init(){
-        규칙 = new CreateRuleRequest(-1L, "detail").toEntity(알고리즘스터디);
+        규칙 = new CreateRuleReqVo(-1L, "detail").toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(규칙, "id", 5L);
     }
 
@@ -49,7 +49,7 @@ class RuleServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> ruleService.createRule(new CreateRuleRequest(-1L, "detail")))
+            assertThatThrownBy(() -> ruleService.createRule(new CreateRuleReqVo(-1L, "detail")))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
@@ -62,7 +62,7 @@ class RuleServiceTest extends ServiceTest {
             doReturn(규칙).when(ruleEntityRepository).save(any(RuleEntity.class));
 
             // when
-            Long ruleId = ruleService.createRule(new CreateRuleRequest(-1L, "detail"));
+            Long ruleId = ruleService.createRule(new CreateRuleReqVo(-1L, "detail"));
 
             // then
             assertThat(ruleId).isNotNull();

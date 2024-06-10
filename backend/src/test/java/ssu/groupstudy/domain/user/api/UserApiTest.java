@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doReturn;
 
 //class UserApiTest extends ApiTest {
 //    @InjectMocks
-//    private UserApi userApi;
+//    private UserController userApi;
 //    @Mock
 //    private UserService userService;
 //
@@ -26,11 +26,11 @@ import static org.mockito.Mockito.doReturn;
 //        void fail_invalid_Email(String email) throws Exception {
 //            // given
 //            final String url = "/user";
-//            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", email);
+//            final SignUpReqVo 최규현SignUpReqVo = new SignUpReqVo("최규현", "규규", "", "", email);
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-//                    .content(gson.toJson(최규현SignUpRequest))
+//                    .content(gson.toJson(최규현SignUpReqVo))
 //                    .contentType(MediaType.APPLICATION_JSON)
 //            );
 //
@@ -47,9 +47,9 @@ import static org.mockito.Mockito.doReturn;
 //        void success() throws Exception {
 //            // given
 //            final String url = "/user";
-//            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002@naver.com");
-//            final UserEntity 최규현 = 최규현SignUpRequest.toEntity();
-//            doReturn(UserInfoResponse.from(최규현)).when(userService).findUser(any(Long.class));
+//            final SignUpReqVo 최규현SignUpReqVo = new SignUpReqVo("최규현", "규규", "", "", "rbgus2002@naver.com");
+//            final UserEntity 최규현 = 최규현SignUpReqVo.toEntity();
+//            doReturn(UserInfoResVo.from(최규현)).when(userService).findUser(any(Long.class));
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)

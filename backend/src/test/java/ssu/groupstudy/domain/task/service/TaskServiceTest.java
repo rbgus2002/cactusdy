@@ -11,8 +11,8 @@ import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
-import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
+import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 
@@ -91,7 +91,7 @@ class TaskServiceTest extends ServiceTest {
 
     @Nested
     class CreatePersonalTask{
-        final CreatePersonalTaskRequest request = CreatePersonalTaskRequest.builder()
+        final CreatePersonalTaskReqVo request = CreatePersonalTaskReqVo.builder()
                 .roundParticipantId(-1L)
                 .detail("개인 태스크")
                 .build();
@@ -112,7 +112,7 @@ class TaskServiceTest extends ServiceTest {
 
     @Nested
     class updateTaskDetail{
-        UpdateTaskRequest request = UpdateTaskRequest.builder()
+        UpdateTaskReqVo request = UpdateTaskReqVo.builder()
                 .taskId(-1L)
                 .detail("수정내용")
                 .build();

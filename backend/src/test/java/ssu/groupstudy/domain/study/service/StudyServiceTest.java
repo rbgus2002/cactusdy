@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.dto.response.StudySummaryResponse;
+import ssu.groupstudy.api.study.vo.StudySummaryResVo;
 import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
@@ -119,7 +119,7 @@ class StudyServiceTest extends ServiceTest {
             doReturn(Optional.of(스터디참여자_최규현)).when(participantEntityRepository).findByUserAndStudy(any(UserEntity.class), any(StudyEntity.class));
 
             // when
-            StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L, 최규현);
+            StudySummaryResVo summaryResponse = studyService.getStudySummary(-1L, 최규현);
 
             // then
             assertEquals("알고리즘", summaryResponse.getStudyName());

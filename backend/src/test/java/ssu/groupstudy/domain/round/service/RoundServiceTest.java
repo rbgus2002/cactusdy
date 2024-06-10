@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.round.dto.response.RoundDto;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
+import ssu.groupstudy.api.round.vo.RoundDtoVo;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
@@ -43,7 +43,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentRequest))
+            assertThatThrownBy(() -> roundService.createRound(-1L, 회차1AppointmentReqVo))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(STUDY_NOT_FOUND.getMessage());
         }
@@ -57,7 +57,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(회차2_EmptyTimeAndPlace).when(roundEntityRepository).save(any(RoundEntity.class));
 
             // when
-            Long roundId = roundService.createRound(-1L, 회차2AppointmentRequest_EmptyTimeAndPlace);
+            Long roundId = roundService.createRound(-1L, 회차2AppointmentReqVo_EmptyTimeAndPlace);
 
             // then
             assertThat(roundId).isNotNull();
@@ -71,7 +71,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(회차1).when(roundEntityRepository).save(any(RoundEntity.class));
 
             // when
-            Long roundId = roundService.createRound(-1L, 회차1AppointmentRequest);
+            Long roundId = roundService.createRound(-1L, 회차1AppointmentReqVo);
 
             // then
             assertThat(roundId).isNotNull();
@@ -87,7 +87,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(roundEntityRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> roundService.updateAppointment(-1L, 회차1AppointmentRequest))
+            assertThatThrownBy(() -> roundService.updateAppointment(-1L, 회차1AppointmentReqVo))
                     .isInstanceOf(RoundNotFoundException.class)
                     .hasMessage(ROUND_NOT_FOUND.getMessage());
         }
@@ -99,7 +99,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundEntityRepository).findById(any(Long.class));
 
             // when
-            roundService.updateAppointment(-1L, new AppointmentRequest(null, "장소변경"));
+            roundService.updateAppointment(-1L, new AppointmentReqVo(null, "장소변경"));
 
             // then
             assertThat(회차1.getAppointment().getStudyPlace()).isEqualTo("장소변경");
@@ -112,7 +112,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundEntityRepository).findById(any(Long.class));
 
             // when
-            roundService.updateAppointment(-1L, new AppointmentRequest(LocalDateTime.of(2024, 5, 17, 16, 0), null));
+            roundService.updateAppointment(-1L, new AppointmentReqVo(LocalDateTime.of(2024, 5, 17, 16, 0), null));
 
             // then
             assertThat(회차1.getAppointment().getStudyTime().getYear()).isEqualTo(2024);
@@ -125,7 +125,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundEntityRepository).findById(any(Long.class));
 
             // when
-            roundService.updateAppointment(-1L, new AppointmentRequest(LocalDateTime.of(2050, 5, 17, 16, 0), "숭실대"));
+            roundService.updateAppointment(-1L, new AppointmentReqVo(LocalDateTime.of(2050, 5, 17, 16, 0), "숭실대"));
 
             // then
             assertAll(
@@ -156,7 +156,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundEntityRepository).findById(any(Long.class));
 
             // when
-            RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
+            RoundDtoVo.RoundDetailResVo detail = roundService.getDetail(-1L);
 
             // then
             assertNotNull(detail.getDetail());
@@ -172,7 +172,7 @@ class RoundServiceTest extends ServiceTest {
             doReturn(Optional.of(회차1)).when(roundEntityRepository).findById(any(Long.class));
 
             // when
-            RoundDto.RoundDetailResponse detail = roundService.getDetail(-1L);
+            RoundDtoVo.RoundDetailResVo detail = roundService.getDetail(-1L);
 
             // then
             assertEquals(detailOf회차1, detail.getDetail());

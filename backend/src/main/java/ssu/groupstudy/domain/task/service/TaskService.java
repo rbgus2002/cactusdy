@@ -13,11 +13,11 @@ import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
-import ssu.groupstudy.domain.task.dto.request.CreateGroupTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
-import ssu.groupstudy.domain.task.dto.response.GroupTaskInfoResponse;
-import ssu.groupstudy.domain.task.dto.response.TaskResponse;
+import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
+import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
+import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
+import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
+import ssu.groupstudy.api.task.vo.TaskResVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -37,19 +37,19 @@ public class TaskService {
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<TaskResponse> getTasks(Long roundId, UserEntity user) {
+    public List<TaskResVo> getTasks(Long roundId, UserEntity user) {
         RoundEntity round = roundEntityRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
         return round.getRoundParticipants().stream()
                 .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(user))
                         .thenComparing(RoundParticipantEntity::getId))
-                .map(TaskResponse::from)
+                .map(TaskResVo::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public Long createPersonalTask(CreatePersonalTaskRequest request) {
+    public Long createPersonalTask(CreatePersonalTaskReqVo request) {
         RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         return processTaskCreation(roundParticipant, request.getDetail(), TaskType.PERSONAL);
@@ -61,19 +61,19 @@ public class TaskService {
     }
 
     @Transactional
-    public List<GroupTaskInfoResponse> createGroupTask(CreateGroupTaskRequest request) {
+    public List<GroupTaskInfoResVo> createGroupTask(CreateGroupTaskReqVo request) {
         RoundEntity round = roundEntityRepository.findById(request.getRoundId())
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return getGroupTaskInfoResponseList(request, round);
     }
 
-    private List<GroupTaskInfoResponse> getGroupTaskInfoResponseList(CreateGroupTaskRequest request, RoundEntity round) {
+    private List<GroupTaskInfoResVo> getGroupTaskInfoResponseList(CreateGroupTaskReqVo request, RoundEntity round) {
         return round.getRoundParticipants().stream()
                 .map(roundParticipant -> {
                     Long newTaskId = processTaskCreation(roundParticipant, request.getDetail(), TaskType.GROUP);
                     Long roundParticipantId = roundParticipant.getId();
                     Long userId = roundParticipant.getUser().getUserId();
-                    return GroupTaskInfoResponse.of(newTaskId, roundParticipantId, userId);
+                    return GroupTaskInfoResVo.of(newTaskId, roundParticipantId, userId);
                 })
                 .collect(Collectors.toList());
     }
@@ -89,7 +89,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void updateTaskDetail(UpdateTaskRequest request) {
+    public void updateTaskDetail(UpdateTaskReqVo request) {
         TaskEntity task = taskEntityRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         task.setDetail(request.getDetail());

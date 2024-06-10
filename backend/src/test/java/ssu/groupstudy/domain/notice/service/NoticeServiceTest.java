@@ -14,9 +14,9 @@ import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
-import ssu.groupstudy.domain.notice.dto.response.NoticeInfoResponse;
-import ssu.groupstudy.domain.notice.dto.response.NoticeSummaries;
-import ssu.groupstudy.domain.notice.dto.response.NoticeSummary;
+import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
+import ssu.groupstudy.domain.notice.param.NoticeSummaries;
+import ssu.groupstudy.domain.notice.param.NoticeSummary;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -71,10 +71,10 @@ class NoticeServiceTest extends ServiceTest {
             doReturn(공지사항1).when(noticeEntityRepository).save(any(NoticeEntity.class));
 
             // when
-            NoticeInfoResponse noticeInfoResponse = noticeService.createNotice(공지사항1CreateRequest, 최규현);
+            NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(공지사항1CreateRequest, 최규현);
 
             // then
-            softly.assertThat(noticeInfoResponse.getTitle()).isEqualTo(공지사항1CreateRequest.getTitle());
+            softly.assertThat(noticeInfoResVo.getTitle()).isEqualTo(공지사항1CreateRequest.getTitle());
         }
     }
 

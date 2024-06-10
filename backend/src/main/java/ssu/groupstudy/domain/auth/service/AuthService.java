@@ -19,10 +19,10 @@ import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
+import ssu.groupstudy.api.user.vo.SignUpReqVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.dto.request.SignInRequest;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
-import ssu.groupstudy.domain.user.dto.response.SignInResponse;
+import ssu.groupstudy.api.user.vo.SignInReqVo;
+import ssu.groupstudy.api.user.vo.SignInResVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -53,20 +53,20 @@ public class AuthService {
 
 
     @Transactional
-    public SignInResponse signIn(SignInRequest request) {
+    public SignInResVo signIn(SignInReqVo request) {
         UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validateLogin(request, user);
         handleSuccessfulLogin(request, user);
-        return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
+        return SignInResVo.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
 
-    private void validateLogin(SignInRequest request, UserEntity user) {
+    private void validateLogin(SignInReqVo request, UserEntity user) {
         validatePassword(request, user);
         validateDelete(user);
     }
 
-    private void validatePassword(SignInRequest request, UserEntity user) {
+    private void validatePassword(SignInReqVo request, UserEntity user) {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
         }
@@ -78,11 +78,11 @@ public class AuthService {
         }
     }
 
-    private void handleSuccessfulLogin(SignInRequest request, UserEntity user) {
+    private void handleSuccessfulLogin(SignInReqVo request, UserEntity user) {
         handleFcmToken(request, user);
     }
 
-    private void handleFcmToken(SignInRequest request, UserEntity user) {
+    private void handleFcmToken(SignInReqVo request, UserEntity user) {
         if(!user.existFcmToken(request.getFcmToken())){
             user.addFcmToken(request.getFcmToken());
             eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
@@ -100,7 +100,7 @@ public class AuthService {
     }
 
     @Transactional
-    public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
+    public Long signUp(SignUpReqVo request, MultipartFile image) throws IOException {
         checkPhoneNumberExist(request.getPhoneNumber());
         UserEntity user = processUserSaving(request);
         imageManager.updateImage(user, image);
@@ -109,7 +109,7 @@ public class AuthService {
         return user.getUserId();
     }
 
-    private UserEntity processUserSaving(SignUpRequest request) {
+    private UserEntity processUserSaving(SignUpReqVo request) {
         String password = passwordEncoder.encode(request.getPassword());
         UserEntity user = request.toEntity(password);
         user.addUserRole();
