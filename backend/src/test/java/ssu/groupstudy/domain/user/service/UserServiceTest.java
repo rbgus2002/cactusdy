@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.domain.common.util.S3Utils;
+import ssu.groupstudy.global.util.S3Utils;
 
 class UserServiceTest extends ServiceTest {
     @InjectMocks

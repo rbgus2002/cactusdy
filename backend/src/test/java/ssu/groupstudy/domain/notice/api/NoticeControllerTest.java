@@ -10,7 +10,7 @@ import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.domain.notice.service.NoticeService;
 import ssu.groupstudy.api.study.vo.CreateStudyReqVo;
 import ssu.groupstudy.api.user.vo.SignUpReqVo;
-import ssu.groupstudy.domain.common.handler.GlobalExceptionHandler;
+import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 class NoticeControllerTest extends ApiTest {
     @InjectMocks

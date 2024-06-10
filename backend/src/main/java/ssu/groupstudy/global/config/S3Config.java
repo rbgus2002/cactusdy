@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.common.config;
+package ssu.groupstudy.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.common.util;
+package ssu.groupstudy.global.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

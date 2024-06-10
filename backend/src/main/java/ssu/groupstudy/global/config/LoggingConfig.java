@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.common.config;
+package ssu.groupstudy.global.config;
 
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;

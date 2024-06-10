@@ -13,7 +13,7 @@ import ssu.groupstudy.api.rule.vo.CreateRuleReqVo;
 import ssu.groupstudy.domain.rule.service.RuleService;
 import ssu.groupstudy.api.study.vo.CreateStudyReqVo;
 import ssu.groupstudy.api.user.vo.SignUpReqVo;
-import ssu.groupstudy.domain.common.handler.GlobalExceptionHandler;
+import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 @ExtendWith(MockitoExtension.class)
 class RuleControllerTest {

@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.feedback.dto.CreateNotionPageDto;
 import ssu.groupstudy.api.user.vo.SendFeedbackReqVo;
 import ssu.groupstudy.domain.feedback.repsoitory.FeedbackEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.common.openfeign.NotionOpenFeign;
+import ssu.groupstudy.global.openfeign.NotionOpenFeign;
 
 @Service
 @RequiredArgsConstructor

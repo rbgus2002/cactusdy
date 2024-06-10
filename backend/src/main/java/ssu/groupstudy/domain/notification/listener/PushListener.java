@@ -9,11 +9,11 @@ import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
-import ssu.groupstudy.domain.common.util.FcmUtils;
+import ssu.groupstudy.global.util.FcmUtils;
 
 import java.util.Map;
 
-import static ssu.groupstudy.domain.common.util.StringUtils.buildMessage;
+import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 
 @Component
 @Transactional

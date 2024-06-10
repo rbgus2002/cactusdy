@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.common.util;
+package ssu.groupstudy.global.util;
 
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;

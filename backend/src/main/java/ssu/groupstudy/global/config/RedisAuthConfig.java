@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.common.config;
+package ssu.groupstudy.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

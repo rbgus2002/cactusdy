@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ssu.groupstudy.api.round.controller.RoundController;
 import ssu.groupstudy.domain.common.ApiTest;
 import ssu.groupstudy.domain.round.service.RoundService;
-import ssu.groupstudy.domain.common.handler.GlobalExceptionHandler;
+import ssu.groupstudy.global.handler.GlobalExceptionHandler;
 
 class RoundControllerTest extends ApiTest {
     @InjectMocks
