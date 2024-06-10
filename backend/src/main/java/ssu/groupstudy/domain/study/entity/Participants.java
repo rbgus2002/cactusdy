@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @Embeddable
 @NoArgsConstructor
 @Getter
-public class Participants {
+public class Participants { // [2024-06-10:최규현] TODO: Participants를 어느 패키지로 분리할지 고민
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "host_user_id", nullable = false)
     private UserEntity hostUser;
