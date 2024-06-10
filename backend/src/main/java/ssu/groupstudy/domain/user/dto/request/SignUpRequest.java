@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.user.dto.request;
 
 import lombok.*;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 
@@ -20,8 +20,8 @@ public class SignUpRequest {
     @NotBlank(message = "비밀번호를 입력하세요")
     private String password;
 
-    public User toEntity(String password){
-        return User.builder()
+    public UserEntity toEntity(String password){
+        return UserEntity.builder()
                 .name(this.name)
                 .nickname(this.nickname)
                 .phoneNumber(this.phoneNumber)

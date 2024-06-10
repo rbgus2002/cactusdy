@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.domain.CheckNotice;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 @CustomRepositoryTest
 class CheckNoticeRepositoryTest {
@@ -23,8 +23,8 @@ class CheckNoticeRepositoryTest {
         CheckNotice 최규현꺼 = checkNoticeRepository.findById(1L).get();
 
         // when
-        User 최규현Proxy = 최규현꺼.getUser();
-        User 최규현Proxy_2 = 최규현꺼.getUser();
+        UserEntity 최규현Proxy = 최규현꺼.getUser();
+        UserEntity 최규현Proxy_2 = 최규현꺼.getUser();
 
         // then
         softly.assertThat(최규현Proxy).isEqualTo(최규현Proxy_2);

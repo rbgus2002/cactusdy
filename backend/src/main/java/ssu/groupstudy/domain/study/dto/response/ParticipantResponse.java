@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.ParticipantInfo;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ParticipantResponse {
     private char isParticipated;
 
 
-    private ParticipantResponse(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfoList, DoneCount doneCount, char isParticipated) {
+    private ParticipantResponse(UserEntity user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfoList, DoneCount doneCount, char isParticipated) {
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
         this.profileImage = user.getPicture();
@@ -36,7 +36,7 @@ public class ParticipantResponse {
         this.isParticipated = isParticipated;
     }
 
-    public static ParticipantResponse of(User user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfo, DoneCount doneCount, char isParticipated) {
+    public static ParticipantResponse of(UserEntity user, List<ParticipantInfo> participantInfoList, List<StatusTagInfo> statusTagInfo, DoneCount doneCount, char isParticipated) {
         return new ParticipantResponse(user, participantInfoList, statusTagInfo, doneCount, isParticipated);
     }
 }

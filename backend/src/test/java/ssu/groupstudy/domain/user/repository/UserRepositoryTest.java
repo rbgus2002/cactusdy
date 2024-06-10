@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ class UserRepositoryTest{
     void findByPhoneNumber(){
         // given
         // when
-        Optional<User> deletedUser = userRepository.findByPhoneNumber("01000000000");
+        Optional<UserEntity> deletedUser = userRepository.findByPhoneNumber("01000000000");
 
         // then
         softly.assertThat(deletedUser).isEmpty();

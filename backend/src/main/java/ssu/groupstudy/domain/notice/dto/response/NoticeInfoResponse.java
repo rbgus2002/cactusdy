@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class NoticeInfoResponse {
     private int readCount;
     private LocalDateTime createDate;
 
-    private NoticeInfoResponse(Notice notice, User user) {
+    private NoticeInfoResponse(Notice notice, UserEntity user) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
         this.contents = notice.getContents();
@@ -31,7 +31,7 @@ public class NoticeInfoResponse {
         this.read = notice.isRead(user);
     }
 
-    public static NoticeInfoResponse of(Notice notice, User user){
+    public static NoticeInfoResponse of(Notice notice, UserEntity user){
         return new NoticeInfoResponse(notice, user);
     }
 }

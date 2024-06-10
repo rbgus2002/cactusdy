@@ -48,7 +48,7 @@ import static org.mockito.Mockito.doReturn;
 //            // given
 //            final String url = "/user";
 //            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002@naver.com");
-//            final User 최규현 = 최규현SignUpRequest.toEntity();
+//            final UserEntity 최규현 = 최규현SignUpRequest.toEntity();
 //            doReturn(UserInfoResponse.from(최규현)).when(userService).findUser(any(Long.class));
 //
 //            // when

@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.util.List;
@@ -52,7 +52,7 @@ class StudyInviteServiceTest extends ServiceTest {
         void canNotCreateStudy(){
             // given
             // when
-            doReturn(5).when(participantRepository).countParticipationStudy(any(User.class));
+            doReturn(5).when(participantRepository).countParticipationStudy(any(UserEntity.class));
 
             // then
             assertThatThrownBy(() -> studyInviteService.inviteUser(최규현, "000000"))
@@ -64,7 +64,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
         void studyNotFound() {
             // given
-            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
+            doReturn(4).when(participantRepository).countParticipationStudy(any(UserEntity.class));
             doReturn(Optional.empty()).when(studyRepository).findByInviteCode(any(String.class));
 
             // when, then
@@ -77,7 +77,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("이미 초대된 사용자면 예외를 던진다")
         void inviteAlreadyExist() {
             // given
-            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
+            doReturn(4).when(participantRepository).countParticipationStudy(any(UserEntity.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
 
             // when
@@ -93,7 +93,7 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(4).when(participantRepository).countParticipationStudy(any(User.class));
+            doReturn(4).when(participantRepository).countParticipationStudy(any(UserEntity.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findByInviteCode(any(String.class));
             doReturn(List.of()).when(roundRepository).findFutureRounds(any(Study.class), any());
 

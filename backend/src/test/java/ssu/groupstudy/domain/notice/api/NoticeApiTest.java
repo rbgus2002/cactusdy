@@ -46,7 +46,7 @@ class NoticeApiTest extends ApiTest {
                 .build();
     }
 
-//    private User getUser() {
+//    private UserEntity getUser() {
 //        return getSignUpRequest().toEntity();
 //    }
 

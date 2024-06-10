@@ -7,7 +7,7 @@ import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -26,8 +26,8 @@ public class NotificationService {
     private final TaskRepository taskRepository;
     private final FcmUtils fcmUtils;
 
-    public void stabParticipant(User me, Long targetUserId, Long studyId, int count) {
-        User target = userRepository.findById(targetUserId)
+    public void stabParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
+        UserEntity target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         String title = buildMessage("콕찌르기 | ", me.getNickname());
@@ -44,8 +44,8 @@ public class NotificationService {
         return buildMessage("콕 찔렀어요");
     }
 
-    public void stabParticipantTask(User me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
-        User target = userRepository.findById(targetUserId)
+    public void stabParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
+        UserEntity target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
@@ -58,7 +58,7 @@ public class NotificationService {
     }
 
     @Transactional
-    public void deleteFcmToken(User user, String token) {
+    public void deleteFcmToken(UserEntity user, String token) {
         user.deleteFcmToken(token);
     }
 }

@@ -13,7 +13,7 @@ import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
@@ -41,7 +41,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항 읽음 상태로 전환한다")
         void read() {
             // given
-            User 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
@@ -55,7 +55,7 @@ class NoticeRepositoryTest{
         @DisplayName("공지사항을 안읽음 상태로 전환한다")
         void unread(){
             // given
-            User 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findById(1L).get();
 
             // when
@@ -150,7 +150,7 @@ class NoticeRepositoryTest{
         @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
         void read_true(){
             // given
-            User 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
 
@@ -164,7 +164,7 @@ class NoticeRepositoryTest{
         @Test
         @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
         void read_false(){
-            User 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             Notice 공지사항 = noticeRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
             공지사항.switchCheckNotice(최규현);

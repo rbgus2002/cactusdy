@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ public class StudyInviteService {
     private final int INVITE_CODE_LENGTH = 6;
 
     @Transactional
-    public Long inviteUser(User user, String inviteCode) {
+    public Long inviteUser(UserEntity user, String inviteCode) {
         checkAddStudy(user);
 
         Study study = studyRepository.findByInviteCode(inviteCode)
@@ -55,13 +55,13 @@ public class StudyInviteService {
         return study.getStudyId();
     }
 
-    private void checkAddStudy(User user) {
+    private void checkAddStudy(UserEntity user) {
         if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
             throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
         }
     }
 
-    private void addUserToFutureRounds(Study study, User user) {
+    private void addUserToFutureRounds(Study study, UserEntity user) {
         List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (Round round : futureRounds) {
             round.addParticipantWithoutDuplicates(new RoundParticipant(user, round));
@@ -69,7 +69,7 @@ public class StudyInviteService {
     }
 
     @Transactional
-    public void leaveUser(User user, Long studyId) {
+    public void leaveUser(UserEntity user, Long studyId) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         List<Notice> notices = noticeRepository.findNoticesByStudy(study);
@@ -80,7 +80,7 @@ public class StudyInviteService {
         study.leave(user);
     }
 
-    private void removeUserToFutureRounds(Study study, User user) {
+    private void removeUserToFutureRounds(Study study, UserEntity user) {
         List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (Round round : futureRounds) {
             round.removeParticipant(new RoundParticipant(user, round));

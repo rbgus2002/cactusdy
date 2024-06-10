@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.InvalidColorException;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.Color;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
@@ -27,7 +27,7 @@ public class Participant extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
@@ -36,13 +36,13 @@ public class Participant extends BaseEntity {
     @Column(nullable = false)
     private String color;
 
-    public Participant(User user, Study study) {
+    public Participant(UserEntity user, Study study) {
         this.user = user;
         this.study = study;
         this.color = Color.DEFAULT.getHex();
     }
 
-    public static Participant createWithColor(User user, Study study, String color) {
+    public static Participant createWithColor(UserEntity user, Study study, String color) {
         Participant participant = new Participant(user, study);
         participant.setColor(color);
         return participant;

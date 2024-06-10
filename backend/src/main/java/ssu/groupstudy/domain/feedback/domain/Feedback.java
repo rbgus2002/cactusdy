@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.feedback.domain;
 
 import lombok.*;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.persistence.*;
 
@@ -30,16 +30,16 @@ public class Feedback {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User writer;
+    private UserEntity writer;
 
-    private Feedback(FeedbackType feedbackType, String title, String contents, User writer) {
+    private Feedback(FeedbackType feedbackType, String title, String contents, UserEntity writer) {
         this.feedbackType = feedbackType;
         this.title = title;
         this.contents = contents;
         this.writer = writer;
     }
 
-    public static Feedback create(FeedbackType feedbackType, String title, String contents, User writer) {
+    public static Feedback create(FeedbackType feedbackType, String title, String contents, UserEntity writer) {
         return new Feedback(feedbackType, title, contents, writer);
     }
 }

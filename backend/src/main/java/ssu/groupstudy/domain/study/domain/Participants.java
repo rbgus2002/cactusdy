@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.study.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Participants {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "host_user_id", nullable = false)
-    private User hostUser;
+    private UserEntity hostUser;
 
     @OneToMany(mappedBy = "study", cascade = PERSIST, orphanRemoval = true)
     private final List<Participant> participants = new ArrayList<>();
@@ -48,7 +48,7 @@ public class Participants {
         participants.remove(participant);
     }
 
-    protected boolean isHostUser(User user) {
+    protected boolean isHostUser(UserEntity user) {
         return hostUser.equals(user);
     }
 
@@ -60,7 +60,7 @@ public class Participants {
         return participants.isEmpty();
     }
 
-    protected void changeHostUser(User user) {
+    protected void changeHostUser(UserEntity user) {
         this.hostUser = user;
     }
 

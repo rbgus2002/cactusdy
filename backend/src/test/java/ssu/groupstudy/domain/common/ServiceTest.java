@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 
 import java.time.LocalDateTime;
@@ -34,8 +34,8 @@ public class ServiceTest {
     protected SoftAssertions softly;
     protected SignUpRequest 최규현SignUpRequest;
     protected SignUpRequest 장재우SignUpRequest;
-    protected User 최규현;
-    protected User 장재우;
+    protected UserEntity 최규현;
+    protected UserEntity 장재우;
 
     protected CreateStudyRequest 알고리즘스터디CreateRequest;
     protected CreateStudyRequest 영어스터디CreateRequest;

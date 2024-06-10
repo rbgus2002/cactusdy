@@ -15,7 +15,7 @@ import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.Color;
 
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ public class ExampleStudyCreateService {
 
 
     @Transactional
-    public void createExampleStudy(User user) {
+    public void createExampleStudy(UserEntity user) {
         String inviteCode = studyInviteService.generateUniqueInviteCode();
         Study study = Study.init("2주 완성 토익 스터디 (예시)", "토익", Color.DEFAULT.getHex(), user, inviteCode);
         Study studyEntity = studyRepository.save(study);
@@ -44,13 +44,13 @@ public class ExampleStudyCreateService {
 //        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
     }
 
-    private void createExampleOthers(User user, Study study) {
+    private void createExampleOthers(UserEntity user, Study study) {
         createExampleNotice(user, study);
         createExampleRules(study);
         createExampleRounds(study);
     }
 
-    private void createExampleNotice(User user, Study study) {
+    private void createExampleNotice(UserEntity user, Study study) {
         Notice notice = Notice.builder()
                 .title("스터디 교재")
                 .contents(

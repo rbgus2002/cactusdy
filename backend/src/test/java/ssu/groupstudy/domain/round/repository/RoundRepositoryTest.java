@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.round.domain.Appointment;
 import ssu.groupstudy.domain.round.domain.Round;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ class RoundRepositoryTest{
     void getUserRound() {
         // given
         Study 스터디 = studyRepository.findById(1L).get();
-        User 장재우 = userRepository.findById(2L).get();
+        UserEntity 장재우 = userRepository.findById(2L).get();
         스터디.invite(장재우);
 
         // when

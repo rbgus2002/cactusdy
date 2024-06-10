@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.comment.dto.request;
 import lombok.*;
 import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ public class CreateCommentRequest {
 
     private Long parentCommentId;
 
-    public Comment toEntity(User writer, Notice notice, Comment parentComment){
+    public Comment toEntity(UserEntity writer, Notice notice, Comment parentComment){
         return new Comment(contents, writer, notice, parentComment);
     }
 }

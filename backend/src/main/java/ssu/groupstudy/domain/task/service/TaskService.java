@@ -20,7 +20,7 @@ import ssu.groupstudy.domain.task.dto.response.GroupTaskInfoResponse;
 import ssu.groupstudy.domain.task.dto.response.TaskResponse;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.Comparator;
 import java.util.List;
@@ -37,7 +37,7 @@ public class TaskService {
     private final RoundParticipantRepository roundParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<TaskResponse> getTasks(Long roundId, User user) {
+    public List<TaskResponse> getTasks(Long roundId, UserEntity user) {
         Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
@@ -96,7 +96,7 @@ public class TaskService {
     }
 
     @Transactional
-    public char switchTask(Long taskId, User user) {
+    public char switchTask(Long taskId, UserEntity user) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         char doneYn = task.switchDoneYn();
@@ -104,7 +104,7 @@ public class TaskService {
         return doneYn;
     }
 
-    private void processNotification(Task task, User user) {
+    private void processNotification(Task task, UserEntity user) {
         if (task.isDone()) {
             eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }

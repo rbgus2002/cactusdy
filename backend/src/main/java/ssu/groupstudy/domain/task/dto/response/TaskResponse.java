@@ -4,7 +4,7 @@ import lombok.Getter;
 import ssu.groupstudy.domain.round.domain.RoundParticipant;
 import ssu.groupstudy.domain.round.domain.StatusTag;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class TaskResponse {
         this.roundParticipantId = roundParticipant.getId();
         this.statusTag = roundParticipant.getStatusTag();
 
-        User user = roundParticipant.getUser();
+        UserEntity user = roundParticipant.getUser();
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
         this.profileImage = user.getPicture();

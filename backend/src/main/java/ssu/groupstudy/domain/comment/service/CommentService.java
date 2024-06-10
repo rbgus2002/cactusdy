@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
 import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class CommentService {
 
 
     @Transactional
-    public Long createComment(CreateCommentRequest dto, User writer) {
+    public Long createComment(CreateCommentRequest dto, UserEntity writer) {
         Notice notice = noticeRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         validateUser(writer, notice);
@@ -48,7 +48,7 @@ public class CommentService {
         return commentRepository.save(comment).getCommentId();
     }
 
-    private void validateUser(User writer, Notice notice) {
+    private void validateUser(UserEntity writer, Notice notice) {
         if(!notice.getStudy().isParticipated(writer)){
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
@@ -57,7 +57,7 @@ public class CommentService {
     /**
      * 부모 댓글이 존재하는 경우를 구분해서 생성할 Comment 객체를 생성한다
      */
-    private Comment handleCommentCreationWithParent(CreateCommentRequest dto, User writer, Notice notice) {
+    private Comment handleCommentCreationWithParent(CreateCommentRequest dto, UserEntity writer, Notice notice) {
         Comment parent = null;
         if(dto.getParentCommentId() != null){
             parent = commentRepository.getReferenceById(dto.getParentCommentId());

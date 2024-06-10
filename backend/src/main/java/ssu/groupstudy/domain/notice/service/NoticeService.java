@@ -23,7 +23,7 @@ import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubs
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -43,7 +43,7 @@ public class NoticeService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public NoticeInfoResponse createNotice(CreateNoticeRequest dto, User writer) {
+    public NoticeInfoResponse createNotice(CreateNoticeRequest dto, UserEntity writer) {
         Study study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         Notice notice = noticeRepository.save(dto.toEntity(writer, study));
@@ -55,19 +55,19 @@ public class NoticeService {
     }
 
     @Transactional
-    public Character switchCheckNotice(Long noticeId, User user) {
+    public Character switchCheckNotice(Long noticeId, UserEntity user) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return notice.switchCheckNotice(user);
     }
 
-    public NoticeSummaries getNoticeSummaries(Long studyId, Pageable pageable, User user) {
+    public NoticeSummaries getNoticeSummaries(Long studyId, Pageable pageable, UserEntity user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         return transformNoticeSummaries(study, pageable, user);
     }
 
-    private NoticeSummaries transformNoticeSummaries(Study study, Pageable pageable, User user) {
+    private NoticeSummaries transformNoticeSummaries(Study study, Pageable pageable, UserEntity user) {
         Page<Notice> noticePage = noticeRepository.findNoticesByStudyOrderByPinYnDescCreateDateDesc(study, pageable);
         List<NoticeSummary> noticeSummaries = noticePage.getContent().stream()
                 .map(notice -> createNoticeSummary(notice, user))
@@ -75,7 +75,7 @@ public class NoticeService {
         return NoticeSummaries.of(noticePage, noticeSummaries);
     }
 
-    private NoticeSummary createNoticeSummary(Notice notice, User user) {
+    private NoticeSummary createNoticeSummary(Notice notice, UserEntity user) {
         int commentCount = commentRepository.countCommentByNotice(notice);
         int readCount = notice.countReadNotices();
         boolean isRead = notice.isRead(user);
@@ -107,7 +107,7 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeInfoResponse getNoticeById(Long noticeId, User user) {
+    public NoticeInfoResponse getNoticeById(Long noticeId, UserEntity user) {
         Notice notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         return NoticeInfoResponse.of(notice, user);

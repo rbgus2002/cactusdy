@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -69,7 +69,7 @@ class AuthServiceTest extends ServiceTest {
         void success() throws IOException {
             // given
             doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
-            doReturn(최규현).when(userRepository).save(any(User.class));
+            doReturn(최규현).when(userRepository).save(any(UserEntity.class));
 
             // when
             final Long userId = authService.signUp(최규현SignUpRequest, null);

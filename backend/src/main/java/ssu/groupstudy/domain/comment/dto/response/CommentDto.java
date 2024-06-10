@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.comment.domain.Comment;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +24,7 @@ public class CommentDto {
     private List<ChildCommentInfoResponse> replies = null;
 
     private CommentDto(Comment comment) {
-        User writer = comment.getWriter();
+        UserEntity writer = comment.getWriter();
         this.userId = writer.getUserId();
         this.nickname = writer.getNickname();
         this.picture = writer.getPicture();

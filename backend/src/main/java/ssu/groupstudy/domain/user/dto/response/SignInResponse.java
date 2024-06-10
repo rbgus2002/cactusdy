@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.user.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,7 +16,7 @@ public class SignInResponse {
         this.token = token;
     }
 
-    public static SignInResponse of(User user, String token){
+    public static SignInResponse of(UserEntity user, String token){
         return new SignInResponse(user.getUserId(), token);
     }
 }

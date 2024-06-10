@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.task.domain.Task;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,7 +27,7 @@ public class RoundParticipant {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "roundId", nullable = false)
@@ -40,7 +40,7 @@ public class RoundParticipant {
     @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
     private final Set<Task> tasks = new HashSet<>();
 
-    public RoundParticipant(User user, Round round) {
+    public RoundParticipant(UserEntity user, Round round) {
         this.user = user;
         this.round = round;
         this.statusTag = StatusTag.ATTENDANCE;

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             "AND s.deleteYn = 'N' " +
             "AND r.deleteYn = 'N' " +
             "GROUP BY rp.statusTag")
-    List<StatusTagInfo> calculateStatusTag(User user, Study study);
+    List<StatusTagInfo> calculateStatusTag(UserEntity user, Study study);
 
     @Query("SELECT new ssu.groupstudy.domain.study.dto.DoneCount(SUM(CASE WHEN t.doneYn = 'Y' THEN 1 ELSE 0 END), " +
             "SUM(CASE WHEN t.doneYn = 'N' THEN 1 ELSE 0 END), " +
@@ -40,5 +40,5 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             "AND s.deleteYn = 'N' " +
             "AND r.deleteYn = 'N' "
     )
-    DoneCount calculateDoneCount(User user, Study study);
+    DoneCount calculateDoneCount(UserEntity user, Study study);
 }

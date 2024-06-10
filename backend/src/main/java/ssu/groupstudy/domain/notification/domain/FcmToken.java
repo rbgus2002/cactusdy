@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class FcmToken {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_id", nullable = false)
     @JsonIgnore
-    private User user;
+    private UserEntity user;
 
     @Column(nullable = false)
     private String token;
@@ -34,13 +34,13 @@ public class FcmToken {
     private LocalDateTime activateDate;
 
 
-    private FcmToken(User user, String token) {
+    private FcmToken(UserEntity user, String token) {
         this.user = user;
         this.token = token;
         this.activateDate = LocalDateTime.now();
     }
 
-    public static FcmToken from(User user, String token){
+    public static FcmToken from(UserEntity user, String token){
         return new FcmToken(user, token);
     }
 

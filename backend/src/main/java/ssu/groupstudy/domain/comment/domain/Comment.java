@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -25,7 +25,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="userId", nullable = false)
-    private User writer;
+    private UserEntity writer;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="noticeId")
@@ -38,7 +38,7 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    public Comment(String contents, User writer, Notice notice) {
+    public Comment(String contents, UserEntity writer, Notice notice) {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;
@@ -46,7 +46,7 @@ public class Comment extends BaseEntity {
         this.parentComment = null;
     }
 
-    public Comment(String contents, User writer, Notice notice, Comment parentComment) {
+    public Comment(String contents, UserEntity writer, Notice notice, Comment parentComment) {
         this.contents = contents;
         this.writer = writer;
         this.notice = notice;

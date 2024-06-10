@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.global.constant.Color;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -42,7 +42,7 @@ public class Study extends BaseEntity {
     @Column(nullable = false)
     private char deleteYn;
 
-    private Study(String studyName, String detail, String color, User hostUser, String inviteCode) {
+    private Study(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants = Participants.empty(new Participant(hostUser, this), color);
@@ -55,7 +55,7 @@ public class Study extends BaseEntity {
         this.detail = detail;
     }
 
-    public static Study init(String studyName, String detail, String color, User hostUser, String inviteCode) {
+    public static Study init(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
         return new Study(studyName, detail, color, hostUser, inviteCode);
     }
 
@@ -63,11 +63,11 @@ public class Study extends BaseEntity {
         return new Study(studyName, detail);
     }
 
-    public boolean isParticipated(User user) {
+    public boolean isParticipated(UserEntity user) {
         return participants.existParticipant(new Participant(user, this));
     }
 
-    public void invite(User user) {
+    public void invite(UserEntity user) {
         if (isParticipated(user)) {
             throw new InviteAlreadyExistsException(ResultCode.DUPLICATE_INVITE_USER);
         }
@@ -80,7 +80,7 @@ public class Study extends BaseEntity {
         participants.addParticipant(participant);
     }
 
-    public void leave(User user) {
+    public void leave(UserEntity user) {
         if (!isParticipated(user)) {
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }
@@ -93,7 +93,7 @@ public class Study extends BaseEntity {
         }
     }
 
-    public boolean isHostUser(User user) {
+    public boolean isHostUser(UserEntity user) {
         return participants.isHostUser(user);
     }
 
@@ -109,17 +109,17 @@ public class Study extends BaseEntity {
         this.picture = picture;
     }
 
-    public User getHostUser() {
+    public UserEntity getHostUser() {
         return this.participants.getHostUser();
     }
 
-    public void edit(String studyName, String detail, User hostUser) {
+    public void edit(String studyName, String detail, UserEntity hostUser) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants.changeHostUser(hostUser);
     }
 
-    public void kickParticipant(User user) {
+    public void kickParticipant(UserEntity user) {
         if (!isParticipated(user)) {
             throw new UserNotParticipatedException(ResultCode.USER_NOT_PARTICIPATED);
         }

@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.dto.request.SignInRequest;
 import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
 import ssu.groupstudy.domain.user.dto.response.SignInResponse;
@@ -54,35 +54,35 @@ public class AuthService {
 
     @Transactional
     public SignInResponse signIn(SignInRequest request) {
-        User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
+        UserEntity user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validateLogin(request, user);
         handleSuccessfulLogin(request, user);
         return SignInResponse.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
 
-    private void validateLogin(SignInRequest request, User user) {
+    private void validateLogin(SignInRequest request, UserEntity user) {
         validatePassword(request, user);
         validateDelete(user);
     }
 
-    private void validatePassword(SignInRequest request, User user) {
+    private void validatePassword(SignInRequest request, UserEntity user) {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
         }
     }
 
-    private void validateDelete(User user) {
+    private void validateDelete(UserEntity user) {
         if (user.isDeleted()) {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
         }
     }
 
-    private void handleSuccessfulLogin(SignInRequest request, User user) {
+    private void handleSuccessfulLogin(SignInRequest request, UserEntity user) {
         handleFcmToken(request, user);
     }
 
-    private void handleFcmToken(SignInRequest request, User user) {
+    private void handleFcmToken(SignInRequest request, UserEntity user) {
         if(!user.existFcmToken(request.getFcmToken())){
             user.addFcmToken(request.getFcmToken());
             eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
@@ -90,7 +90,7 @@ public class AuthService {
         }
     }
 
-    private void subscribeParticipatingStudies(User user) {
+    private void subscribeParticipatingStudies(UserEntity user) {
         List<Study> participatingStudies = participantRepository.findByUserOrderByCreateDate(user).stream()
                 .map(Participant::getStudy)
                 .collect(Collectors.toList());
@@ -102,16 +102,16 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpRequest request, MultipartFile image) throws IOException {
         checkPhoneNumberExist(request.getPhoneNumber());
-        User user = processUserSaving(request);
+        UserEntity user = processUserSaving(request);
         imageManager.updateImage(user, image);
         exampleStudyCreateService.createExampleStudy(user);
 
         return user.getUserId();
     }
 
-    private User processUserSaving(SignUpRequest request) {
+    private UserEntity processUserSaving(SignUpRequest request) {
         String password = passwordEncoder.encode(request.getPassword());
-        User user = request.toEntity(password);
+        UserEntity user = request.toEntity(password);
         user.addUserRole();
         return userRepository.save(user);
     }
@@ -177,7 +177,7 @@ public class AuthService {
 
     @Transactional
     public void resetPassword(PasswordResetRequest request) {
-        User user = userRepository.findByPhoneNumber(request.getPhoneNumber())
+        UserEntity user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.USER_NOT_FOUND));
         String password = passwordEncoder.encode(request.getNewPassword());
         user.setPassword(password);

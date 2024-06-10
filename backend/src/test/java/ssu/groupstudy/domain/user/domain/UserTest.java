@@ -16,7 +16,7 @@ class UserTest {
     @DisplayName("사용자 권한을 추가하면 USER_ROLE을 획득한다.")
     void addUserRole(){
         // given
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .name("")
                 .nickname("")
                 .phoneNumber("")
@@ -34,7 +34,7 @@ class UserTest {
     @DisplayName("사용자의 FCM 토큰을 삭제한다.")
     void UserTest(){
         // given
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .name("")
                 .nickname("")
                 .phoneNumber("")

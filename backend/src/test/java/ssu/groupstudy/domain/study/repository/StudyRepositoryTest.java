@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.common.CustomRepositoryTest;
 import ssu.groupstudy.domain.study.domain.Study;
 import ssu.groupstudy.domain.study.dto.DoneCount;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
@@ -43,7 +43,7 @@ class StudyRepositoryTest {
     @DisplayName("각 출석태그의 횟수를 모두 가져온다")
     void calculateStatusTag(){
         // given
-        User user = userRepository.findById(1L).get();
+        UserEntity user = userRepository.findById(1L).get();
         Study study = studyRepository.findById(1L).get();
 
         // when
@@ -57,7 +57,7 @@ class StudyRepositoryTest {
     @DisplayName("본인의 모든 과제 수를 가져온다")
     void calculateDoneCount(){
         // given
-        User user = userRepository.findById(1L).get();
+        UserEntity user = userRepository.findById(1L).get();
         Study study = studyRepository.findById(1L).get();
 
         // when

@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notice.dto.request;
 import lombok.*;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ public class CreateNoticeRequest {
     @NotNull
     private Long studyId;
 
-    public Notice toEntity(User writer, Study study){
+    public Notice toEntity(UserEntity writer, Study study){
         return Notice.builder()
                 .title(this.title)
                 .contents(this.contents)

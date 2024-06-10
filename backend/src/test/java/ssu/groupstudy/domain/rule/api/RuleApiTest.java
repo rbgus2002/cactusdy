@@ -62,7 +62,7 @@ class RuleApiTest {
                 .build();
     }
 
-//    private User getUser() {
+//    private UserEntity getUser() {
 //        return getSignUpRequest().toEntity();
 //    }
 

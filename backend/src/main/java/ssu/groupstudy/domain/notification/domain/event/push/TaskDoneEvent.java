@@ -3,12 +3,12 @@ package ssu.groupstudy.domain.notification.domain.event.push;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 @Getter
 @RequiredArgsConstructor
 public class TaskDoneEvent{
-    private final User user;
+    private final UserEntity user;
     private final Task task;
 
     public Long getStudyId(){

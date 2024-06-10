@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -98,8 +98,8 @@ class ParticipantsServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
-            doReturn(List.of()).when(participantRepository).findParticipantInfoByUser(any(User.class));
-            doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(User.class), any(Study.class));
+            doReturn(List.of()).when(participantRepository).findParticipantInfoByUser(any(UserEntity.class));
+            doReturn(new DoneCount(0L,0L,0L)).when(studyRepository).calculateDoneCount(any(UserEntity.class), any(Study.class));
 
             // when
             ParticipantResponse response = participantsService.getParticipant(-1L, -1L);

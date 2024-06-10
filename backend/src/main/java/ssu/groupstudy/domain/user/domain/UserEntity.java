@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "user")
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -61,7 +61,7 @@ public class User extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public User(String name, String nickname, String phoneNumber, String password) {
+    public UserEntity(String name, String nickname, String phoneNumber, String password) {
         this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
@@ -75,10 +75,10 @@ public class User extends BaseEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User)) {
+        if (!(o instanceof UserEntity)) {
             return false;
         }
-        User that = (User) o;
+        UserEntity that = (UserEntity) o;
         return Objects.equals(this.userId, that.getUserId());
     }
 
@@ -89,7 +89,7 @@ public class User extends BaseEntity {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserEntity{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 '}';

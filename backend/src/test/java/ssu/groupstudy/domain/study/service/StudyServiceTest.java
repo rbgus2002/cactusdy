@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.study.exception.ParticipantNotFoundException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.S3Utils;
@@ -103,7 +103,7 @@ class StudyServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(User.class), any(Study.class));
+            doReturn(Optional.empty()).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(Study.class));
 
             // then
             assertThatThrownBy(() -> studyService.getStudySummary(-1L, 최규현))
@@ -116,7 +116,7 @@ class StudyServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(User.class), any(Study.class));
+            doReturn(Optional.of(스터디참여자_최규현)).when(participantRepository).findByUserAndStudy(any(UserEntity.class), any(Study.class));
 
             // when
             StudySummaryResponse summaryResponse = studyService.getStudySummary(-1L, 최규현);

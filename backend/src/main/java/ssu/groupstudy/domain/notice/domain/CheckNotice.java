@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.notice.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -27,9 +27,9 @@ public class CheckNotice {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
-    public CheckNotice(Notice notice, User user) {
+    public CheckNotice(Notice notice, UserEntity user) {
         this.notice = notice;
         this.user = user;
     }

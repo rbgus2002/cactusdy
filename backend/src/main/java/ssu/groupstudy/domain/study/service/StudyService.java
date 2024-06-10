@@ -27,7 +27,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.constant.ResultCode;
@@ -55,7 +55,7 @@ public class StudyService {
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
-    public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, User user) throws IOException {
+    public StudyCreateResponse createStudy(CreateStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
         checkParticipatingStudyMoreThanLimit(user);
         String inviteCode = studyInviteService.generateUniqueInviteCode();
         Study study = studyRepository.save(dto.toEntity(user, inviteCode));
@@ -66,7 +66,7 @@ public class StudyService {
         return StudyCreateResponse.of(study.getStudyId(), study.getInviteCode());
     }
 
-    private void checkParticipatingStudyMoreThanLimit(User user) {
+    private void checkParticipatingStudyMoreThanLimit(UserEntity user) {
         if (participantRepository.countParticipationStudy(user) >= PARTICIPATION_STUDY_LIMIT) {
             throw new CanNotCreateStudyException(ResultCode.USER_CAN_NOT_CREATE_STUDY);
         }
@@ -99,7 +99,7 @@ public class StudyService {
         });
     }
 
-    public StudySummaryResponse getStudySummary(long studyId, User user) {
+    public StudySummaryResponse getStudySummary(long studyId, UserEntity user) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Participant participant = participantRepository.findByUserAndStudy(user, study)
@@ -107,7 +107,7 @@ public class StudyService {
         return StudySummaryResponse.from(study, participant);
     }
 
-    public List<StudyInfoResponse> getStudies(User user) {
+    public List<StudyInfoResponse> getStudies(UserEntity user) {
         List<Participant> participants = participantRepository.findByUserOrderByCreateDate(user);
         return participants.stream()
                 .map(this::createStudyInfo)
@@ -137,12 +137,12 @@ public class StudyService {
     }
 
     @Transactional
-    public Long editStudy(Long studyId, EditStudyRequest dto, MultipartFile image, User user) throws IOException {
+    public Long editStudy(Long studyId, EditStudyRequest dto, MultipartFile image, UserEntity user) throws IOException {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         Participant participant = participantRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
-        User newHostUser = userRepository.findById(dto.getHostUserId())
+        UserEntity newHostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         imageManager.updateImage(study, image);
@@ -151,7 +151,7 @@ public class StudyService {
         return study.getStudyId();
     }
 
-    private void processEdit(EditStudyRequest dto, Study study, Participant participant, User newHostUser) {
+    private void processEdit(EditStudyRequest dto, Study study, Participant participant, UserEntity newHostUser) {
         study.edit(dto.getStudyName(), dto.getDetail(), newHostUser);
         participant.setColor(dto.getColor());
     }

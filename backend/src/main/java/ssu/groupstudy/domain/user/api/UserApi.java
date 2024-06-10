@@ -18,7 +18,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@Tag(name = "User", description = "사용자 API")
+@Tag(name = "UserEntity", description = "사용자 API")
 public class UserApi {
     private final UserService userService;
 

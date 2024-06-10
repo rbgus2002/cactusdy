@@ -3,7 +3,7 @@ package ssu.groupstudy.domain.user.dto.response;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,14 +13,14 @@ public class UserInfoResponse {
     private String statusMessage;
     private String profileImage;
 
-    public UserInfoResponse(User user){
+    public UserInfoResponse(UserEntity user){
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
         this.statusMessage = user.getStatusMessage();
         this.profileImage = user.getPicture();
     }
 
-    public static UserInfoResponse from(User user) {
+    public static UserInfoResponse from(UserEntity user) {
         return new UserInfoResponse(user);
     }
 }

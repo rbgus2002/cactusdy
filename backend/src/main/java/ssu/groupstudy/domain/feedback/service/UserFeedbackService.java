@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.feedback.domain.FeedbackType;
 import ssu.groupstudy.domain.feedback.dto.CreateNotionPageDto;
 import ssu.groupstudy.domain.feedback.dto.SendFeedbackRequest;
 import ssu.groupstudy.domain.feedback.repsoitory.FeedbackRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.openfeign.NotionOpenFeign;
 
 @Service
@@ -21,7 +21,7 @@ public class UserFeedbackService {
     private final NotionOpenFeign notionOpenFeign;
 
     @Transactional
-    public Long sendFeedback(FeedbackType type, SendFeedbackRequest request, User writer) {
+    public Long sendFeedback(FeedbackType type, SendFeedbackRequest request, UserEntity writer) {
         Feedback feedback = Feedback.create(type, request.getTitle(), request.getContents(), writer);
         saveToNotion(feedback);
         return feedbackRepository.save(feedback).getId();

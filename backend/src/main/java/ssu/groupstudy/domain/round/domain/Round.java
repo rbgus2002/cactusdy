@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.study.domain.Participant;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.constant.ResultCode;
 import ssu.groupstudy.global.domain.BaseEntity;
 
@@ -83,12 +83,12 @@ public class Round extends BaseEntity {
         this.detail = detail;
     }
 
-    public void deleteRound(User user) {
+    public void deleteRound(UserEntity user) {
         validateDelete(user);
         this.deleteYn = 'Y';
     }
 
-    private void validateDelete(User user) {
+    private void validateDelete(UserEntity user) {
         if (!study.isHostUser(user)) {
             throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
         }

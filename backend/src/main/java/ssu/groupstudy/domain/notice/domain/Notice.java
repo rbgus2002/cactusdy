@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.user.domain.UserEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -41,7 +41,7 @@ public class Notice extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User writer;
+    private UserEntity writer;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
@@ -51,7 +51,7 @@ public class Notice extends BaseEntity {
     private final Set<CheckNotice> checkNotices = new HashSet<>();
 
     @Builder
-    public Notice(String title, String contents, User writer, Study study) {
+    public Notice(String title, String contents, UserEntity writer, Study study) {
         this.title = title;
         this.contents = contents;
         this.writer = writer;
@@ -60,18 +60,18 @@ public class Notice extends BaseEntity {
         this.pinYn = 'N';
     }
 
-    public Character switchCheckNotice(User user){
+    public Character switchCheckNotice(UserEntity user){
         return isRead(user) ? unreadNotice(user) : readNotice(user);
     }
 
-    public boolean isRead(User user){
+    public boolean isRead(UserEntity user){
         return checkNotices.contains(new CheckNotice(this, user));
     }
 
     /**
      * 공지사항을 읽은 사용자를 안읽음 처리한다
      */
-    private Character unreadNotice(User user){
+    private Character unreadNotice(UserEntity user){
         checkNotices.remove(new CheckNotice(this, user));
         return 'N';
     }
@@ -79,7 +79,7 @@ public class Notice extends BaseEntity {
     /**
      * 공지사항을 읽지 않은 사용자를 읽음 처리한다
      */
-    private Character readNotice(User user){
+    private Character readNotice(UserEntity user){
         checkNotices.add(new CheckNotice(this, user));
         return 'Y';
     }
