@@ -6,12 +6,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.constants.TopicCode;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.util.FcmUtils;
 

@@ -1,8 +1,8 @@
 package ssu.groupstudy.domain.task.dto.response;
 
 import lombok.Getter;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.domain.StatusTag;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
+import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
@@ -20,7 +20,7 @@ public class TaskResponse {
     private Double taskProgress;
     private List<TaskGroup> taskGroups;
 
-    private TaskResponse(RoundParticipant roundParticipant) {
+    private TaskResponse(RoundParticipantEntity roundParticipant) {
         this.roundParticipantId = roundParticipant.getId();
         this.statusTag = roundParticipant.getStatusTag();
 
@@ -36,7 +36,7 @@ public class TaskResponse {
                 .collect(Collectors.toList());
     }
 
-    public static TaskResponse from(RoundParticipant roundParticipant){
+    public static TaskResponse from(RoundParticipantEntity roundParticipant){
         return new TaskResponse(roundParticipant);
     }
 }

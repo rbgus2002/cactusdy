@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.task.dto.response;
 
 import lombok.Getter;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
 
@@ -15,7 +15,7 @@ public class TaskGroup {
     private String taskTypeName;
     private List<TaskInfo> tasks;
 
-    private TaskGroup(TaskType taskType, RoundParticipant roundParticipant) {
+    private TaskGroup(TaskType taskType, RoundParticipantEntity roundParticipant) {
         this.taskType = taskType;
         this.taskTypeName = taskType.getDetail();
         this.tasks = roundParticipant.getTasks().stream()
@@ -26,7 +26,7 @@ public class TaskGroup {
                 .collect(Collectors.toList());
     }
 
-    public static TaskGroup of(TaskType type, RoundParticipant roundParticipant){
+    public static TaskGroup of(TaskType type, RoundParticipantEntity roundParticipant){
         return new TaskGroup(type, roundParticipant);
     }
 }

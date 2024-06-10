@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 
-import static ssu.groupstudy.domain.round.domain.StatusTag.ATTENDANCE;
+import static ssu.groupstudy.domain.common.enums.StatusTag.ATTENDANCE;
 
 @CustomRepositoryTest
 class RoundParticipantRepositoryTest {
@@ -25,7 +25,7 @@ class RoundParticipantRepositoryTest {
         @DisplayName("회차 참여자의 status tag를 변경한다")
         void updateStatusTag() {
             // given
-            RoundParticipant 회차_최규현 = roundParticipantRepository.findById(1L).get();
+            RoundParticipantEntity 회차_최규현 = roundParticipantRepository.findById(1L).get();
 
             // when
             회차_최규현.updateStatus(ATTENDANCE);

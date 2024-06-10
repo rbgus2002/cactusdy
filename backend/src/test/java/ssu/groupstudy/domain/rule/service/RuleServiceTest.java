@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -32,7 +32,7 @@ class RuleServiceTest extends ServiceTest {
     @Mock
     private StudyRepository studyRepository;
 
-    private Rule 규칙;
+    private RuleEntity 규칙;
 
     @BeforeEach
     void init(){
@@ -59,7 +59,7 @@ class RuleServiceTest extends ServiceTest {
         void 성공() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(규칙).when(ruleRepository).save(any(Rule.class));
+            doReturn(규칙).when(ruleRepository).save(any(RuleEntity.class));
 
             // when
             Long ruleId = ruleService.createRule(new CreateRuleRequest(-1L, "detail"));

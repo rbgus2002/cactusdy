@@ -11,8 +11,8 @@ import ssu.groupstudy.domain.comment.domain.Comment;
 import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -59,11 +59,11 @@ public class ServiceTest {
 
     protected AppointmentRequest 회차1AppointmentRequest;
     protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
-    protected Round 회차1;
-    protected Round 회차2_EmptyTimeAndPlace;
+    protected RoundEntity 회차1;
+    protected RoundEntity 회차2_EmptyTimeAndPlace;
 
-    protected RoundParticipant 회차1_최규현;
-    protected RoundParticipant 회차1_장재우;
+    protected RoundParticipantEntity 회차1_최규현;
+    protected RoundParticipantEntity 회차1_장재우;
 
     protected TaskEntity 그룹태스크;
     protected TaskEntity 개인태스크;
@@ -194,8 +194,8 @@ public class ServiceTest {
     }
 
     private void initRoundParticipant() {
-        회차1_최규현 = new RoundParticipant(최규현, 회차1);
-        회차1_장재우 = new RoundParticipant(장재우, 회차1);
+        회차1_최규현 = new RoundParticipantEntity(최규현, 회차1);
+        회차1_장재우 = new RoundParticipantEntity(장재우, 회차1);
     }
 
     private void initTask() {

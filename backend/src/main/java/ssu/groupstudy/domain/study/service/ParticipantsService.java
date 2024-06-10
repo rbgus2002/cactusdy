@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.domain.StatusTag;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
+import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -18,8 +18,8 @@ import ssu.groupstudy.domain.study.dto.ParticipantInfo;
 import ssu.groupstudy.domain.study.dto.StatusTagInfo;
 import ssu.groupstudy.domain.study.dto.response.ParticipantResponse;
 import ssu.groupstudy.domain.study.dto.response.ParticipantSummaryResponse;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantRepository;
@@ -106,9 +106,9 @@ public class ParticipantsService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
-        for (Round round : futureRounds) {
-            round.removeParticipant(new RoundParticipant(user, round));
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (RoundEntity round : futureRounds) {
+            round.removeParticipant(new RoundParticipantEntity(user, round));
         }
     }
 

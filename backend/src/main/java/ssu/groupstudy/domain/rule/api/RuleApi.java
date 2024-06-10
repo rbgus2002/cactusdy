@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rules")
 @RequiredArgsConstructor
-@Tag(name = "Rule", description = "규칙 API")
+@Tag(name = "RuleEntity", description = "규칙 API")
 public class RuleApi {
     private final RuleService ruleService;
 

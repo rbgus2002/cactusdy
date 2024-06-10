@@ -19,8 +19,8 @@ public interface StudyRepository extends JpaRepository<StudyEntity, Long> {
 
     @Query("SELECT new ssu.groupstudy.domain.study.dto.StatusTagInfo(rp.statusTag, COUNT(r.roundId)) " +
             "FROM StudyEntity s " +
-            "JOIN Round r ON s.studyId = r.study.studyId " +
-            "JOIN RoundParticipant rp ON r.roundId = rp.round.roundId " +
+            "JOIN RoundEntity r ON s.studyId = r.study.studyId " +
+            "JOIN RoundParticipantEntity rp ON r.roundId = rp.round.roundId " +
             "WHERE s = :study " +
             "AND rp.user = :user " +
             "AND s.deleteYn = 'N' " +
@@ -32,8 +32,8 @@ public interface StudyRepository extends JpaRepository<StudyEntity, Long> {
             "SUM(CASE WHEN t.doneYn = 'N' THEN 1 ELSE 0 END), " +
             "COUNT(t.doneYn))" +
             "FROM StudyEntity s " +
-            "JOIN Round r ON s.studyId = r.study.studyId " +
-            "JOIN RoundParticipant rp ON r.roundId = rp.round.roundId " +
+            "JOIN RoundEntity r ON s.studyId = r.study.studyId " +
+            "JOIN RoundParticipantEntity rp ON r.roundId = rp.round.roundId " +
             "JOIN TaskEntity t ON rp.id = t.roundParticipant.id " +
             "WHERE s = :study " +
             "AND rp.user = :user " +

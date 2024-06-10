@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
@@ -58,9 +58,9 @@ class StudyServiceTest extends ServiceTest {
             // given
             doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
             doReturn(알고리즘스터디).when(studyRepository).save(any(StudyEntity.class));
-            doReturn(Round.builder()
+            doReturn(RoundEntity.builder()
                     .study(알고리즘스터디)
-                    .build()).when(roundRepository).save(any(Round.class));
+                    .build()).when(roundRepository).save(any(RoundEntity.class));
 
             // when
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);

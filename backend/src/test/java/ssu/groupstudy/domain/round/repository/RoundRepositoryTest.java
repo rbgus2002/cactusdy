@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
-import ssu.groupstudy.domain.round.domain.Appointment;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.Appointment;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -40,7 +40,7 @@ class RoundRepositoryTest{
         스터디.invite(장재우);
 
         // when
-        Round 회차 = Round.builder()
+        RoundEntity 회차 = RoundEntity.builder()
                 .study(스터디)
                 .build();
         roundRepository.save(회차);
@@ -53,8 +53,8 @@ class RoundRepositoryTest{
     @DisplayName("삭제되지 않은 회차를 조회한다.")
     void findByRoundIdAndDeleteYnIsN(){
         // given, when
-        Optional<Round> 회차 = roundRepository.findById(1L);
-        Optional<Round> 삭제된회차 = roundRepository.findById(2L);
+        Optional<RoundEntity> 회차 = roundRepository.findById(1L);
+        Optional<RoundEntity> 삭제된회차 = roundRepository.findById(2L);
 
         // then
         softly.assertThat(회차).isNotEmpty();
@@ -70,8 +70,8 @@ class RoundRepositoryTest{
             StudyEntity 스터디 = studyRepository.findById(1L).get();
 
             // when
-            List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
-            Round 회차1_studyTime_null = rounds.get(0);
+            List<RoundEntity> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
+            RoundEntity 회차1_studyTime_null = rounds.get(0);
             Appointment 회차2 = rounds.get(2).getAppointment();
             Appointment 회차3 = rounds.get(3).getAppointment();
 
@@ -86,9 +86,9 @@ class RoundRepositoryTest{
             StudyEntity 스터디 = studyRepository.findById(1L).get();
 
             // when
-            List<Round> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
-            Round 회차1 = rounds.get(0);
-            Round 회차2 = rounds.get(1);
+            List<RoundEntity> rounds = roundRepository.findRoundsByStudyOrderByStudyTime(스터디);
+            RoundEntity 회차1 = rounds.get(0);
+            RoundEntity 회차2 = rounds.get(1);
 
             // then
             softly.assertThat(회차1.getRoundId()).isGreaterThan(회차2.getRoundId());
@@ -113,12 +113,12 @@ class RoundRepositoryTest{
     void findLatestRound(){
         // given
         StudyEntity 스터디 = studyRepository.findById(1L).get();
-        Round 회차 = roundRepository.findById(1L).get();
+        RoundEntity 회차 = roundRepository.findById(1L).get();
         Appointment appointment = Appointment.of(null, LocalDateTime.now().plusDays(1L));
 
         // when
         회차.updateAppointment(appointment);
-        Round 최신_회차 = roundRepository.findLatestRound(스터디.getStudyId()).get();
+        RoundEntity 최신_회차 = roundRepository.findLatestRound(스터디.getStudyId()).get();
 
         // then
         softly.assertThat(회차.getRoundId()).isEqualTo(최신_회차.getRoundId());
@@ -158,7 +158,7 @@ class RoundRepositoryTest{
         StudyEntity 스터디 = studyRepository.findById(1L).get();
 
         // when
-        List<Round> futureRounds = roundRepository.findFutureRounds(스터디, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(스터디, LocalDateTime.now());
 
         // then
         softly.assertThat(futureRounds.size()).isGreaterThanOrEqualTo(1);

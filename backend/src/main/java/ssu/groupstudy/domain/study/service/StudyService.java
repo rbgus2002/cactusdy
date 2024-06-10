@@ -6,13 +6,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -74,16 +74,16 @@ public class StudyService {
 
     private void createDefaultOthers(StudyEntity study) {
         createDefaultRule(study);
-        Round defaultRound = createDefaultRound(study);
+        RoundEntity defaultRound = createDefaultRound(study);
         createDefaultTask(defaultRound);
     }
 
     private void createDefaultRule(StudyEntity study) {
-        Rule rule = Rule.create("스터디 규칙을 추가해보세요!", study);
+        RuleEntity rule = RuleEntity.create("스터디 규칙을 추가해보세요!", study);
         ruleRepository.save(rule);
     }
 
-    private Round createDefaultRound(StudyEntity study) {
+    private RoundEntity createDefaultRound(StudyEntity study) {
         AppointmentRequest appointment = AppointmentRequest.builder()
                 .studyPlace(null)
                 .studyTime(null)
@@ -91,8 +91,8 @@ public class StudyService {
         return roundRepository.save(appointment.toEntity(study));
     }
 
-    private void createDefaultTask(Round defaultRound) {
-        List<RoundParticipant> roundParticipants = defaultRound.getRoundParticipants();
+    private void createDefaultTask(RoundEntity defaultRound) {
+        List<RoundParticipantEntity> roundParticipants = defaultRound.getRoundParticipants();
         roundParticipants.forEach(roundParticipant -> {
             roundParticipant.createTask(TaskType.PERSONAL.getDetail(), TaskType.PERSONAL);
             roundParticipant.createTask(TaskType.GROUP.getDetail(), TaskType.GROUP);
@@ -117,14 +117,14 @@ public class StudyService {
     private StudyInfoResponse createStudyInfo(ParticipantEntity participant) {
         StudyEntity study = participant.getStudy();
 
-        Round latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
+        RoundEntity latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
-        RoundParticipant roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
+        RoundParticipantEntity roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
         return StudyInfoResponse.of(participant, roundSeq, latestRound, roundParticipant);
     }
 
-    private Long handleRoundSeq(StudyEntity study, Round round) {
+    private Long handleRoundSeq(StudyEntity study, RoundEntity round) {
         if (round == null) {
             return 0L;
         }

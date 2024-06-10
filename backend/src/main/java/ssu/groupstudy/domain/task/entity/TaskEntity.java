@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.common.enums.TaskType;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 
@@ -36,17 +36,17 @@ public class TaskEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="user_round_id", nullable = false)
-    private RoundParticipant roundParticipant;
+    private RoundParticipantEntity roundParticipant;
 
     @Builder
-    public TaskEntity(String detail, TaskType taskType, RoundParticipant roundParticipant) {
+    public TaskEntity(String detail, TaskType taskType, RoundParticipantEntity roundParticipant) {
         this.detail = detail;
         this.taskType = taskType;
         this.doneYn = 'N';
         this.roundParticipant = roundParticipant;
     }
 
-    public static TaskEntity of(String detail, TaskType type, RoundParticipant roundParticipant){
+    public static TaskEntity of(String detail, TaskType type, RoundParticipantEntity roundParticipant){
         return TaskEntity.builder()
                 .detail(detail)
                 .taskType(type)
@@ -54,7 +54,7 @@ public class TaskEntity {
                 .build();
     }
 
-    public void validateAccess(RoundParticipant roundParticipant){
+    public void validateAccess(RoundParticipantEntity roundParticipant){
         if(!this.roundParticipant.equals(roundParticipant)){
             throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }

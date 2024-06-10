@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.round.domain;
+package ssu.groupstudy.domain.round.entity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

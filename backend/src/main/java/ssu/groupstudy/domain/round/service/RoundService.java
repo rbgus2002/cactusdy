@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
@@ -44,20 +44,20 @@ public class RoundService {
 
     @Transactional
     public void updateAppointment(long roundId, AppointmentRequest dto) {
-        Round round = roundRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.updateAppointment(dto.toAppointment());
     }
 
     public RoundDto.RoundDetailResponse getDetail(long roundId) {
-        Round round = roundRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return RoundDto.createRoundDetail(round);
     }
 
     @Transactional
     public void updateDetail(long roundId, String detail) {
-        Round round = roundRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.updateDetail(detail);
     }
@@ -72,7 +72,7 @@ public class RoundService {
 
     @Transactional
     public void deleteRound(long roundId, UserEntity user) {
-        Round round = roundRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         round.deleteRound(user);
     }

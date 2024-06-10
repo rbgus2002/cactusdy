@@ -1,7 +1,7 @@
 package ssu.groupstudy.domain.round.dto.response;
 
 import lombok.Getter;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +18,7 @@ public class RoundDto {
         private Boolean isPlanned;
         private String detail;
 
-        private RoundDetailResponse(Round round){
+        private RoundDetailResponse(RoundEntity round){
             this.roundId = round.getRoundId();
             this.studyPlace = round.getAppointment().getStudyPlace();
             this.studyTime = round.getAppointment().getStudyTime();
@@ -36,7 +36,7 @@ public class RoundDto {
 
         private List<RoundParticipantInfo> roundParticipantInfos;
 
-        private RoundInfoResponse(Round round) {
+        private RoundInfoResponse(RoundEntity round) {
             this.roundId = round.getRoundId();
             this.studyPlace = round.getAppointment().getStudyPlace();
             this.studyTime = round.getAppointment().getStudyTime();
@@ -47,11 +47,11 @@ public class RoundDto {
         }
     }
 
-    public static RoundDetailResponse createRoundDetail(Round round){
+    public static RoundDetailResponse createRoundDetail(RoundEntity round){
         return new RoundDetailResponse(round);
     }
 
-    public static RoundInfoResponse createRoundInfo(Round round) {
+    public static RoundInfoResponse createRoundInfo(RoundEntity round) {
         return new RoundInfoResponse(round);
     }
 
@@ -59,7 +59,7 @@ public class RoundDto {
         return (studyTime != null) && (studyTime.isAfter(LocalDateTime.now()));
     }
 
-    private static String getDetailOrDefault(Round round) {
+    private static String getDetailOrDefault(RoundEntity round) {
         String detail = round.getDetail();
         if(detail == null){
             return "";

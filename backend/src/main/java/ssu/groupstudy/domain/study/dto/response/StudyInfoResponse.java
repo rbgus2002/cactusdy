@@ -1,9 +1,9 @@
 package ssu.groupstudy.domain.study.dto.response;
 
 import lombok.Getter;
-import ssu.groupstudy.domain.round.domain.Appointment;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.Appointment;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.dto.response.ParticipantProfileResponse;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -33,7 +33,7 @@ public class StudyInfoResponse {
     private Long roundParticipantId;
     private List<TaskGroup> taskGroups;
 
-    public StudyInfoResponse(ParticipantEntity participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant) {
+    public StudyInfoResponse(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant) {
         StudyEntity study = participant.getStudy();
         this.studyId = study.getStudyId();
         this.hostUserId = study.getHostUser().getUserId();
@@ -61,7 +61,7 @@ public class StudyInfoResponse {
         }
     }
 
-    public static StudyInfoResponse of(ParticipantEntity participant, Long roundSeq, Round latestRound, RoundParticipant roundParticipant){
+    public static StudyInfoResponse of(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant){
         return new StudyInfoResponse(participant, roundSeq, latestRound, roundParticipant);
     }
 }

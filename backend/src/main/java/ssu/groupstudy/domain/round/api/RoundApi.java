@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rounds")
 @RequiredArgsConstructor
-@Tag(name = "Round", description = "회차 API")
+@Tag(name = "RoundEntity", description = "회차 API")
 public class RoundApi {
     private final RoundService roundService;
 

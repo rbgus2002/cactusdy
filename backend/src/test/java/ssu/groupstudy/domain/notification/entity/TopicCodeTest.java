@@ -1,8 +1,8 @@
-package ssu.groupstudy.domain.notification.domain;
+package ssu.groupstudy.domain.notification.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ssu.groupstudy.domain.notification.constants.TopicCode;
+import ssu.groupstudy.domain.common.enums.TopicCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

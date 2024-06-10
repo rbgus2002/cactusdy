@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.round.domain;
+package ssu.groupstudy.domain.round.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class RoundTest {
     @Nested
     class IsStudyTimeNull{
-        private Round 약속시간_없는_회차 = new Round(Appointment.of(null, null));
+        private RoundEntity 약속시간_없는_회차 = new RoundEntity(Appointment.of(null, null));
 
-        private Round 약속시간_있는_회차 = new Round(Appointment.of(null, LocalDateTime.now()));
+        private RoundEntity 약속시간_있는_회차 = new RoundEntity(Appointment.of(null, LocalDateTime.now()));
 
         @Test
         @DisplayName("studyTime이 존재하지 않으면 true를 반환한다")

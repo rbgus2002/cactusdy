@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notification.domain.event.push;
+package ssu.groupstudy.domain.notification.event.push;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

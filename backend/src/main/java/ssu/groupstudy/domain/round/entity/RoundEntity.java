@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.round.domain;
+package ssu.groupstudy.domain.round.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,7 +25,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "round")
-public class Round extends BaseEntity {
+public class RoundEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
@@ -37,7 +37,7 @@ public class Round extends BaseEntity {
     private Appointment appointment;
 
     @OneToMany(mappedBy = "round", cascade = ALL, orphanRemoval = true)
-    private final List<RoundParticipant> roundParticipants = new ArrayList<>();
+    private final List<RoundParticipantEntity> roundParticipants = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "studyId", nullable = false)
@@ -47,31 +47,31 @@ public class Round extends BaseEntity {
     private char deleteYn;
 
     @Builder
-    public Round(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
+    public RoundEntity(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
         addParticipants(study.getParticipantList());
         this.study = study;
         this.appointment = Appointment.of(studyPlace, studyTime);
         this.deleteYn = 'N';
     }
 
-    protected Round(Appointment appointment) {
+    protected RoundEntity(Appointment appointment) {
         this.appointment = appointment;
     }
 
     private void addParticipants(List<ParticipantEntity> participants) {
         participants.stream()
-                .map(participant -> new RoundParticipant(participant.getUser(), this))
+                .map(participant -> new RoundParticipantEntity(participant.getUser(), this))
                 .forEach(roundParticipants::add);
     }
 
-    public void addParticipantWithoutDuplicates(RoundParticipant participant) {
+    public void addParticipantWithoutDuplicates(RoundParticipantEntity participant) {
         if (roundParticipants.contains(participant)) {
             return;
         }
         roundParticipants.add(participant);
     }
 
-    public void removeParticipant(RoundParticipant participant){
+    public void removeParticipant(RoundParticipantEntity participant){
         roundParticipants.remove(participant);
     }
 
@@ -109,10 +109,10 @@ public class Round extends BaseEntity {
         return getAppointment().getStudyTime() == null;
     }
 
-    public List<RoundParticipant> getRoundParticipantsOrderByInvite() {
+    public List<RoundParticipantEntity> getRoundParticipantsOrderByInvite() {
         return this.roundParticipants.stream()
-                .filter(RoundParticipant::isAttendedOrExpectedOrLate)
-                .sorted(Comparator.comparing(RoundParticipant::getId))
+                .filter(RoundParticipantEntity::isAttendedOrExpectedOrLate)
+                .sorted(Comparator.comparing(RoundParticipantEntity::getId))
                 .collect(Collectors.toList());
     }
 }

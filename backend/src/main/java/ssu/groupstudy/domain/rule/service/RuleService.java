@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.request.UpdateRuleRequest;
 import ssu.groupstudy.domain.rule.dto.response.RuleResponse;
@@ -30,26 +30,26 @@ public class RuleService {
     public Long createRule(CreateRuleRequest dto) {
         StudyEntity study = studyRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
-        Rule rule = dto.toEntity(study);
+        RuleEntity rule = dto.toEntity(study);
         return ruleRepository.save(rule).getId();
     }
 
     @Transactional
     public void deleteRule(Long ruleId) {
-        Rule rule = ruleRepository.findById(ruleId)
+        RuleEntity rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.delete();
     }
 
     @Transactional
     public void updateRule(Long ruleId, UpdateRuleRequest request) {
-        Rule rule = ruleRepository.findById(ruleId)
+        RuleEntity rule = ruleRepository.findById(ruleId)
                 .orElseThrow(() -> new RuleNotFoundException(ResultCode.RULE_NOT_FOUND));
         rule.updateDetail(request.getDetail());
     }
 
     public List<RuleResponse> getRules(Long studyId) {
-        List<Rule> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(studyId);
+        List<RuleEntity> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(studyId);
         return rules.stream()
                 .map(RuleResponse::of)
                 .collect(Collectors.toList());

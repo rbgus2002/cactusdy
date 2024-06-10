@@ -1,8 +1,9 @@
-package ssu.groupstudy.domain.round.domain;
+package ssu.groupstudy.domain.round.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -19,7 +20,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "rel_user_round")
-public class RoundParticipant {
+public class RoundParticipantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_round_id")
@@ -31,7 +32,7 @@ public class RoundParticipant {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "roundId", nullable = false)
-    private Round round;
+    private RoundEntity round;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -40,7 +41,7 @@ public class RoundParticipant {
     @OneToMany(mappedBy = "roundParticipant", cascade = ALL, orphanRemoval = true)
     private final Set<TaskEntity> tasks = new HashSet<>();
 
-    public RoundParticipant(UserEntity user, Round round) {
+    public RoundParticipantEntity(UserEntity user, RoundEntity round) {
         this.user = user;
         this.round = round;
         this.statusTag = StatusTag.ATTENDANCE;
@@ -51,10 +52,10 @@ public class RoundParticipant {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RoundParticipant)) {
+        if (!(o instanceof RoundParticipantEntity)) {
             return false;
         }
-        RoundParticipant that = (RoundParticipant) o;
+        RoundParticipantEntity that = (RoundParticipantEntity) o;
         return Objects.equals(this.user.getUserId(), that.getUser().getUserId()) && Objects.equals(this.round.getRoundId(), that.getRound().getRoundId());
     }
 

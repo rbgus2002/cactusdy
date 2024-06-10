@@ -2,8 +2,8 @@ package ssu.groupstudy.domain.round.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import ssu.groupstudy.domain.round.domain.Appointment;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.Appointment;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 
 import java.time.LocalDateTime;
@@ -18,8 +18,8 @@ public class AppointmentRequest {
     private LocalDateTime studyTime;
     private String studyPlace;
 
-    public Round toEntity(StudyEntity study) {
-        return Round.builder()
+    public RoundEntity toEntity(StudyEntity study) {
+        return RoundEntity.builder()
                 .study(study)
                 .studyPlace(this.studyPlace)
                 .studyTime(this.studyTime)

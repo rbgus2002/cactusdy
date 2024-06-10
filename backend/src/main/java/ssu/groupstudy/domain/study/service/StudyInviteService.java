@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
@@ -62,9 +62,9 @@ public class StudyInviteService {
     }
 
     private void addUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
-        for (Round round : futureRounds) {
-            round.addParticipantWithoutDuplicates(new RoundParticipant(user, round));
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (RoundEntity round : futureRounds) {
+            round.addParticipantWithoutDuplicates(new RoundParticipantEntity(user, round));
         }
     }
 
@@ -81,9 +81,9 @@ public class StudyInviteService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<Round> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
-        for (Round round : futureRounds) {
-            round.removeParticipant(new RoundParticipant(user, round));
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        for (RoundEntity round : futureRounds) {
+            round.removeParticipant(new RoundParticipantEntity(user, round));
         }
     }
 

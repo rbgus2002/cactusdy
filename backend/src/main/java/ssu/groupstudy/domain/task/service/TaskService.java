@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
@@ -38,36 +38,36 @@ public class TaskService {
     private final ApplicationEventPublisher eventPublisher;
 
     public List<TaskResponse> getTasks(Long roundId, UserEntity user) {
-        Round round = roundRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
         return round.getRoundParticipants().stream()
-                .sorted(Comparator.comparing((RoundParticipant rp) -> !rp.getUser().equals(user))
-                        .thenComparing(RoundParticipant::getId))
+                .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(user))
+                        .thenComparing(RoundParticipantEntity::getId))
                 .map(TaskResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public Long createPersonalTask(CreatePersonalTaskRequest request) {
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
+        RoundParticipantEntity roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         return processTaskCreation(roundParticipant, request.getDetail(), TaskType.PERSONAL);
     }
 
-    private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
+    private Long processTaskCreation(RoundParticipantEntity roundParticipant, String detail, TaskType taskType) {
         TaskEntity task = TaskEntity.of(detail, taskType, roundParticipant);
         return taskRepository.save(task).getId();
     }
 
     @Transactional
     public List<GroupTaskInfoResponse> createGroupTask(CreateGroupTaskRequest request) {
-        Round round = roundRepository.findById(request.getRoundId())
+        RoundEntity round = roundRepository.findById(request.getRoundId())
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return getGroupTaskInfoResponseList(request, round);
     }
 
-    private List<GroupTaskInfoResponse> getGroupTaskInfoResponseList(CreateGroupTaskRequest request, Round round) {
+    private List<GroupTaskInfoResponse> getGroupTaskInfoResponseList(CreateGroupTaskRequest request, RoundEntity round) {
         return round.getRoundParticipants().stream()
                 .map(roundParticipant -> {
                     Long newTaskId = processTaskCreation(roundParticipant, request.getDetail(), TaskType.GROUP);
@@ -82,7 +82,7 @@ public class TaskService {
     public void deleteTask(Long taskId, Long roundParticipantId) {
         TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+        RoundParticipantEntity roundParticipant = roundParticipantRepository.findById(roundParticipantId)
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         task.validateAccess(roundParticipant);
         taskRepository.delete(task);

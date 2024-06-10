@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static ssu.groupstudy.domain.round.domain.StatusTag.*;
+import static ssu.groupstudy.domain.common.enums.StatusTag.*;
 
 class RoundParticipantServiceTest extends ServiceTest {
     @InjectMocks

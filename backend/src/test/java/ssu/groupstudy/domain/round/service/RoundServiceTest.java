@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.round.domain.Round;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.dto.response.RoundDto;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
@@ -54,7 +54,7 @@ class RoundServiceTest extends ServiceTest {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
             doReturn(10L).when(roundRepository).countRoundsByStudy(any(StudyEntity.class));
-            doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(Round.class));
+            doReturn(회차2_EmptyTimeAndPlace).when(roundRepository).save(any(RoundEntity.class));
 
             // when
             Long roundId = roundService.createRound(-1L, 회차2AppointmentRequest_EmptyTimeAndPlace);
@@ -68,7 +68,7 @@ class RoundServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(회차1).when(roundRepository).save(any(Round.class));
+            doReturn(회차1).when(roundRepository).save(any(RoundEntity.class));
 
             // when
             Long roundId = roundService.createRound(-1L, 회차1AppointmentRequest);

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyRepository;
@@ -63,22 +63,22 @@ public class ExampleStudyCreateService {
     }
 
     private void createExampleRules(StudyEntity study) {
-        Rule rule1 = Rule.create("지각하면 벌금 5000원", study);
-        Rule rule2 = Rule.create("매일 영단어 20개 암기", study);
-        Rule rule3 = Rule.create("공부 시간 기록하고 공지사항에 인증하기", study);
-        List<Rule> rules = List.of(rule1, rule2, rule3);
+        RuleEntity rule1 = RuleEntity.create("지각하면 벌금 5000원", study);
+        RuleEntity rule2 = RuleEntity.create("매일 영단어 20개 암기", study);
+        RuleEntity rule3 = RuleEntity.create("공부 시간 기록하고 공지사항에 인증하기", study);
+        List<RuleEntity> rules = List.of(rule1, rule2, rule3);
         ruleRepository.saveAll(rules);
     }
 
     private void createExampleRounds(StudyEntity study) {
-        Round round1 = createRound(study, "스타벅스 동숭길 입구점", LocalDateTime.now().minusDays(1).withHour(15).withMinute(0));
+        RoundEntity round1 = createRound(study, "스타벅스 동숭길 입구점", LocalDateTime.now().minusDays(1).withHour(15).withMinute(0));
         round1.updateDetail("스터디 첫날👏👏\n\n스타벅스 동숭길 입구점에서 만나요!");
-        Round round2 = createRound(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12).withMinute(0));
+        RoundEntity round2 = createRound(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12).withMinute(0));
         roundRepository.saveAll(List.of(round1, round2));
         createExampleTask(round1);
     }
 
-    private Round createRound(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
+    private RoundEntity createRound(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
         AppointmentRequest appointment = AppointmentRequest.builder()
                 .studyPlace(studyPlace)
                 .studyTime(studyTime)
@@ -86,8 +86,8 @@ public class ExampleStudyCreateService {
         return appointment.toEntity(study);
     }
 
-    private void createExampleTask(Round round) {
-        List<RoundParticipant> roundParticipants = round.getRoundParticipants();
+    private void createExampleTask(RoundEntity round) {
+        List<RoundParticipantEntity> roundParticipants = round.getRoundParticipants();
         roundParticipants.forEach(roundParticipant -> {
             roundParticipant.createTask("토익 RC에서 자주 나오는 핵심 어휘 50개 복습 및 문장 만들기", TaskType.PERSONAL);
             roundParticipant.createTask("RC Part7 5개 세트 연속 풀이 및 시간 관리 연습", TaskType.PERSONAL);

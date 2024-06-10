@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ssu.groupstudy.domain.common.CustomRepositoryTest;
-import ssu.groupstudy.domain.rule.domain.Rule;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +23,8 @@ class RuleRepositoryTest {
     void findRuleById(){
         // given
         // when
-        Optional<Rule> 규칙 = ruleRepository.findById(1L);
-        Optional<Rule> 삭제된_규칙 = ruleRepository.findById(3L);
+        Optional<RuleEntity> 규칙 = ruleRepository.findById(1L);
+        Optional<RuleEntity> 삭제된_규칙 = ruleRepository.findById(3L);
 
         // then
         softly.assertThat(규칙).isNotEmpty();
@@ -36,7 +36,7 @@ class RuleRepositoryTest {
     void findRulesByStudy(){
         // given
         // when
-        List<Rule> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(1L);
+        List<RuleEntity> rules = ruleRepository.findRulesByStudyIdOrderByCreateDate(1L);
 
         // then
         softly.assertThat(rules.size()).isGreaterThanOrEqualTo(2);

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ssu.groupstudy.domain.notification.domain.FcmToken;
+import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
 import ssu.groupstudy.domain.notification.repository.FcmTokenRepository;
 
 import java.time.LocalDateTime;
@@ -20,8 +20,8 @@ public class TokenScheduler {
     @Scheduled(cron = "0 0 2 10,25 * ?", zone = "Asia/Seoul")
     public void deleteExpiredToken() {
         log.info("deleteExpiredToken() : start {}", LocalDateTime.now());
-        List<FcmToken> expiredFcmTokens = fcmTokenRepository.findAll().stream()
-                .filter(FcmToken::isExpired)
+        List<FcmTokenEntity> expiredFcmTokens = fcmTokenRepository.findAll().stream()
+                .filter(FcmTokenEntity::isExpired)
                 .collect(Collectors.toList());
         fcmTokenRepository.deleteAllInBatch(expiredFcmTokens);
     }

@@ -15,8 +15,8 @@ import ssu.groupstudy.domain.comment.repository.CommentRepository;
 import ssu.groupstudy.domain.notice.domain.Notice;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeRepository;
-import ssu.groupstudy.domain.notification.domain.event.push.CommentCreationEvent;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
+import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 

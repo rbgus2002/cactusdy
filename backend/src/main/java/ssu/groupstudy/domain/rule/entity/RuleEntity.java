@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.rule.domain;
+package ssu.groupstudy.domain.rule.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "rule")
-public class Rule extends BaseEntity {
+public class RuleEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rule_id")
@@ -30,14 +30,14 @@ public class Rule extends BaseEntity {
     @JoinColumn(name="studyId", nullable = false)
     private StudyEntity study;
 
-    private Rule(String detail, StudyEntity study){
+    private RuleEntity(String detail, StudyEntity study){
         this.detail = detail;
         this.study = study;
         this.deleteYn = 'N';
     }
 
-    public static Rule create(String detail, StudyEntity study){
-        return new Rule(detail, study);
+    public static RuleEntity create(String detail, StudyEntity study){
+        return new RuleEntity(detail, study);
     }
 
     public void delete() {

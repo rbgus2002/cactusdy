@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notification.domain;
+package ssu.groupstudy.domain.notification.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "fcm_token")
-public class FcmToken {
+public class FcmTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fcm_token_id")
@@ -34,14 +34,14 @@ public class FcmToken {
     private LocalDateTime activateDate;
 
 
-    private FcmToken(UserEntity user, String token) {
+    private FcmTokenEntity(UserEntity user, String token) {
         this.user = user;
         this.token = token;
         this.activateDate = LocalDateTime.now();
     }
 
-    public static FcmToken from(UserEntity user, String token){
-        return new FcmToken(user, token);
+    public static FcmTokenEntity from(UserEntity user, String token){
+        return new FcmTokenEntity(user, token);
     }
 
     @Override
@@ -49,10 +49,10 @@ public class FcmToken {
         if (this == o){
             return true;
         }
-        if (!(o instanceof FcmToken)) {
+        if (!(o instanceof FcmTokenEntity)) {
             return false;
         }
-        FcmToken that = (FcmToken) o;
+        FcmTokenEntity that = (FcmTokenEntity) o;
         return Objects.equals(this.token, that.getToken());
     }
 

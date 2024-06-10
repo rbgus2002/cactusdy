@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.auth.domain.Authority;
-import ssu.groupstudy.domain.notification.domain.FcmToken;
+import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
 import ssu.groupstudy.global.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -46,7 +46,7 @@ public class UserEntity extends BaseEntity {
     private final List<Authority> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = LAZY, cascade = ALL, orphanRemoval = true)
-    private final Set<FcmToken> fcmTokens = new HashSet<>();
+    private final Set<FcmTokenEntity> fcmTokens = new HashSet<>();
 
     @Column(length = 20)
     private String statusMessage;
@@ -112,27 +112,27 @@ public class UserEntity extends BaseEntity {
     }
 
     public boolean existFcmToken(String token) {
-        FcmToken newToken = FcmToken.from(this, token);
+        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
         return fcmTokens.contains(newToken);
     }
 
     public void addFcmToken(String token) {
-        FcmToken newToken = FcmToken.from(this, token);
+        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
         fcmTokens.stream()
                 .filter(fcmToken -> fcmToken.equals(newToken))
                 .findFirst()
-                .ifPresent(FcmToken::updateActivateDate);
+                .ifPresent(FcmTokenEntity::updateActivateDate);
         fcmTokens.add(newToken);
     }
 
     public List<String> getFcmTokenList() {
         return fcmTokens.stream()
-                .map(FcmToken::getToken)
+                .map(FcmTokenEntity::getToken)
                 .collect(Collectors.toList());
     }
 
     public void deleteFcmToken(String token) {
-        FcmToken newToken = FcmToken.from(this, token);
+        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
         fcmTokens.remove(newToken);
     }
 
