@@ -15,15 +15,15 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "FROM ParticipantEntity p " +
             "WHERE p.user = :user " +
             "AND p.study = :study " +
-            "AND p.study.deleteYn = 'N' " +
-            "AND p.user.deleteYn = 'N'")
+            "AND p.study.deleteYn = false " +
+            "AND p.user.deleteYn = false")
     Optional<ParticipantEntity> findByUserAndStudy(UserEntity user, StudyEntity study);
 
 
     @Query("SELECT p " +
             "FROM ParticipantEntity p " +
             "WHERE p.user = :user " +
-            "AND p.study.deleteYn = 'N' " +
+            "AND p.study.deleteYn = false " +
             "ORDER BY p.createDate ASC")
     List<ParticipantEntity> findByUserOrderByCreateDate(UserEntity user);
 
@@ -31,13 +31,13 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "FROM ParticipantEntity p " +
             "JOIN StudyEntity s ON s.studyId = p.study.studyId " +
             "WHERE p.user = :user " +
-            "AND s.deleteYn ='N' " +
+            "AND s.deleteYn = false " +
             "ORDER BY p.createDate ASC")
     List<ParticipantInfo> findParticipantInfoByUser(UserEntity user);
 
     @Query("SELECT COUNT (p) " +
             "FROM ParticipantEntity p " +
             "WHERE p.user = :user " +
-            "AND p.study.deleteYn = 'N' ")
+            "AND p.study.deleteYn = false ")
     int countParticipationStudy(UserEntity user);
 }

@@ -20,7 +20,7 @@ public class CommentDto { // [2024-06-10:최규현] TODO: 얘 뭐야 param이야
     private Long commentId;
     private String contents;
     private LocalDateTime createDate;
-    private char deleteYn;
+    private boolean deleteYn;
 
     private List<ChildCommentInfoResVo> replies = null;
 
@@ -33,7 +33,7 @@ public class CommentDto { // [2024-06-10:최규현] TODO: 얘 뭐야 param이야
         this.commentId = comment.getCommentId();
         this.contents = comment.getContents();
         this.createDate = comment.getCreateDate();
-        this.deleteYn = comment.getDeleteYn();
+        this.deleteYn = comment.isDeleteYn();
         processDeletedComment(comment);
     }
 
@@ -58,7 +58,7 @@ public class CommentDto { // [2024-06-10:최규현] TODO: 얘 뭐야 param이야
     }
 
     private boolean isDeleted(){
-        return this.deleteYn == 'Y';
+        return this.deleteYn;
     }
 
     private boolean existReplies(){
@@ -67,6 +67,6 @@ public class CommentDto { // [2024-06-10:최규현] TODO: 얘 뭐야 param이야
 
     private boolean isReplyEmpty(){
         return replies.stream()
-                .noneMatch(reply -> reply.getDeleteYn() == 'N');
+                .noneMatch(reply -> !reply.isDeleteYn());
     }
 }

@@ -7,11 +7,11 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import java.util.Optional;
 
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
-    @Query("SELECT u FROM UserEntity u WHERE u.userId = :userId AND u.deleteYn = 'N'")
+    @Query("SELECT u FROM UserEntity u WHERE u.userId = :userId AND u.deleteYn = false")
     Optional<UserEntity> findById(Long userId);
 
     boolean existsByPhoneNumber(String phoneNumber);
 
-    @Query("SELECT u FROM UserEntity u WHERE u.phoneNumber = :phoneNumber AND u.deleteYn = 'N'")
+    @Query("SELECT u FROM UserEntity u WHERE u.phoneNumber = :phoneNumber AND u.deleteYn = false")
     Optional<UserEntity> findByPhoneNumber(String phoneNumber);
 }

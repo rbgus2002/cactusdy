@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> {
-    @Query("SELECT r FROM RoundEntity r WHERE r.roundId = :roundId AND r.deleteYn = 'N'")
+    @Query("SELECT r FROM RoundEntity r WHERE r.roundId = :roundId AND r.deleteYn = false")
     Optional<RoundEntity> findById(Long roundId);
 
     /**
@@ -20,7 +20,7 @@ public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> 
     @Query("SELECT r " +
             "FROM RoundEntity r " +
             "WHERE r.study = :study " +
-            "AND r.deleteYn = 'N' " +
+            "AND r.deleteYn = false " +
             "ORDER BY " +
             "CASE WHEN r.appointment.studyTime IS NULL THEN 0 ELSE 1 END ASC, " +
             "r.appointment.studyTime DESC, " +
@@ -52,13 +52,13 @@ public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> 
                     "LIMIT 1", nativeQuery = true)
     Optional<RoundEntity> findLatestRound(Long studyId);
 
-    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = 'N'")
+    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false")
     Long countRoundsByStudy(StudyEntity study);
 
-    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime <= :studyTime")
+    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false AND r.appointment.studyTime <= :studyTime")
     Long countByStudyTimeLessThanEqual(StudyEntity study, LocalDateTime studyTime);
 
-    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = 'N' AND r.appointment.studyTime IS NOT NULL")
+    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false AND r.appointment.studyTime IS NOT NULL")
     Long countByStudyTimeIsNotNull(StudyEntity study);
 
     /**
@@ -68,7 +68,7 @@ public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> 
     @Query("SELECT r " +
             "FROM RoundEntity r " +
             "WHERE r.study = :study AND " +
-            "r.deleteYn = 'N' AND " +
+            "r.deleteYn = false AND " +
             "(r.appointment.studyTime IS NULL OR r.appointment.studyTime > :time)")
     List<RoundEntity> findFutureRounds(StudyEntity study, LocalDateTime time);
 }

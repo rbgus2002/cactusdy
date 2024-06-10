@@ -18,7 +18,7 @@ public class ChildCommentInfoResVo {
     private Long commentId;
     private String contents;
     private LocalDateTime createDate;
-    private char deleteYn;
+    private boolean deleteYn;
 
     private ChildCommentInfoResVo(CommentEntity comment) {
         UserEntity writer = comment.getWriter();
@@ -29,7 +29,7 @@ public class ChildCommentInfoResVo {
         this.commentId = comment.getCommentId();
         this.contents = comment.getContents();
         this.createDate = comment.getCreateDate();
-        this.deleteYn = comment.getDeleteYn();
+        this.deleteYn = comment.isDeleteYn();
         processDeletedComment(comment);
     }
 

@@ -17,6 +17,6 @@ public interface CommentEntityRepository extends JpaRepository<CommentEntity, Lo
     List<CommentEntity> findCommentsByParentCommentOrderByCreateDate(CommentEntity comment);
 
 
-    @Query("SELECT COUNT(c) FROM CommentEntity c WHERE c.notice = :notice AND c.deleteYn = 'N'")
+    @Query("SELECT COUNT(c) FROM CommentEntity c WHERE c.notice = :notice AND c.deleteYn = false")
     int countCommentByNotice(NoticeEntity notice);
 }

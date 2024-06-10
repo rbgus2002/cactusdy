@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> {
-    @Query("SELECT s FROM StudyEntity s WHERE s.studyId = :studyId AND s.deleteYn = 'N'")
+    @Query("SELECT s FROM StudyEntity s WHERE s.studyId = :studyId AND s.deleteYn = false")
     Optional<StudyEntity> findById(Long studyId);
 
-    @Query("SELECT s FROM StudyEntity s WHERE s.inviteCode = :inviteCode AND s.deleteYn = 'N'")
+    @Query("SELECT s FROM StudyEntity s WHERE s.inviteCode = :inviteCode AND s.deleteYn = false")
     Optional<StudyEntity> findByInviteCode(String inviteCode);
 
     @Query("SELECT new ssu.groupstudy.domain.study.param.StatusTagInfo(rp.statusTag, COUNT(r.roundId)) " +
@@ -23,8 +23,8 @@ public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> 
             "JOIN RoundParticipantEntity rp ON r.roundId = rp.round.roundId " +
             "WHERE s = :study " +
             "AND rp.user = :user " +
-            "AND s.deleteYn = 'N' " +
-            "AND r.deleteYn = 'N' " +
+            "AND s.deleteYn = false " +
+            "AND r.deleteYn = false " +
             "GROUP BY rp.statusTag")
     List<StatusTagInfo> calculateStatusTag(UserEntity user, StudyEntity study);
 
@@ -37,8 +37,8 @@ public interface StudyEntityRepository extends JpaRepository<StudyEntity, Long> 
             "JOIN TaskEntity t ON rp.id = t.roundParticipant.id " +
             "WHERE s = :study " +
             "AND rp.user = :user " +
-            "AND s.deleteYn = 'N' " +
-            "AND r.deleteYn = 'N' "
+            "AND s.deleteYn = false " +
+            "AND r.deleteYn = false "
     )
     DoneCount calculateDoneCount(UserEntity user, StudyEntity study);
 }

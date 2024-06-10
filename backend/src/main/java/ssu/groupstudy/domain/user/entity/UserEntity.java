@@ -137,11 +137,12 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.statusMessage = statusMessage;
     }
 
-    public void deleteUserInfo() {
+    public void deleteUser() {
         this.phoneNumber = "-";
         this.editProfile("-", "-");
         this.updatePicture(null);
         this.fcmTokens.clear();
+        delete();
     }
 }
 
