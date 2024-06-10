@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.api.round.vo.RoundDtoVo;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
+import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -74,6 +76,14 @@ public class RoundService {
     public void deleteRound(long roundId, UserEntity user) {
         RoundEntity round = roundEntityRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
-        round.deleteRound(user);
+
+        validateDeleteRound(user, round);
+        round.delete();
+    }
+
+    private void validateDeleteRound(UserEntity user, RoundEntity round) {
+        if (!round.getStudy().isHostUser(user)) {
+            throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
+        }
     }
 }

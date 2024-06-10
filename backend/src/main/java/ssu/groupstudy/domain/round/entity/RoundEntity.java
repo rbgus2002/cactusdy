@@ -4,12 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.round.exception.UnauthorizedDeletionException;
+import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "round")
-public class RoundEntity extends BaseEntity {
+public class RoundEntity extends BaseWithSoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
@@ -43,15 +40,11 @@ public class RoundEntity extends BaseEntity {
     @JoinColumn(name = "studyId", nullable = false)
     private StudyEntity study;
 
-    @Column(nullable = false)
-    private char deleteYn;
-
     @Builder
     public RoundEntity(StudyEntity study, String studyPlace, LocalDateTime studyTime) {
         addParticipants(study.getParticipantList());
         this.study = study;
         this.appointment = Appointment.of(studyPlace, studyTime);
-        this.deleteYn = 'N';
     }
 
     protected RoundEntity(Appointment appointment) {
@@ -81,17 +74,6 @@ public class RoundEntity extends BaseEntity {
 
     public void updateDetail(String detail) {
         this.detail = detail;
-    }
-
-    public void deleteRound(UserEntity user) {
-        validateDelete(user);
-        this.deleteYn = 'Y';
-    }
-
-    private void validateDelete(UserEntity user) {
-        if (!study.isHostUser(user)) {
-            throw new UnauthorizedDeletionException(ResultCode.HOST_USER_ONLY_CAN_DELETE_ROUND);
-        }
     }
 
     public Appointment getAppointment() {

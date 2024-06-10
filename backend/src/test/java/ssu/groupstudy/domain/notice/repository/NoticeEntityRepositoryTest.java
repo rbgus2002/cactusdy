@@ -184,7 +184,7 @@ class NoticeEntityRepositoryTest {
         NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
         // when
-        공지사항.deleteNotice();
+        공지사항.delete();
         Optional<NoticeEntity> notice = noticeEntityRepository.findById(공지사항.getNoticeId());
 
         // then

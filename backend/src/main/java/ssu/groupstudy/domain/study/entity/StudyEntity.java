@@ -3,13 +3,13 @@ package ssu.groupstudy.domain.study.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
+import ssu.groupstudy.domain.common.enums.ColorCode;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.common.enums.ColorCode;
-import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "study")
-public class StudyEntity extends BaseEntity {
+public class StudyEntity extends BaseWithSoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studyId;
@@ -39,15 +39,11 @@ public class StudyEntity extends BaseEntity {
     @Embedded
     private Participants participants;
 
-    @Column(nullable = false)
-    private char deleteYn;
-
     private StudyEntity(String studyName, String detail, String color, UserEntity hostUser, String inviteCode) {
         this.studyName = studyName;
         this.detail = detail;
         this.participants = Participants.empty(new ParticipantEntity(hostUser, this), color);
         this.inviteCode = inviteCode;
-        this.deleteYn = 'N';
     }
 
     private StudyEntity(String studyName, String detail) {
@@ -99,10 +95,6 @@ public class StudyEntity extends BaseEntity {
 
     public List<ParticipantEntity> getParticipantList() {
         return this.participants.getParticipants();
-    }
-
-    public void delete() {
-        this.deleteYn = 'Y';
     }
 
     public void updatePicture(String picture) {

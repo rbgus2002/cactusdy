@@ -117,7 +117,7 @@ public class NoticeService {
     public void delete(Long noticeId) {
         NoticeEntity notice = noticeEntityRepository.findById(noticeId)
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        notice.deleteNotice();
+        notice.delete();
     }
 
     @Transactional

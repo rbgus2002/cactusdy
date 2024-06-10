@@ -6,9 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
+import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "notice")
 @Where(clause = "delete_yn = 'N'")
-public class NoticeEntity extends BaseEntity {
+public class NoticeEntity extends BaseWithSoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
@@ -32,9 +32,6 @@ public class NoticeEntity extends BaseEntity {
 
     @Column(nullable = false, length = 500)
     private String contents;
-
-    @Column(nullable = false)
-    private char deleteYn;
 
     @Column(nullable = false)
     private char pinYn;
@@ -56,7 +53,6 @@ public class NoticeEntity extends BaseEntity {
         this.contents = contents;
         this.writer = writer;
         this.study = study;
-        this.deleteYn = 'N';
         this.pinYn = 'N';
     }
 
@@ -96,10 +92,6 @@ public class NoticeEntity extends BaseEntity {
     private char unpin(){
         pinYn = 'N';
         return pinYn;
-    }
-
-    public void deleteNotice(){
-        this.deleteYn = 'Y';
     }
 
     public int countReadNotices(){

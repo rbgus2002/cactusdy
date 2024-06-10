@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
+import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
 import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
-import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "user")
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseWithSoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -57,9 +57,6 @@ public class UserEntity extends BaseEntity {
     @Column
     private String phoneModel;
 
-    @Column(nullable = false)
-    private char deleteYn;
-
     @Builder
     public UserEntity(String name, String nickname, String phoneNumber, String password) {
         this.name = name;
@@ -67,7 +64,6 @@ public class UserEntity extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.activateDate = LocalDateTime.now();
-        this.deleteYn = 'N';
     }
 
     @Override
@@ -146,11 +142,6 @@ public class UserEntity extends BaseEntity {
         this.editProfile("-", "-");
         this.updatePicture(null);
         this.fcmTokens.clear();
-        this.deleteYn = 'Y';
-    }
-
-    public boolean isDeleted() {
-        return this.deleteYn == 'Y';
     }
 }
 
