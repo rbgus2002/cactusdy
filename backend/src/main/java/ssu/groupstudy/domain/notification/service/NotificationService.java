@@ -11,11 +11,11 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.global.util.FcmUtils;
+import ssu.groupstudy.domain.common.util.FcmUtils;
 
 import java.util.Map;
 
-import static ssu.groupstudy.global.util.StringUtils.buildMessage;
+import static ssu.groupstudy.domain.common.util.StringUtils.buildMessage;
 
 @Service
 @RequiredArgsConstructor

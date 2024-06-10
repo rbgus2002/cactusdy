@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.handler;
+package ssu.groupstudy.domain.common.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.api.common.vo.ErrorResVo;
-import ssu.groupstudy.global.exception.BusinessException;
+import ssu.groupstudy.domain.common.exception.BusinessException;
 
 import javax.validation.UnexpectedTypeException;
 

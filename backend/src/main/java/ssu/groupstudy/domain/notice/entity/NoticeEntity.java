@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.domain.BaseEntity;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;

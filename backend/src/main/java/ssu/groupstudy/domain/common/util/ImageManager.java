@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.util;
+package ssu.groupstudy.domain.common.util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

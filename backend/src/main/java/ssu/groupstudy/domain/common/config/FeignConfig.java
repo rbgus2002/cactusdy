@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.config;
+package ssu.groupstudy.domain.common.config;
 
 import feign.Logger;
 import org.springframework.cloud.openfeign.EnableFeignClients;

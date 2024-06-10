@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.domain;
+package ssu.groupstudy.domain.common.entity;
 
 
 import lombok.Getter;

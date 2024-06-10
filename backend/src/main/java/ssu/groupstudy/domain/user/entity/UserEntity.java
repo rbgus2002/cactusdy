@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
 import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
-import ssu.groupstudy.global.domain.BaseEntity;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

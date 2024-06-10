@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.util;
+package ssu.groupstudy.domain.common.util;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

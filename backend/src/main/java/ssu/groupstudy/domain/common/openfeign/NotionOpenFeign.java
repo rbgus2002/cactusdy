@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.openfeign;
+package ssu.groupstudy.domain.common.openfeign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -9,7 +9,7 @@ import ssu.groupstudy.api.user.vo.UserInfoResVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.api.user.vo.EditUserReqVo;
 import ssu.groupstudy.domain.common.enums.S3Code;
-import ssu.groupstudy.global.util.S3Utils;
+import ssu.groupstudy.domain.common.util.S3Utils;
 
 import java.io.IOException;
 

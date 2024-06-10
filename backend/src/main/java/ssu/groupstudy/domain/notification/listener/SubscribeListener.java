@@ -13,7 +13,7 @@ import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEve
 import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.global.util.FcmUtils;
+import ssu.groupstudy.domain.common.util.FcmUtils;
 
 @Component
 @Transactional

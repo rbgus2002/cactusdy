@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.global.domain.BaseEntity;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 

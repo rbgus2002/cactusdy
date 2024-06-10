@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.util;
+package ssu.groupstudy.domain.common.util;
 
 public class StringUtils {
     public static String buildMessage(String... word) {

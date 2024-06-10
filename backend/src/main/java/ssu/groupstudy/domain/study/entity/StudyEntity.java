@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.common.enums.ColorCode;
 import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.global.domain.BaseEntity;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;

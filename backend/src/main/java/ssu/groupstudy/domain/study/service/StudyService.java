@@ -31,7 +31,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.global.util.ImageManager;
+import ssu.groupstudy.domain.common.util.ImageManager;
 
 import java.io.IOException;
 import java.util.List;

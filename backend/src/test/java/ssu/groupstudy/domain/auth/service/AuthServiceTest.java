@@ -17,9 +17,9 @@ import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.global.util.ImageManager;
-import ssu.groupstudy.global.util.MessageUtils;
-import ssu.groupstudy.global.util.S3Utils;
+import ssu.groupstudy.domain.common.util.ImageManager;
+import ssu.groupstudy.domain.common.util.MessageUtils;
+import ssu.groupstudy.domain.common.util.S3Utils;
 
 import java.io.IOException;
 import java.util.Optional;
