@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ssu.groupstudy.domain.auth.service.CustomUserDetailService;
-import ssu.groupstudy.domain.auth.domain.Authority;
+import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class JwtProvider {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String account, List<Authority> roles) {
+    public String createToken(String account, List<AuthorityEntity> roles) {
         Claims claims = Jwts.claims().setSubject(account);
         claims.put("roles", roles);
         Date now = new Date();

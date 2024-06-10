@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.EditUserRequest;
-import ssu.groupstudy.domain.user.dto.response.UserInfoResponse;
-import ssu.groupstudy.global.constant.S3Code;
+import ssu.groupstudy.api.user.vo.UserInfoResVo;
+import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.api.user.vo.EditUserReqVo;
+import ssu.groupstudy.domain.common.enums.S3Code;
 import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
@@ -21,13 +21,13 @@ public class UserService {
     private final S3Utils s3Utils;
 
     @Transactional
-    public UserInfoResponse editUser(EditUserRequest dto, MultipartFile profileImage, User user) throws IOException {
+    public UserInfoResVo editUser(EditUserReqVo dto, MultipartFile profileImage, UserEntity user) throws IOException {
         user.editProfile(dto.getNickname(), dto.getStatusMessage());
         handleUploadProfileImage(user, profileImage);
-        return UserInfoResponse.from(user);
+        return UserInfoResVo.from(user);
     }
 
-    private void handleUploadProfileImage(User user, MultipartFile image) throws IOException {
+    private void handleUploadProfileImage(UserEntity user, MultipartFile image) throws IOException {
         if (image == null) {
             return;
         }
@@ -37,13 +37,13 @@ public class UserService {
     }
 
     @Transactional
-    public Long removeUser(User user) {
-        user.deleteUserInfo();
+    public Long removeUser(UserEntity user) {
+        user.deleteUser();
         return user.getUserId();
     }
 
     @Transactional
-    public void updateActivateDate(User user) {
+    public void updateActivateDate(UserEntity user) {
         user.updateActivateDate();
     }
 }

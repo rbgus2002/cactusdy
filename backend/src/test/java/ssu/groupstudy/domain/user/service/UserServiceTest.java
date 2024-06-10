@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.S3Utils;
 
 class UserServiceTest extends ServiceTest {
     @InjectMocks
     private UserService userService;
     @Mock
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Mock
     private S3Utils s3Utils;
 
@@ -27,7 +27,7 @@ class UserServiceTest extends ServiceTest {
             userService.removeUser(최규현);
 
             // then
-            softly.assertThat(최규현.getDeleteYn()).isEqualTo('Y');
+            softly.assertThat(최규현.isDeleted()).isTrue();
             softly.assertThat(최규현.getNickname()).isEqualTo("-");
             softly.assertThat(최규현.getStatusMessage()).isEqualTo("-");
             softly.assertThat(최규현.getPicture()).isNull();

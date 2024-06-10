@@ -18,9 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import ssu.groupstudy.domain.auth.security.jwt.JwtAuthenticationFilter;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
-import ssu.groupstudy.global.constant.ResultCode;
-import ssu.groupstudy.global.dto.ErrorResponseDto;
-import ssu.groupstudy.global.dto.ResponseDto;
+import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.api.common.vo.ErrorResVo;
+import ssu.groupstudy.api.common.vo.ResVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -73,7 +73,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(new AccessDeniedHandler() {
                     @Override
                     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                        ResponseDto dto = ErrorResponseDto.of(ResultCode.FORBIDDEN);
+                        ResVo dto = ErrorResVo.of(ResultCode.FORBIDDEN);
                         response.setStatus(dto.getStatusCode());
                         response.setCharacterEncoding("utf-8");
                         response.setContentType("text/html; charset=UTF-8");
@@ -83,7 +83,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
                     @Override
                     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                        ResponseDto dto = ErrorResponseDto.of(ResultCode.UNAUTHORIZED);
+                        ResVo dto = ErrorResVo.of(ResultCode.UNAUTHORIZED);
                         response.setStatus(dto.getStatusCode());
                         response.setCharacterEncoding("utf-8");
                         response.setContentType("text/html; charset=UTF-8");

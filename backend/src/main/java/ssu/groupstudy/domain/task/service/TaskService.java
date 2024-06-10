@@ -4,107 +4,107 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.domain.event.push.TaskDoneEvent;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
+import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.task.dto.request.CreateGroupTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
-import ssu.groupstudy.domain.task.dto.response.GroupTaskInfoResponse;
-import ssu.groupstudy.domain.task.dto.response.TaskResponse;
+import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.common.enums.TaskType;
+import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
+import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
+import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
+import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
+import ssu.groupstudy.api.task.vo.TaskResVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
-import ssu.groupstudy.domain.task.repository.TaskRepository;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.global.constant.ResultCode.*;
+import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TaskService {
-    private final TaskRepository taskRepository;
-    private final RoundRepository roundRepository;
-    private final RoundParticipantRepository roundParticipantRepository;
+    private final TaskEntityRepository taskEntityRepository;
+    private final RoundEntityRepository roundEntityRepository;
+    private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<TaskResponse> getTasks(Long roundId, User user) {
-        Round round = roundRepository.findById(roundId)
+    public List<TaskResVo> getTasks(Long roundId, UserEntity user) {
+        RoundEntity round = roundEntityRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
         return round.getRoundParticipants().stream()
-                .sorted(Comparator.comparing((RoundParticipant rp) -> !rp.getUser().equals(user))
-                        .thenComparing(RoundParticipant::getId))
-                .map(TaskResponse::from)
+                .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(user))
+                        .thenComparing(RoundParticipantEntity::getId))
+                .map(TaskResVo::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public Long createPersonalTask(CreatePersonalTaskRequest request) {
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(request.getRoundParticipantId())
+    public Long createPersonalTask(CreatePersonalTaskReqVo request) {
+        RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findById(request.getRoundParticipantId())
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         return processTaskCreation(roundParticipant, request.getDetail(), TaskType.PERSONAL);
     }
 
-    private Long processTaskCreation(RoundParticipant roundParticipant, String detail, TaskType taskType) {
-        Task task = Task.of(detail, taskType, roundParticipant);
-        return taskRepository.save(task).getId();
+    private Long processTaskCreation(RoundParticipantEntity roundParticipant, String detail, TaskType taskType) {
+        TaskEntity task = TaskEntity.of(detail, taskType, roundParticipant);
+        return taskEntityRepository.save(task).getId();
     }
 
     @Transactional
-    public List<GroupTaskInfoResponse> createGroupTask(CreateGroupTaskRequest request) {
-        Round round = roundRepository.findById(request.getRoundId())
+    public List<GroupTaskInfoResVo> createGroupTask(CreateGroupTaskReqVo request) {
+        RoundEntity round = roundEntityRepository.findById(request.getRoundId())
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return getGroupTaskInfoResponseList(request, round);
     }
 
-    private List<GroupTaskInfoResponse> getGroupTaskInfoResponseList(CreateGroupTaskRequest request, Round round) {
+    private List<GroupTaskInfoResVo> getGroupTaskInfoResponseList(CreateGroupTaskReqVo request, RoundEntity round) {
         return round.getRoundParticipants().stream()
                 .map(roundParticipant -> {
                     Long newTaskId = processTaskCreation(roundParticipant, request.getDetail(), TaskType.GROUP);
                     Long roundParticipantId = roundParticipant.getId();
                     Long userId = roundParticipant.getUser().getUserId();
-                    return GroupTaskInfoResponse.of(newTaskId, roundParticipantId, userId);
+                    return GroupTaskInfoResVo.of(newTaskId, roundParticipantId, userId);
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteTask(Long taskId, Long roundParticipantId) {
-        Task task = taskRepository.findById(taskId)
+        TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        RoundParticipant roundParticipant = roundParticipantRepository.findById(roundParticipantId)
+        RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findById(roundParticipantId)
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         task.validateAccess(roundParticipant);
-        taskRepository.delete(task);
+        taskEntityRepository.delete(task);
     }
 
     @Transactional
-    public void updateTaskDetail(UpdateTaskRequest request) {
-        Task task = taskRepository.findById(request.getTaskId())
+    public void updateTaskDetail(UpdateTaskReqVo request) {
+        TaskEntity task = taskEntityRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         task.setDetail(request.getDetail());
     }
 
     @Transactional
-    public char switchTask(Long taskId, User user) {
-        Task task = taskRepository.findById(taskId)
+    public char switchTask(Long taskId, UserEntity user) {
+        TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         char doneYn = task.switchDoneYn();
         processNotification(task, user);
         return doneYn;
     }
 
-    private void processNotification(Task task, User user) {
+    private void processNotification(TaskEntity task, UserEntity user) {
         if (task.isDone()) {
             eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }

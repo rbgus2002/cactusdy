@@ -6,7 +6,7 @@ import static org.mockito.Mockito.doReturn;
 
 //class UserApiTest extends ApiTest {
 //    @InjectMocks
-//    private UserApi userApi;
+//    private UserController userApi;
 //    @Mock
 //    private UserService userService;
 //
@@ -26,11 +26,11 @@ import static org.mockito.Mockito.doReturn;
 //        void fail_invalid_Email(String email) throws Exception {
 //            // given
 //            final String url = "/user";
-//            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", email);
+//            final SignUpReqVo 최규현SignUpReqVo = new SignUpReqVo("최규현", "규규", "", "", email);
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(url)
-//                    .content(gson.toJson(최규현SignUpRequest))
+//                    .content(gson.toJson(최규현SignUpReqVo))
 //                    .contentType(MediaType.APPLICATION_JSON)
 //            );
 //
@@ -47,9 +47,9 @@ import static org.mockito.Mockito.doReturn;
 //        void success() throws Exception {
 //            // given
 //            final String url = "/user";
-//            final SignUpRequest 최규현SignUpRequest = new SignUpRequest("최규현", "규규", "", "", "rbgus2002@naver.com");
-//            final User 최규현 = 최규현SignUpRequest.toEntity();
-//            doReturn(UserInfoResponse.from(최규현)).when(userService).findUser(any(Long.class));
+//            final SignUpReqVo 최규현SignUpReqVo = new SignUpReqVo("최규현", "규규", "", "", "rbgus2002@naver.com");
+//            final UserEntity 최규현 = 최규현SignUpReqVo.toEntity();
+//            doReturn(UserInfoResVo.from(최규현)).when(userService).findUser(any(Long.class));
 //
 //            // when
 //            final ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url)
@@ -60,9 +60,9 @@ import static org.mockito.Mockito.doReturn;
 //            // then
 //            resultActions.andExpect(status().isOk());
 //
-//            DataResponseDto response = gson.fromJson(resultActions.andReturn()
+//            DataResVo response = gson.fromJson(resultActions.andReturn()
 //                    .getResponse()
-//                    .getContentAsString(StandardCharsets.UTF_8), DataResponseDto.class);
+//                    .getContentAsString(StandardCharsets.UTF_8), DataResVo.class);
 //            assertThat(response.getSuccess()).isTrue();
 //            assertThat(response.getData().get("user")).isNotNull();
 //        }

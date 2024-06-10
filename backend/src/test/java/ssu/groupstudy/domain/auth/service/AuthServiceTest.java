@@ -10,13 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.study.repository.ParticipantRepository;
+import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignInRequest;
+import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.S3Utils;
@@ -33,9 +33,9 @@ class AuthServiceTest extends ServiceTest {
     @Mock
     private ExampleStudyCreateService exampleStudyCreateService;
     @Mock
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Mock
-    private ParticipantRepository participantRepository;
+    private ParticipantEntityRepository participantEntityRepository;
     @Mock
     private MessageUtils messageUtils;
     @Mock
@@ -56,10 +56,10 @@ class AuthServiceTest extends ServiceTest {
         @DisplayName("중복되는 핸드폰번호가 존재하면 예외를 던진다")
         void emailDuplicated() {
             // given
-            doReturn(true).when(userRepository).existsByPhoneNumber(any(String.class));
+            doReturn(true).when(userEntityRepository).existsByPhoneNumber(any(String.class));
 
             // when, then
-            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpRequest, null))
+            softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpReqVo, null))
                     .isInstanceOf(PhoneNumberExistsException.class)
                     .hasMessage(ResultCode.DUPLICATE_PHONE_NUMBER.getMessage());
         }
@@ -68,11 +68,11 @@ class AuthServiceTest extends ServiceTest {
         @DisplayName("회원가입 성공")
         void success() throws IOException {
             // given
-            doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
-            doReturn(최규현).when(userRepository).save(any(User.class));
+            doReturn(false).when(userEntityRepository).existsByPhoneNumber(any(String.class));
+            doReturn(최규현).when(userEntityRepository).save(any(UserEntity.class));
 
             // when
-            final Long userId = authService.signUp(최규현SignUpRequest, null);
+            final Long userId = authService.signUp(최규현SignUpReqVo, null);
 
             // then
             softly.assertThat(userId).isNotNull();
@@ -81,13 +81,13 @@ class AuthServiceTest extends ServiceTest {
 
     @Nested
     class SignIn{
-        private final SignInRequest request = SignInRequest.builder()
+        private final SignInReqVo request = SignInReqVo.builder()
                 .phoneNumber("")
                 .password("valid")
                 .fcmToken("")
                 .build();
 
-        private final SignInRequest requestInvalidPassword = SignInRequest.builder()
+        private final SignInReqVo requestInvalidPassword = SignInReqVo.builder()
                 .phoneNumber("")
                 .password("invalid")
                 .fcmToken("fcm token")
@@ -98,7 +98,7 @@ class AuthServiceTest extends ServiceTest {
         void phoneNumberNotFound(){
             // given
             // when
-            doReturn(Optional.empty()).when(userRepository).findByPhoneNumber(any(String.class));
+            doReturn(Optional.empty()).when(userEntityRepository).findByPhoneNumber(any(String.class));
 
             // then
             softly.assertThatThrownBy(() -> authService.signIn(request))
@@ -111,7 +111,7 @@ class AuthServiceTest extends ServiceTest {
         void passwordInvalid(){
             // given
             // when
-            doReturn(Optional.of(최규현)).when(userRepository).findByPhoneNumber(any(String.class));
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findByPhoneNumber(any(String.class));
 
             // then
             softly.assertThatThrownBy(() -> authService.signIn(requestInvalidPassword))
@@ -123,7 +123,7 @@ class AuthServiceTest extends ServiceTest {
         @DisplayName("로그인 시에 사용자에게 fcm token이 추가된다.")
         void addFcmToken(){
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findByPhoneNumber(any(String.class));
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findByPhoneNumber(any(String.class));
             doReturn(true).when(passwordEncoder).matches(any(String.class), any(String.class));
             doReturn("jwtToken").when(jwtProvider).createToken(any(), any());
 

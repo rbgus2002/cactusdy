@@ -5,14 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.AllUserTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.constants.TopicCode;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.domain.event.unsubscribe.StudyTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.user.domain.User;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
+import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.util.FcmUtils;
 
 @Component
@@ -25,36 +25,36 @@ public class SubscribeListener {
     @EventListener
     public void handleAllUserTopicSubscribeEvent(AllUserTopicSubscribeEvent event) {
         log.info("## handleAllUserTopicSubscribeEvent : ");
-        User user = event.getUser();
+        UserEntity user = event.getUser();
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.ALL_USERS, null);
     }
 
     @EventListener
     public void handleNoticeTopicSubscribeEvent(NoticeTopicSubscribeEvent event) {
         log.info("## handleNoticeTopicSubscribeEvent : ");
-        User user = event.getUser();
+        UserEntity user = event.getUser();
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, event.getNoticeId());
     }
 
     @EventListener
     public void handleStudyTopicSubscribeEvent(StudyTopicSubscribeEvent event) {
         log.info("## handleStudyTopicSubscribeEvent : ");
-        User user = event.getUser();
+        UserEntity user = event.getUser();
         fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
     public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
         log.info("## handleStudyTopicUnSubscribeEvent : ");
-        User user = event.getUser();
+        UserEntity user = event.getUser();
         fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
     public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
-        User user = event.getUser();
-        for (Notice notice : event.getNotices()) {
+        UserEntity user = event.getUser();
+        for (NoticeEntity notice : event.getNotices()) {
             fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, notice.getNoticeId());
         }
     }

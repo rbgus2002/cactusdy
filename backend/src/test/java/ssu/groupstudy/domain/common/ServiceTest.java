@@ -7,20 +7,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import ssu.groupstudy.domain.comment.domain.Comment;
-import ssu.groupstudy.domain.comment.dto.request.CreateCommentRequest;
-import ssu.groupstudy.domain.notice.domain.Notice;
-import ssu.groupstudy.domain.notice.dto.request.CreateNoticeRequest;
-import ssu.groupstudy.domain.round.domain.Round;
-import ssu.groupstudy.domain.round.domain.RoundParticipant;
-import ssu.groupstudy.domain.round.dto.request.AppointmentRequest;
-import ssu.groupstudy.domain.study.domain.Participant;
-import ssu.groupstudy.domain.study.domain.Study;
-import ssu.groupstudy.domain.study.dto.request.CreateStudyRequest;
-import ssu.groupstudy.domain.task.domain.Task;
-import ssu.groupstudy.domain.task.domain.TaskType;
-import ssu.groupstudy.domain.user.domain.User;
-import ssu.groupstudy.domain.user.dto.request.SignUpRequest;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
+import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
+import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
+import ssu.groupstudy.api.round.vo.AppointmentReqVo;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
+import ssu.groupstudy.api.study.vo.CreateStudyReqVo;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
+import ssu.groupstudy.domain.common.enums.TaskType;
+import ssu.groupstudy.api.user.vo.SignUpReqVo;
+import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
 
@@ -32,41 +32,41 @@ import java.time.LocalDateTime;
 public class ServiceTest {
     @InjectSoftAssertions
     protected SoftAssertions softly;
-    protected SignUpRequest 최규현SignUpRequest;
-    protected SignUpRequest 장재우SignUpRequest;
-    protected User 최규현;
-    protected User 장재우;
+    protected SignUpReqVo 최규현SignUpReqVo;
+    protected SignUpReqVo 장재우SignUpReqVo;
+    protected UserEntity 최규현;
+    protected UserEntity 장재우;
 
-    protected CreateStudyRequest 알고리즘스터디CreateRequest;
-    protected CreateStudyRequest 영어스터디CreateRequest;
-    protected Study 알고리즘스터디;
-    protected Study 영어스터디;
+    protected CreateStudyReqVo 알고리즘스터디CreateRequest;
+    protected CreateStudyReqVo 영어스터디CreateRequest;
+    protected StudyEntity 알고리즘스터디;
+    protected StudyEntity 영어스터디;
 
-    protected Participant 스터디참여자_최규현;
+    protected ParticipantEntity 스터디참여자_최규현;
 
-    protected CreateNoticeRequest 공지사항1CreateRequest;
-    protected Notice 공지사항1;
-    protected Notice 공지사항2;
-    protected Notice 공지사항3;
-    protected Notice 공지사항4;
+    protected CreateNoticeReqVo 공지사항1CreateRequest;
+    protected NoticeEntity 공지사항1;
+    protected NoticeEntity 공지사항2;
+    protected NoticeEntity 공지사항3;
+    protected NoticeEntity 공지사항4;
 
-    protected CreateCommentRequest 댓글1CreateRequest;
-    protected CreateCommentRequest 댓글2CreateRequest;
-    protected CreateCommentRequest 대댓글1CreateRequest;
-    protected Comment 댓글1;
-    protected Comment 댓글2;
-    protected Comment 대댓글1;
+    protected CreateCommentReqVo 댓글1CreateRequest;
+    protected CreateCommentReqVo 댓글2CreateRequest;
+    protected CreateCommentReqVo 대댓글1CreateRequest;
+    protected CommentEntity 댓글1;
+    protected CommentEntity 댓글2;
+    protected CommentEntity 대댓글1;
 
-    protected AppointmentRequest 회차1AppointmentRequest;
-    protected AppointmentRequest 회차2AppointmentRequest_EmptyTimeAndPlace;
-    protected Round 회차1;
-    protected Round 회차2_EmptyTimeAndPlace;
+    protected AppointmentReqVo 회차1AppointmentReqVo;
+    protected AppointmentReqVo 회차2AppointmentReqVo_EmptyTimeAndPlace;
+    protected RoundEntity 회차1;
+    protected RoundEntity 회차2_EmptyTimeAndPlace;
 
-    protected RoundParticipant 회차1_최규현;
-    protected RoundParticipant 회차1_장재우;
+    protected RoundParticipantEntity 회차1_최규현;
+    protected RoundParticipantEntity 회차1_장재우;
 
-    protected Task 그룹태스크;
-    protected Task 개인태스크;
+    protected TaskEntity 그룹태스크;
+    protected TaskEntity 개인태스크;
 
     @BeforeEach
     void initDummyData() {
@@ -86,13 +86,13 @@ public class ServiceTest {
     }
 
     private void initSignUpRequest() {
-        최규현SignUpRequest = SignUpRequest.builder()
+        최규현SignUpReqVo = SignUpReqVo.builder()
                 .name("최규현")
                 .phoneNumber("rbgus200@naver.com")
                 .password("valid")
                 .nickname("규규")
                 .build();
-        장재우SignUpRequest = SignUpRequest.builder()
+        장재우SignUpReqVo = SignUpReqVo.builder()
                 .name("장재우")
                 .phoneNumber("arkady@naver.com")
                 .password("password")
@@ -101,19 +101,19 @@ public class ServiceTest {
     }
 
     private void initUser() {
-        최규현 = 최규현SignUpRequest.toEntity("password");
+        최규현 = 최규현SignUpReqVo.toEntity("password");
         ReflectionTestUtils.setField(최규현, "userId", 1L);
-        장재우 = 장재우SignUpRequest.toEntity("password");
+        장재우 = 장재우SignUpReqVo.toEntity("password");
         ReflectionTestUtils.setField(장재우, "userId", 2L);
     }
 
     private void initCreateStudyRequest() {
-        알고리즘스터디CreateRequest = CreateStudyRequest.builder()
+        알고리즘스터디CreateRequest = CreateStudyReqVo.builder()
                 .studyName("알고리즘")
                 .detail("내용1")
                 .color("0x00")
                 .build();
-        영어스터디CreateRequest = CreateStudyRequest.builder()
+        영어스터디CreateRequest = CreateStudyReqVo.builder()
                 .studyName("영어")
                 .detail("내용2")
                 .color("0x00")
@@ -129,7 +129,7 @@ public class ServiceTest {
     }
 
     private void initCreateNoticeRequest() {
-        공지사항1CreateRequest = CreateNoticeRequest.builder()
+        공지사항1CreateRequest = CreateNoticeReqVo.builder()
                 .studyId(-1L)
                 .title("공지사항1")
                 .contents("내용1")
@@ -137,7 +137,7 @@ public class ServiceTest {
     }
 
     private void initParticipant() {
-        스터디참여자_최규현 = new Participant(최규현, 알고리즘스터디);
+        스터디참여자_최규현 = new ParticipantEntity(최규현, 알고리즘스터디);
     }
 
     private void initNotice() {
@@ -152,15 +152,15 @@ public class ServiceTest {
     }
 
     private void initCreateCommentRequest(){
-        댓글1CreateRequest = CreateCommentRequest.builder()
+        댓글1CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("댓글 내용1")
                 .build();
-        댓글2CreateRequest = CreateCommentRequest.builder()
+        댓글2CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("댓글 내용2")
                 .build();
-        대댓글1CreateRequest = CreateCommentRequest.builder()
+        대댓글1CreateRequest = CreateCommentReqVo.builder()
                 .noticeId(-1L)
                 .contents("대댓글 내용1")
                 .build();
@@ -176,36 +176,36 @@ public class ServiceTest {
     }
 
     private void initCreateRoundRequest() {
-        회차1AppointmentRequest = AppointmentRequest.builder()
+        회차1AppointmentReqVo = AppointmentReqVo.builder()
                 .studyPlace("규현집")
                 .studyTime(LocalDateTime.of(2023, 5, 17, 16, 0))
                 .build();
-        회차2AppointmentRequest_EmptyTimeAndPlace = AppointmentRequest.builder()
+        회차2AppointmentReqVo_EmptyTimeAndPlace = AppointmentReqVo.builder()
                 .studyPlace("재우집")
                 .studyTime(LocalDateTime.of(2024, 5, 17, 16, 0))
                 .build();
     }
 
     private void initRound() {
-        회차1 = 회차1AppointmentRequest.toEntity(알고리즘스터디);
+        회차1 = 회차1AppointmentReqVo.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차1, "roundId", 15L);
-        회차2_EmptyTimeAndPlace = 회차2AppointmentRequest_EmptyTimeAndPlace.toEntity(알고리즘스터디);
+        회차2_EmptyTimeAndPlace = 회차2AppointmentReqVo_EmptyTimeAndPlace.toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(회차2_EmptyTimeAndPlace, "roundId", 18L);
     }
 
     private void initRoundParticipant() {
-        회차1_최규현 = new RoundParticipant(최규현, 회차1);
-        회차1_장재우 = new RoundParticipant(장재우, 회차1);
+        회차1_최규현 = new RoundParticipantEntity(최규현, 회차1);
+        회차1_장재우 = new RoundParticipantEntity(장재우, 회차1);
     }
 
     private void initTask() {
-        그룹태스크 = Task.builder()
+        그룹태스크 = TaskEntity.builder()
                 .detail("그룹태스크 detail")
                 .taskType(TaskType.GROUP)
                 .roundParticipant(회차1_최규현)
                 .build();
         ReflectionTestUtils.setField(그룹태스크, "id", 19L);
-        개인태스크 = Task.builder()
+        개인태스크 = TaskEntity.builder()
                 .detail("개인태스크 detail")
                 .taskType(TaskType.PERSONAL)
                 .roundParticipant(회차1_최규현)

@@ -9,29 +9,29 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
-import ssu.groupstudy.domain.task.dto.request.CreatePersonalTaskRequest;
-import ssu.groupstudy.domain.task.dto.request.UpdateTaskRequest;
+import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
+import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
-import ssu.groupstudy.domain.task.repository.TaskRepository;
+import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static ssu.groupstudy.global.constant.ResultCode.*;
+import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 
 class TaskServiceTest extends ServiceTest {
     @InjectMocks
     private TaskService taskService;
     @Mock
-    private RoundRepository roundRepository;
+    private RoundEntityRepository roundEntityRepository;
     @Mock
-    private TaskRepository taskRepository;
+    private TaskEntityRepository taskEntityRepository;
     @Mock
-    private RoundParticipantRepository roundParticipantRepository;
+    private RoundParticipantEntityRepository roundParticipantEntityRepository;
 
     @Nested
     class DeleteTask{
@@ -39,7 +39,7 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("태스크가 존재하지 않는 경우 예외를 던진다.")
         void TaskNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
@@ -51,8 +51,8 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("회차 참여자가 존재하지 않는 경우 예외를 던진다")
         void RoundParticipantNotFound(){
             // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
+            doReturn(Optional.of(개인태스크)).when(taskEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
@@ -64,8 +64,8 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("본인의 태스크가 아니라면 예외를 던진다")
         void invalidDeleteTask(){
             // given, when
-            doReturn(Optional.of(개인태스크)).when(taskRepository).findById(any(Long.class));
-            doReturn(Optional.of(회차1_장재우)).when(roundParticipantRepository).findById(any(Long.class));
+            doReturn(Optional.of(개인태스크)).when(taskEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(회차1_장재우)).when(roundParticipantEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
@@ -80,7 +80,7 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("회차가 존재하지 않는 경우 예외를 던진다")
         void roundNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(roundRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.getTasks(-1L, 최규현))
@@ -91,7 +91,7 @@ class TaskServiceTest extends ServiceTest {
 
     @Nested
     class CreatePersonalTask{
-        final CreatePersonalTaskRequest request = CreatePersonalTaskRequest.builder()
+        final CreatePersonalTaskReqVo request = CreatePersonalTaskReqVo.builder()
                 .roundParticipantId(-1L)
                 .detail("개인 태스크")
                 .build();
@@ -101,7 +101,7 @@ class TaskServiceTest extends ServiceTest {
         void roundParticipantNotFound(){
             // given
             // when
-            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.createPersonalTask(request))
@@ -112,7 +112,7 @@ class TaskServiceTest extends ServiceTest {
 
     @Nested
     class updateTaskDetail{
-        UpdateTaskRequest request = UpdateTaskRequest.builder()
+        UpdateTaskReqVo request = UpdateTaskReqVo.builder()
                 .taskId(-1L)
                 .detail("수정내용")
                 .build();
@@ -121,7 +121,7 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("태스크가 존재하지 않는 경우 예외를 던진다.")
         void TaskNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.updateTaskDetail(request))
@@ -136,7 +136,7 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("태스크가 존재하지 않는 경우 예외를 던진다.")
         void TaskNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(taskRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현))

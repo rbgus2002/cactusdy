@@ -8,12 +8,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.rule.domain.Rule;
-import ssu.groupstudy.domain.rule.dto.request.CreateRuleRequest;
-import ssu.groupstudy.domain.rule.repository.RuleRepository;
+import ssu.groupstudy.api.rule.vo.CreateRuleReqVo;
+import ssu.groupstudy.domain.rule.entity.RuleEntity;
+import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
-import ssu.groupstudy.domain.study.repository.StudyRepository;
-import ssu.groupstudy.global.constant.ResultCode;
+import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Optional;
 
@@ -27,16 +27,16 @@ class RuleServiceTest extends ServiceTest {
     private RuleService ruleService;
 
     @Mock
-    private RuleRepository ruleRepository;
+    private RuleEntityRepository ruleEntityRepository;
 
     @Mock
-    private StudyRepository studyRepository;
+    private StudyEntityRepository studyEntityRepository;
 
-    private Rule 규칙;
+    private RuleEntity 규칙;
 
     @BeforeEach
     void init(){
-        규칙 = new CreateRuleRequest(-1L, "detail").toEntity(알고리즘스터디);
+        규칙 = new CreateRuleReqVo(-1L, "detail").toEntity(알고리즘스터디);
         ReflectionTestUtils.setField(규칙, "id", 5L);
     }
 
@@ -46,10 +46,10 @@ class RuleServiceTest extends ServiceTest {
         @DisplayName("스터디가 존재하지 않으면 예외를 던진다")
         void fail_studyNotFound() {
             // given
-            doReturn(Optional.empty()).when(studyRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
 
             // when, then
-            assertThatThrownBy(() -> ruleService.createRule(new CreateRuleRequest(-1L, "detail")))
+            assertThatThrownBy(() -> ruleService.createRule(new CreateRuleReqVo(-1L, "detail")))
                     .isInstanceOf(StudyNotFoundException.class)
                     .hasMessage(ResultCode.STUDY_NOT_FOUND.getMessage());
         }
@@ -58,11 +58,11 @@ class RuleServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(알고리즘스터디)).when(studyRepository).findById(any(Long.class));
-            doReturn(규칙).when(ruleRepository).save(any(Rule.class));
+            doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
+            doReturn(규칙).when(ruleEntityRepository).save(any(RuleEntity.class));
 
             // when
-            Long ruleId = ruleService.createRule(new CreateRuleRequest(-1L, "detail"));
+            Long ruleId = ruleService.createRule(new CreateRuleReqVo(-1L, "detail"));
 
             // then
             assertThat(ruleId).isNotNull();
