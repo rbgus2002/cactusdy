@@ -2,7 +2,7 @@
 name: deployment template
 about: 배포용 템플릿
 title: "[Deploy] YYYY/MM/DD "
-labels: ''
+labels: 'Deployement'
 assignees: ''
 
 ---
