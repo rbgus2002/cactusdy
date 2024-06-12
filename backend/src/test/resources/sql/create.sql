@@ -20,6 +20,8 @@ create table if not exists authority
     primary key,
     role_name    varchar(255) not null,
     user_id      bigint       not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint FKr1wgeo077ok1nr1shx0t70tg8
         foreign key (user_id) references `user` (user_id)
 );
@@ -31,6 +33,8 @@ create table if not exists fcm_token
     activate_date datetime(6)  not null,
     token         varchar(255) not null,
     user_id       bigint       not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint FK8u9xsmd3agc2nn80tb16ouph4
         foreign key (user_id) references `user` (user_id)
 );
@@ -75,6 +79,8 @@ create table if not exists check_notice
         primary key,
     notice_id bigint not null,
     user_id   bigint not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint FKajbojoc8jmrv3j4xcmrpv688l
         foreign key (user_id) references `user` (user_id),
     constraint FKcnhxuf35g6dbj0s9tihgulfd
@@ -137,6 +143,8 @@ create table if not exists rel_user_round
     status_tag    varchar(20) not null,
     round_id      bigint      not null,
     user_id       bigint      not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint FKfa12r32ylmnl47houwtwek9ij
         foreign key (user_id) references `user` (user_id),
     constraint FKssy2n9lbn5sxtxugavyqkvvog
@@ -164,6 +172,8 @@ create table if not exists task
     done_yn       char         not null,
     task_type     varchar(20)  not null,
     user_round_id bigint       not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint FK8vl3vhkgegfpqrgle2wb3sp3t
         foreign key (user_round_id) references rel_user_round (user_round_id)
 );
@@ -176,6 +186,8 @@ create table if not exists feedback
     title         varchar(255) not null,
     contents      varchar(255) not null,
     user_id       bigint       not null,
+    create_date    datetime(6)  not null,
+    modified_date  datetime(6)  not null,
     constraint fk_user_id
     foreign key (user_id) references `user` (user_id)
 );
