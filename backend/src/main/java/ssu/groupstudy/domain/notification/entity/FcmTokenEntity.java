@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "fcm_token")
-public class FcmTokenEntity {
+public class FcmTokenEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fcm_token_id")

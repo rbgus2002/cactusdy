@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "authority")
-public class AuthorityEntity {
+public class AuthorityEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "authority_id")
@@ -24,7 +25,7 @@ public class AuthorityEntity {
     private String name;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private UserEntity user;
 
@@ -33,7 +34,7 @@ public class AuthorityEntity {
         this.user = user;
     }
 
-    public static AuthorityEntity init(UserEntity user){
+    public static AuthorityEntity init(UserEntity user) {
         return new AuthorityEntity("ROLE_USER", user);
     }
 }

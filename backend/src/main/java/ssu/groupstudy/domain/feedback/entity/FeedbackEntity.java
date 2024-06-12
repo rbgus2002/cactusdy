@@ -1,6 +1,10 @@
 package ssu.groupstudy.domain.feedback.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.common.enums.FeedbackType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
@@ -13,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Table(name = "feedback")
 @ToString
-public class FeedbackEntity {
+public class FeedbackEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id")

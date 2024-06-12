@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
@@ -18,7 +19,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.INVALID_TASK_ACCESS;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "task")
 @Getter
-public class TaskEntity {
+public class TaskEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -36,7 +37,7 @@ public class TaskEntity {
     private char doneYn;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="user_round_id", nullable = false)
+    @JoinColumn(name = "user_round_id", nullable = false)
     private RoundParticipantEntity roundParticipant;
 
     @Builder
@@ -47,7 +48,7 @@ public class TaskEntity {
         this.roundParticipant = roundParticipant;
     }
 
-    public static TaskEntity of(String detail, TaskType type, RoundParticipantEntity roundParticipant){
+    public static TaskEntity of(String detail, TaskType type, RoundParticipantEntity roundParticipant) {
         return TaskEntity.builder()
                 .detail(detail)
                 .taskType(type)
@@ -55,17 +56,17 @@ public class TaskEntity {
                 .build();
     }
 
-    public void validateAccess(RoundParticipantEntity roundParticipant){
-        if(!this.roundParticipant.equals(roundParticipant)){
+    public void validateAccess(RoundParticipantEntity roundParticipant) {
+        if (!this.roundParticipant.equals(roundParticipant)) {
             throw new InvalidRoundParticipantException(INVALID_TASK_ACCESS);
         }
     }
 
-    public void setDetail(String detail){
+    public void setDetail(String detail) {
         this.detail = detail;
     }
 
-    public char switchDoneYn(){
+    public char switchDoneYn() {
         return (doneYn == 'N') ? checkTask() : uncheckTask();
     }
 
@@ -79,15 +80,15 @@ public class TaskEntity {
         return doneYn;
     }
 
-    public boolean isSameTypeOf(TaskType type){
+    public boolean isSameTypeOf(TaskType type) {
         return taskType.isSameTypeOf(type);
     }
 
-    public boolean isDone(){
+    public boolean isDone() {
         return doneYn == 'Y';
     }
 
-    public StudyEntity getStudy(){
+    public StudyEntity getStudy() {
         return getRoundParticipant().getRound().getStudy();
     }
 }

@@ -3,9 +3,10 @@ package ssu.groupstudy.domain.round.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.common.enums.StatusTag;
-import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.common.enums.TaskType;
+import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "rel_user_round")
-public class RoundParticipantEntity {
+public class RoundParticipantEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_round_id")
@@ -81,7 +82,7 @@ public class RoundParticipantEntity {
         return Math.round(progress * 100.0) / 100.0;
     }
 
-    public boolean isAttendedOrExpectedOrLate(){
+    public boolean isAttendedOrExpectedOrLate() {
         return (this.statusTag == StatusTag.ATTENDANCE) || (this.statusTag == StatusTag.LATE);
     }
 }
