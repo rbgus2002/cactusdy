@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails { // [2024-06-13:최규현] TODO: 얜 어느 패키지에 있어야 할까
     private final UserEntity user;
 
     @Override
