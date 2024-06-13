@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ssu.groupstudy.domain.auth.service.CustomUserDetailService;
 import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
+import ssu.groupstudy.domain.common.enums.HttpHeader;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -57,13 +58,13 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        return request.getHeader(HttpHeader.AUTHORIZATION);
     }
 
     public boolean validateToken(String token) {
         try {
             // Bearer 검증
-            if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
+            if (!token.substring(0, HttpHeader.BEARER.length()).equalsIgnoreCase(HttpHeader.BEARER)) {
                 return false;
             } else {
                 token = token.split(" ")[1].trim();
