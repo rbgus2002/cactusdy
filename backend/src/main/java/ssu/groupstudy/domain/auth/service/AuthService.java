@@ -12,7 +12,7 @@ import ssu.groupstudy.api.user.vo.MessageReqVo;
 import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
 import ssu.groupstudy.api.user.vo.VerifyReqVo;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
-import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.auth.provider.JwtProvider;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;

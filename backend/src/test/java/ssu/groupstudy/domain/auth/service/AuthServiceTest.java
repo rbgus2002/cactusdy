@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
-import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.domain.auth.provider.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;

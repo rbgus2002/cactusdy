@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.auth.param.CustomUserDetails;
 import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.api.notice.vo.EditNoticeReqVo;
 import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;

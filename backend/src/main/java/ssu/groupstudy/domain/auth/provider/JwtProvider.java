@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.auth.security.jwt;
+package ssu.groupstudy.domain.auth.provider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

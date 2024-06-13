@@ -16,8 +16,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import ssu.groupstudy.domain.auth.security.jwt.JwtAuthenticationFilter;
-import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
+import ssu.groupstudy.api.common.filter.UserAuthenticationFilter;
+import ssu.groupstudy.domain.auth.provider.JwtProvider;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.api.common.vo.ErrorResVo;
 import ssu.groupstudy.api.common.vo.ResVo;
@@ -67,7 +67,7 @@ public class SecurityConfig {
                 .anyRequest().denyAll()
                 .and()
 
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new UserAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler() {

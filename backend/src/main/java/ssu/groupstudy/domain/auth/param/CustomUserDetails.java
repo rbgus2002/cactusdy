@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.auth.security;
+package ssu.groupstudy.domain.auth.param;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

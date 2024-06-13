@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.auth.param.CustomUserDetails;
 import ssu.groupstudy.api.study.vo.StudyCreateResVo;
 import ssu.groupstudy.api.study.vo.StudyInfoResVo;
 import ssu.groupstudy.api.study.vo.StudySummaryResVo;

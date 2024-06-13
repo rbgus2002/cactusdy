@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.auth.param.CustomUserDetails;
 import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.domain.comment.service.CommentService;
