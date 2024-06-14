@@ -140,7 +140,7 @@ public class AuthService {
 
     private String generateVerificationMessage(String phoneNumber) {
         String code = RandomStringUtils.randomNumeric(VERIFICATION_CODE_LENGTH);
-        saveCodeToRedis(code, phoneNumber);
+        redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES);
         return String.format("[뜨끔] 인증번호 : %s", code);
     }
 
@@ -150,29 +150,17 @@ public class AuthService {
         }
     }
 
-    private void saveCodeToRedis(String code, String phoneNumber) {
-        redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNumber
-    }
-
     public boolean verifyCode(VerifyReqVo request) {
-        String retrievedPhoneNumber = getPhoneNumberFromCode(request);
+        String retrievedPhoneNumber = redisUtils.getData(request.getCode());
         boolean isValidCode = isSamePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
         if (isValidCode) {
-            processVerificationSuccess(request.getCode());
+            redisUtils.deleteData(request.getCode());
         }
         return isValidCode;
     }
 
-    private String getPhoneNumberFromCode(VerifyReqVo request) {
-        return redisUtils.getData(request.getCode());
-    }
-
     private boolean isSamePhoneNumber(String requestPhoneNum, String redisPhoneNumber) {
         return requestPhoneNum.equals(redisPhoneNumber);
-    }
-
-    private void processVerificationSuccess(String key) {
-        redisUtils.deleteData(key);
     }
 
     @Transactional
