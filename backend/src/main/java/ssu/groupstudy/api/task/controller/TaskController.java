@@ -61,11 +61,10 @@ public class TaskController {
         return ResVo.success();
     }
 
-    @Operation(summary = "과제 수행 여부 변경", description = "과제 수행 여부를 체크하거나 언체크한다")
+    @Operation(summary = "과제 수행 여부 변경", description = "과제 수행 여부를 체크하거나 체크 해제한다")
     @PatchMapping("/check")
     public ResVo switchTask(@RequestParam Long taskId, @AuthenticationPrincipal CustomUserDetails userDetails){
         char doneYn = taskService.switchTask(taskId, userDetails.getUser());
         return DataResVo.of("doneYn", doneYn);
     }
-
 }

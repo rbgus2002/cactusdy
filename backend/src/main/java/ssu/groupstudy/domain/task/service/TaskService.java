@@ -100,13 +100,9 @@ public class TaskService {
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         char doneYn = task.switchDoneYn();
-        processNotification(task, user);
-        return doneYn;
-    }
-
-    private void processNotification(TaskEntity task, UserEntity user) {
         if (task.isDone()) {
             eventPublisher.publishEvent(new TaskDoneEvent(user, task));
         }
+        return doneYn;
     }
 }
