@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 @Configuration
 public class RedisConfig {
     @Value("${spring.redis.host}")
-    private String redisHost;
+    private String redisHost; // [2024-06-14:최규현] TODO: 추후 aws elasticache로 이관 예정
     @Value("${spring.redis.port}")
     private int redisPort;
 
