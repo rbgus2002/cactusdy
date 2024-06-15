@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notification.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.NotificationDataType;
@@ -43,6 +44,7 @@ public class PushListener {
     }
 
     @EventListener
+    @Async
     public void handleTaskDoneEvent(TaskDoneEvent event) {
         String title = buildMessage(TASK_DONE, event.getNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getTaskDetail(), DOUBLE_QUOTE);

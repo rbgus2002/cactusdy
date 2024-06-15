@@ -61,7 +61,12 @@ public class FcmUtils {
                 .putAllData(data)
                 .setTopic(topic)
                 .build();
-        FirebaseMessaging.getInstance().sendAsync(message);
+        try {
+            FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            log.error("## sendNotificationToTopic : error = {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
