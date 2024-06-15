@@ -90,10 +90,12 @@ public class ParticipantsService {
     }
 
     @Transactional
-    public void kickParticipant(UserEntity user, Long userId, Long studyId) {
+    public void kickParticipant(Long userId, Long targetUserId, Long studyId) {
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity targetUser = userEntityRepository.findById(userId)
+        UserEntity targetUser = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 

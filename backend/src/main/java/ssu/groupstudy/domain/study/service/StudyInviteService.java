@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
@@ -20,7 +21,8 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyInviteService {
+    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
@@ -40,7 +43,10 @@ public class StudyInviteService {
     private final int INVITE_CODE_LENGTH = 6;
 
     @Transactional
-    public Long inviteUser(UserEntity user, String inviteCode) {
+    public Long inviteUser(Long userId, String inviteCode) {
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+
         checkAddStudy(user);
 
         StudyEntity study = studyEntityRepository.findByInviteCode(inviteCode)
@@ -69,7 +75,9 @@ public class StudyInviteService {
     }
 
     @Transactional
-    public void leaveUser(UserEntity user, Long studyId) {
+    public void leaveUser(Long userId, Long studyId) {
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);

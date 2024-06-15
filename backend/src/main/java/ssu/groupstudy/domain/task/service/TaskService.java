@@ -4,23 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.api.task.vo.*;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
-import ssu.groupstudy.domain.common.enums.TaskType;
-import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
-import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
-import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
-import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
-import ssu.groupstudy.api.task.vo.TaskResVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,6 +31,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TaskService {
+    private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
@@ -96,17 +96,18 @@ public class TaskService {
     }
 
     @Transactional
-    public char switchTask(Long taskId, UserEntity user) {
+    public char switchTask(Long taskId, Long userId) {
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND)); // ThreadLocal 전략을 사용하여, 다른 쓰레드에 UserEntity 객체 넘기기 위해 별도로 조회함
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
-        char doneYn = task.switchDoneYn();
-        processNotification(task, user);
-        return doneYn;
-    }
+        StudyEntity study = task.getStudy();
+        RoundEntity round = task.getRoundParticipant().getRound();
 
-    private void processNotification(TaskEntity task, UserEntity user) {
+        char doneYn = task.switchDoneYn();
         if (task.isDone()) {
-            eventPublisher.publishEvent(new TaskDoneEvent(user, task));
+            eventPublisher.publishEvent(new TaskDoneEvent(user, task, study, round));
         }
+        return doneYn;
     }
 }

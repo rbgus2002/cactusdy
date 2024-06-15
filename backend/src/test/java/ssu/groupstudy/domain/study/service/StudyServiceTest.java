@@ -19,6 +19,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.S3Utils;
 
@@ -33,6 +34,8 @@ import static org.mockito.Mockito.doReturn;
 class StudyServiceTest extends ServiceTest {
     @InjectMocks
     private StudyService studyService;
+    @Mock
+    private UserEntityRepository userEntityRepository;
     @Mock
     private StudyInviteService studyInviteService;
     @Mock
@@ -56,6 +59,7 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("스터디를 생성하면서 스터디 색상을 지정한다.")
         void setColor() throws IOException {
             // given
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
             doReturn(알고리즘스터디).when(studyEntityRepository).save(any(StudyEntity.class));
             doReturn(RoundEntity.builder()
@@ -63,7 +67,7 @@ class StudyServiceTest extends ServiceTest {
                     .build()).when(roundEntityRepository).save(any(RoundEntity.class));
 
             // when
-            studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현);
+            studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현.getUserId());
 
             // then
             ParticipantEntity participant = 알고리즘스터디.getParticipantList().get(0);

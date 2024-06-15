@@ -5,20 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.comment.entity.CommentEntity;
-import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
 import ssu.groupstudy.api.comment.vo.ChildCommentInfoResVo;
-import ssu.groupstudy.domain.comment.param.CommentDto;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
+import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
+import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
+import ssu.groupstudy.domain.comment.param.CommentDto;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,19 +33,23 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class CommentService {
+    private final UserEntityRepository userEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
 
     @Transactional
-    public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
+    public Long createComment(CreateCommentReqVo dto, Long userId) {
+        UserEntity writer = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        StudyEntity study = notice.getStudy();
         validateUser(writer, notice);
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new CommentCreationEvent(notice, comment));
+        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice, study, comment));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         return commentEntityRepository.save(comment).getCommentId();

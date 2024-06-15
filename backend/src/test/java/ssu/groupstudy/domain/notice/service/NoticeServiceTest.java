@@ -22,6 +22,7 @@ import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ class NoticeServiceTest extends ServiceTest {
     @InjectMocks
     private NoticeService noticeService;
     @Mock
+    private UserEntityRepository userEntityRepository;
+    @Mock
     private StudyEntityRepository studyEntityRepository;
     @Mock
     private NoticeEntityRepository noticeEntityRepository;
@@ -52,26 +55,15 @@ class NoticeServiceTest extends ServiceTest {
     @Nested
     class createNotice {
         @Test
-        @DisplayName("스터디가 존재하지 않는 경우 예외를 던진다")
-        void fail_studyNotFound() {
-            // given
-            doReturn(Optional.empty()).when(studyEntityRepository).findById(any(Long.class));
-
-            // when, then
-            assertThatThrownBy(() -> noticeService.createNotice(공지사항1CreateRequest, 최규현))
-                    .isInstanceOf(StudyNotFoundException.class)
-                    .hasMessage(STUDY_NOT_FOUND.getMessage());
-        }
-
-        @Test
         @DisplayName("성공")
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeEntityRepository).save(any(NoticeEntity.class));
 
             // when
-            NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(공지사항1CreateRequest, 최규현);
+            NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(공지사항1CreateRequest, 최규현.getUserId());
 
             // then
             softly.assertThat(noticeInfoResVo.getTitle()).isEqualTo(공지사항1CreateRequest.getTitle());

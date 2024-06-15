@@ -8,15 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
 import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
-import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
-import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.api.notice.vo.EditNoticeReqVo;
 import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
+import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
+import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
+import ssu.groupstudy.domain.notice.entity.NoticeEntity;
+import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.param.NoticeSummaries;
 import ssu.groupstudy.domain.notice.param.NoticeSummary;
-import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
@@ -24,31 +24,35 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.domain.user.exception.UserNotFoundException;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.domain.common.enums.ResultCode.NOTICE_NOT_FOUND;
-import static ssu.groupstudy.domain.common.enums.ResultCode.STUDY_NOT_FOUND;
+import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
+    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, UserEntity writer) {
+    public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, Long userId) {
         StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
+        UserEntity writer = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 
-        eventPublisher.publishEvent(new NoticeCreationEvent(study, notice));
+        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study, notice));
         eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
 
         return NoticeInfoResVo.of(notice, writer);

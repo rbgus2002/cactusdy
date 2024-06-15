@@ -40,26 +40,15 @@ class CommentServiceTest extends ServiceTest {
     @Nested
     class CreateNotice{
         @Test
-        @DisplayName("존재하지 않는 공지사항에 댓글을 작성하면 예외를 던진다")
-        void noticeNotFound(){
-            // given, when
-            doReturn(Optional.empty()).when(noticeEntityRepository).findById(any(Long.class));
-
-            // then
-            assertThatThrownBy(() -> commentService.createComment(댓글1CreateRequest, 최규현))
-                    .isInstanceOf(NoticeNotFoundException.class)
-                    .hasMessage(ResultCode.NOTICE_NOT_FOUND.getMessage());
-        }
-        
-        @Test
         @DisplayName("댓글을 생성한다")
         void createNotice(){
             // given
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.of(공지사항1)).when(noticeEntityRepository).findById(any(Long.class));
             doReturn(댓글1).when(commentEntityRepository).save(any(CommentEntity.class));
 
             // when
-            Long commentId = commentService.createComment(댓글1CreateRequest, 최규현);
+            Long commentId = commentService.createComment(댓글1CreateRequest, 최규현.getUserId());
 
             // then
             assertThat(commentId).isNotNull();

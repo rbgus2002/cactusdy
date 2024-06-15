@@ -15,6 +15,7 @@ import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
 import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.Optional;
 
@@ -26,6 +27,8 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 class TaskServiceTest extends ServiceTest {
     @InjectMocks
     private TaskService taskService;
+    @Mock
+    private UserEntityRepository userEntityRepository;
     @Mock
     private RoundEntityRepository roundEntityRepository;
     @Mock
@@ -136,10 +139,11 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("태스크가 존재하지 않는 경우 예외를 던진다.")
         void TaskNotFound(){
             // given, when
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현))
+            assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현.getUserId()))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
         }
