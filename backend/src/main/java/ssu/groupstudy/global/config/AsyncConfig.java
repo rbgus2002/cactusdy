@@ -1,4 +1,4 @@
-package ssu.groupstudy.global.config.converter;
+package ssu.groupstudy.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;

@@ -32,7 +32,7 @@ public class StudyController {
     public ResVo register(@Valid @RequestPart("dto") CreateStudyReqVo dto,
                           @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                           @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
-        final StudyCreateResVo study = studyService.createStudy(dto, profileImage, userDetails.getUser());
+        final StudyCreateResVo study = studyService.createStudy(dto, profileImage, userDetails.getUser().getUserId());
         return DataResVo.of("study", study);
     }
 

@@ -26,6 +26,7 @@ public class PushListener {
     private final FcmUtils fcmUtils;
 
     @EventListener
+    @Async
     public void handleCommentCreationEvent(CommentCreationEvent event) {
         String title = buildMessage(COMMENT, event.getCommentWriterNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getCommentContents(), DOUBLE_QUOTE);
@@ -35,6 +36,7 @@ public class PushListener {
     }
 
     @EventListener
+    @Async
     public void handleNoticeCreationEvent(NoticeCreationEvent event) {
         String title = buildMessage(NOTICE, event.getNoticeWriterNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getNoticeTitle(), DOUBLE_QUOTE);

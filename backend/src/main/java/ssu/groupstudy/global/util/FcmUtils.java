@@ -49,7 +49,6 @@ public class FcmUtils {
         FirebaseMessaging.getInstance().sendEachForMulticastAsync(message);
     }
 
-    // TODO : 직접 @Async로 구현하고 실패하는 토큰의 경우 delete 하도록 구현
     public void sendNotificationToTopic(String title, String body, TopicCode code, Long id, Map<String, String> data){
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
         String topic = TopicCode.handleTopicString(code, id);
@@ -71,11 +70,21 @@ public class FcmUtils {
 
     public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
         String topic = TopicCode.handleTopicString(code, id);
-        FirebaseMessaging.getInstance().subscribeToTopicAsync(tokens, topic);
+        try {
+            FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic);
+        } catch (FirebaseMessagingException e) {
+            log.error("## subscribeTopicFor : error = {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public void unsubscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
         String topic = TopicCode.handleTopicString(code, id);
-        FirebaseMessaging.getInstance().unsubscribeFromTopicAsync(tokens, topic);
+        try {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(tokens, topic);
+        } catch (FirebaseMessagingException e) {
+            log.error("## unsubscribeTopicFor : error = {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

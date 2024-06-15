@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notification.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
@@ -23,6 +24,7 @@ public class SubscribeListener {
     private final FcmUtils fcmUtils;
 
     @EventListener
+    @Async
     public void handleAllUserTopicSubscribeEvent(AllUserTopicSubscribeEvent event) {
         log.info("## handleAllUserTopicSubscribeEvent : ");
         UserEntity user = event.getUser();

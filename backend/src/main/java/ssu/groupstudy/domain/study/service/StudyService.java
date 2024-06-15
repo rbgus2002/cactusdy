@@ -55,7 +55,10 @@ public class StudyService {
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
-    public StudyCreateResVo createStudy(CreateStudyReqVo dto, MultipartFile image, UserEntity user) throws IOException {
+    public StudyCreateResVo createStudy(CreateStudyReqVo dto, MultipartFile image, Long userId) throws IOException {
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+
         checkParticipatingStudyMoreThanLimit(user);
         String inviteCode = studyInviteService.generateUniqueInviteCode();
         StudyEntity study = studyEntityRepository.save(dto.toEntity(user, inviteCode));
