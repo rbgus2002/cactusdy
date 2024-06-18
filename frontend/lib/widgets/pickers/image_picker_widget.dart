@@ -68,10 +68,14 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               shape: BoxShape.circle,
               color: context.extraColors.grey000,
               border: Border.all(color: context.extraColors.grey200!, width: 2),),
-            child: Icon(
-              CustomIcons.camera,
-              color: context.extraColors.grey400,
-              size: _iconSize,),),)
+            child: InkWell(
+              onTap: pickImage,
+              splashColor: Colors.transparent,
+              child: Icon(
+                CustomIcons.camera,
+                color: context.extraColors.grey400,
+                size: _iconSize,),),
+          ),),
       ],
     );
   }
