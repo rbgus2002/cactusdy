@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:groupstudy/services/logger.dart';
 
+@Deprecated("This feature should be moved to BackEnd")
 class LazyUpdateController<T> {
   static Logger logger = Logger('lazyUpdateController');
 

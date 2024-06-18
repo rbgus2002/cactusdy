@@ -38,18 +38,7 @@ class TaskCheckBox extends StatefulWidget {
 }
 
 class _TaskCheckBoxState extends State<TaskCheckBox> {
-  late final LazyUpdateController<bool> _lazyUpdateController;
   static const double _iconSize = 14;
-  static const int _waitingTime = 3; // 3 sec
-
-  @override
-  void initState() {
-    super.initState();
-
-    _lazyUpdateController = LazyUpdateController(
-        initState: widget.task.isDone,
-        onUpdate: widget.onUpdate);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +70,6 @@ class _TaskCheckBoxState extends State<TaskCheckBox> {
     );
   }
 
-  @override
-  void dispose() {
-    _lazyUpdateController.update();
-    super.dispose();
-  }
-
   void switchState() {
     if (widget.enable) {
       setState(() {
@@ -97,8 +80,7 @@ class _TaskCheckBoxState extends State<TaskCheckBox> {
           widget.onClick!();
         }
 
-        _lazyUpdateController.lazyUpdate(
-            widget.task.isDone, _waitingTime,);
+        widget.onUpdate();
       });
     }
   }
