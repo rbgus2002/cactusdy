@@ -34,7 +34,7 @@ class TimeUtility {
       return context.local.beforeOf('${difference.inHours}${context.local.hour}');
     }
 
-    else if (nowTime.day - dateTime.day < 2) {
+    else if (difference.inDays < 2) {
       return context.local.yesterday;
     }
 
