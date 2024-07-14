@@ -15,7 +15,7 @@ import ssu.groupstudy.global.util.FcmUtils;
 
 import java.util.Map;
 
-import static ssu.groupstudy.domain.notification.NotificationConstants.*;
+import static ssu.groupstudy.domain.common.constants.NotificationConstants.*;
 import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 
 @Component

@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 프로필 편집", description = "사용자의 프로필 이미지가 변하지 않는 경우 null로 보내야 한다")
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ResVo editUser(
             @PathVariable Long userId,
             @RequestParam String nickname,
@@ -53,17 +53,42 @@ public class UserController {
         return DataResVo.of("user", UserInfoResVo.from(user));
     }
 
-//    @Operation(summary = "사용자 탈퇴")
-//    @DeleteMapping
-//    public ResVo removeUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
-//        Long userId = userService.removeUser(userDetails.toUserParam());
-//        return DataResVo.of("userId", userId);
-//    }
-//
-//    @Operation(summary = "사용자가 활동한 시간을 갱신한다", description = "홈화면 갱신 시에 함께 호출된다")
-//    @PatchMapping("/activate-date")
-//    public ResVo updateActivateDate(@AuthenticationPrincipal CustomUserDetails userDetails) {
-//        userService.updateActivateDate(userDetails.toUserParam());
-//        return ResVo.success();
-//    }
+    @Operation(summary = "사용자 탈퇴")
+    @DeleteMapping
+    @Deprecated
+    public ResVo removeUser(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        userService.removeUser(userDetails.getUser().getUserId());
+        return DataResVo.of("userId", userDetails.getUser().getUserId());
+    }
+
+    @Operation(summary = "사용자 탈퇴")
+    @DeleteMapping("/{userId}")
+    public ResVo removeUser(
+            @PathVariable Long userId
+    ) {
+        userService.removeUser(userId);
+        return DataResVo.of("userId", userId);
+    }
+
+    @Operation(summary = "사용자 활동시간 갱신", description = "홈화면 갱신 시에 함께 호출된다")
+    @PatchMapping("/activate-date")
+    @Deprecated
+    public ResVo updateActivateDate(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        userService.updateActivateDate(userDetails.getUser().getUserId());
+        return ResVo.success();
+    }
+
+    @Operation(summary = "사용자가 활동한 시간을 갱신한다", description = "홈화면 갱신 시에 함께 호출된다")
+    @PatchMapping("/{userId}/activate-date")
+    public ResVo updateActivateDate(
+            @PathVariable Long userId
+    ) {
+        userService.updateActivateDate(userId);
+        return ResVo.success();
+    }
+
 }

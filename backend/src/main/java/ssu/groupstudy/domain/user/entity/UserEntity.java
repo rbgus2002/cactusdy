@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
+import static ssu.groupstudy.domain.common.constants.StringConstants.DASH;
 
 
 @Entity
@@ -139,17 +140,14 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         fcmTokens.remove(newToken);
     }
 
-    public void editProfile(String nickname, String statusMessage) {
-        this.nickname = nickname;
-        this.statusMessage = statusMessage;
-    }
-
     public void deleteUser() {
-        this.phoneNumber = "-";
-        this.editProfile("-", "-");
+        this.phoneNumber = DASH;
+        this.nickname = DASH;
+        this.statusMessage = DASH;
         this.updatePicture(null);
+
         this.fcmTokens.clear();
-        delete();
+        this.delete();
     }
 }
 

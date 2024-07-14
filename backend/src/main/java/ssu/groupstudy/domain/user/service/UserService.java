@@ -36,13 +36,16 @@ public class UserService {
     }
 
     @Transactional
-    public Long removeUser(UserEntity user) {
-        user.deleteUser();
-        return user.getUserId();
+    public void removeUser(Long userId) {
+        UserEntity userEntity = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+        userEntity.deleteUser();
     }
 
     @Transactional
-    public void updateActivateDate(UserEntity user) {
-        user.updateActivateDate();
+    public void updateActivateDate(Long userId) {
+        UserEntity userEntity = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+        userEntity.updateActivateDate();
     }
 }

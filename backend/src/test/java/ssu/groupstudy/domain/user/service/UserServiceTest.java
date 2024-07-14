@@ -24,7 +24,7 @@ class UserServiceTest extends ServiceTest {
         void deleteUserInfo(){
             // given
             // when
-            userService.removeUser(최규현);
+            userService.removeUser(최규현.getUserId());
 
             // then
             softly.assertThat(최규현.isDeleted()).isTrue();
@@ -42,7 +42,7 @@ class UserServiceTest extends ServiceTest {
             최규현.addFcmToken("token3");
 
             // when
-            userService.removeUser(최규현);
+            userService.removeUser(최규현.getUserId());
 
             // then
             softly.assertThat(최규현.getFcmTokens().size()).isEqualTo(0);
