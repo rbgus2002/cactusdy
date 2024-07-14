@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.api.user.vo.MessageReqVo;
 import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
-import ssu.groupstudy.api.user.vo.VerifyReqVo;
+import ssu.groupstudy.api.user.vo.UserSignUpVerifyReqVo;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
@@ -154,7 +154,7 @@ public class AuthService {
         redisUtils.setDataExpire(code, phoneNumber, THREE_MINUTES); // KEY : code, VALUE : phoneNumber
     }
 
-    public boolean verifyCode(VerifyReqVo request) {
+    public boolean verifyCode(UserSignUpVerifyReqVo request) {
         String retrievedPhoneNumber = getPhoneNumberFromCode(request);
         boolean isValidCode = isSamePhoneNumber(request.getPhoneNumber(), retrievedPhoneNumber);
         if (isValidCode) {
@@ -163,7 +163,7 @@ public class AuthService {
         return isValidCode;
     }
 
-    private String getPhoneNumberFromCode(VerifyReqVo request) {
+    private String getPhoneNumberFromCode(UserSignUpVerifyReqVo request) {
         return redisUtils.getData(request.getCode());
     }
 

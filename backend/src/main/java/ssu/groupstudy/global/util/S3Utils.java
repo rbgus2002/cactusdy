@@ -22,7 +22,9 @@ public class S3Utils {
     private String imageBucket;
 
     public String uploadProfileImage(MultipartFile image, S3Code code, Long id) throws IOException {
-        log.info("## uploadProfileImage ");
+        if (image == null) {
+            return null;
+        }
         ObjectMetadata metadata = createMetadataForFile(image);
         String imageName = generateImageName(code, id);
         amazonS3.putObject(imageBucket, imageName, image.getInputStream(), metadata);

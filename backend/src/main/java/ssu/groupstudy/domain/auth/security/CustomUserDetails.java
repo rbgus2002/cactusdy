@@ -6,12 +6,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.domain.user.param.UserParam;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private final UserEntity user;
 
@@ -54,5 +55,9 @@ public class CustomUserDetails implements UserDetails {
 
     public Long getId() {
         return user.getUserId();
+    }
+
+    public UserParam toUserParam() {
+        return UserParam.from(user);
     }
 }

@@ -58,7 +58,8 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
     private String phoneModel;
 
     @Builder
-    public UserEntity(String name, String nickname, String phoneNumber, String password) {
+    public UserEntity(Long userId, String name, String nickname, String phoneNumber, String password) {
+        this.userId = userId;
         this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
@@ -101,6 +102,12 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
 
     public void updatePicture(String picture) {
         this.picture = picture;
+    }
+
+    public void updateProfile(String nickname, String statusMessage, String imageUrl) {
+        this.nickname = nickname;
+        this.statusMessage = statusMessage;
+        this.picture = imageUrl;
     }
 
     public void setPassword(String password) {

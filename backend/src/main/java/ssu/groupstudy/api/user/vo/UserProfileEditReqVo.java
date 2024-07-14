@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class EditUserReqVo {
+public class UserProfileEditReqVo {
     private String nickname;
     private String statusMessage;
 }

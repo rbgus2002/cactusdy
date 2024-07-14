@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.api.user.vo.MessageReqVo;
 import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
-import ssu.groupstudy.api.user.vo.VerifyReqVo;
+import ssu.groupstudy.api.user.vo.UserSignUpVerifyReqVo;
 import ssu.groupstudy.domain.auth.service.AuthService;
 import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.api.user.vo.SignUpReqVo;
@@ -48,7 +48,7 @@ public class UserAuthenticationController {
 
     @Operation(summary = "인증코드 검증", description = "발급받은 인증번호가 올바른지 검사한다.")
     @PostMapping("/verify")
-    public ResVo verifyCode(@Valid @RequestBody VerifyReqVo request) {
+    public ResVo verifyCode(@Valid @RequestBody UserSignUpVerifyReqVo request) {
         boolean isSuccess = authService.verifyCode(request);
         return DataResVo.of("isSuccess", isSuccess);
     }
