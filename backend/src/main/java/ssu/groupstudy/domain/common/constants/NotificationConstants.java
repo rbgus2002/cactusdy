@@ -1,4 +1,4 @@
-package ssu.groupstudy.domain.notification;
+package ssu.groupstudy.domain.common.constants;
 
 public class NotificationConstants {
     public static final String DOUBLE_QUOTE = "\"";

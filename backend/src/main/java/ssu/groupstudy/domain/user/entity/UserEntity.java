@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
+import static ssu.groupstudy.domain.common.constants.StringConstants.DASH;
 
 
 @Entity
@@ -58,7 +59,8 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
     private String phoneModel;
 
     @Builder
-    public UserEntity(String name, String nickname, String phoneNumber, String password) {
+    public UserEntity(Long userId, String name, String nickname, String phoneNumber, String password) {
+        this.userId = userId;
         this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
@@ -103,6 +105,12 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.picture = picture;
     }
 
+    public void updateProfile(String nickname, String statusMessage, String imageUrl) {
+        this.nickname = nickname;
+        this.statusMessage = statusMessage;
+        this.picture = imageUrl;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -132,17 +140,14 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         fcmTokens.remove(newToken);
     }
 
-    public void editProfile(String nickname, String statusMessage) {
-        this.nickname = nickname;
-        this.statusMessage = statusMessage;
-    }
-
     public void deleteUser() {
-        this.phoneNumber = "-";
-        this.editProfile("-", "-");
+        this.phoneNumber = DASH;
+        this.nickname = DASH;
+        this.statusMessage = DASH;
         this.updatePicture(null);
+
         this.fcmTokens.clear();
-        delete();
+        this.delete();
     }
 }
 
