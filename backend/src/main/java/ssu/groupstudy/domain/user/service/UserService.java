@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.param.UserParam;
@@ -20,7 +21,10 @@ import java.io.IOException;
 @Slf4j
 public class UserService {
     private final ImageManager imageManager;
+    private final FcmTokenService fcmTokenService;
     private final UserEntityRepository userEntityRepository;
+
+
 
     @Transactional
     public UserParam editUser(Long userId, String nickname, String statusMessage, MultipartFile image) throws IOException {
@@ -37,7 +41,10 @@ public class UserService {
     public void removeUser(Long userId) {
         UserEntity userEntity = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-        userEntity.deleteUser();
+
+        fcmTokenService.deleteAllFcmToken(userEntity);
+        userEntity.delete();
+
     }
 
     @Transactional

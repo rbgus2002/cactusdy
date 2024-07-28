@@ -105,28 +105,8 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.picture = picture;
     }
 
-    public void updateProfile(String nickname, String statusMessage, String imageUrl) {
-        this.nickname = nickname;
-        this.statusMessage = statusMessage;
-        this.picture = imageUrl;
-    }
-
-    public void setPassword(String password) {
+    public void resetPassword(String password) {
         this.password = password;
-    }
-
-    public boolean existFcmToken(String token) {
-        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
-        return fcmTokens.contains(newToken);
-    }
-
-    public void addFcmToken(String token) {
-        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
-        fcmTokens.stream()
-                .filter(fcmToken -> fcmToken.equals(newToken))
-                .findFirst()
-                .ifPresent(FcmTokenEntity::updateActivateDate);
-        fcmTokens.add(newToken);
     }
 
     public List<String> getFcmTokenList() {
@@ -135,19 +115,13 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
                 .collect(Collectors.toList());
     }
 
-    public void deleteFcmToken(String token) {
-        FcmTokenEntity newToken = FcmTokenEntity.from(this, token);
-        fcmTokens.remove(newToken);
-    }
-
-    public void deleteUser() {
+    @Override
+    public void delete() {
         this.phoneNumber = DASH;
         this.nickname = DASH;
         this.statusMessage = DASH;
         this.updatePicture(null);
-
-        this.fcmTokens.clear();
-        this.delete();
+        super.delete();
     }
 }
 
