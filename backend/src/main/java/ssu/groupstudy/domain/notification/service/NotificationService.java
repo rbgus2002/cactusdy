@@ -3,14 +3,13 @@ package ssu.groupstudy.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
+import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.FcmUtils;
 
 import java.util.Map;
@@ -22,7 +21,6 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Transactional(readOnly = true)
 public class NotificationService {
     private final UserEntityRepository userEntityRepository;
-    private final StudyEntityRepository studyEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
 
@@ -55,10 +53,5 @@ public class NotificationService {
 
         Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "-");
         fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), title, body, data);
-    }
-
-    @Transactional
-    public void deleteFcmToken(UserEntity user, String token) {
-        user.deleteFcmToken(token);
     }
 }
