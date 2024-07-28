@@ -66,24 +66,28 @@ public class AuthService {
     @Transactional
     public Long signUp(SignUpReqVo request, MultipartFile image) throws IOException {
         checkPhoneNumberExist(request.getPhoneNumber());
-        UserEntity user = processUserSaving(request);
-        imageManager.updateImage(user, image);
+
+        UserEntity user = processUserSaving(request, image);
+
         exampleStudyCreateService.createExampleStudy(user);
 
         return user.getUserId();
-    }
-
-    private UserEntity processUserSaving(SignUpReqVo request) {
-        String password = passwordEncoder.encode(request.getPassword());
-        UserEntity user = request.toEntity(password);
-        user.addUserRole();
-        return userEntityRepository.save(user);
     }
 
     private void checkPhoneNumberExist(String phoneNumber) {
         if (userEntityRepository.existsByPhoneNumber(phoneNumber)) {
             throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
         }
+    }
+
+    private UserEntity processUserSaving(SignUpReqVo request, MultipartFile image) throws IOException {
+        String password = passwordEncoder.encode(request.getPassword());
+        UserEntity user = request.toEntity(password);
+        user.addUserRole();
+        user = userEntityRepository.save(user);
+
+        imageManager.updateImage(user, image);
+        return user;
     }
 
     public void sendMessageToSignUp(MessageReqVo request) {
