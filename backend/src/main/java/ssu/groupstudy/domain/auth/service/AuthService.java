@@ -3,36 +3,25 @@ package ssu.groupstudy.domain.auth.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.api.user.vo.MessageReqVo;
-import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
-import ssu.groupstudy.api.user.vo.UserSignUpVerifyReqVo;
+import ssu.groupstudy.api.user.vo.*;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
-import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.entity.ParticipantEntity;
-import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
+import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.notification.service.FcmTokenService;
+import ssu.groupstudy.domain.notification.service.FcmTopicSubscribeService;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
-import ssu.groupstudy.api.user.vo.SignUpReqVo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.api.user.vo.SignInReqVo;
-import ssu.groupstudy.api.user.vo.SignInResVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
-import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,14 +29,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthService {
     private final UserEntityRepository userEntityRepository;
-    private final ParticipantEntityRepository participantEntityRepository;
+    private final FcmTokenService fcmTokenService;
+    private final FcmTopicSubscribeService fcmTopicSubscribeService;
     private final ExampleStudyCreateService exampleStudyCreateService;
+
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final MessageUtils messageUtils;
-    private final RedisUtils redisUtils;
+    private final RedisUtils redisUtils; // [2024-07-28:최규현] TODO: @Cacheable 적용
     private final ImageManager imageManager;
-    private final ApplicationEventPublisher eventPublisher;
     private final Long THREE_MINUTES = 60 * 3L;
     private final int VERIFICATION_CODE_LENGTH = 6;
 
@@ -56,46 +46,18 @@ public class AuthService {
     public SignInResVo signIn(SignInReqVo request) {
         UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
-        validateLogin(request, user);
-        handleSuccessfulLogin(request, user);
+        validatePassword(request.getPassword(), user.getPassword());
+
+        fcmTokenService.saveFcmToken(request.getFcmToken(), user);
+        fcmTopicSubscribeService.subscribeAllUserTopic(user);
+        fcmTopicSubscribeService.subscribeParticipatingStudiesTopic(user);
+
         return SignInResVo.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
     }
 
-    private void validateLogin(SignInReqVo request, UserEntity user) {
-        validatePassword(request, user);
-        validateDelete(user);
-    }
-
-    private void validatePassword(SignInReqVo request, UserEntity user) {
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+    private void validatePassword(String requestPassword, String userPassword) {
+        if (!passwordEncoder.matches(requestPassword, userPassword)) {
             throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
-        }
-    }
-
-    private void validateDelete(UserEntity user) {
-        if (user.isDeleted()) {
-            throw new InvalidLoginException(ResultCode.INVALID_LOGIN);
-        }
-    }
-
-    private void handleSuccessfulLogin(SignInReqVo request, UserEntity user) {
-        handleFcmToken(request, user);
-    }
-
-    private void handleFcmToken(SignInReqVo request, UserEntity user) {
-        if(!user.existFcmToken(request.getFcmToken())){
-            user.addFcmToken(request.getFcmToken());
-            eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
-            subscribeParticipatingStudies(user);
-        }
-    }
-
-    private void subscribeParticipatingStudies(UserEntity user) {
-        List<StudyEntity> participatingStudies = participantEntityRepository.findByUserOrderByCreateDate(user).stream()
-                .map(ParticipantEntity::getStudy)
-                .collect(Collectors.toList());
-        for (StudyEntity study : participatingStudies) {
-            eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
         }
     }
 
@@ -180,6 +142,6 @@ public class AuthService {
         UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.USER_NOT_FOUND));
         String password = passwordEncoder.encode(request.getNewPassword());
-        user.setPassword(password);
+        user.resetPassword(password);
     }
 }

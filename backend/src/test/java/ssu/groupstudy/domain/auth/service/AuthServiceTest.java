@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.notification.service.FcmTopicSubscribeService;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
@@ -38,6 +39,8 @@ class AuthServiceTest extends ServiceTest {
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
     private FcmTokenService fcmTokenService;
+    @Mock
+    private FcmTopicSubscribeService fcmTopicSubscribeService;
     @Mock
     private ExampleStudyCreateService exampleStudyCreateService;
     @Mock
