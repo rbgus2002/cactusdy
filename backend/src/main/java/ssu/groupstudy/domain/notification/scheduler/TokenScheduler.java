@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class TokenScheduler {
     private final FcmTokenEntityRepository fcmTokenEntityRepository;
 
-    @Scheduled(cron = "0 0 2 10,25 * ?", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 2 10,25 * ?", zone = "Asia/Seoul") // [2024-07-28:최규현] TODO: lazy loading이 아닌 직접 query로 가져오기
     public void deleteExpiredToken() {
         log.info("deleteExpiredToken() : start {}", LocalDateTime.now());
         List<FcmTokenEntity> expiredFcmTokens = fcmTokenEntityRepository.findAll().stream()
