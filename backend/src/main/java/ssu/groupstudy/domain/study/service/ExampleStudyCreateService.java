@@ -36,18 +36,15 @@ public class ExampleStudyCreateService {
     @Transactional
     public void createExampleStudy(UserEntity user) {
         String inviteCode = studyInviteService.generateUniqueInviteCode();
-        StudyEntity study = StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", ColorCode.DEFAULT.getHex(), user, inviteCode);
-        StudyEntity studyEntity = studyEntityRepository.save(study);
-        createExampleOthers(user, studyEntity);
+        StudyEntity studyEntity = studyEntityRepository.save(
+                StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", ColorCode.DEFAULT.getHex(), user, inviteCode)
+        );
+        studyEntity.updatePicture("https://groupstudy-profile-image.s3.ap-northeast-2.amazonaws.com/profile/study/120/313c5127-307a-4ffb-8894-822f2e5505f8");
 
-        // [2024-06-10:최규현] TODO: default 이미지 추가 후 주석 해제
-//        studyEntity.updatePicture("https://groupstudy-image.s3.ap-northeast-2.amazonaws.com/profile/study/12/4de854d8-80bd-40f5-a8fe-d60bd28de786");
-    }
+        createExampleNotice(user, studyEntity);
+        createExampleRules(studyEntity);
+        createExampleRounds(studyEntity);
 
-    private void createExampleOthers(UserEntity user, StudyEntity study) {
-        createExampleNotice(user, study);
-        createExampleRules(study);
-        createExampleRounds(study);
     }
 
     private void createExampleNotice(UserEntity user, StudyEntity study) {

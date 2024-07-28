@@ -3,7 +3,7 @@ package ssu.groupstudy.api.user.vo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.domain.auth.param.JwtTokenParam;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,7 +16,7 @@ public class SignInResVo {
         this.token = token;
     }
 
-    public static SignInResVo of(UserEntity user, String token){
-        return new SignInResVo(user.getUserId(), token);
+    public static SignInResVo of(JwtTokenParam jwtTokenParam) {
+        return new SignInResVo(jwtTokenParam.getUserId(), jwtTokenParam.getJwtToken());
     }
 }

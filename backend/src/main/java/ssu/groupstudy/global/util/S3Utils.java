@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.common.enums.S3Code;
+import ssu.groupstudy.domain.common.enums.S3TypeCode;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class S3Utils {
     @Value("${cloud.aws.s3.bucket}")
     private String imageBucket;
 
-    public String uploadProfileImage(MultipartFile image, S3Code code, Long id) throws IOException {
+    public String uploadProfileImage(MultipartFile image, S3TypeCode code, Long id) throws IOException {
         if (image == null) {
             return null;
         }
@@ -38,7 +38,7 @@ public class S3Utils {
         return metadata;
     }
 
-    private String generateImageName(S3Code code, Long id) {
+    private String generateImageName(S3TypeCode code, Long id) {
         return String.format(code.getFormat(), id, UUID.randomUUID());
     }
 }

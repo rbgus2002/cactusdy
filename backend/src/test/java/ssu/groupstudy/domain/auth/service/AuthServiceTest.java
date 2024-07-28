@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.ServiceTest;
+import ssu.groupstudy.domain.notification.service.FcmTopicSubscribeService;
+import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -30,24 +32,29 @@ import static org.mockito.Mockito.doReturn;
 class AuthServiceTest extends ServiceTest {
     @InjectMocks
     private AuthService authService;
-    @Mock
-    private ExampleStudyCreateService exampleStudyCreateService;
+
     @Mock
     private UserEntityRepository userEntityRepository;
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
-    private MessageUtils messageUtils;
+    private FcmTokenService fcmTokenService;
+    @Mock
+    private FcmTopicSubscribeService fcmTopicSubscribeService;
+    @Mock
+    private ExampleStudyCreateService exampleStudyCreateService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private JwtProvider jwtProvider;
     @Mock
+    private MessageUtils messageUtils;
+    @Mock
+    private ImageManager imageManager;
+    @Mock
     private S3Utils s3Utils;
     @Mock
     private ApplicationEventPublisher eventPublisher;
-    @Mock
-    private ImageManager imageManager;
 
 
     @Nested
@@ -108,7 +115,7 @@ class AuthServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("비밀번호가 일치하지 않으면 로그인에 실패한다.")
-        void passwordInvalid(){
+        void passwordInvalid() {
             // given
             // when
             doReturn(Optional.of(최규현)).when(userEntityRepository).findByPhoneNumber(any(String.class));
@@ -117,21 +124,6 @@ class AuthServiceTest extends ServiceTest {
             softly.assertThatThrownBy(() -> authService.signIn(requestInvalidPassword))
                     .isInstanceOf(InvalidLoginException.class)
                     .hasMessage(ResultCode.INVALID_LOGIN.getMessage());
-        }
-
-        @Test
-        @DisplayName("로그인 시에 사용자에게 fcm token이 추가된다.")
-        void addFcmToken(){
-            // given
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findByPhoneNumber(any(String.class));
-            doReturn(true).when(passwordEncoder).matches(any(String.class), any(String.class));
-            doReturn("jwtToken").when(jwtProvider).createToken(any(), any());
-
-            // when
-            authService.signIn(request);
-
-            // then
-            softly.assertThat(최규현.getFcmTokens().size()).isEqualTo(1);
         }
     }
 }
