@@ -67,6 +67,6 @@ public class FcmTokenEntity extends BaseEntity {
     }
 
     public boolean isExpired(){
-        return this.activateDate.isBefore(LocalDateTime.now().minusDays(30));
+        return this.activateDate.isBefore(LocalDateTime.now().minusDays(35));
     }
 }
