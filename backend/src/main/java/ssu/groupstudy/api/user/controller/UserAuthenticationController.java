@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.api.user.vo.MessageReqVo;
 import ssu.groupstudy.api.user.vo.PasswordResetReqVo;
 import ssu.groupstudy.api.user.vo.UserSignUpVerifyReqVo;
+import ssu.groupstudy.domain.auth.param.JwtTokenParam;
 import ssu.groupstudy.domain.auth.service.AuthService;
 import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.api.user.vo.SignUpReqVo;
@@ -28,8 +29,8 @@ public class UserAuthenticationController {
     @Operation(summary = "로그인", description = "로그인에 성공하면 JWT를 발급한다.")
     @PostMapping("/signIn")
     public ResVo signIn(@Valid @RequestBody SignInReqVo request) {
-        SignInResVo signInResVo = authService.signIn(request);
-        return DataResVo.of("loginUser", signInResVo);
+        JwtTokenParam jwtTokenParam = authService.signIn(request);
+        return DataResVo.of("loginUser", SignInResVo.of(jwtTokenParam));
     }
 
     @Operation(summary = "회원가입")

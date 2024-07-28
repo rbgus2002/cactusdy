@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.api.user.vo.*;
 import ssu.groupstudy.domain.auth.exception.InvalidLoginException;
+import ssu.groupstudy.domain.auth.param.JwtTokenParam;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
@@ -43,7 +44,7 @@ public class AuthService {
 
 
     @Transactional
-    public SignInResVo signIn(SignInReqVo request) {
+    public JwtTokenParam signIn(SignInReqVo request) {
         UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request.getPassword(), user.getPassword());
@@ -52,7 +53,8 @@ public class AuthService {
         fcmTopicSubscribeService.subscribeAllUserTopic(user);
         fcmTopicSubscribeService.subscribeParticipatingStudiesTopic(user);
 
-        return SignInResVo.of(user, jwtProvider.createToken(user.getPhoneNumber(), user.getRoles()));
+        String jwtToken = jwtProvider.createToken(user.getPhoneNumber(), user.getRoles());
+        return JwtTokenParam.of(user.getUserId(), jwtToken);
     }
 
     private void validatePassword(String requestPassword, String userPassword) {
