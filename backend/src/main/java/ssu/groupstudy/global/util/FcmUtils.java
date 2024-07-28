@@ -71,7 +71,7 @@ public class FcmUtils {
     public void subscribeTopicFor(List<String> tokens, TopicCode code, Long id) {
         String topic = TopicCode.handleTopicString(code, id);
         try {
-            FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic);
+            FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic); // [2024-07-28:최규현] TODO: async 메소드로 비동기 처리 필요
         } catch (FirebaseMessagingException e) {
             log.error("## subscribeTopicFor : error = {}", e.getMessage());
             throw new RuntimeException(e);
