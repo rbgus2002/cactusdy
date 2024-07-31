@@ -153,9 +153,9 @@ class User{
   }
 
   /// it must be call before a signOut is called
-  static Future<bool> resign() async {
+  static Future<bool> resign(User user) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}api/users'),
+      Uri.parse('${DatabaseService.serverUrl}api/users/${user.userId}'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
