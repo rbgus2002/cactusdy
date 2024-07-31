@@ -93,17 +93,9 @@ class User{
 
   static Future<bool> updateUserProfile(User updatedUser, XFile? profileImage) async {
     final request = http.MultipartRequest('PATCH',
-      Uri.parse('${DatabaseService.serverUrl}api/users'),);
+      Uri.parse('${DatabaseService.serverUrl}api/users/${updatedUser.userId}?nickname=${updatedUser.nickname}&statusMessage=${updatedUser.statusMessage}'),);
 
     request.headers.addAll(await DatabaseService.getAuthHeader());
-
-    Map<String, dynamic> data = {
-      'nickname': updatedUser.nickname,
-      'statusMessage': updatedUser.statusMessage,
-    };
-
-    request.files.add(http.MultipartFile.fromString(
-      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (profileImage != null) {
       request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
