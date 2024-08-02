@@ -32,6 +32,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         imageManager.updateImage(userEntity, image);
+        userEntity.updateProfile(nickname, statusMessage);
         userEntityRepository.save(userEntity);
 
         return UserParam.from(userEntity);
