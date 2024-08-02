@@ -16,14 +16,17 @@ import java.io.IOException;
 public class ImageManager {
     private final S3Utils s3Utils;
 
-    // TODO : 디자인패턴 생각해보기
     public void updateImage(UserEntity user, MultipartFile image) throws IOException {
         String imageUrl = s3Utils.uploadProfileImage(image, S3TypeCode.USER_IMAGE, user.getUserId());
-        user.updatePicture(imageUrl);
+        if (imageUrl != null) {
+            user.updatePicture(imageUrl);
+        }
     }
 
     public void updateImage(StudyEntity study, MultipartFile image) throws IOException {
         String imageUrl = s3Utils.uploadProfileImage(image, S3TypeCode.STUDY_IMAGE, study.getStudyId());
-        study.updatePicture(imageUrl);
+        if (imageUrl != null) {
+            study.updatePicture(imageUrl);
+        }
     }
 }

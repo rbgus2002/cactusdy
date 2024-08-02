@@ -105,6 +105,11 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.picture = picture;
     }
 
+    public void updateProfile(String nickname, String statusMessage) {
+        this.nickname = nickname;
+        this.statusMessage = statusMessage;
+    }
+
     public void resetPassword(String password) {
         this.password = password;
     }
