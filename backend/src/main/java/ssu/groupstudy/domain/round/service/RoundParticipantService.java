@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.common.enums.StatusTag;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 
 import static ssu.groupstudy.domain.common.enums.ResultCode.ROUND_PARTICIPANT_NOT_FOUND;
 
@@ -16,11 +16,11 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.ROUND_PARTICIPANT_NO
 @Transactional(readOnly = true)
 @Slf4j
 public class RoundParticipantService {
-    private final RoundParticipantEntityRepository roundParticipantEntityRepository;
+    private final RoundParticipantRepository roundParticipantRepository;
 
     @Transactional
     public void updateStatusTag(Long id, StatusTag statusTag) {
-        RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findById(id)
+        RoundParticipantEntity roundParticipant = roundParticipantRepository.findById(id)
                 .orElseThrow(() -> new RoundParticipantNotFoundException(ROUND_PARTICIPANT_NOT_FOUND));
         roundParticipant.updateStatus(statusTag);
     }

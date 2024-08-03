@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ class RoundParticipantServiceTest extends ServiceTest {
     private RoundParticipantService roundParticipantService;
 
     @Mock
-    private RoundParticipantEntityRepository roundParticipantEntityRepository;
+    private RoundParticipantRepository roundParticipantRepository;
 
     @Nested
     class updateStatusTag{
@@ -31,7 +31,7 @@ class RoundParticipantServiceTest extends ServiceTest {
         @DisplayName("회차 참여자를 찾을 수 없는 경우 예외를 던진다")
         void fail_roundParticipantNotFound(){
             // given
-            doReturn(Optional.empty()).when(roundParticipantEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
 
             // when, then
             assertThatThrownBy(() -> roundParticipantService.updateStatusTag(-1L, ATTENDANCE))
@@ -43,7 +43,7 @@ class RoundParticipantServiceTest extends ServiceTest {
         @DisplayName("회차 참여자의 statusTag를 변경한다.")
         void success(){
             // given
-            doReturn(Optional.of(회차1_최규현)).when(roundParticipantEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(회차1_최규현)).when(roundParticipantRepository).findById(any(Long.class));
 
             // when
             roundParticipantService.updateStatusTag(-1L, ATTENDANCE);

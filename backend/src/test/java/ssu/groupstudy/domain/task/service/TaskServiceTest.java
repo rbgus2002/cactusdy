@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
 import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
@@ -34,7 +34,7 @@ class TaskServiceTest extends ServiceTest {
     @Mock
     private TaskEntityRepository taskEntityRepository;
     @Mock
-    private RoundParticipantEntityRepository roundParticipantEntityRepository;
+    private RoundParticipantRepository roundParticipantRepository;
 
     @Nested
     class DeleteTask{
@@ -55,7 +55,7 @@ class TaskServiceTest extends ServiceTest {
         void RoundParticipantNotFound(){
             // given, when
             doReturn(Optional.of(개인태스크)).when(taskEntityRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(roundParticipantEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
@@ -68,7 +68,7 @@ class TaskServiceTest extends ServiceTest {
         void invalidDeleteTask(){
             // given, when
             doReturn(Optional.of(개인태스크)).when(taskEntityRepository).findById(any(Long.class));
-            doReturn(Optional.of(회차1_장재우)).when(roundParticipantEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(회차1_장재우)).when(roundParticipantRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.deleteTask(-1L, -1L))
@@ -104,7 +104,7 @@ class TaskServiceTest extends ServiceTest {
         void roundParticipantNotFound(){
             // given
             // when
-            doReturn(Optional.empty()).when(roundParticipantEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundParticipantRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.createPersonalTask(request))

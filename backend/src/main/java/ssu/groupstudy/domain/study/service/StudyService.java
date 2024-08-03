@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEve
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
 import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
@@ -48,7 +48,7 @@ public class StudyService {
     private final StudyEntityRepository studyEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
     private final RoundRepository roundRepository;
-    private final RoundParticipantEntityRepository roundParticipantEntityRepository;
+    private final RoundParticipantRepository roundParticipantRepository;
     private final RuleEntityRepository ruleEntityRepository;
     private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
@@ -122,7 +122,7 @@ public class StudyService {
 
         RoundEntity latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
-        RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
+        RoundParticipantEntity roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
         return StudyInfoResVo.of(participant, roundSeq, latestRound, roundParticipant);
     }

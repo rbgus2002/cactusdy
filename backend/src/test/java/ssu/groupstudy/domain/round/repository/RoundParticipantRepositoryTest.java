@@ -12,11 +12,11 @@ import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import static ssu.groupstudy.domain.common.enums.StatusTag.ATTENDANCE;
 
 @CustomRepositoryTest
-class RoundParticipantEntityRepositoryTest {
+class RoundParticipantRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private RoundParticipantEntityRepository roundParticipantEntityRepository;
+    private RoundParticipantRepository roundParticipantRepository;
 
     @Nested
     class updateStatusTag {
@@ -25,7 +25,7 @@ class RoundParticipantEntityRepositoryTest {
         @DisplayName("회차 참여자의 status tag를 변경한다")
         void updateStatusTag() {
             // given
-            RoundParticipantEntity 회차_최규현 = roundParticipantEntityRepository.findById(1L).get();
+            RoundParticipantEntity 회차_최규현 = roundParticipantRepository.findById(1L).get();
 
             // when
             회차_최규현.updateStatus(ATTENDANCE);
