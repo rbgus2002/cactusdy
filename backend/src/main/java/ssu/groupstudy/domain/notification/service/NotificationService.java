@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
-import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
+import ssu.groupstudy.domain.task.repository.TaskRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserRepository;
@@ -21,7 +21,7 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Transactional(readOnly = true)
 public class NotificationService {
     private final UserRepository userRepository;
-    private final TaskEntityRepository taskEntityRepository;
+    private final TaskRepository taskRepository;
     private final FcmUtils fcmUtils;
 
     public void stabParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
@@ -45,7 +45,7 @@ public class NotificationService {
     public void stabParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
         UserEntity target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-        TaskEntity task = taskEntityRepository.findById(taskId)
+        TaskEntity task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
         String title = buildMessage("과제 콕찌르기 | ", me.getNickname());
