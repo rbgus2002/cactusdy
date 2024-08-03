@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.common.enums.StatusTag;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.param.DoneCount;
@@ -43,7 +43,7 @@ public class ParticipantsService {
     private final StudyEntityRepository studyEntityRepository;
     private final UserEntityRepository userEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -108,7 +108,7 @@ public class ParticipantsService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.removeParticipant(new RoundParticipantEntity(user, round));
         }

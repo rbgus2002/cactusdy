@@ -11,7 +11,7 @@ import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
@@ -33,13 +33,15 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 public class TaskService {
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundRepository;
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     public List<TaskResVo> getTasks(Long roundId, UserEntity user) {
-        RoundEntity round = roundEntityRepository.findById(roundId)
+        RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
+
+
 
         return round.getRoundParticipants().stream()
                 .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(user))
@@ -62,7 +64,7 @@ public class TaskService {
 
     @Transactional
     public List<GroupTaskInfoResVo> createGroupTask(CreateGroupTaskReqVo request) {
-        RoundEntity round = roundEntityRepository.findById(request.getRoundId())
+        RoundEntity round = roundRepository.findById(request.getRoundId())
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
         return getGroupTaskInfoResponseList(request, round);
     }

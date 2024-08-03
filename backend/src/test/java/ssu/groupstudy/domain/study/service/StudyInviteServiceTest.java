@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
@@ -37,7 +37,7 @@ class StudyInviteServiceTest extends ServiceTest {
     @Mock
     private StudyEntityRepository studyEntityRepository;
     @Mock
-    private RoundEntityRepository roundEntityRepository;
+    private RoundRepository roundRepository;
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
@@ -100,7 +100,7 @@ class StudyInviteServiceTest extends ServiceTest {
             doReturn(Optional.of(장재우)).when(userEntityRepository).findById(any(Long.class));
             doReturn(4).when(participantEntityRepository).countParticipationStudy(any(UserEntity.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findByInviteCode(any(String.class));
-            doReturn(List.of()).when(roundEntityRepository).findFutureRounds(any(StudyEntity.class), any());
+            doReturn(List.of()).when(roundRepository).findFutureRounds(any(StudyEntity.class), any());
 
             // when
             studyInviteService.inviteUser(장재우.getUserId(), "000000");

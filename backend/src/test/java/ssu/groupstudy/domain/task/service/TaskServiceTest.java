@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.round.exception.InvalidRoundParticipantException;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
 import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
@@ -30,7 +30,7 @@ class TaskServiceTest extends ServiceTest {
     @Mock
     private UserEntityRepository userEntityRepository;
     @Mock
-    private RoundEntityRepository roundEntityRepository;
+    private RoundRepository roundRepository;
     @Mock
     private TaskEntityRepository taskEntityRepository;
     @Mock
@@ -83,7 +83,7 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("회차가 존재하지 않는 경우 예외를 던진다")
         void roundNotFound(){
             // given, when
-            doReturn(Optional.empty()).when(roundEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(roundRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> taskService.getTasks(-1L, 최규현))

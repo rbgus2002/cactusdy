@@ -11,7 +11,7 @@ import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
@@ -47,7 +47,7 @@ public class StudyService {
     private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundRepository;
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final RuleEntityRepository ruleEntityRepository;
     private final ImageManager imageManager;
@@ -91,7 +91,7 @@ public class StudyService {
                 .studyPlace(null)
                 .studyTime(null)
                 .build();
-        return roundEntityRepository.save(appointment.toEntity(study));
+        return roundRepository.save(appointment.toEntity(study));
     }
 
     private void createDefaultTask(RoundEntity defaultRound) {
@@ -120,7 +120,7 @@ public class StudyService {
     private StudyInfoResVo createStudyInfo(ParticipantEntity participant) {
         StudyEntity study = participant.getStudy();
 
-        RoundEntity latestRound = roundEntityRepository.findLatestRound(study.getStudyId()).orElse(null);
+        RoundEntity latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
         RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
@@ -133,9 +133,9 @@ public class StudyService {
         }
         if (round.isStudyTimeNull()) {
             // 스터디 약속 시간이 정해진 회차 + 1
-            return roundEntityRepository.countByStudyTimeIsNotNull(study) + 1;
+            return roundRepository.countByStudyTimeIsNotNull(study) + 1;
         } else {
-            return roundEntityRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
+            return roundRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
         }
     }
 

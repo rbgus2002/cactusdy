@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscri
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -34,7 +34,7 @@ import java.util.List;
 public class StudyInviteService {
     private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
-    private final RoundEntityRepository roundEntityRepository;
+    private final RoundRepository roundRepository;
     private final ParticipantEntityRepository participantEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
 
@@ -68,7 +68,7 @@ public class StudyInviteService {
     }
 
     private void addUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.addParticipantWithoutDuplicates(new RoundParticipantEntity(user, round));
         }
@@ -89,7 +89,7 @@ public class StudyInviteService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.removeParticipant(new RoundParticipantEntity(user, round));
         }

@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
-import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -43,7 +43,7 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
-    private RoundEntityRepository roundEntityRepository;
+    private RoundRepository roundRepository;
     @Mock
     private RuleEntityRepository ruleEntityRepository;
     @Mock
@@ -64,7 +64,7 @@ class StudyServiceTest extends ServiceTest {
             doReturn(알고리즘스터디).when(studyEntityRepository).save(any(StudyEntity.class));
             doReturn(RoundEntity.builder()
                     .study(알고리즘스터디)
-                    .build()).when(roundEntityRepository).save(any(RoundEntity.class));
+                    .build()).when(roundRepository).save(any(RoundEntity.class));
 
             // when
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현.getUserId());
