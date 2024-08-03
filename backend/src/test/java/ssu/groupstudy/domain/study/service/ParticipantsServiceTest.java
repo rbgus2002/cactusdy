@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.List;
@@ -30,7 +30,7 @@ class ParticipantsServiceTest extends ServiceTest {
     @Mock
     private StudyEntityRepository studyEntityRepository;
     @Mock
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
 
@@ -84,7 +84,7 @@ class ParticipantsServiceTest extends ServiceTest {
             // given
             // when
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
-            doReturn(Optional.empty()).when(userEntityRepository).findById(any(Long.class));
+            doReturn(Optional.empty()).when(userRepository).findById(any(Long.class));
 
             // then
             assertThatThrownBy(() -> participantsService.getParticipant(-1L, -1L))
@@ -97,7 +97,7 @@ class ParticipantsServiceTest extends ServiceTest {
         void isParticipated(){
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(List.of()).when(participantEntityRepository).findParticipantInfoByUser(any(UserEntity.class));
             doReturn(new DoneCount(0L,0L,0L)).when(studyEntityRepository).calculateDoneCount(any(UserEntity.class), any(StudyEntity.class));
 

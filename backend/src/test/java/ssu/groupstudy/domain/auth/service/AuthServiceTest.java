@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.api.user.vo.SignInReqVo;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
@@ -34,7 +34,7 @@ class AuthServiceTest extends ServiceTest {
     private AuthService authService;
 
     @Mock
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
@@ -63,7 +63,7 @@ class AuthServiceTest extends ServiceTest {
         @DisplayName("중복되는 핸드폰번호가 존재하면 예외를 던진다")
         void emailDuplicated() {
             // given
-            doReturn(true).when(userEntityRepository).existsByPhoneNumber(any(String.class));
+            doReturn(true).when(userRepository).existsByPhoneNumber(any(String.class));
 
             // when, then
             softly.assertThatThrownBy(() -> authService.signUp(최규현SignUpReqVo, null))
@@ -75,8 +75,8 @@ class AuthServiceTest extends ServiceTest {
         @DisplayName("회원가입 성공")
         void success() throws IOException {
             // given
-            doReturn(false).when(userEntityRepository).existsByPhoneNumber(any(String.class));
-            doReturn(최규현).when(userEntityRepository).save(any(UserEntity.class));
+            doReturn(false).when(userRepository).existsByPhoneNumber(any(String.class));
+            doReturn(최규현).when(userRepository).save(any(UserEntity.class));
 
             // when
             final Long userId = authService.signUp(최규현SignUpReqVo, null);
@@ -105,7 +105,7 @@ class AuthServiceTest extends ServiceTest {
         void phoneNumberNotFound(){
             // given
             // when
-            doReturn(Optional.empty()).when(userEntityRepository).findByPhoneNumber(any(String.class));
+            doReturn(Optional.empty()).when(userRepository).findByPhoneNumber(any(String.class));
 
             // then
             softly.assertThatThrownBy(() -> authService.signIn(request))
@@ -118,7 +118,7 @@ class AuthServiceTest extends ServiceTest {
         void passwordInvalid() {
             // given
             // when
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findByPhoneNumber(any(String.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findByPhoneNumber(any(String.class));
 
             // then
             softly.assertThatThrownBy(() -> authService.signIn(requestInvalidPassword))

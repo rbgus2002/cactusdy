@@ -12,7 +12,7 @@ import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +27,7 @@ class RoundRepositoryTest {
     @Autowired
     private StudyEntityRepository studyEntityRepository;
     @Autowired
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
 
 
     @Test
@@ -36,7 +36,7 @@ class RoundRepositoryTest {
     void getUserRound() {
         // given
         StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
-        UserEntity 장재우 = userEntityRepository.findById(2L).get();
+        UserEntity 장재우 = userRepository.findById(2L).get();
         스터디.invite(장재우);
 
         // when

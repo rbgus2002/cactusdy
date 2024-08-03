@@ -22,7 +22,7 @@ import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ class NoticeServiceTest extends ServiceTest {
     @InjectMocks
     private NoticeService noticeService;
     @Mock
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
     @Mock
     private StudyEntityRepository studyEntityRepository;
     @Mock
@@ -59,7 +59,7 @@ class NoticeServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeEntityRepository).save(any(NoticeEntity.class));
 
             // when

@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.global.util.FcmUtils;
 
 import java.util.Map;
@@ -20,12 +20,12 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class NotificationService {
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
 
     public void stabParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
-        UserEntity target = userEntityRepository.findById(targetUserId)
+        UserEntity target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         String title = buildMessage("콕찌르기 | ", me.getNickname());
@@ -43,7 +43,7 @@ public class NotificationService {
     }
 
     public void stabParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
-        UserEntity target = userEntityRepository.findById(targetUserId)
+        UserEntity target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));

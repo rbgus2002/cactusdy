@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ class NoticeEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
     @Autowired
     private StudyEntityRepository studyEntityRepository;
     @Autowired
@@ -41,7 +41,7 @@ class NoticeEntityRepositoryTest {
         @DisplayName("공지사항 읽음 상태로 전환한다")
         void read() {
             // given
-            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
@@ -55,7 +55,7 @@ class NoticeEntityRepositoryTest {
         @DisplayName("공지사항을 안읽음 상태로 전환한다")
         void unread(){
             // given
-            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
 
             // when
@@ -150,7 +150,7 @@ class NoticeEntityRepositoryTest {
         @DisplayName("스터디원이 공지사항을 읽었으면 true를 반환한다")
         void read_true(){
             // given
-            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
 
@@ -164,7 +164,7 @@ class NoticeEntityRepositoryTest {
         @Test
         @DisplayName("스터디원이 공지사항을 읽지 않았으면 false를 반환한다")
         void read_false(){
-            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            UserEntity 최규현 = userRepository.findById(1L).get();
             NoticeEntity 공지사항 = noticeEntityRepository.findById(1L).get();
             공지사항.switchCheckNotice(최규현);
             공지사항.switchCheckNotice(최규현);

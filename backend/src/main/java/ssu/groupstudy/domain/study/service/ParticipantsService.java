@@ -26,7 +26,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,7 +41,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Slf4j
 public class ParticipantsService {
     private final StudyEntityRepository studyEntityRepository;
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final ParticipantEntityRepository participantEntityRepository;
     private final RoundRepository roundRepository;
     private final NoticeEntityRepository noticeEntityRepository;
@@ -67,7 +67,7 @@ public class ParticipantsService {
     public ParticipantResVo getParticipant(Long userId, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         List<ParticipantInfo> participantInfoList = participantEntityRepository.findParticipantInfoByUser(user);
@@ -91,11 +91,11 @@ public class ParticipantsService {
 
     @Transactional
     public void kickParticipant(Long userId, Long targetUserId, Long studyId) {
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity targetUser = userEntityRepository.findById(targetUserId)
+        UserEntity targetUser = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 

@@ -22,7 +22,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyInviteService {
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final RoundRepository roundRepository;
     private final ParticipantEntityRepository participantEntityRepository;
@@ -44,7 +44,7 @@ public class StudyInviteService {
 
     @Transactional
     public Long inviteUser(Long userId, String inviteCode) {
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         checkAddStudy(user);
@@ -76,7 +76,7 @@ public class StudyInviteService {
 
     @Transactional
     public void leaveUser(Long userId, Long studyId) {
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));

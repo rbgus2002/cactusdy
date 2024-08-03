@@ -11,18 +11,18 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import java.util.Optional;
 
 @CustomRepositoryTest
-class UserEntityRepositoryTest {
+class UserRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private UserEntityRepository userEntityRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("휴대폰 번호로 사용자를 조회한다. 삭제된 회원의 경우 조회하지 않는다.")
     void findByPhoneNumber(){
         // given
         // when
-        Optional<UserEntity> deletedUser = userEntityRepository.findByPhoneNumber("01000000000");
+        Optional<UserEntity> deletedUser = userRepository.findByPhoneNumber("01000000000");
 
         // then
         softly.assertThat(deletedUser).isEmpty();

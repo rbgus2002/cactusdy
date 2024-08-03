@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +31,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TaskService {
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
@@ -99,7 +99,7 @@ public class TaskService {
 
     @Transactional
     public char switchTask(Long taskId, Long userId) {
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND)); // ThreadLocal 전략을 사용하여, 다른 쓰레드에 UserEntity 객체 넘기기 위해 별도로 조회함
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));

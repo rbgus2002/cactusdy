@@ -6,7 +6,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.Optional;
 
-public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("SELECT u FROM UserEntity u WHERE u.userId = :userId AND u.deleteYn = false")
     Optional<UserEntity> findById(Long userId);
 

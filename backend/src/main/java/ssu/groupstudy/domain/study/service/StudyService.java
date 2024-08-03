@@ -29,7 +29,7 @@ import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
+import ssu.groupstudy.domain.user.repository.UserRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 
@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StudyService {
     private final StudyInviteService studyInviteService;
-    private final UserEntityRepository userEntityRepository;
+    private final UserRepository userRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
     private final RoundRepository roundRepository;
@@ -56,7 +56,7 @@ public class StudyService {
 
     @Transactional
     public StudyCreateResVo createStudy(CreateStudyReqVo dto, MultipartFile image, Long userId) throws IOException {
-        UserEntity user = userEntityRepository.findById(userId)
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         checkParticipatingStudyMoreThanLimit(user);
@@ -145,7 +145,7 @@ public class StudyService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         ParticipantEntity participant = participantEntityRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
-        UserEntity newHostUser = userEntityRepository.findById(dto.getHostUserId())
+        UserEntity newHostUser = userRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         imageManager.updateImage(study, image);
