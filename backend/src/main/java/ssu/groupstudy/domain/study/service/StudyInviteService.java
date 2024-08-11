@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscri
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.CanNotCreateStudyException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
@@ -22,7 +22,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,9 +32,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Slf4j
 public class StudyInviteService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
-    private final RoundRepository roundRepository;
+    private final RoundEntityRepository roundEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
 
@@ -44,7 +44,7 @@ public class StudyInviteService {
 
     @Transactional
     public Long inviteUser(Long userId, String inviteCode) {
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         checkAddStudy(user);
@@ -68,7 +68,7 @@ public class StudyInviteService {
     }
 
     private void addUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.addParticipantWithoutDuplicates(new RoundParticipantEntity(user, round));
         }
@@ -76,7 +76,7 @@ public class StudyInviteService {
 
     @Transactional
     public void leaveUser(Long userId, Long studyId) {
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
@@ -89,7 +89,7 @@ public class StudyInviteService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.removeParticipant(new RoundParticipantEntity(user, round));
         }

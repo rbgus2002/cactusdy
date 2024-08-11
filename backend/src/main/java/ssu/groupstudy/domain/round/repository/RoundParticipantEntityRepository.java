@@ -8,7 +8,7 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoundParticipantRepository extends JpaRepository<RoundParticipantEntity, Long> {
+public interface RoundParticipantEntityRepository extends JpaRepository<RoundParticipantEntity, Long> {
     Optional<RoundParticipantEntity> findByUserAndRound(UserEntity user, RoundEntity round);
 
     List<RoundParticipantEntity> findByRound(RoundEntity round);

@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 
 import java.util.Comparator;
@@ -27,7 +27,7 @@ class ParticipantEntityRepositoryTest {
     @InjectSoftAssertions
     private SoftAssertions softly;
     @Autowired
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Autowired
     private StudyEntityRepository studyEntityRepository;
     @Autowired
@@ -37,7 +37,7 @@ class ParticipantEntityRepositoryTest {
     @Test
     void isParticipated() {
         // given
-        UserEntity 최규현 = userRepository.findById(1L).get();
+        UserEntity 최규현 = userEntityRepository.findById(1L).get();
         StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
         스터디.invite(최규현);
 
@@ -54,7 +54,7 @@ class ParticipantEntityRepositoryTest {
         @Test
         void userAlreadyExist() {
             // given
-            UserEntity 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
             StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
             스터디.invite(최규현);
 
@@ -68,7 +68,7 @@ class ParticipantEntityRepositoryTest {
         @Test
         void success() {
             // given
-            UserEntity 최규현 = userRepository.findById(1L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
             StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
             스터디.invite(최규현);
 
@@ -86,7 +86,7 @@ class ParticipantEntityRepositoryTest {
         @Test
         void fail_userNotFound() {
             // given
-            UserEntity 장재우 = userRepository.findById(2L).get();
+            UserEntity 장재우 = userEntityRepository.findById(2L).get();
             StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
 
 
@@ -100,8 +100,8 @@ class ParticipantEntityRepositoryTest {
         @Test
         void fail_hostUserInvalid() {
             // given, then
-            UserEntity 최규현 = userRepository.findById(1L).get();
-            UserEntity 장재우 = userRepository.findById(2L).get();
+            UserEntity 최규현 = userEntityRepository.findById(1L).get();
+            UserEntity 장재우 = userEntityRepository.findById(2L).get();
             StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
             스터디.invite(최규현);
             스터디.invite(장재우);
@@ -116,7 +116,7 @@ class ParticipantEntityRepositoryTest {
         @Test
         void success() {
             // given
-            UserEntity 장재우 = userRepository.findById(2L).get();
+            UserEntity 장재우 = userEntityRepository.findById(2L).get();
             StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
             스터디.invite(장재우);
 
@@ -133,8 +133,8 @@ class ParticipantEntityRepositoryTest {
     @DisplayName("스터디에 소속된 사용자를 초대순서로 정렬해서 모두 불러온다")
     void getParticipantsOrderByCreateDateAsc() {
         // given
-        UserEntity 최규현 = userRepository.findById(1L).get();
-        UserEntity 장재우 = userRepository.findById(2L).get();
+        UserEntity 최규현 = userEntityRepository.findById(1L).get();
+        UserEntity 장재우 = userEntityRepository.findById(2L).get();
         StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
         participantEntityRepository.save(new ParticipantEntity(최규현, 스터디));
         participantEntityRepository.save(new ParticipantEntity(장재우, 스터디));
@@ -153,7 +153,7 @@ class ParticipantEntityRepositoryTest {
     @DisplayName("사용자가 참여중인 스터디의 이름들을 가져온다")
     void findStudyNamesByUser(){
         // given
-        UserEntity 최규현 = userRepository.findById(1L).get();
+        UserEntity 최규현 = userEntityRepository.findById(1L).get();
         StudyEntity 알고스터디 = studyEntityRepository.findById(1L).get();
         StudyEntity 영어스터디 = studyEntityRepository.findById(2L).get();
         participantEntityRepository.save(new ParticipantEntity(최규현, 알고스터디));
@@ -170,7 +170,7 @@ class ParticipantEntityRepositoryTest {
     @DisplayName("사용자가 참여중인 스터디의 개수를 가져온다")
     void countParticipationStudy(){
         // given
-        UserEntity 최규현 = userRepository.findById(1L).get();
+        UserEntity 최규현 = userEntityRepository.findById(1L).get();
         StudyEntity 알고스터디 = studyEntityRepository.findById(1L).get();
         StudyEntity 영어스터디 = studyEntityRepository.findById(2L).get();
 

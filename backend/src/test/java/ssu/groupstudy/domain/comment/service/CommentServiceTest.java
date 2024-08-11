@@ -14,7 +14,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ class CommentServiceTest extends ServiceTest {
     @InjectMocks
     private CommentService commentService;
     @Mock
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Mock
     private NoticeEntityRepository noticeEntityRepository;
     @Mock
@@ -43,7 +43,7 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("댓글을 생성한다")
         void createNotice(){
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.of(공지사항1)).when(noticeEntityRepository).findById(any(Long.class));
             doReturn(댓글1).when(commentEntityRepository).save(any(CommentEntity.class));
 

@@ -10,8 +10,8 @@ import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEve
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundParticipantEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
@@ -29,7 +29,7 @@ import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 
@@ -44,11 +44,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StudyService {
     private final StudyInviteService studyInviteService;
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
-    private final RoundRepository roundRepository;
-    private final RoundParticipantRepository roundParticipantRepository;
+    private final RoundEntityRepository roundEntityRepository;
+    private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final RuleEntityRepository ruleEntityRepository;
     private final ImageManager imageManager;
     private final ApplicationEventPublisher eventPublisher;
@@ -56,7 +56,7 @@ public class StudyService {
 
     @Transactional
     public StudyCreateResVo createStudy(CreateStudyReqVo dto, MultipartFile image, Long userId) throws IOException {
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         checkParticipatingStudyMoreThanLimit(user);
@@ -91,7 +91,7 @@ public class StudyService {
                 .studyPlace(null)
                 .studyTime(null)
                 .build();
-        return roundRepository.save(appointment.toEntity(study));
+        return roundEntityRepository.save(appointment.toEntity(study));
     }
 
     private void createDefaultTask(RoundEntity defaultRound) {
@@ -120,9 +120,9 @@ public class StudyService {
     private StudyInfoResVo createStudyInfo(ParticipantEntity participant) {
         StudyEntity study = participant.getStudy();
 
-        RoundEntity latestRound = roundRepository.findLatestRound(study.getStudyId()).orElse(null);
+        RoundEntity latestRound = roundEntityRepository.findLatestRound(study.getStudyId()).orElse(null);
         Long roundSeq = handleRoundSeq(study, latestRound);
-        RoundParticipantEntity roundParticipant = roundParticipantRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
+        RoundParticipantEntity roundParticipant = roundParticipantEntityRepository.findByUserAndRound(participant.getUser(), latestRound).orElse(null);
 
         return StudyInfoResVo.of(participant, roundSeq, latestRound, roundParticipant);
     }
@@ -133,9 +133,9 @@ public class StudyService {
         }
         if (round.isStudyTimeNull()) {
             // 스터디 약속 시간이 정해진 회차 + 1
-            return roundRepository.countByStudyTimeIsNotNull(study) + 1;
+            return roundEntityRepository.countByStudyTimeIsNotNull(study) + 1;
         } else {
-            return roundRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
+            return roundEntityRepository.countByStudyTimeLessThanEqual(study, round.getStudyTime());
         }
     }
 
@@ -145,7 +145,7 @@ public class StudyService {
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         ParticipantEntity participant = participantEntityRepository.findByUserAndStudy(user, study)
                 .orElseThrow(() -> new ParticipantNotFoundException(ResultCode.PARTICIPANT_NOT_FOUND));
-        UserEntity newHostUser = userRepository.findById(dto.getHostUserId())
+        UserEntity newHostUser = userEntityRepository.findById(dto.getHostUserId())
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         imageManager.updateImage(study, image);

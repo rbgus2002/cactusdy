@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.param.UserParam;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
 
 import java.io.IOException;
@@ -22,25 +22,25 @@ import java.io.IOException;
 public class UserService {
     private final ImageManager imageManager;
     private final FcmTokenService fcmTokenService;
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
 
 
 
     @Transactional
     public UserParam editUser(Long userId, String nickname, String statusMessage, MultipartFile image) throws IOException {
-        UserEntity userEntity = userRepository.findById(userId)
+        UserEntity userEntity = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         imageManager.updateImage(userEntity, image);
         userEntity.updateProfile(nickname, statusMessage);
-        userRepository.save(userEntity);
+        userEntityRepository.save(userEntity);
 
         return UserParam.from(userEntity);
     }
 
     @Transactional
     public void removeUser(Long userId) {
-        UserEntity userEntity = userRepository.findById(userId)
+        UserEntity userEntity = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         fcmTokenService.deleteAllFcmToken(userEntity);
@@ -50,7 +50,7 @@ public class UserService {
 
     @Transactional
     public void updateActivateDate(Long userId) {
-        UserEntity userEntity = userRepository.findById(userId)
+        UserEntity userEntity = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         userEntity.updateActivateDate();
     }

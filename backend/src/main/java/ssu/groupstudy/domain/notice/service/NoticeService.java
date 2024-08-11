@@ -25,7 +25,7 @@ import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -38,7 +38,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
@@ -48,7 +48,7 @@ public class NoticeService {
     public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, Long userId) {
         StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity writer = userRepository.findById(userId)
+        UserEntity writer = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 

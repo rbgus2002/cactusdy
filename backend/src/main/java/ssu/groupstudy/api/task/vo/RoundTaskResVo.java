@@ -30,9 +30,9 @@ public class RoundTaskResVo {
 
     // task
     private Double taskProgress;
-    private Set<TaskTypeTaskDetailsResVo> taskGroups;
+    private List<TaskTypeTaskDetailsResVo> taskGroups;
 
-    private RoundTaskResVo(RoundTaskParam roundTaskParam){
+    private RoundTaskResVo(RoundTaskParam roundTaskParam) {
         UserParam user = roundTaskParam.getUser();
         this.userId = user.getUserId();
         this.nickname = user.getNickname();
@@ -46,10 +46,10 @@ public class RoundTaskResVo {
         this.taskProgress = taskWithProgress.getTaskProgress();
         this.taskGroups = Stream.of(TaskType.values())
                 .map(taskType -> TaskTypeTaskDetailsResVo.of(taskType, taskWithProgress.getTasks()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public static RoundTaskResVo from(RoundTaskParam roundTaskParam){
+    public static RoundTaskResVo from(RoundTaskParam roundTaskParam) {
         return new RoundTaskResVo(roundTaskParam);
     }
 
@@ -86,7 +86,7 @@ public class RoundTaskResVo {
                 this.detail = task.getDetail();
             }
 
-            public static TaskDetailResVo from(TaskParam task){
+            public static TaskDetailResVo from(TaskParam task) {
                 return new TaskDetailResVo(task);
             }
         }

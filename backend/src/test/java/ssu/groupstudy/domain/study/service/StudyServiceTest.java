@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -19,7 +19,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.common.enums.ResultCode;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.S3Utils;
 
@@ -35,7 +35,7 @@ class StudyServiceTest extends ServiceTest {
     @InjectMocks
     private StudyService studyService;
     @Mock
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
     @Mock
     private StudyInviteService studyInviteService;
     @Mock
@@ -43,7 +43,7 @@ class StudyServiceTest extends ServiceTest {
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
-    private RoundRepository roundRepository;
+    private RoundEntityRepository roundEntityRepository;
     @Mock
     private RuleEntityRepository ruleEntityRepository;
     @Mock
@@ -59,12 +59,12 @@ class StudyServiceTest extends ServiceTest {
         @DisplayName("스터디를 생성하면서 스터디 색상을 지정한다.")
         void setColor() throws IOException {
             // given
-            doReturn(Optional.of(최규현)).when(userRepository).findById(any(Long.class));
+            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn("123456").when(studyInviteService).generateUniqueInviteCode();
             doReturn(알고리즘스터디).when(studyEntityRepository).save(any(StudyEntity.class));
             doReturn(RoundEntity.builder()
                     .study(알고리즘스터디)
-                    .build()).when(roundRepository).save(any(RoundEntity.class));
+                    .build()).when(roundEntityRepository).save(any(RoundEntity.class));
 
             // when
             studyService.createStudy(알고리즘스터디CreateRequest, null, 최규현.getUserId());

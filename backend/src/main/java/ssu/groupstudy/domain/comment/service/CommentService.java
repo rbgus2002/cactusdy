@@ -21,7 +21,7 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class CommentService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -41,7 +41,7 @@ public class CommentService {
 
     @Transactional
     public Long createComment(CreateCommentReqVo dto, Long userId) {
-        UserEntity writer = userRepository.findById(userId)
+        UserEntity writer = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));

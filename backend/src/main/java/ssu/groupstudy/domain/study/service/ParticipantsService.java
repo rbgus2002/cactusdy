@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.common.enums.StatusTag;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.param.DoneCount;
@@ -26,7 +26,7 @@ import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,9 +41,9 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Slf4j
 public class ParticipantsService {
     private final StudyEntityRepository studyEntityRepository;
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final ParticipantEntityRepository participantEntityRepository;
-    private final RoundRepository roundRepository;
+    private final RoundEntityRepository roundEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -67,7 +67,7 @@ public class ParticipantsService {
     public ParticipantResVo getParticipant(Long userId, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         List<ParticipantInfo> participantInfoList = participantEntityRepository.findParticipantInfoByUser(user);
@@ -91,11 +91,11 @@ public class ParticipantsService {
 
     @Transactional
     public void kickParticipant(Long userId, Long targetUserId, Long studyId) {
-        UserEntity user = userRepository.findById(userId)
+        UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity targetUser = userRepository.findById(targetUserId)
+        UserEntity targetUser = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
@@ -108,7 +108,7 @@ public class ParticipantsService {
     }
 
     private void removeUserToFutureRounds(StudyEntity study, UserEntity user) {
-        List<RoundEntity> futureRounds = roundRepository.findFutureRounds(study, LocalDateTime.now());
+        List<RoundEntity> futureRounds = roundEntityRepository.findFutureRounds(study, LocalDateTime.now());
         for (RoundEntity round : futureRounds) {
             round.removeParticipant(new RoundParticipantEntity(user, round));
         }

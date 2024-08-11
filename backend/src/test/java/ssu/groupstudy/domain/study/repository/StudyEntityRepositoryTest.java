@@ -10,7 +10,7 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.param.DoneCount;
 import ssu.groupstudy.domain.study.param.StatusTagInfo;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ class StudyEntityRepositoryTest {
     @Autowired
     private StudyEntityRepository studyEntityRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserEntityRepository userEntityRepository;
 
     @Test
     @DisplayName("삭제된 스터디는 가져오지 않는다")
@@ -43,7 +43,7 @@ class StudyEntityRepositoryTest {
     @DisplayName("각 출석태그의 횟수를 모두 가져온다")
     void calculateStatusTag(){
         // given
-        UserEntity user = userRepository.findById(1L).get();
+        UserEntity user = userEntityRepository.findById(1L).get();
         StudyEntity study = studyEntityRepository.findById(1L).get();
 
         // when
@@ -57,7 +57,7 @@ class StudyEntityRepositoryTest {
     @DisplayName("본인의 모든 과제 수를 가져온다")
     void calculateDoneCount(){
         // given
-        UserEntity user = userRepository.findById(1L).get();
+        UserEntity user = userEntityRepository.findById(1L).get();
         StudyEntity study = studyEntityRepository.findById(1L).get();
 
         // when

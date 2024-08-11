@@ -9,7 +9,7 @@ import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.rule.entity.RuleEntity;
 import ssu.groupstudy.domain.rule.repository.RuleEntityRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -30,7 +30,7 @@ public class ExampleStudyCreateService {
     private final NoticeEntityRepository noticeEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final RuleEntityRepository ruleEntityRepository;
-    private final RoundRepository roundRepository;
+    private final RoundEntityRepository roundEntityRepository;
 
 
     @Transactional
@@ -71,7 +71,7 @@ public class ExampleStudyCreateService {
         RoundEntity round1 = createRound(study, "스타벅스 동숭길 입구점", LocalDateTime.now().minusDays(1).withHour(15).withMinute(0));
         round1.updateDetail("스터디 첫날👏👏\n\n스타벅스 동숭길 입구점에서 만나요!");
         RoundEntity round2 = createRound(study, "카페 오가다", LocalDateTime.now().plusDays(7).withHour(12).withMinute(0));
-        roundRepository.saveAll(List.of(round1, round2));
+        roundEntityRepository.saveAll(List.of(round1, round2));
         createExampleTask(round1);
     }
 

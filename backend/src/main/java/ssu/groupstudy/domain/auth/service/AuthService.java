@@ -17,7 +17,7 @@ import ssu.groupstudy.domain.notification.service.FcmTopicSubscribeService;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
-import ssu.groupstudy.domain.user.repository.UserRepository;
+import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
 import ssu.groupstudy.global.util.RedisUtils;
@@ -29,7 +29,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final FcmTokenService fcmTokenService;
     private final FcmTopicSubscribeService fcmTopicSubscribeService;
     private final ExampleStudyCreateService exampleStudyCreateService;
@@ -45,7 +45,7 @@ public class AuthService {
 
     @Transactional
     public JwtTokenParam signIn(SignInReqVo request) {
-        UserEntity user = userRepository.findByPhoneNumber(request.getPhoneNumber())
+        UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.INVALID_LOGIN));
         validatePassword(request.getPassword(), user.getPassword());
 
@@ -75,7 +75,7 @@ public class AuthService {
     }
 
     private void checkPhoneNumberExist(String phoneNumber) {
-        if (userRepository.existsByPhoneNumber(phoneNumber)) {
+        if (userEntityRepository.existsByPhoneNumber(phoneNumber)) {
             throw new PhoneNumberExistsException(ResultCode.DUPLICATE_PHONE_NUMBER);
         }
     }
@@ -84,7 +84,7 @@ public class AuthService {
         String password = passwordEncoder.encode(request.getPassword());
         UserEntity user = request.toEntity(password);
         user.addUserRole();
-        user = userRepository.save(user);
+        user = userEntityRepository.save(user);
 
         imageManager.updateImage(user, image);
         return user;
@@ -113,7 +113,7 @@ public class AuthService {
     }
 
     private void assertPhoneNumberDoesExistOrThrow(String phoneNumber) {
-        if (!userRepository.existsByPhoneNumber(phoneNumber)) {
+        if (!userEntityRepository.existsByPhoneNumber(phoneNumber)) {
             throw new PhoneNumberExistsException(ResultCode.PHONE_NUMBER_NOT_FOUND);
         }
     }
@@ -145,7 +145,7 @@ public class AuthService {
 
     @Transactional
     public void resetPassword(PasswordResetReqVo request) {
-        UserEntity user = userRepository.findByPhoneNumber(request.getPhoneNumber())
+        UserEntity user = userEntityRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new InvalidLoginException(ResultCode.USER_NOT_FOUND));
         String password = passwordEncoder.encode(request.getNewPassword());
         user.resetPassword(password);
