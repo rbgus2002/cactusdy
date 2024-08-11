@@ -2,15 +2,19 @@ package ssu.groupstudy.api.study.vo;
 
 import lombok.Getter;
 import ssu.groupstudy.api.round.vo.ParticipantProfileResVo;
+import ssu.groupstudy.api.task.vo.TaskTypeTaskDetailsResVo;
+import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.round.entity.Appointment;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
+import ssu.groupstudy.domain.task.param.TaskParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class StudyInfoResVo {
@@ -27,8 +31,8 @@ public class StudyInfoResVo {
     private String studyPlace;
     private LocalDateTime studyTime;
     private List<ParticipantProfileResVo> profiles;
-//    private Long roundParticipantId;
-//    private List<TaskGroup> taskGroups; todo
+    private Long roundParticipantId;
+    private List<TaskTypeTaskDetailsResVo> taskGroups;
 
     public StudyInfoResVo(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant) {
         StudyEntity study = participant.getStudy();
@@ -41,7 +45,7 @@ public class StudyInfoResVo {
         this.color = participant.getColor();
 
         this.roundSeq = roundSeq;
-        if(latestRound != null){
+        if (latestRound != null) {
             this.roundId = latestRound.getRoundId();
             Appointment appointment = latestRound.getAppointment();
             this.studyPlace = appointment.getStudyPlace();
@@ -49,16 +53,20 @@ public class StudyInfoResVo {
             this.profiles = latestRound.getRoundParticipantsOrderByInvite().stream()
                     .map(ParticipantProfileResVo::from)
                     .collect(Collectors.toList());
-//            if(roundParticipant != null){
-//                this.roundParticipantId = roundParticipant.getId();
-//                this.taskGroups = Stream.of(TaskType.values())
-//                        .map(taskType -> RoundTaskResVo.TaskGroup.of(taskType, roundParticipant))
-//                        .collect(Collectors.toList());
-//            }
+            if (roundParticipant != null) {
+                this.roundParticipantId = roundParticipant.getId();
+                this.taskGroups = Stream.of(TaskType.values())
+                        .map(taskType -> TaskTypeTaskDetailsResVo.of(
+                                        taskType,
+                                        roundParticipant.getTasks().stream().map(TaskParam::from).collect(Collectors.toSet())
+                                )
+                        )
+                        .collect(Collectors.toList());
+            }
         }
     }
 
-    public static StudyInfoResVo of(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant){
+    public static StudyInfoResVo of(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant) {
         return new StudyInfoResVo(participant, roundSeq, latestRound, roundParticipant);
     }
 }
