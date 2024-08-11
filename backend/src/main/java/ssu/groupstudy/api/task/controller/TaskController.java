@@ -5,18 +5,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ssu.groupstudy.domain.auth.security.CustomUserDetails;
-import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
-import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
-import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
-import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
-import ssu.groupstudy.api.task.vo.TaskResVo;
-import ssu.groupstudy.domain.task.service.TaskService;
 import ssu.groupstudy.api.common.vo.DataResVo;
 import ssu.groupstudy.api.common.vo.ResVo;
+import ssu.groupstudy.api.task.vo.*;
+import ssu.groupstudy.domain.auth.security.CustomUserDetails;
+import ssu.groupstudy.domain.round.param.RoundTaskParam;
+import ssu.groupstudy.domain.task.service.TaskService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +26,11 @@ public class TaskController {
     @Operation(summary = "회차의 과제 목록 조회", description = "특정 회차에 과제 목록을 모두 가져온다.")
     @GetMapping
     public ResVo getTasks(@RequestParam Long roundId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<TaskResVo> tasks = taskService.getTasks(roundId, userDetails.getUser());
-        return DataResVo.of("tasks", tasks);
+        List<RoundTaskParam> roundTasks = taskService.getTasks(roundId, userDetails.getUser());
+
+        return DataResVo.of("tasks",
+                roundTasks.stream().map(RoundTaskResVo::from).collect(Collectors.toList())
+        );
     }
 
     @Operation(summary = "개인 과제 생성")

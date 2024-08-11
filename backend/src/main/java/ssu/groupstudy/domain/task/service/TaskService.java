@@ -4,15 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.api.task.vo.*;
+import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
+import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
+import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
+import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.common.enums.TaskType;
 import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
 import ssu.groupstudy.domain.round.exception.RoundParticipantNotFoundException;
-import ssu.groupstudy.domain.round.repository.RoundRepository;
+import ssu.groupstudy.domain.round.param.RoundTaskParam;
 import ssu.groupstudy.domain.round.repository.RoundParticipantRepository;
+import ssu.groupstudy.domain.round.repository.RoundRepository;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
@@ -31,22 +35,20 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TaskService {
-    private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipantRepository roundParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<TaskResVo> getTasks(Long roundId, UserEntity user) {
+    public List<RoundTaskParam> getTasks(Long roundId, UserEntity me) {
         RoundEntity round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new RoundNotFoundException(ROUND_NOT_FOUND));
 
-
-
         return round.getRoundParticipants().stream()
-                .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(user))
+                .sorted(Comparator.comparing((RoundParticipantEntity rp) -> !rp.getUser().equals(me)) // 나 우선으로 가져오도록 정렬
                         .thenComparing(RoundParticipantEntity::getId))
-                .map(TaskResVo::from)
+                .map(RoundTaskParam::from)
                 .collect(Collectors.toList());
     }
 

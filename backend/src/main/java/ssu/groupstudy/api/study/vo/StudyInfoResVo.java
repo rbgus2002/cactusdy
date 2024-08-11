@@ -1,19 +1,16 @@
 package ssu.groupstudy.api.study.vo;
 
 import lombok.Getter;
+import ssu.groupstudy.api.round.vo.ParticipantProfileResVo;
 import ssu.groupstudy.domain.round.entity.Appointment;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
-import ssu.groupstudy.api.round.vo.ParticipantProfileResVo;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.common.enums.TaskType;
-import ssu.groupstudy.api.task.vo.TaskGroup;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 public class StudyInfoResVo {
@@ -30,8 +27,8 @@ public class StudyInfoResVo {
     private String studyPlace;
     private LocalDateTime studyTime;
     private List<ParticipantProfileResVo> profiles;
-    private Long roundParticipantId;
-    private List<TaskGroup> taskGroups;
+//    private Long roundParticipantId;
+//    private List<TaskGroup> taskGroups; todo
 
     public StudyInfoResVo(ParticipantEntity participant, Long roundSeq, RoundEntity latestRound, RoundParticipantEntity roundParticipant) {
         StudyEntity study = participant.getStudy();
@@ -52,12 +49,12 @@ public class StudyInfoResVo {
             this.profiles = latestRound.getRoundParticipantsOrderByInvite().stream()
                     .map(ParticipantProfileResVo::from)
                     .collect(Collectors.toList());
-            if(roundParticipant != null){
-                this.roundParticipantId = roundParticipant.getId();
-                this.taskGroups = Stream.of(TaskType.values())
-                        .map(taskType -> TaskGroup.of(taskType, roundParticipant))
-                        .collect(Collectors.toList());
-            }
+//            if(roundParticipant != null){
+//                this.roundParticipantId = roundParticipant.getId();
+//                this.taskGroups = Stream.of(TaskType.values())
+//                        .map(taskType -> RoundTaskResVo.TaskGroup.of(taskType, roundParticipant))
+//                        .collect(Collectors.toList());
+//            }
         }
     }
 

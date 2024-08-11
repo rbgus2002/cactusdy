@@ -36,15 +36,4 @@ class TaskTypeTest {
         assertTrue(개인);
         assertFalse(개인_아님);
     }
-
-    @Test
-    @DisplayName("인자로 받는 TaskType과 같은 타입이면 true를 반환한다")
-    void isSameTypeOf(){
-        // given
-        // when
-        boolean 그룹 = groupTask.isSameTypeOf(TaskType.GROUP);
-
-        // then
-        assertTrue(그룹);
-    }
 }

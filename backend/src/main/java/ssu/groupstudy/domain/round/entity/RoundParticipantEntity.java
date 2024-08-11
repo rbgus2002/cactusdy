@@ -75,7 +75,7 @@ public class RoundParticipantEntity extends BaseEntity {
         return task;
     }
 
-    public double calculateTaskProgress() {
+    public double calculateTaskProgress() { // [2024-08-10:최규현] TODO: TaskParam으로 역할 위임 고려
         long totalTaskCount = tasks.size();
         long doneTaskCount = tasks.stream().filter(TaskEntity::isDone).count();
         double progress = (double) doneTaskCount / totalTaskCount;

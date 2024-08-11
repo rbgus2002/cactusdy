@@ -80,10 +80,6 @@ public class TaskEntity extends BaseEntity {
         return doneYn;
     }
 
-    public boolean isSameTypeOf(TaskType type) {
-        return taskType.isSameTypeOf(type);
-    }
-
     public boolean isDone() {
         return doneYn == 'Y';
     }
