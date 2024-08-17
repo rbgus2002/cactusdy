@@ -39,9 +39,14 @@ class User{
     );
   }
 
-  static Future<bool> updateUserActivationDate() async {
+  static Future<bool> updateUserActivationDate(User? user) async {
+    if (user == null) {
+      logger.failLog('update user\'s activation-date', 'user is null');
+      return false;
+    }
+
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}api/users/activate-date'),
+      Uri.parse('${DatabaseService.serverUrl}api/users/${user.userId}/activate-date'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
