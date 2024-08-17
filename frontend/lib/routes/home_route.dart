@@ -37,13 +37,13 @@ class _HomeRouteState extends State<HomeRoute> {
     super.initState();
 
     _futureUser = _getUserProfile();
+    _futureUser.then((user) => User.updateUserActivationDate(user));
     _futureStudySummary = StudySummary.getStudies();
   }
 
   @override
   Widget build(BuildContext context) {
     // when build home_route, update User's activation-date
-    User.updateUserActivationDate();
 
     return Scaffold(
       backgroundColor: context.extraColors.baseBackgroundColor,
@@ -116,6 +116,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
   Future<void> _refresh() async {
     _futureUser = _getUserProfile();
+    _futureUser.then((user) => User.updateUserActivationDate(user));
     _futureStudySummary = StudySummary.getStudies();
 
     return setState(() { });

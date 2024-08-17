@@ -39,9 +39,14 @@ class User{
     );
   }
 
-  static Future<bool> updateUserActivationDate() async {
+  static Future<bool> updateUserActivationDate(User? user) async {
+    if (user == null) {
+      logger.failLog('update user\'s activation-date', 'user is null');
+      return false;
+    }
+
     final response = await http.patch(
-      Uri.parse('${DatabaseService.serverUrl}api/users/activate-date'),
+      Uri.parse('${DatabaseService.serverUrl}api/users/${user.userId}/activate-date'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
@@ -93,17 +98,9 @@ class User{
 
   static Future<bool> updateUserProfile(User updatedUser, XFile? profileImage) async {
     final request = http.MultipartRequest('PATCH',
-      Uri.parse('${DatabaseService.serverUrl}api/users'),);
+      Uri.parse('${DatabaseService.serverUrl}api/users/${updatedUser.userId}?nickname=${updatedUser.nickname}&statusMessage=${updatedUser.statusMessage}'),);
 
     request.headers.addAll(await DatabaseService.getAuthHeader());
-
-    Map<String, dynamic> data = {
-      'nickname': updatedUser.nickname,
-      'statusMessage': updatedUser.statusMessage,
-    };
-
-    request.files.add(http.MultipartFile.fromString(
-      'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (profileImage != null) {
       request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
@@ -161,9 +158,9 @@ class User{
   }
 
   /// it must be call before a signOut is called
-  static Future<bool> resign() async {
+  static Future<bool> resign(User user) async {
     final response = await http.delete(
-      Uri.parse('${DatabaseService.serverUrl}api/users'),
+      Uri.parse('${DatabaseService.serverUrl}api/users/${user.userId}'),
       headers: await DatabaseService.getAuthHeader(),
     );
 

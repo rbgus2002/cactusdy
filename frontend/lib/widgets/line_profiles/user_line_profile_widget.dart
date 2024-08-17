@@ -100,7 +100,7 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
         text: context.local.setting,
         icon: const Icon(CustomIcons.setting_outline,),
         onTap: () => Util.pushRoute(context, (context) =>
-            const SettingRoute())),
+            SettingRoute(user: widget.user))),
     ];
   }
 }

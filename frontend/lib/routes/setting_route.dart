@@ -24,7 +24,12 @@ class _ThemeModeData {
 }
 
 class SettingRoute extends StatefulWidget {
-  const SettingRoute({ super.key, });
+  final User user;
+
+  const SettingRoute({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<SettingRoute> createState() => _SettingRouteState();
@@ -280,7 +285,7 @@ class _SettingRouteState extends State<SettingRoute> {
 
   void _resignFromApp() {
     try {
-      User.resign().then((result) {
+      User.resign(widget.user).then((result) {
         if (result == true) {
           Auth.signOut();
           Util.pushRouteAndPopUntil(context, (context) => const StartRoute());
