@@ -24,7 +24,7 @@ public class FcmTopicSubscribeService {
     private final ParticipantEntityRepository participantEntityRepository;
 
     public void subscribeAllUserTopic(UserEntity user) {
-        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user.getFcmTokenList()));
+        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user.getFcmTokens()));
     }
 
     public void subscribeParticipatingStudiesTopic(UserEntity user) {
@@ -34,7 +34,7 @@ public class FcmTopicSubscribeService {
 
         participatingStudies.forEach(study -> eventPublisher.publishEvent(
                         StudyTopicSubscribeEvent.builder()
-                                .fcmTokens(user.getFcmTokenList())
+                                .fcmTokens(user.getFcmTokens())
                                 .studyId(study.getStudyId())
                                 .build()
                 )

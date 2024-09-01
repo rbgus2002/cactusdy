@@ -56,7 +56,7 @@ public class StudyInviteService {
 
         eventPublisher.publishEvent(
                 StudyTopicSubscribeEvent.builder()
-                        .fcmTokens(user.getFcmTokenList())
+                        .fcmTokens(user.getFcmTokens())
                         .studyId(study.getStudyId())
                         .build()
         );

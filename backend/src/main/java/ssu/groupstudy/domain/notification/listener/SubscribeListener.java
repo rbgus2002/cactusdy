@@ -49,7 +49,7 @@ public class SubscribeListener {
     public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
         log.info("## handleStudyTopicUnSubscribeEvent : ");
         UserEntity user = event.getUser();
-        fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        fcmUtils.unsubscribeTopicFor(user.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
@@ -58,7 +58,7 @@ public class SubscribeListener {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
         UserEntity user = event.getUser();
         for (NoticeEntity notice : event.getNotices()) {
-            fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, notice.getNoticeId());
+            fcmUtils.unsubscribeTopicFor(user.getFcmTokens(), TopicCode.NOTICE, notice.getNoticeId());
         }
     }
 

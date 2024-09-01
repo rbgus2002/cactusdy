@@ -55,7 +55,7 @@ public class NoticeService {
         eventPublisher.publishEvent(new NoticeCreationEvent(writer, study, notice));
         eventPublisher.publishEvent(
                 NoticeTopicSubscribeEvent.builder()
-                        .fcmTokens(writer.getFcmTokenList())
+                        .fcmTokens(writer.getFcmTokens())
                         .noticeId(notice.getNoticeId())
                         .build()
         );

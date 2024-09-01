@@ -114,7 +114,7 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.password = password;
     }
 
-    public List<String> getFcmTokenList() {
+    public List<String> getFcmTokens() {
         return fcmTokens.stream()
                 .map(FcmTokenEntity::getToken)
                 .collect(Collectors.toList());

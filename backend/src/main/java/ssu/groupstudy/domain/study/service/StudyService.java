@@ -67,7 +67,7 @@ public class StudyService {
         imageManager.updateImage(study, image);
         eventPublisher.publishEvent(
                 StudyTopicSubscribeEvent.builder()
-                        .fcmTokens(user.getFcmTokenList())
+                        .fcmTokens(user.getFcmTokens())
                         .studyId(study.getStudyId())
                         .build()
         );

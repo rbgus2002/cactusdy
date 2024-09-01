@@ -52,7 +52,7 @@ public class CommentService {
         eventPublisher.publishEvent(new CommentCreationEvent(writer, notice, study, comment));
         eventPublisher.publishEvent(
                 NoticeTopicSubscribeEvent.builder()
-                        .fcmTokens(writer.getFcmTokenList())
+                        .fcmTokens(writer.getFcmTokens())
                         .noticeId(notice.getNoticeId())
                         .build()
         );

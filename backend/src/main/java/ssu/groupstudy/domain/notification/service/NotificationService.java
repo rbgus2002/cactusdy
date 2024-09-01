@@ -32,7 +32,7 @@ public class NotificationService {
         String body = buildMessage("\"", buildStabMessage(count), "\"");
 
         Map<String, String> data = Map.of("type", "study", "studyId", studyId.toString());
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), title, body, data);
+        fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
     }
 
     private String buildStabMessage(int count) {
@@ -52,6 +52,6 @@ public class NotificationService {
         String body = buildMessage("\"", task.getDetail(), "\"", " : ", buildStabMessage(count));
 
         Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "-");
-        fcmUtils.sendNotificationByTokens(target.getFcmTokenList(), title, body, data);
+        fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
     }
 }
