@@ -53,7 +53,12 @@ public class NoticeService {
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 
         eventPublisher.publishEvent(new NoticeCreationEvent(writer, study, notice));
-        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+        eventPublisher.publishEvent(
+                NoticeTopicSubscribeEvent.builder()
+                        .fcmTokens(writer.getFcmTokenList())
+                        .noticeId(notice.getNoticeId())
+                        .build()
+        );
 
         return NoticeInfoResVo.of(notice, writer);
     }

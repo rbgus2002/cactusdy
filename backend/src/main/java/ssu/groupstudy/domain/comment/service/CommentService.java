@@ -50,13 +50,18 @@ public class CommentService {
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
         eventPublisher.publishEvent(new CommentCreationEvent(writer, notice, study, comment));
-        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+        eventPublisher.publishEvent(
+                NoticeTopicSubscribeEvent.builder()
+                        .fcmTokens(writer.getFcmTokenList())
+                        .noticeId(notice.getNoticeId())
+                        .build()
+        );
 
         return commentEntityRepository.save(comment).getCommentId();
     }
 
     private void validateUser(UserEntity writer, NoticeEntity notice) {
-        if(!notice.getStudy().isParticipated(writer)){
+        if (!notice.getStudy().isParticipated(writer)) {
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
     }
@@ -66,7 +71,7 @@ public class CommentService {
      */
     private CommentEntity handleCommentCreationWithParent(CreateCommentReqVo dto, UserEntity writer, NoticeEntity notice) {
         CommentEntity parent = null;
-        if(dto.getParentCommentId() != null){
+        if (dto.getParentCommentId() != null) {
             parent = commentEntityRepository.getReferenceById(dto.getParentCommentId());
         }
         return dto.toEntity(writer, notice, parent);
@@ -85,14 +90,14 @@ public class CommentService {
         return commentEntityRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
     }
 
-    private List<CommentDto> transformToCommentsWithReplies(List<CommentEntity> parentComments){
+    private List<CommentDto> transformToCommentsWithReplies(List<CommentEntity> parentComments) {
         return parentComments.stream()
                 .map(this::transformToCommentsWithReplies)
                 .filter(commentInfo -> !commentInfo.requireRemoved())
                 .collect(Collectors.toList());
     }
 
-    private CommentDto transformToCommentsWithReplies(CommentEntity comment){
+    private CommentDto transformToCommentsWithReplies(CommentEntity comment) {
         CommentDto commentInfo = CommentDto.from(comment);
         List<CommentEntity> childComments = getChildComments(comment);
         commentInfo.appendReplies(transformToChildComments(childComments));
