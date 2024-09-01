@@ -43,7 +43,6 @@ class CommentServiceTest extends ServiceTest {
         @DisplayName("댓글을 생성한다")
         void createNotice(){
             // given
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.of(공지사항1)).when(noticeEntityRepository).findById(any(Long.class));
             doReturn(댓글1).when(commentEntityRepository).save(any(CommentEntity.class));
 

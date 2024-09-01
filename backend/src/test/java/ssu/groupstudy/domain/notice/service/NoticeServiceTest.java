@@ -59,7 +59,6 @@ class NoticeServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeEntityRepository).save(any(NoticeEntity.class));
 
             // when

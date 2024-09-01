@@ -139,7 +139,6 @@ class TaskServiceTest extends ServiceTest {
         @DisplayName("태스크가 존재하지 않는 경우 예외를 던진다.")
         void TaskNotFound(){
             // given, when
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
