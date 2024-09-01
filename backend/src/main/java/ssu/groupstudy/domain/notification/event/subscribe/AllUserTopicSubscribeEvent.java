@@ -2,10 +2,11 @@ package ssu.groupstudy.domain.notification.event.subscribe;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ssu.groupstudy.domain.user.entity.UserEntity;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
 public class AllUserTopicSubscribeEvent {
-    private final UserEntity user;
+    private final List<String> fcmTokens;
 }

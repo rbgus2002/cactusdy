@@ -27,8 +27,7 @@ public class SubscribeListener {
     @Async
     public void handleAllUserTopicSubscribeEvent(AllUserTopicSubscribeEvent event) {
         log.info("## handleAllUserTopicSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.ALL_USERS, null);
+        fcmUtils.subscribeTopicFor(event.getFcmTokens(), TopicCode.ALL_USERS, null);
     }
 
     @EventListener
