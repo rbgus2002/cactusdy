@@ -17,9 +17,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
@@ -40,16 +38,20 @@ public class CommentService {
 
 
     @Transactional
-    public Long createComment(CreateCommentReqVo dto, Long userId) {
-        UserEntity writer = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        StudyEntity study = notice.getStudy();
         validateUser(writer, notice);
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice, study, comment));
+        eventPublisher.publishEvent(
+                CommentCreationEvent.builder()
+                        .noticeId(notice.getNoticeId())
+                        .studyId(notice.getStudy().getStudyId())
+                        .commentWriterNickname(writer.getNickname())
+                        .commentContents(comment.getContents())
+                        .build()
+        );
         eventPublisher.publishEvent(
                 NoticeTopicSubscribeEvent.builder()
                         .fcmTokens(writer.getFcmTokens())
@@ -72,7 +74,7 @@ public class CommentService {
     private CommentEntity handleCommentCreationWithParent(CreateCommentReqVo dto, UserEntity writer, NoticeEntity notice) {
         CommentEntity parent = null;
         if (dto.getParentCommentId() != null) {
-            parent = commentEntityRepository.getReferenceById(dto.getParentCommentId());
+            parent = commentEntityRepository.getReferenceById(dto.getParentCommentId()); // [2024-09-01:최규현] TODO: repo method 변경 필요
         }
         return dto.toEntity(writer, notice, parent);
     }

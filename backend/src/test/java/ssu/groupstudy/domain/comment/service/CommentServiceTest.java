@@ -48,7 +48,7 @@ class CommentServiceTest extends ServiceTest {
             doReturn(댓글1).when(commentEntityRepository).save(any(CommentEntity.class));
 
             // when
-            Long commentId = commentService.createComment(댓글1CreateRequest, 최규현.getUserId());
+            Long commentId = commentService.createComment(댓글1CreateRequest, 최규현);
 
             // then
             assertThat(commentId).isNotNull();
