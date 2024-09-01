@@ -124,7 +124,7 @@ class StudyInviteServiceTest extends ServiceTest {
 
             // when
             알고리즘스터디.invite(장재우);
-            studyInviteService.leaveUser(장재우.getUserId(), -1L);
+            studyInviteService.leaveUser(장재우, -1L);
 
             // then
             assertAll(

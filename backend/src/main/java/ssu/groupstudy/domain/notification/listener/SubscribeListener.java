@@ -48,8 +48,7 @@ public class SubscribeListener {
     @Async
     public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
         log.info("## handleStudyTopicUnSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.unsubscribeTopicFor(user.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
+        fcmUtils.unsubscribeTopicFor(event.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener

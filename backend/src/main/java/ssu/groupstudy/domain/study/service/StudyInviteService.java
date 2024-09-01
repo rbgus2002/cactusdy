@@ -78,15 +78,16 @@ public class StudyInviteService {
     }
 
     @Transactional
-    public void leaveUser(Long userId, Long studyId) {
-        UserEntity user = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+    public void leaveUser(UserEntity user, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
         removeUserToFutureRounds(study, user);
-        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
+        eventPublisher.publishEvent(StudyTopicUnsubscribeEvent.builder()
+                .fcmTokens(user.getFcmTokens())
+                .studyId(study.getStudyId())
+                .build());
         eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
         study.leave(user);
     }
