@@ -7,13 +7,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.TopicCode;
-import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.util.FcmUtils;
 
 @Component
@@ -55,9 +53,8 @@ public class SubscribeListener {
     @Async
     public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        for (NoticeEntity notice : event.getNotices()) {
-            fcmUtils.unsubscribeTopicFor(user.getFcmTokens(), TopicCode.NOTICE, notice.getNoticeId());
+        for (long noticeId : event.getNoticeIds()) {
+            fcmUtils.unsubscribeTopicFor(event.getFcmTokens(), TopicCode.NOTICE, noticeId);
         }
     }
 

@@ -105,7 +105,10 @@ public class ParticipantsService {
                 .studyId(study.getStudyId())
                 .build()
         );
-        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(targetUser, notices));
+        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
+                .fcmTokens(targetUser.getFcmTokens())
+                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
+                .build());
         study.kickParticipant(targetUser);
     }
 
@@ -117,7 +120,7 @@ public class ParticipantsService {
     }
 
     private void assertUserIsHostOrThrow(UserEntity host, StudyEntity study) {
-        if(!study.isHostUser(host)) {
+        if (!study.isHostUser(host)) {
             throw new CanNotKickParticipantException(USER_CAN_NOT_KICK_PARTICIPANT);
         }
     }

@@ -26,6 +26,7 @@ import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +89,11 @@ public class StudyInviteService {
                 .fcmTokens(user.getFcmTokens())
                 .studyId(study.getStudyId())
                 .build());
-        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
+        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
+                .fcmTokens(user.getFcmTokens())
+                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
+                .build()
+        );
         study.leave(user);
     }
 
