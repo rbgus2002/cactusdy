@@ -59,11 +59,10 @@ class NoticeServiceTest extends ServiceTest {
         void success() {
             // given
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
-            doReturn(Optional.of(최규현)).when(userEntityRepository).findById(any(Long.class));
             doReturn(공지사항1).when(noticeEntityRepository).save(any(NoticeEntity.class));
 
             // when
-            NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(공지사항1CreateRequest, 최규현.getUserId());
+            NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(공지사항1CreateRequest, 최규현);
 
             // then
             softly.assertThat(noticeInfoResVo.getTitle()).isEqualTo(공지사항1CreateRequest.getTitle());

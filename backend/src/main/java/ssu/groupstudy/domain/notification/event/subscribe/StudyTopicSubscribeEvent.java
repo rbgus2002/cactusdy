@@ -1,17 +1,15 @@
 package ssu.groupstudy.domain.notification.event.subscribe;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ssu.groupstudy.domain.study.entity.StudyEntity;
-import ssu.groupstudy.domain.user.entity.UserEntity;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
+@Builder
 public class StudyTopicSubscribeEvent {
-    private final UserEntity user;
-    private final StudyEntity study;
-
-    public Long getStudyId(){
-        return study.getStudyId();
-    }
+    private final List<String> fcmTokens;
+    private final long studyId;
 }

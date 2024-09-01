@@ -118,13 +118,12 @@ class StudyInviteServiceTest extends ServiceTest {
         @DisplayName("성공")
         void 성공() {
             // given
-            doReturn(Optional.of(장재우)).when(userEntityRepository).findById(any(Long.class));
             doReturn(Optional.of(알고리즘스터디)).when(studyEntityRepository).findById(any(Long.class));
             doReturn(List.of()).when(noticeEntityRepository).findNoticesByStudy(any(StudyEntity.class));
 
             // when
             알고리즘스터디.invite(장재우);
-            studyInviteService.leaveUser(장재우.getUserId(), -1L);
+            studyInviteService.leaveUser(장재우, -1L);
 
             // then
             assertAll(

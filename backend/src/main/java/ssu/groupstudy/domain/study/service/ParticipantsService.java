@@ -90,20 +90,25 @@ public class ParticipantsService {
     }
 
     @Transactional
-    public void kickParticipant(Long userId, Long targetUserId, Long studyId) {
-        UserEntity user = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    public void kickParticipant(UserEntity host, Long targetUserId, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         UserEntity targetUser = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
-        assertUserIsHostOrThrow(user, study);
+        assertUserIsHostOrThrow(host, study);
 
         removeUserToFutureRounds(study, targetUser);
-        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
-        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
+        eventPublisher.publishEvent(StudyTopicUnsubscribeEvent.builder()
+                .fcmTokens(targetUser.getFcmTokens())
+                .studyId(study.getStudyId())
+                .build()
+        );
+        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
+                .fcmTokens(targetUser.getFcmTokens())
+                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
+                .build());
         study.kickParticipant(targetUser);
     }
 
@@ -114,8 +119,8 @@ public class ParticipantsService {
         }
     }
 
-    private void assertUserIsHostOrThrow(UserEntity user, StudyEntity study) {
-        if(!study.isHostUser(user)) {
+    private void assertUserIsHostOrThrow(UserEntity host, StudyEntity study) {
+        if (!study.isHostUser(host)) {
             throw new CanNotKickParticipantException(USER_CAN_NOT_KICK_PARTICIPANT);
         }
     }

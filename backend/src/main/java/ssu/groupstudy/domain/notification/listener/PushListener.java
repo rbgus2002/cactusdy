@@ -31,7 +31,11 @@ public class PushListener {
         String title = buildMessage(COMMENT, event.getCommentWriterNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getCommentContents(), DOUBLE_QUOTE);
 
-        Map<String, String> data = Map.of(DATA_TYPE, NotificationDataType.NOTICE.getValue(), NOTICE_ID, event.getNoticeId().toString(), STUDY_ID, event.getStudyId().toString());
+        Map<String, String> data = Map.of(
+                DATA_TYPE, NotificationDataType.NOTICE.getValue(),
+                NOTICE_ID, event.getNoticeId().toString(),
+                STUDY_ID, event.getStudyId().toString()
+        );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.NOTICE, event.getNoticeId(), data);
     }
 
@@ -41,7 +45,11 @@ public class PushListener {
         String title = buildMessage(NOTICE, event.getNoticeWriterNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getNoticeTitle(), DOUBLE_QUOTE);
 
-        Map<String, String> data = Map.of(DATA_TYPE, NotificationDataType.NOTICE.getValue(), NOTICE_ID, event.getNoticeId().toString(), STUDY_ID, event.getStudyId().toString());
+        Map<String, String> data = Map.of(
+                DATA_TYPE, NotificationDataType.NOTICE.getValue(),
+                NOTICE_ID, event.getNoticeId().toString(),
+                STUDY_ID, event.getStudyId().toString()
+        );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
     }
 
@@ -51,7 +59,12 @@ public class PushListener {
         String title = buildMessage(TASK_DONE, event.getNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getTaskDetail(), DOUBLE_QUOTE);
 
-        Map<String, String> data = Map.of(DATA_TYPE, NotificationDataType.ROUND.getValue(), STUDY_ID, event.getStudyId().toString(), ROUND_ID, event.getRoundId().toString(), ROUND_SEQ, HYPHEN);
+        Map<String, String> data = Map.of(
+                DATA_TYPE, NotificationDataType.ROUND.getValue(),
+                STUDY_ID, event.getStudyId().toString(),
+                ROUND_ID, event.getRoundId().toString(),
+                ROUND_SEQ, HYPHEN
+        );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
     }
 }

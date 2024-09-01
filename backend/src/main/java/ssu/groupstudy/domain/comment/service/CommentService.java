@@ -17,9 +17,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
-import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
@@ -40,23 +38,32 @@ public class CommentService {
 
 
     @Transactional
-    public Long createComment(CreateCommentReqVo dto, Long userId) {
-        UserEntity writer = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        StudyEntity study = notice.getStudy();
         validateUser(writer, notice);
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(new CommentCreationEvent(writer, notice, study, comment));
-        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+        eventPublisher.publishEvent(
+                CommentCreationEvent.builder()
+                        .noticeId(notice.getNoticeId())
+                        .studyId(notice.getStudy().getStudyId())
+                        .commentWriterNickname(writer.getNickname())
+                        .commentContents(comment.getContents())
+                        .build()
+        );
+        eventPublisher.publishEvent(
+                NoticeTopicSubscribeEvent.builder()
+                        .fcmTokens(writer.getFcmTokens())
+                        .noticeId(notice.getNoticeId())
+                        .build()
+        );
 
         return commentEntityRepository.save(comment).getCommentId();
     }
 
     private void validateUser(UserEntity writer, NoticeEntity notice) {
-        if(!notice.getStudy().isParticipated(writer)){
+        if (!notice.getStudy().isParticipated(writer)) {
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
     }
@@ -66,8 +73,8 @@ public class CommentService {
      */
     private CommentEntity handleCommentCreationWithParent(CreateCommentReqVo dto, UserEntity writer, NoticeEntity notice) {
         CommentEntity parent = null;
-        if(dto.getParentCommentId() != null){
-            parent = commentEntityRepository.getReferenceById(dto.getParentCommentId());
+        if (dto.getParentCommentId() != null) {
+            parent = commentEntityRepository.getReferenceById(dto.getParentCommentId()); // [2024-09-01:최규현] TODO: repo method 변경 필요
         }
         return dto.toEntity(writer, notice, parent);
     }
@@ -85,14 +92,14 @@ public class CommentService {
         return commentEntityRepository.findCommentsByNoticeAndParentCommentIsNullOrderByCreateDate(notice);
     }
 
-    private List<CommentDto> transformToCommentsWithReplies(List<CommentEntity> parentComments){
+    private List<CommentDto> transformToCommentsWithReplies(List<CommentEntity> parentComments) {
         return parentComments.stream()
                 .map(this::transformToCommentsWithReplies)
                 .filter(commentInfo -> !commentInfo.requireRemoved())
                 .collect(Collectors.toList());
     }
 
-    private CommentDto transformToCommentsWithReplies(CommentEntity comment){
+    private CommentDto transformToCommentsWithReplies(CommentEntity comment) {
         CommentDto commentInfo = CommentDto.from(comment);
         List<CommentEntity> childComments = getChildComments(comment);
         commentInfo.appendReplies(transformToChildComments(childComments));

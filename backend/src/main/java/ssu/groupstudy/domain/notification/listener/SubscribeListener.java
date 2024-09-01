@@ -7,13 +7,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.TopicCode;
-import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
 import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.global.util.FcmUtils;
 
 @Component
@@ -27,38 +25,36 @@ public class SubscribeListener {
     @Async
     public void handleAllUserTopicSubscribeEvent(AllUserTopicSubscribeEvent event) {
         log.info("## handleAllUserTopicSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.ALL_USERS, null);
+        fcmUtils.subscribeTopicFor(event.getFcmTokens(), TopicCode.ALL_USERS, null);
     }
 
     @EventListener
+    @Async
     public void handleNoticeTopicSubscribeEvent(NoticeTopicSubscribeEvent event) {
         log.info("## handleNoticeTopicSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, event.getNoticeId());
+        fcmUtils.subscribeTopicFor(event.getFcmTokens(), TopicCode.NOTICE, event.getNoticeId());
     }
 
     @EventListener
     @Async
     public void handleStudyTopicSubscribeEvent(StudyTopicSubscribeEvent event) {
         log.info("## handleStudyTopicSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        fcmUtils.subscribeTopicFor(event.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
+    @Async
     public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
         log.info("## handleStudyTopicUnSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        fcmUtils.unsubscribeTopicFor(event.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener
+    @Async
     public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        for (NoticeEntity notice : event.getNotices()) {
-            fcmUtils.unsubscribeTopicFor(user.getFcmTokenList(), TopicCode.NOTICE, notice.getNoticeId());
+        for (long noticeId : event.getNoticeIds()) {
+            fcmUtils.unsubscribeTopicFor(event.getFcmTokens(), TopicCode.NOTICE, noticeId);
         }
     }
 

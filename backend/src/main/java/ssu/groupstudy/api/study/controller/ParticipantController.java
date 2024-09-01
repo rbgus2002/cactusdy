@@ -39,7 +39,7 @@ public class ParticipantController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam Long studyId
     ) {
-        studyInviteService.leaveUser(userDetails.getUser().getUserId(), studyId);
+        studyInviteService.leaveUser(userDetails.getUser(), studyId);
         return ResVo.success();
     }
 
@@ -49,7 +49,7 @@ public class ParticipantController {
             (@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long userId,
              @RequestParam Long studyId
             ) {
-        participantsService.kickParticipant(userDetails.getUser().getUserId(), userId, studyId);
+        participantsService.kickParticipant(userDetails.getUser(), userId, studyId);
         return ResVo.success();
     }
 

@@ -26,6 +26,7 @@ import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,17 +47,20 @@ public class StudyInviteService {
     public Long inviteUser(Long userId, String inviteCode) {
         UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-
         checkAddStudy(user);
 
         StudyEntity study = studyEntityRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
-
         study.invite(user);
 
         addUserToFutureRounds(study, user);
 
-        eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
+        eventPublisher.publishEvent(
+                StudyTopicSubscribeEvent.builder()
+                        .fcmTokens(user.getFcmTokens())
+                        .studyId(study.getStudyId())
+                        .build()
+        );
 
         return study.getStudyId();
     }
@@ -75,16 +79,21 @@ public class StudyInviteService {
     }
 
     @Transactional
-    public void leaveUser(Long userId, Long studyId) {
-        UserEntity user = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+    public void leaveUser(UserEntity user, Long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_NOT_FOUND));
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
         removeUserToFutureRounds(study, user);
-        eventPublisher.publishEvent(new StudyTopicUnsubscribeEvent(user, study));
-        eventPublisher.publishEvent(new NoticeTopicUnsubscribeEvent(user, notices));
+        eventPublisher.publishEvent(StudyTopicUnsubscribeEvent.builder()
+                .fcmTokens(user.getFcmTokens())
+                .studyId(study.getStudyId())
+                .build());
+        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
+                .fcmTokens(user.getFcmTokens())
+                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
+                .build()
+        );
         study.leave(user);
     }
 

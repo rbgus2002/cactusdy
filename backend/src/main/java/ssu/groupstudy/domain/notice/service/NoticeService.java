@@ -24,14 +24,14 @@ import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ssu.groupstudy.domain.common.enums.ResultCode.*;
+import static ssu.groupstudy.domain.common.enums.ResultCode.NOTICE_NOT_FOUND;
+import static ssu.groupstudy.domain.common.enums.ResultCode.STUDY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -45,15 +45,25 @@ public class NoticeService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, Long userId) {
+    public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, UserEntity writer) {
         StudyEntity study = studyEntityRepository.findById(dto.getStudyId())
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
-        UserEntity writer = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 
-        eventPublisher.publishEvent(new NoticeCreationEvent(writer, study, notice));
-        eventPublisher.publishEvent(new NoticeTopicSubscribeEvent(writer, notice));
+        eventPublisher.publishEvent(
+                NoticeCreationEvent.builder()
+                        .studyId(study.getStudyId())
+                        .noticeId(notice.getNoticeId())
+                        .noticeTitle(notice.getTitle())
+                        .noticeWriterNickname(writer.getNickname())
+                        .build()
+        );
+        eventPublisher.publishEvent(
+                NoticeTopicSubscribeEvent.builder()
+                        .fcmTokens(writer.getFcmTokens())
+                        .noticeId(notice.getNoticeId())
+                        .build()
+        );
 
         return NoticeInfoResVo.of(notice, writer);
     }

@@ -24,15 +24,20 @@ public class FcmTopicSubscribeService {
     private final ParticipantEntityRepository participantEntityRepository;
 
     public void subscribeAllUserTopic(UserEntity user) {
-        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user));
+        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user.getFcmTokens()));
     }
 
     public void subscribeParticipatingStudiesTopic(UserEntity user) {
         List<StudyEntity> participatingStudies = participantEntityRepository.findByUserOrderByCreateDate(user).stream()
                 .map(ParticipantEntity::getStudy)
                 .collect(Collectors.toList());
-        for (StudyEntity study : participatingStudies) {
-            eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
-        }
+
+        participatingStudies.forEach(study -> eventPublisher.publishEvent(
+                        StudyTopicSubscribeEvent.builder()
+                                .fcmTokens(user.getFcmTokens())
+                                .studyId(study.getStudyId())
+                                .build()
+                )
+        );
     }
 }

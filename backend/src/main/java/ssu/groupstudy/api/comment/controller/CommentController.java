@@ -27,7 +27,7 @@ public class CommentController {
             @Valid @RequestBody CreateCommentReqVo dto,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long commentId = commentService.createComment(dto, userDetails.getUser().getUserId());
+        Long commentId = commentService.createComment(dto, userDetails.getUser());
         return DataResVo.of("commentId", commentId);
     }
 
