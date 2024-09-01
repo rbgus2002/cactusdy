@@ -67,7 +67,7 @@ public class TaskController {
             @RequestParam Long taskId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        char doneYn = taskService.switchTask(taskId, userDetails.getUser().getUserId());
+        char doneYn = taskService.switchTask(taskId, userDetails.getUser());
         return DataResVo.of("doneYn", doneYn);
     }
 }

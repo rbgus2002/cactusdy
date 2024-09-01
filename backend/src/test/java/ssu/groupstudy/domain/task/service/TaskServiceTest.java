@@ -143,7 +143,7 @@ class TaskServiceTest extends ServiceTest {
             doReturn(Optional.empty()).when(taskEntityRepository).findById(any(Long.class));
 
             // then
-            assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현.getUserId()))
+            assertThatThrownBy(() -> taskService.switchTask(-1L, 최규현))
                     .isInstanceOf(TaskNotFoundException.class)
                     .hasMessage(TASK_NOT_FOUND.getMessage());
         }

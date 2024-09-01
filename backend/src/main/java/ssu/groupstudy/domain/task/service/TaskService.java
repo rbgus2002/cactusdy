@@ -18,7 +18,6 @@ import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
-import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.Comparator;
@@ -96,9 +95,7 @@ public class TaskService {
     }
 
     @Transactional
-    public char switchTask(Long taskId, Long userId) {
-        UserEntity user = userEntityRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND)); // ThreadLocal 전략을 사용하여, 다른 쓰레드에 UserEntity 객체 넘기기 위해 별도로 조회함
+    public char switchTask(Long taskId, UserEntity user) {
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(TASK_NOT_FOUND));
         StudyEntity study = task.getStudy();
@@ -106,7 +103,13 @@ public class TaskService {
 
         char doneYn = task.switchDoneYn();
         if (task.isDone()) {
-            eventPublisher.publishEvent(new TaskDoneEvent(user, task, study, round));
+            eventPublisher.publishEvent(TaskDoneEvent.builder()
+                            .nickname(user.getNickname())
+                            .taskDetail(task.getDetail())
+                            .studyId(study.getStudyId())
+                            .roundId(round.getRoundId())
+                            .build()
+            );
         }
         return doneYn;
     }
