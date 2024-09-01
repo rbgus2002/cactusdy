@@ -32,6 +32,7 @@ public class SubscribeListener {
     }
 
     @EventListener
+    @Async
     public void handleNoticeTopicSubscribeEvent(NoticeTopicSubscribeEvent event) {
         log.info("## handleNoticeTopicSubscribeEvent : ");
         UserEntity user = event.getUser();
@@ -46,6 +47,7 @@ public class SubscribeListener {
     }
 
     @EventListener
+    @Async
     public void handleStudyTopicUnSubscribeEvent(StudyTopicUnsubscribeEvent event) {
         log.info("## handleStudyTopicUnSubscribeEvent : ");
         UserEntity user = event.getUser();
@@ -53,6 +55,7 @@ public class SubscribeListener {
     }
 
     @EventListener
+    @Async
     public void handleNoticeTopicUnSubscribeEvent(NoticeTopicUnsubscribeEvent event) {
         log.info("## handleNoticeTopicUnSubscribeEvent : ");
         UserEntity user = event.getUser();
