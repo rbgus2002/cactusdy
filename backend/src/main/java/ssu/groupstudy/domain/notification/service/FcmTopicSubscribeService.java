@@ -31,8 +31,13 @@ public class FcmTopicSubscribeService {
         List<StudyEntity> participatingStudies = participantEntityRepository.findByUserOrderByCreateDate(user).stream()
                 .map(ParticipantEntity::getStudy)
                 .collect(Collectors.toList());
-        for (StudyEntity study : participatingStudies) {
-            eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
-        }
+
+        participatingStudies.forEach(study -> eventPublisher.publishEvent(
+                        StudyTopicSubscribeEvent.builder()
+                                .fcmTokens(user.getFcmTokenList())
+                                .studyId(study.getStudyId())
+                                .build()
+                )
+        );
     }
 }

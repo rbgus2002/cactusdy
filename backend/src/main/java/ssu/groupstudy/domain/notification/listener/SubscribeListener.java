@@ -42,8 +42,7 @@ public class SubscribeListener {
     @Async
     public void handleStudyTopicSubscribeEvent(StudyTopicSubscribeEvent event) {
         log.info("## handleStudyTopicSubscribeEvent : ");
-        UserEntity user = event.getUser();
-        fcmUtils.subscribeTopicFor(user.getFcmTokenList(), TopicCode.STUDY, event.getStudyId());
+        fcmUtils.subscribeTopicFor(event.getFcmTokens(), TopicCode.STUDY, event.getStudyId());
     }
 
     @EventListener

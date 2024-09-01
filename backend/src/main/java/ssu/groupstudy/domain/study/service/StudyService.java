@@ -65,7 +65,12 @@ public class StudyService {
         createDefaultOthers(study);
 
         imageManager.updateImage(study, image);
-        eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
+        eventPublisher.publishEvent(
+                StudyTopicSubscribeEvent.builder()
+                        .fcmTokens(user.getFcmTokenList())
+                        .studyId(study.getStudyId())
+                        .build()
+        );
         return StudyCreateResVo.of(study.getStudyId(), study.getInviteCode());
     }
 

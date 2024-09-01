@@ -46,17 +46,20 @@ public class StudyInviteService {
     public Long inviteUser(Long userId, String inviteCode) {
         UserEntity user = userEntityRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
-
         checkAddStudy(user);
 
         StudyEntity study = studyEntityRepository.findByInviteCode(inviteCode)
                 .orElseThrow(() -> new StudyNotFoundException(ResultCode.STUDY_INVITE_CODE_NOT_FOUND));
-
         study.invite(user);
 
         addUserToFutureRounds(study, user);
 
-        eventPublisher.publishEvent(new StudyTopicSubscribeEvent(user, study));
+        eventPublisher.publishEvent(
+                StudyTopicSubscribeEvent.builder()
+                        .fcmTokens(user.getFcmTokenList())
+                        .studyId(study.getStudyId())
+                        .build()
+        );
 
         return study.getStudyId();
     }
