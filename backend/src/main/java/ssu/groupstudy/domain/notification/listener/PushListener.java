@@ -45,7 +45,11 @@ public class PushListener {
         String title = buildMessage(NOTICE, event.getNoticeWriterNickname());
         String body = buildMessage(DOUBLE_QUOTE, event.getNoticeTitle(), DOUBLE_QUOTE);
 
-        Map<String, String> data = Map.of(DATA_TYPE, NotificationDataType.NOTICE.getValue(), NOTICE_ID, event.getNoticeId().toString(), STUDY_ID, event.getStudyId().toString());
+        Map<String, String> data = Map.of(
+                DATA_TYPE, NotificationDataType.NOTICE.getValue(),
+                NOTICE_ID, event.getNoticeId().toString(),
+                STUDY_ID, event.getStudyId().toString()
+        );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
     }
 
