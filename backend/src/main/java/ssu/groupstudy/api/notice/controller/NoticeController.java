@@ -34,7 +34,7 @@ public class NoticeController {
         return DataResVo.of("noticeInfo", noticeInfoResVo);
     }
 
-    @Operation(summary = "새로운 공지사항 생성")
+    @Operation(summary = "공지사항 생성")
     @PostMapping
     public ResVo createNotice(@Valid @RequestBody CreateNoticeReqVo dto, @AuthenticationPrincipal CustomUserDetails userDetails){
         NoticeInfoResVo noticeInfoResVo = noticeService.createNotice(dto, userDetails.getUser().getUserId());
