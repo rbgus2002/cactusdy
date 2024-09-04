@@ -153,7 +153,7 @@
     "addRound": "회차 추가",
     "deleteRound": "회차 삭제",
     "record": "기록",
-    "recordHint": "자세한 기록을 적어주세요",
+    "recordHint": "스터디원 모두가 볼 수 있는 기록이에요",
     "roundLimitWarning": "회차는 최대 {count}개만 생성할 수 있어요",
 
     "noti": "공지",
