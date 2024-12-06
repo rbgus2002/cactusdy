@@ -1,7 +1,7 @@
 ---
 name: issue template
 about: groupstudy
-title: "[F] feat : "
+title: "[FE] "
 labels: ''
 assignees: ''
 
