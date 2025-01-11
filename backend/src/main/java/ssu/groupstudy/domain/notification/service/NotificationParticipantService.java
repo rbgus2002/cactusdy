@@ -19,7 +19,7 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class NotificationService {
+public class NotificationParticipantService {
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
@@ -29,13 +29,13 @@ public class NotificationService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
         String title = buildMessage("콕찌르기 | ", me.getNickname());
-        String body = buildMessage("\"", buildStabMessage(count), "\"");
+        String body = buildMessage("\"", buildNotificationMessage(count), "\"");
 
         Map<String, String> data = Map.of("type", "study", "studyId", studyId.toString());
         fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
     }
 
-    private String buildStabMessage(int count) {
+    private String buildNotificationMessage(int count) {
         if (count > 1) {
             return buildMessage(String.valueOf(count), "번이나 콕 찔렀어요");
         }
@@ -49,7 +49,7 @@ public class NotificationService {
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
 
         String title = buildMessage("과제 콕찌르기 | ", me.getNickname());
-        String body = buildMessage("\"", task.getDetail(), "\"", " : ", buildStabMessage(count));
+        String body = buildMessage("\"", task.getDetail(), "\"", " : ", buildNotificationMessage(count));
 
         Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "-");
         fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);

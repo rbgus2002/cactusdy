@@ -7,7 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
-import ssu.groupstudy.domain.notification.service.NotificationService;
+import ssu.groupstudy.domain.notification.service.NotificationParticipantService;
 import ssu.groupstudy.api.common.vo.ResVo;
 
 @RestController
@@ -15,7 +15,7 @@ import ssu.groupstudy.api.common.vo.ResVo;
 @RequiredArgsConstructor
 @Tag(name = "Notification", description = "알림 API")
 public class NotificationController {
-    private final NotificationService notificationService;
+    private final NotificationParticipantService notificationParticipantService;
     private final FcmTokenService fcmTokenService;
 
     @Operation(summary = "스터디 참여자 콕찌르기")
@@ -24,7 +24,7 @@ public class NotificationController {
                                    @RequestParam Long targetUserId,
                                    @RequestParam Long studyId,
                                    @RequestParam int count) {
-        notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId, count);
+        notificationParticipantService.notifyParticipant(userDetails.getUser(), targetUserId, studyId, count);
         return ResVo.success();
     }
 
@@ -36,7 +36,7 @@ public class NotificationController {
                             @RequestParam Long roundId,
                             @RequestParam Long taskId,
                             @RequestParam int count) {
-        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
+        notificationParticipantService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
         return ResVo.success();
     }
 

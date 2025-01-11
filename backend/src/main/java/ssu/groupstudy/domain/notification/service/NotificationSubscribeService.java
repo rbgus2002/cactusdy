@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class FcmTopicSubscribeService {
+public class NotificationSubscribeService {
     private final ApplicationEventPublisher eventPublisher;
     private final ParticipantEntityRepository participantEntityRepository;
 

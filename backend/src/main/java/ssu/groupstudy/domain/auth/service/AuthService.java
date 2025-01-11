@@ -13,7 +13,7 @@ import ssu.groupstudy.domain.auth.param.JwtTokenParam;
 import ssu.groupstudy.domain.auth.security.jwt.JwtProvider;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
-import ssu.groupstudy.domain.notification.service.FcmTopicSubscribeService;
+import ssu.groupstudy.domain.notification.service.NotificationSubscribeService;
 import ssu.groupstudy.domain.study.service.ExampleStudyCreateService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.PhoneNumberExistsException;
@@ -31,7 +31,7 @@ import java.io.IOException;
 public class AuthService {
     private final UserEntityRepository userEntityRepository;
     private final FcmTokenService fcmTokenService;
-    private final FcmTopicSubscribeService fcmTopicSubscribeService;
+    private final NotificationSubscribeService notificationSubscribeService;
     private final ExampleStudyCreateService exampleStudyCreateService;
 
     private final PasswordEncoder passwordEncoder;
@@ -50,8 +50,8 @@ public class AuthService {
         validatePassword(request.getPassword(), user.getPassword());
 
         fcmTokenService.saveFcmToken(request.getFcmToken(), user);
-        fcmTopicSubscribeService.subscribeAllUserTopic(user);
-        fcmTopicSubscribeService.subscribeParticipatingStudiesTopic(user);
+        notificationSubscribeService.subscribeAllUserTopic(user);
+        notificationSubscribeService.subscribeParticipatingStudiesTopic(user);
 
         String jwtToken = jwtProvider.createToken(user.getPhoneNumber(), user.getRoles());
         return JwtTokenParam.of(user.getUserId(), jwtToken);
