@@ -24,19 +24,19 @@ public class NotificationController {
                                    @RequestParam Long targetUserId,
                                    @RequestParam Long studyId,
                                    @RequestParam int count) {
-        notificationService.stabParticipant(userDetails.getUser(), targetUserId, studyId, count);
+        notificationService.notifyParticipant(userDetails.getUser(), targetUserId, studyId, count);
         return ResVo.success();
     }
 
     @Operation(summary = "스터디 참여자의 과제 콕찌르기", description = "스터디 참여자가 과제를 완료하지 않았을 때 콕찌르기를 한다")
     @GetMapping("/tasks")
-    public ResVo notifyTask(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public ResVo notifyParticipantTask(@AuthenticationPrincipal CustomUserDetails userDetails,
                             @RequestParam Long targetUserId,
                             @RequestParam Long studyId,
                             @RequestParam Long roundId,
                             @RequestParam Long taskId,
                             @RequestParam int count) {
-        notificationService.stabParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
+        notificationService.notifyParticipantTask(userDetails.getUser(), targetUserId, studyId, roundId, taskId, count);
         return ResVo.success();
     }
 

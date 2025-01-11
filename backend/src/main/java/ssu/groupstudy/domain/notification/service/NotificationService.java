@@ -24,7 +24,7 @@ public class NotificationService {
     private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
 
-    public void stabParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
+    public void notifyParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
         UserEntity target = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
 
@@ -42,7 +42,7 @@ public class NotificationService {
         return buildMessage("콕 찔렀어요");
     }
 
-    public void stabParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
+    public void notifyParticipantTask(UserEntity me, Long targetUserId, Long studyId, Long roundId, Long taskId, int count) {
         UserEntity target = userEntityRepository.findById(targetUserId)
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         TaskEntity task = taskEntityRepository.findById(taskId)
