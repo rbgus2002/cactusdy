@@ -1,9 +1,9 @@
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/routes/home_route.dart';
 import 'package:groupstudy/routes/sign_routes/reset_password_verify_route.dart';
 import 'package:groupstudy/services/auth.dart';
+import 'package:groupstudy/services/message_service.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
@@ -119,7 +119,7 @@ class _SignInRouteState extends State<SignInRoute> {
         _isProcessing = true;
 
         try {
-          String fcmToken = await FirebaseMessaging.instance.getToken()??"";
+          String fcmToken = await MessageService.getFCMToken()??"";
 
           await Auth.signIn(_phoneNumber, _password, fcmToken).then((value) =>
             Util.pushRouteAndPopUntil(context, (context) => const HomeRoute()));
