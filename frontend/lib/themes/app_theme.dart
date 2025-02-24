@@ -59,6 +59,7 @@ class AppTheme with ChangeNotifier {
   }
 
   static final ThemeData themeData = ThemeData(
+      useMaterial3: false,
       fontFamily: TextStyles.mainFont,
       textTheme: TextStyles.textTheme,
 
@@ -84,6 +85,7 @@ class AppTheme with ChangeNotifier {
   );
 
   static final ThemeData darkThemeData = ThemeData(
+      useMaterial3: false,
       fontFamily: TextStyles.mainFont,
       textTheme: TextStyles.textTheme,
 

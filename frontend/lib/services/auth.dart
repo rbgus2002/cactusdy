@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:groupstudy/models/sign_info.dart';
 import 'package:groupstudy/services/database_service.dart';
 import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/services/message_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
@@ -101,7 +102,7 @@ class Auth {
   }
 
   static Future<bool> removeFCMToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
+    String? token = await MessageService.getFCMToken();
 
     if (token == null) {
       return true;

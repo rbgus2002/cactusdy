@@ -31,7 +31,7 @@ class MessageService {
     await _initLocalNotification();
     await _setupInteractedMessage(_MessageInteractionHandler._handleMessageInteraction);
 
-    logger.infoLog('firebase messaging token: ${await FirebaseMessaging.instance.getToken()}');
+    logger.infoLog('firebase messaging token: ${await getFCMToken()}');
   }
 
   static Future<FirebaseOptions> _getCurrentPlatform() async {
@@ -102,6 +102,13 @@ class MessageService {
     await _flutterLocalNotificationsPlugin.initialize(initSettings);
   }
 
+  static Future<String?> getFCMToken() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return FirebaseMessaging.instance.getAPNSToken();
+    }
+    return FirebaseMessaging.instance.getToken();
+  }
+
   static Future<void> _showNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
     if (notification == null) return;
@@ -152,7 +159,7 @@ class MessageService {
   }
 
   static Future<bool> checkFCMToken() async {
-    String? currentToken = await FirebaseMessaging.instance.getToken();
+    String? currentToken = await getFCMToken();
     String? savedToken = Auth.signInfo?.fcmToken;
 
     if ((currentToken == null) || (savedToken == null)) {
