@@ -8,6 +8,7 @@ import ssu.groupstudy.domain.notification.repository.FcmTokenEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +26,11 @@ public class FcmTokenService {
 
     @Transactional
     public void deleteFcmToken(UserEntity user, String token) {
-        FcmTokenEntity fcmTokenEntity = fcmTokenEntityRepository.findByTokenAndUser(token, user)
-                .orElseThrow(() -> new IllegalArgumentException("해당 토큰이 존재하지 않습니다."));
-        fcmTokenEntityRepository.delete(fcmTokenEntity);
+        Optional<FcmTokenEntity> fcmTokenEntity = fcmTokenEntityRepository.findByTokenAndUser(token, user);
+
+        if(fcmTokenEntity.isPresent()){
+            fcmTokenEntityRepository.delete(fcmTokenEntity.get());
+        }
     }
 
     @Transactional
