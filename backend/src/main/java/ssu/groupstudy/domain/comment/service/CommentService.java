@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.api.comment.vo.ChildCommentInfoResVo;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.api.comment.vo.CreateCommentReqVo;
+import ssu.groupstudy.api.comment.vo.CreateCommentV2ReqVo;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.param.CommentDto;
@@ -17,10 +18,14 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.param.NotificationCommentParam;
+import ssu.groupstudy.domain.notification.service.NotificationCommentService;
+import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +40,18 @@ public class CommentService {
     private final CommentEntityRepository commentEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final NotificationCommentService notificationService;
 
 
     @Transactional
     public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
-        validateUser(writer, notice);
+
+        if (!notice.getStudy().isParticipated(writer)) {
+            throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
+        }
+
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
         eventPublisher.publishEvent(
@@ -62,10 +72,36 @@ public class CommentService {
         return commentEntityRepository.save(comment).getCommentId();
     }
 
-    private void validateUser(UserEntity writer, NoticeEntity notice) {
-        if (!notice.getStudy().isParticipated(writer)) {
+    @Transactional
+    public Long createCommentV2(Long studyId, Long noticeId, @Valid CreateCommentV2ReqVo reqVo, UserEntity writer) {
+        NoticeEntity notice = noticeEntityRepository.findById(noticeId)
+                .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
+        StudyEntity study = notice.getStudy();
+
+        if (!study.isParticipated(writer)) {
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
+
+        notificationService.push(
+                NotificationCommentParam.builder()
+                        .noticeId(noticeId)
+                        .studyId(studyId)
+                        .commentWriterNickname(writer.getNickname())
+                        .commentContents(reqVo.getContents())
+                        .build()
+        );
+//        eventPublisher.publishEvent( // [2025-02-23:최규현] TODO: NOT IMPLEMENTED
+//                NoticeTopicSubscribeEvent.builder()
+//                        .fcmTokens(writer.getFcmTokens())
+//                        .noticeId(noticeId)
+//                        .build()
+//        );
+
+        CommentEntity parentComment = (reqVo.getParentCommentId() != null)
+                ? commentEntityRepository.findById(reqVo.getParentCommentId()).orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
+                : null;
+        CommentEntity comment = reqVo.toEntity(writer, notice, parentComment);
+        return commentEntityRepository.save(comment).getCommentId();
     }
 
     /**
