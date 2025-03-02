@@ -103,9 +103,9 @@ class MessageService {
   }
 
   static Future<String?> getFCMToken() async {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return FirebaseMessaging.instance.getAPNSToken();
-    }
+    // Case: IOS-Simulator
+    // return FirebaseMessaging.instance.getAPNSToken();
+
     return FirebaseMessaging.instance.getToken();
   }
 
