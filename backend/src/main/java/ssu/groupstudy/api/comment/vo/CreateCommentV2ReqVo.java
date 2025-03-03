@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class CreateCommentV2ReqVo {
     @NotBlank
     private String contents;
+    @Nullable
     private Long parentCommentId;
 
     public CommentEntity toEntity(UserEntity writer, NoticeEntity notice, @Nullable CommentEntity parentComment) {
