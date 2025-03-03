@@ -51,7 +51,7 @@ public class FcmUtils {
 
     public void sendNotificationToTopic(String title, String body, TopicCode topicCode, Long id, Map<String, String> data) {
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
-        String topic = topicCode.handleTopicString(id);
+        String topic = topicCode.formatTopic(id);
         Message message = Message.builder()
                 .setNotification(Notification.builder()
                         .setTitle(title)
@@ -69,7 +69,7 @@ public class FcmUtils {
     }
 
     public void subscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
-        String topic = topicCode.handleTopicString(id);
+        String topic = topicCode.formatTopic(id);
         try {
             FirebaseMessaging.getInstance().subscribeToTopic(tokens, topic);
         } catch (FirebaseMessagingException e) {
@@ -79,7 +79,7 @@ public class FcmUtils {
     }
 
     public void unsubscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
-        String topic = topicCode.handleTopicString(id);
+        String topic = topicCode.formatTopic(id);
         try {
             FirebaseMessaging.getInstance().unsubscribeFromTopic(tokens, topic);
         } catch (FirebaseMessagingException e) {

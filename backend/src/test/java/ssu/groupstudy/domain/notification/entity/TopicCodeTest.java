@@ -9,12 +9,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TopicCodeTest {
     @Test
     @DisplayName("토픽으로 사용할 문자열을 생성한다.")
-    void handleTopicString(){
+    void formatTopic(){
         // given
         TopicCode noticeTopicCode = TopicCode.NOTICE;
 
         // when
-        String topicString = noticeTopicCode.handleTopicString(1L);
+        String topicString = noticeTopicCode.formatTopic(1L);
 
         // then
         assertThat(topicString).isEqualTo("/topics/notices1");
