@@ -1,8 +1,6 @@
 package ssu.groupstudy.domain.comment.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
@@ -12,8 +10,10 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comment")
 public class CommentEntity extends BaseWithSoftDeleteEntity {
     @Id
