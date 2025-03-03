@@ -14,9 +14,9 @@ public enum TopicCode {
     private final String format;
     private final String description;
 
-    public static String handleTopicString(TopicCode code, Long id){
-        String topic = code.getFormat();
-        if(code != TopicCode.ALL_USERS){
+    public String handleTopicString(Long id) {
+        String topic = this.getFormat();
+        if (this != TopicCode.ALL_USERS) {
             return String.format(topic, id);
         }
         return topic;

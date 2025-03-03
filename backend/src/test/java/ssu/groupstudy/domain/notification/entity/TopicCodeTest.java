@@ -11,10 +11,10 @@ class TopicCodeTest {
     @DisplayName("토픽으로 사용할 문자열을 생성한다.")
     void handleTopicString(){
         // given
-        TopicCode notice = TopicCode.NOTICE;
+        TopicCode noticeTopicCode = TopicCode.NOTICE;
 
         // when
-        String topicString = TopicCode.handleTopicString(notice, 1L);
+        String topicString = noticeTopicCode.handleTopicString(1L);
 
         // then
         assertThat(topicString).isEqualTo("/topics/notices1");
