@@ -24,7 +24,6 @@ import ssu.groupstudy.domain.notification.service.NotificationCommentService;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
-import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,7 +36,6 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class CommentService {
-    private final UserEntityRepository userEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
