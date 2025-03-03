@@ -17,7 +17,7 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 public class NotificationCommentService extends NotificationService {
 
     @Override
-    protected void pushNotification(NotificationParam param) {
+    protected void pushToFcm(NotificationParam param) {
         if (!(param instanceof NotificationCommentParam)) {
             throw new IllegalArgumentException("Invalid NotificationParam type");
         }

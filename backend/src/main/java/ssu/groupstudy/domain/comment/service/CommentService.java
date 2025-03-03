@@ -13,6 +13,7 @@ import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
 import ssu.groupstudy.domain.comment.param.CommentDto;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
+import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
@@ -43,6 +44,7 @@ public class CommentService {
     private final NotificationCommentService notificationService;
 
 
+    @Deprecated
     @Transactional
     public Long createComment(CreateCommentReqVo dto, UserEntity writer) {
         NoticeEntity notice = noticeEntityRepository.findById(dto.getNoticeId())
@@ -78,10 +80,12 @@ public class CommentService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         StudyEntity study = notice.getStudy();
 
+        // 유효성 검사
         if (!study.isParticipated(writer)) {
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
 
+        // 알림 전송 및 토픽 구독
         notificationService.push(
                 NotificationCommentParam.builder()
                         .noticeId(noticeId)
@@ -90,13 +94,9 @@ public class CommentService {
                         .commentContents(reqVo.getContents())
                         .build()
         );
-//        eventPublisher.publishEvent( // [2025-02-23:최규현] TODO: NOT IMPLEMENTED
-//                NoticeTopicSubscribeEvent.builder()
-//                        .fcmTokens(writer.getFcmTokens())
-//                        .noticeId(noticeId)
-//                        .build()
-//        );
+        notificationService.subscribeToFcm(writer.getFcmTokens(), TopicCode.NOTICE, noticeId);
 
+        // 엔티티 생성
         CommentEntity parentComment = (reqVo.getParentCommentId() != null)
                 ? commentEntityRepository.findById(reqVo.getParentCommentId()).orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 : null;
