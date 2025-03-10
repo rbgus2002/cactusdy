@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:groupstudy/l10n/app_localizations.dart';
 import 'package:groupstudy/models/sign_info.dart';
 import 'package:groupstudy/routes/splash_route.dart';
 import 'package:groupstudy/services/database_service.dart';
