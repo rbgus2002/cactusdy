@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.ssu.groupstudy",
+    "sha256_cert_fingerprints":
+    ["0E:AB:B5:ED:FA:BB:F0:01:A3:38:FD:67:6C:1B:E3:20:C8:13:42:84:D6:27:35:5B:F7:60:46:43:B1:72:26:1E"]
+  }
+}]
