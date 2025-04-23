@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:groupstudy/routes/home_route.dart';
 import 'package:groupstudy/routes/start_route.dart';
+import 'package:groupstudy/services/app_link_service.dart';
 import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/services/message_service.dart';
-import 'package:groupstudy/services/uri_link_service.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:lottie/lottie.dart';
@@ -40,7 +40,7 @@ class _SplashRouteState extends State<SplashRoute> {
         else {
           Util.replaceRouteWithFade(context, (context, animation,
               secondaryAnimation) => const HomeRoute());
-          UriLinkService.handleInitialUri();
+          AppLinkService.handleInitialUri();
         }
       });
     });
