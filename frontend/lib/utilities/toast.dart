@@ -51,7 +51,7 @@ class Toast {
         child: toast,
         toastDuration: duration,
         gravity: ToastGravity.BOTTOM,
-        isDismissable: true,
+        isDismissible: true,
     );
   }
 
