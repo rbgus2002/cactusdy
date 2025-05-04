@@ -47,7 +47,7 @@ public class ParticipantsService {
     private final NoticeEntityRepository noticeEntityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    public List<ParticipantSummaryResVo> getParticipantsProfileImageList(Long studyId) {
+    public List<ParticipantSummaryResVo> getParticipantsProfileImageList(long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
