@@ -51,16 +51,13 @@ public class ParticipantsService {
         StudyEntity study = studyEntityRepository.findById(studyId)
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
 
-        List<ParticipantEntity> participantList = getParticipantListOrderByCreateDateAsc(study);
-        return participantList.stream()
-                .map(ParticipantSummaryResVo::from)
-                .collect(Collectors.toList());
-    }
-
-    private List<ParticipantEntity> getParticipantListOrderByCreateDateAsc(StudyEntity study) {
-        return study.getParticipantList().stream()
+        List<ParticipantEntity> participantList = study.getParticipantList().stream()
                 .sorted(Comparator.comparing((ParticipantEntity p) -> !p.getUser().equals(study.getHostUser()))
                         .thenComparing(ParticipantEntity::getCreateDate))
+                .collect(Collectors.toList());
+
+        return participantList.stream()
+                .map(ParticipantSummaryResVo::from)
                 .collect(Collectors.toList());
     }
 
@@ -123,5 +120,10 @@ public class ParticipantsService {
         if (!study.isHostUser(host)) {
             throw new CanNotKickParticipantException(USER_CAN_NOT_KICK_PARTICIPANT);
         }
+    }
+
+    public void removeAllParticipants(UserEntity user) {
+        List<ParticipantEntity> participatingStudies = participantEntityRepository.findAllByUser(user);
+        participantEntityRepository.deleteAllInBatch(participatingStudies);
     }
 }

@@ -25,7 +25,9 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "WHERE p.user = :user " +
             "AND p.study.deleteYn = false " +
             "ORDER BY p.createDate ASC")
-    List<ParticipantEntity> findByUserOrderByCreateDate(UserEntity user);
+    List<ParticipantEntity> findAllByUserOrderByCreateDate(UserEntity user);
+
+    List<ParticipantEntity> findAllByUser(UserEntity user);
 
     @Query("SELECT new ssu.groupstudy.domain.study.param.ParticipantInfo(s.studyName, p.color, s.picture) " +
             "FROM ParticipantEntity p " +
@@ -40,4 +42,6 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "WHERE p.user = :user " +
             "AND p.study.deleteYn = false ")
     int countParticipationStudy(UserEntity user);
+
+
 }
