@@ -55,7 +55,7 @@ public class ParticipantController {
 
     @Operation(summary = "스터디에 소속된 사용자의 프로필 이미지를 모두 불러온다", description = "가입 시각을 기준으로 오름차순 정렬한다")
     @GetMapping("/summary")
-    public ResVo getParticipantsProfileImageList(@RequestParam Long studyId) {
+    public ResVo getParticipantsProfileImageList(@RequestParam long studyId) {
         List<ParticipantSummaryResVo> participantSummaryResVoList = participantsService.getParticipantsProfileImageList(studyId);
         return DataResVo.of("participantSummaryList", participantSummaryResVoList);
     }

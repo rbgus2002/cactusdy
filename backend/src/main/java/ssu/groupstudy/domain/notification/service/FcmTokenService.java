@@ -33,7 +33,6 @@ public class FcmTokenService {
         }
     }
 
-    @Transactional
     public void deleteAllFcmToken(UserEntity userEntity) {
         List<FcmTokenEntity> fcmTokenEntities = fcmTokenEntityRepository.findByUser(userEntity);
         fcmTokenEntityRepository.deleteAllInBatch(fcmTokenEntities);

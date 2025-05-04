@@ -28,7 +28,7 @@ public class NotificationSubscribeService {
     }
 
     public void subscribeParticipatingStudiesTopic(UserEntity user) {
-        List<StudyEntity> participatingStudies = participantEntityRepository.findByUserOrderByCreateDate(user).stream()
+        List<StudyEntity> participatingStudies = participantEntityRepository.findAllByUserOrderByCreateDate(user).stream()
                 .map(ParticipantEntity::getStudy)
                 .collect(Collectors.toList());
 

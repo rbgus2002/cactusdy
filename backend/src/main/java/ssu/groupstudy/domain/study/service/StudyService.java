@@ -116,7 +116,7 @@ public class StudyService {
     }
 
     public List<StudyInfoResVo> getStudies(UserEntity user) {
-        List<ParticipantEntity> participants = participantEntityRepository.findByUserOrderByCreateDate(user);
+        List<ParticipantEntity> participants = participantEntityRepository.findAllByUserOrderByCreateDate(user);
         return participants.stream()
                 .map(this::createStudyInfo)
                 .collect(Collectors.toList());

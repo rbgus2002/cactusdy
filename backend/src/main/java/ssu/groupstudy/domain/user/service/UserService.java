@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
+import ssu.groupstudy.domain.study.service.ParticipantsService;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.param.UserParam;
@@ -23,6 +24,7 @@ public class UserService {
     private final ImageManager imageManager;
     private final FcmTokenService fcmTokenService;
     private final UserEntityRepository userEntityRepository;
+    private final ParticipantsService participantsService;
 
 
 
@@ -45,7 +47,7 @@ public class UserService {
 
         fcmTokenService.deleteAllFcmToken(userEntity);
         userEntity.delete();
-
+        participantsService.removeAllParticipants(userEntity);
     }
 
     @Transactional
