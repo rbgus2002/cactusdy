@@ -35,7 +35,7 @@ public class CommentController {
         return DataResVo.of("commentId", commentId);
     }
 
-    @Operation(summary = "새로운 댓글 작성")
+    @Operation(summary = "댓글 생성")
     @PostMapping("/v1/studies/{studyId}/notices/{noticeId}/comments")
     public ResponseEntity<IdResVo> writeComment(
             @PathVariable Long studyId,

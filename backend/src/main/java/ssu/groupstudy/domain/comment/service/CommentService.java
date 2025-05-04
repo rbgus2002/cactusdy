@@ -78,12 +78,10 @@ public class CommentService {
                 .orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND));
         StudyEntity study = notice.getStudy();
 
-        // 유효성 검사
         if (!study.isParticipated(writer)) {
             throw new UserNotParticipatedException(USER_NOT_PARTICIPATED);
         }
 
-        // 알림 전송 및 토픽 구독
         notificationService.push(
                 NotificationCommentParam.builder()
                         .noticeId(noticeId)
@@ -94,7 +92,6 @@ public class CommentService {
         );
         notificationService.subscribeToFcm(writer.getFcmTokens(), TopicCode.NOTICE, noticeId);
 
-        // 엔티티 생성
         CommentEntity parentComment = (reqVo.getParentCommentId() != null)
                 ? commentEntityRepository.findById(reqVo.getParentCommentId()).orElseThrow(() -> new NoticeNotFoundException(NOTICE_NOT_FOUND))
                 : null;
