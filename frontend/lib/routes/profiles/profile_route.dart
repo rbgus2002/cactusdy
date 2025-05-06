@@ -18,19 +18,33 @@ import 'package:groupstudy/widgets/dialogs/two_button_dialog.dart';
 import 'package:groupstudy/widgets/tags/study_tag_widget.dart';
 
 class ProfileRoute extends StatefulWidget {
-  final int userId;
   final int studyId;
+  final UserProfile userProfile;
   final VoidCallback? onKick;
 
   const ProfileRoute({
     super.key,
-    required this.userId,
     required this.studyId,
+    required this.userProfile,
     this.onKick,
   });
 
   @override
   State<ProfileRoute> createState() => _ProfileRouteState();
+
+  static void loadUserProfileRoute(BuildContext context, int userId, int studyId) {
+    User.getUserProfileDetail(userId, studyId).then((userProfile) {
+      if (context.mounted) {
+        Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
+              ProfileRoute(userProfile: userProfile, studyId: studyId),
+        );
+      }
+    }, onError: (e) {
+      if (context.mounted) {
+        Toast.showToast(context: context, message: Util.getExceptionMessage(e));
+      }
+    });
+  }
 }
 
 class _ProfileRouteState extends State<ProfileRoute> {
@@ -41,33 +55,29 @@ class _ProfileRouteState extends State<ProfileRoute> {
   void initState() {
     super.initState();
     userStabController = UserStabController(
-        targetUserId: widget.userId,
+        targetUserId: widget.userProfile.user.userId,
         studyId: widget.studyId);
   }
 
   @override
   Widget build(BuildContext context) {
+    final profile = widget.userProfile;
     return Scaffold(
       appBar: AppBar(
         // Close button
         leading: const CloseButton(),
         shape: InputBorder.none,),
-      body: FutureBuilder(
-          future: User.getUserProfileDetail(widget.userId, widget.studyId),
-          builder: (context, snapshot) =>
-            (snapshot.hasData)?
-              ListView(
-                children: [
-                  _userProfileWidget(snapshot.data!.user),
-                  _studyListWidget(snapshot.data!.studyTags),
-                  _attendanceRateWidget(snapshot.data!.attendanceRate),
-                  _achievementRateWidget(snapshot.data!.doneRate),
-                  _kickAndStabButton(snapshot.data!),
-                  Design.padding20,
-                  _notWithUsNowText(snapshot.data!.isParticipated),
-                  Design.padding28,
-                ],) :
-              Design.loadingIndicator,),
+      body: ListView(
+        children: [
+          _userProfileWidget(profile.user),
+          _studyListWidget(profile.studyTags),
+          _attendanceRateWidget(profile.attendanceRate),
+          _achievementRateWidget(profile.doneRate),
+          _kickAndStabButton(profile),
+          Design.padding20,
+          _notWithUsNowText(profile.isParticipated),
+          Design.padding28,
+        ],)
     );
   }
 
@@ -224,7 +234,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
 
   Widget _kickAndStabButton(UserProfile participantProfile) {
     return Visibility(
-      visible: (!Util.isOwner(widget.userId)
+      visible: (!Util.isOwner(widget.userProfile.user.userId)
             && participantProfile.isParticipated),
       child: Container(
         padding: Design.edgePadding,
@@ -287,7 +297,7 @@ class _ProfileRouteState extends State<ProfileRoute> {
   void _kickUser() async {
     try {
       await User.kickUser(
-          userId: widget.userId,
+          userId: widget.userProfile.user.userId,
           studyId: widget.studyId).then((value) =>
             Util.popRoute(context));
       if (widget.onKick != null) {

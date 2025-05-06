@@ -57,11 +57,7 @@ class _ParticipantProfileWidgetState extends State<ParticipantProfileWidget> {
       children: [
         // Participant Profile Image (Left Part)
         InkWell(
-          onTap: () => Util.pushRouteWithSlideUp(
-              context, (context, animation, secondaryAnimation) =>
-                ProfileRoute(
-                  userId: widget.user.userId,
-                  studyId: widget.studyId),),
+          onTap: () => ProfileRoute.loadUserProfileRoute(context, widget.user.userId, widget.studyId),
           child: SquircleImageWidget(
               scale: _imageSize,
               url: widget.user.profileImage),),

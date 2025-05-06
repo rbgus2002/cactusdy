@@ -131,8 +131,8 @@ class CommentWidget extends StatelessWidget {
             PopupMenuItem(
                 height: 44,
                 child: Text(context.local.viewProfile, style: TextStyles.body1),
-                onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-                      ProfileRoute(userId: comment.userId, studyId: studyId))),
+                onTap: () => ProfileRoute.loadUserProfileRoute(context, comment.userId, studyId)
+            ),
 
             // delete comment
             if (Util.isOwner(comment.userId))
