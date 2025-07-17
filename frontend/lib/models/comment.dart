@@ -70,26 +70,25 @@ class Comment {
     }
   }
 
-  static Future<int> writeComment(int noticeId, String contents, int? parentCommentId) async {
+  static Future<int> writeComment(int studyId, int noticeId, String contents, int? parentCommentId) async {
     Map<String, dynamic> data = {
-      'noticeId': noticeId,
       'contents': contents,
       'parentCommentId': parentCommentId
     };
 
     final response = await http.post(
-      Uri.parse('${DatabaseService.serverUrl}api/comments'),
+      Uri.parse('${DatabaseService.serverUrl}api/v1/studies/$studyId/notices/$noticeId/comments'),
       headers: await DatabaseService.getAuthHeader(),
       body: json.encode(data),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    logger.resultLog('write comment (noticeId: $noticeId)', responseJson);
+    logger.resultLogV2('write comment (studyId: $studyId, noticeId: $noticeId)', response);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      int newCommentId = responseJson['data']['commentId'];
+      int newCommentId = responseJson['id'];
       logger.infoLog('written commentId: $newCommentId');
 
       return newCommentId;
