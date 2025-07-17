@@ -47,6 +47,8 @@ services:
     container_name: group-study
     networks:
       - traefik-net
+    ports:
+      - "8080:8080"  # 로컬 접근을 위한 포트 매핑 추가
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`)"
@@ -60,6 +62,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=qwe50584621
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
+      - LOG_PATH=/app/logs
+      - LOG_FILE=groupstudy
     depends_on:
       mysql:
         condition: service_healthy
