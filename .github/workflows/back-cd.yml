@@ -49,6 +49,9 @@ jobs:
         run: |
           docker build -t ${{ env.DOCKER_IMAGE }}:latest .
           docker save ${{ env.DOCKER_IMAGE }}:latest -o docker-image.tar
+          # 권한 문제 해결
+          chmod 644 docker-image.tar
+          ls -la docker-image.tar
 
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.5
