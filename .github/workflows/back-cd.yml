@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "backend/docker-image.tar,backend/docker-compose.yml"
-          target: "~/apps/group-study"
+          target: "~/Desktop/guegue/group-study"
 
       - name: Deploy with docker-compose
         uses: appleboy/ssh-action@v0.1.5
@@ -74,7 +74,11 @@ jobs:
             # PATH 설정
             export PATH=/opt/homebrew/bin:$PATH            
             
-            cd ~/apps/group-study/backend
+            # 어디에 있든 기존 group-study 컨테이너 중지
+            docker stop group-study || true
+            docker rm group-study || true            
+            
+            cd ~/Desktop/guegue/group-study
             
             # Docker 이미지 로드
             docker load -i docker-image.tar
