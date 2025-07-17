@@ -6,8 +6,8 @@ class DatabaseService {
   DatabaseService._();
 
   static late final String serverUrl;
-  static const String _serverUrlProd = 'http://54.180.56.102:8080/';
-  static const String _serverUrlDev = 'http://54.180.56.102:8080/';
+  static const String _serverUrlProd = 'https://cactusdy.guegue.dev/';
+  static const String _serverUrlDev = 'https://cactusdy.guegue.dev/';
 
   /// For Flavor
   static void init(FlavorType flavor) {
