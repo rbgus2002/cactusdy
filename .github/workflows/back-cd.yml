@@ -77,8 +77,8 @@ jobs:
             docker load -i docker-image.tar
             
             # docker-compose로 배포
-            docker-compose down
-            docker-compose up -d
+            docker compose down
+            docker compose up -d
             
             # 헬스체크
             sleep 15
