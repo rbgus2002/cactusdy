@@ -78,7 +78,7 @@ jobs:
             docker stop group-study || true
             docker rm group-study || true            
             
-            cd ~/Desktop/guegue/group-study
+            cd ~/Desktop/guegue/group-study/backend
             
             # Docker 이미지 로드
             docker load -i docker-image.tar
