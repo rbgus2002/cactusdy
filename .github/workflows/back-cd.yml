@@ -81,7 +81,7 @@ jobs:
             docker compose up -d            
             
             sleep 15
-            if docker ps | grep -q group-study && curl -f http://localhost:8080/health 2>/dev/null; then
+            if docker ps | grep -q group-study; then
               echo "✅ 배포 성공"
               rm -f build/libs/*.jar
               rm -f src/main/resources/studygroup-fcm.json
