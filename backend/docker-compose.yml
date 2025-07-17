@@ -1,5 +1,47 @@
 version: "3.9"
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: group-study-mysql
+    networks:
+      - traefik-net
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123!
+      MYSQL_DATABASE: groupstudy_new
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: qwe50584621
+      TZ: Asia/Seoul
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: group-study-redis
+    networks:
+      - traefik-net
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   group-study:
     image: group-study-api:latest
     container_name: group-study
@@ -13,7 +55,24 @@ services:
       - "traefik.http.services.group-study.loadbalancer.server.port=8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/groupstudy_new?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=qwe50584621
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: always
+
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+
 networks:
   traefik-net:
     external: true
