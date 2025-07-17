@@ -47,20 +47,6 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image
-        working-directory: ${{ env.wd }}
-        run: |
-          # ARM64 플랫폼용으로 빌드
-          docker buildx build \
-            --platform linux/arm64 \
-            -t ${{ env.DOCKER_IMAGE }}:latest \
-            --load \
-            .
-          docker save ${{ env.DOCKER_IMAGE }}:latest -o docker-image.tar
-          chmod 644 docker-image.tar
 
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.5
@@ -69,10 +55,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "backend/docker-image.tar,backend/docker-compose.yml"
+          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/src/main/resources/studygroup-fcm.json"
           target: "~/Desktop/guegue/group-study"
 
-      - name: Deploy with docker-compose
+      - name: Build and Deploy on Server
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.HOME_SERVER_IP }}
@@ -80,27 +66,25 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # PATH 설정
-            export PATH=/opt/homebrew/bin:$PATH            
+            export PATH=/opt/homebrew/bin:$PATH
             
-            # 어디에 있든 기존 group-study 컨테이너 중지
             docker stop group-study || true
-            docker rm group-study || true            
+            docker rm group-study || true
             
-            cd ~/Desktop/guegue/group-study/backend
+            cd ~/Desktop/guegue/group-study/backend  # backend 추가
             
-            # Docker 이미지 로드
-            docker load -i docker-image.tar
+            # Docker 빌드 전
+            echo "🔨 Docker 이미지 빌드 시작..."
+            docker build -t group-study-api:latest .
             
-            # docker-compose로 배포
-            docker compose down
-            docker compose up -d
+            echo "🚀 컨테이너 시작..."
+            docker compose up -d            
             
-            # 헬스체크
             sleep 15
-            if docker ps | grep -q group-study; then
+            if docker ps | grep -q group-study && curl -f http://localhost:8080/health 2>/dev/null; then
               echo "✅ 배포 성공"
-              rm docker-image.tar
+              rm -f build/libs/*.jar
+              rm -f src/main/resources/studygroup-fcm.json
               docker image prune -f
             else
               echo "❌ 배포 실패"
