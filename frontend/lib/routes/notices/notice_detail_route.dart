@@ -274,7 +274,9 @@ class _NoticeDetailRouteState extends State<NoticeDetailRoute> {
         try {
           int? parentCommentId = _getParentId();
           await Comment.writeComment(
-              widget.noticeSummary.notice.noticeId, _commentEditor.currentState!.text,
+              widget.studyId,
+              widget.noticeSummary.notice.noticeId,
+              _commentEditor.currentState!.text,
               parentCommentId).then((newCommentId) {
             // Reset writing box and reply target
             focusNode.unfocus();
