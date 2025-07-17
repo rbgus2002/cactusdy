@@ -18,6 +18,12 @@ WORKDIR /app
 # 빌드된 JAR 파일 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
 
+# FCM 키 파일 복사
+COPY --from=builder /app/src/main/resources/studygroup-fcm.json /app/studygroup-fcm.json
+
+# 환경변수 설정
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/studygroup-fcm.json
+
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
