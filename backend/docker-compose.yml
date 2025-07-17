@@ -66,6 +66,11 @@ services:
       redis:
         condition: service_healthy
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   mysql-data:
