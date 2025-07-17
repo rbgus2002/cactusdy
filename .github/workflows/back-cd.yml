@@ -71,6 +71,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            # PATH 설정
+            export PATH=/opt/homebrew/bin:$PATH            
+            
             cd ~/apps/group-study/backend
             
             # Docker 이미지 로드
@@ -88,6 +91,6 @@ jobs:
               docker image prune -f
             else
               echo "❌ 배포 실패"
-              docker-compose logs
+              docker compose logs
               exit 1
             fi
