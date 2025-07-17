@@ -10,13 +10,8 @@ permissions:
   contents: read
 
 env:
-  AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: jar-s3-bucket
-  CODE_DEPLOY_APPLICATION_NAME: groupstudy-codedeploy
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-codedeploy-group
-  APPLICATION: ${{ secrets.APPLICATION }}
+  DOCKER_IMAGE: group-study-api
   wd: ./backend
-
 
 jobs:
   deploy:
@@ -36,12 +31,8 @@ jobs:
       - name: Copy application.yml
         working-directory: ${{ env.wd }}
         run: |
-          if [ ! -d "./src/main/resources" ]; then
-            mkdir -p ./src/main/resources
-          fi
-          touch ./src/main/resources/application.yml
+          mkdir -p ./src/main/resources
           echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
-          touch ./src/main/resources/application-prod.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
 
       - name: Setup Gradle
@@ -53,26 +44,47 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Upload to AWS S3
+      - name: Build Docker image
         working-directory: ${{ env.wd }}
         run: |
-          aws deploy push \
-            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-            --ignore-hidden-files \
-            --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
-            --source .
+          docker build -t ${{ env.DOCKER_IMAGE }}:latest .
+          docker save ${{ env.DOCKER_IMAGE }}:latest -o docker-image.tar
 
-      - name: Deploy to AWS EC2 from S3
-        run: |
-          aws deploy create-deployment \
-            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-            --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.HOME_SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "backend/docker-image.tar,backend/docker-compose.yml"
+          target: "~/apps/group-study"
+
+      - name: Deploy with docker-compose
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOME_SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/apps/group-study/backend
+            
+            # Docker 이미지 로드
+            docker load -i docker-image.tar
+            
+            # docker-compose로 배포
+            docker-compose down
+            docker-compose up -d
+            
+            # 헬스체크
+            sleep 15
+            if docker ps | grep -q group-study; then
+              echo "✅ 배포 성공"
+              rm docker-image.tar
+              docker image prune -f
+            else
+              echo "❌ 배포 실패"
+              docker-compose logs
+              exit 1
+            fi

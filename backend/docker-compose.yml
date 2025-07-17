@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  group-study:
+    image: group-study-api:latest
+    container_name: group-study
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`)"
+      - "traefik.http.routers.group-study.entrypoints=websecure"
+      - "traefik.http.routers.group-study.tls.certresolver=le"
+      - "traefik.http.services.group-study.loadbalancer.server.port=8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: always
+networks:
+  traefik-net:
+    external: true
