@@ -10,13 +10,8 @@ permissions:
   contents: read
 
 env:
-  AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: jar-s3-bucket
-  CODE_DEPLOY_APPLICATION_NAME: groupstudy-codedeploy
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: groupstudy-codedeploy-group
-  APPLICATION: ${{ secrets.APPLICATION }}
+  DOCKER_IMAGE: group-study-api
   wd: ./backend
-
 
 jobs:
   deploy:
@@ -36,13 +31,12 @@ jobs:
       - name: Copy application.yml
         working-directory: ${{ env.wd }}
         run: |
-          if [ ! -d "./src/main/resources" ]; then
-            mkdir -p ./src/main/resources
-          fi
-          touch ./src/main/resources/application.yml
+          mkdir -p ./src/main/resources
           echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
-          touch ./src/main/resources/application-prod.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
+          
+          # FCM 키 파일 생성
+          echo "${{ secrets.FCM_KEY_BASE64 }}" | base64 -d > ./src/main/resources/studygroup-fcm.json
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -53,26 +47,47 @@ jobs:
           chmod +x gradlew
           ./gradlew build -x test
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.5
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
-          aws-region: ${{ env.AWS_REGION }}
+          host: ${{ secrets.HOME_SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/src/main/resources/studygroup-fcm.json"
+          target: "~/Desktop/guegue/group-study"
 
-      - name: Upload to AWS S3
-        working-directory: ${{ env.wd }}
-        run: |
-          aws deploy push \
-            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-            --ignore-hidden-files \
-            --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
-            --source .
-
-      - name: Deploy to AWS EC2 from S3
-        run: |
-          aws deploy create-deployment \
-            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
-            --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-            --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+      - name: Build and Deploy on Server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOME_SERVER_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            export PATH=/opt/homebrew/bin:$PATH
+            
+            docker stop group-study || true
+            docker rm group-study || true
+            
+            cd ~/Desktop/guegue/group-study/backend  # backend 추가
+            
+            # Docker 빌드 전
+            echo "🔨 Docker 이미지 빌드 시작..."
+            docker build -t group-study-api:latest .
+            
+            echo "🚀 컨테이너 시작..."
+            docker compose up -d            
+            
+            sleep 15
+            if docker ps | grep -q group-study; then
+              echo "✅ 배포 성공"
+              rm -f build/libs/*.jar
+              rm -f src/main/resources/studygroup-fcm.json
+              docker image prune -f
+            else
+              echo "❌ 배포 실패"
+              docker compose logs
+              exit 1
+            fi

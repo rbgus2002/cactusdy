@@ -5,10 +5,13 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -25,7 +28,13 @@ public class SwaggerConfig {
 
         SecurityScheme securityScheme = configureSecurityScheme();
 
+        // HTTPS 서버 설정 추가
+        Server httpsServer = new Server()
+                .url("https://cactusdy.guegue.dev")
+                .description("Production HTTPS Server");
+
         return new OpenAPI()
+                .servers(List.of(httpsServer))
                 .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
                 .info(info)
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
