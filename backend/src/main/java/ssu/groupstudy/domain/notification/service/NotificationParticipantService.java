@@ -3,6 +3,7 @@ package ssu.groupstudy.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssu.groupstudy.domain.common.enums.NotificationDataType;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
@@ -12,17 +13,19 @@ import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.FcmUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class NotificationParticipantService {
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final FcmUtils fcmUtils;
+    private final NotificationHistoryService notificationHistoryService;
 
     public void notifyParticipant(UserEntity me, Long targetUserId, Long studyId, int count) {
         UserEntity target = userEntityRepository.findById(targetUserId)
@@ -33,6 +36,15 @@ public class NotificationParticipantService {
 
         Map<String, String> data = Map.of("type", "study", "studyId", studyId.toString());
         fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
+        
+        // 알림 히스토리 저장
+        notificationHistoryService.saveNotificationHistory(
+                target,
+                NotificationDataType.STUDY,
+                title,
+                body,
+                data
+        );
     }
 
     private String buildNotificationMessage(int count) {
@@ -53,5 +65,14 @@ public class NotificationParticipantService {
 
         Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "-");
         fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
+        
+        // 알림 히스토리 저장
+        notificationHistoryService.saveNotificationHistory(
+                target,
+                NotificationDataType.ROUND,
+                title,
+                body,
+                data
+        );
     }
 }
