@@ -11,8 +11,12 @@ import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
 import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
 import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
+import ssu.groupstudy.domain.notification.service.NotificationHistoryService;
+import ssu.groupstudy.domain.study.entity.ParticipantEntity;
+import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
 import ssu.groupstudy.global.util.FcmUtils;
 
+import java.util.List;
 import java.util.Map;
 
 import static ssu.groupstudy.domain.common.constants.NotificationConstants.*;
@@ -24,6 +28,8 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Slf4j
 public class PushListener {
     private final FcmUtils fcmUtils;
+    private final NotificationHistoryService notificationHistoryService;
+    private final ParticipantEntityRepository participantEntityRepository;
 
     @EventListener
     @Async
@@ -37,6 +43,20 @@ public class PushListener {
                 STUDY_ID, event.getStudyId().toString()
         );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.NOTICE, event.getNoticeId(), data);
+        
+        // 알림 히스토리 저장 - 공지사항 주제를 구독한 사용자들에게 저장
+        // 현재는 스터디 참가자 모두에게 저장 (추후 실제 구독자 필터링 필요)
+        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+                
+        participants.forEach(participant ->
+            notificationHistoryService.saveNotificationHistory(
+                participant.getUser(), 
+                NotificationDataType.NOTICE,
+                title, 
+                body, 
+                data
+            )
+        );
     }
 
     @EventListener
@@ -51,6 +71,19 @@ public class PushListener {
                 STUDY_ID, event.getStudyId().toString()
         );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
+        
+        // 알림 히스토리 저장 - 스터디 주제를 구독한 사용자들에게 저장
+        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+                
+        participants.forEach(participant ->
+            notificationHistoryService.saveNotificationHistory(
+                participant.getUser(), 
+                NotificationDataType.NOTICE,
+                title, 
+                body,
+                data
+            )
+        );
     }
 
     @EventListener
@@ -66,5 +99,26 @@ public class PushListener {
                 ROUND_SEQ, HYPHEN
         );
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
+        
+        // 알림 히스토리 저장 - 스터디 주제를 구독한 사용자들에게 저장
+        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+                
+        participants.forEach(participant ->
+            notificationHistoryService.saveNotificationHistory(
+                participant.getUser(), 
+                NotificationDataType.ROUND,
+                title, 
+                body, 
+                data
+            )
+        );
+    }
+    
+    private List<ParticipantEntity> getStudyParticipants(Long studyId) {
+        return participantEntityRepository.findAll().stream()
+                .filter(p -> p.getStudy().getStudyId().equals(studyId))
+                .filter(p -> !p.getStudy().isDeleted())
+                .filter(p -> !p.getUser().isDeleted())
+                .collect(java.util.stream.Collectors.toList());
     }
 }

@@ -2,7 +2,7 @@ package ssu.groupstudy.domain.notification.entity;
 
 import lombok.*;
 import ssu.groupstudy.domain.common.entity.BaseEntity;
-import ssu.groupstudy.domain.common.enums.AlarmType;
+import ssu.groupstudy.domain.common.enums.NotificationDataType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 
 import javax.persistence.*;
@@ -26,9 +26,9 @@ public class NotificationHistoryEntity extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, name = "alarm_type")
     @Enumerated(STRING)
-    private AlarmType alarmType;
+    private NotificationDataType notificationDataType;
 
     @Column(nullable = false)
     private String title;
@@ -40,10 +40,10 @@ public class NotificationHistoryEntity extends BaseEntity {
     private String eventData;
 
     @Builder
-    public NotificationHistoryEntity(UserEntity user, AlarmType alarmType, String title, 
-                                   String message, String eventData) {
+    public NotificationHistoryEntity(UserEntity user, NotificationDataType notificationDataType, 
+                                   String title, String message, String eventData) {
         this.user = user;
-        this.alarmType = alarmType;
+        this.notificationDataType = notificationDataType;
         this.title = title;
         this.message = message;
         this.eventData = eventData;
