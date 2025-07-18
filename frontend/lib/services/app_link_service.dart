@@ -1,17 +1,18 @@
 
 
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:groupstudy/routes/studies/study_participating_route.dart';
 import 'package:groupstudy/services/auth.dart';
 import 'package:groupstudy/services/logger.dart';
 import 'package:groupstudy/utilities/util.dart';
-import 'package:uni_links/uni_links.dart';
 
-class UriLinkService {
-  UriLinkService._();
+class AppLinkService {
+  AppLinkService._();
 
-  static Logger logger = Logger('UriLinker');
-  static bool _isHandled = false;
+  static Logger logger = Logger('AppLinker');
+  static late StreamSubscription _linkSubscription;
 
   static void init() {
     _handleIncomingUri();
@@ -21,37 +22,28 @@ class UriLinkService {
     //handleInitialUri();
   }
 
-  /// for Handle initial links at start
-  /// it is need to be called only once
   static Future<void> handleInitialUri() async {
-    if (!_isHandled) {
-      _isHandled = true;
-
+    AppLinks().getInitialLink().then((uri) {
       try {
-        final uri = await getInitialUri();
         if (uri != null) {
           logger.infoLog(uri.toString());
           _invitingCodeHandler(uri);
         }
-      } on Exception catch(e) {
+      } on Exception catch (e) {
         logger.infoLog(e.toString());
       }
-    }
+    });
   }
 
-  /// for Handle incoming links after start
-  static void _handleIncomingUri() {
-    if (!kIsWeb) {
-      uriLinkStream.listen(
-        (Uri? uri) {
-          if (uri != null) {
-            logger.infoLog(uri.toString());
-            _invitingCodeHandler(uri);
-          }},
-        onError: (e) {
-          logger.infoLog(e.toString());
-        });
-    }
+  static Future<void> _handleIncomingUri() async {
+    _linkSubscription = AppLinks().uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        logger.infoLog(uri.toString());
+        _invitingCodeHandler(uri);
+      }
+    }, onError: (e) {
+      logger.infoLog(e.toString());
+    });
   }
 
   static void _invitingCodeHandler(Uri uri) {

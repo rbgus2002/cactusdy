@@ -93,11 +93,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
                 widget.onTap!(participantSummary);
               } else {
                 // View Profile
-                Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-                    ProfileRoute(
-                      onKick: () => setState(() { }),
-                      userId: participantSummary.userId,
-                      studyId: widget.study.studyId));
+                ProfileRoute.loadUserProfileRoute(context, participantSummary.userId, widget.study.studyId);
               }
             },),
         ),

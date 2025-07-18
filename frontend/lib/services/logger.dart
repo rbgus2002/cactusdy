@@ -1,6 +1,10 @@
 
 
+import 'dart:convert';
 import 'dart:developer' as dev;
+
+import 'package:groupstudy/services/database_service.dart';
+import 'package:http/http.dart';
 
 class Logger {
   final String name;
@@ -20,6 +24,16 @@ class Logger {
     if (success) {
       successLog(task);
     } else {
+      failLog(task, responseJson['message']);
+    }
+  }
+
+  void resultLogV2(String task, Response response) {
+    bool success = (response.statusCode == DatabaseService.successCode);
+    if (success) {
+      successLog(task);
+    } else {
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
       failLog(task, responseJson['message']);
     }
   }
