@@ -32,9 +32,18 @@ public class SwaggerConfig {
         Server httpsServer = new Server()
                 .url("https://cactusdy.guegue.dev")
                 .description("Production HTTPS Server");
+                
+        // Local 서버 설정 추가
+        Server localServer1 = new Server()
+                .url("http://localhost:8080")
+                .description("Local Development Server");
+
+        Server localServer2 = new Server()
+                .url("http://localhost:8081")
+                .description("Local Development Server");
 
         return new OpenAPI()
-                .servers(List.of(httpsServer))
+                .servers(List.of(httpsServer, localServer1, localServer2))
                 .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
                 .info(info)
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));

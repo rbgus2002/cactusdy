@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum NotificationDataType {
     NOTICE("notice"),
     ROUND("round"),
+    STUDY("study");
     ;
 
     private final String value;
