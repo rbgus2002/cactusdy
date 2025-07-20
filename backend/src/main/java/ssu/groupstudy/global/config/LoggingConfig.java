@@ -1,6 +1,7 @@
 package ssu.groupstudy.global.config;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,7 +19,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class LoggingConfig {
-    private static final Gson GSON = new Gson();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String STR_CLASS_METHOD = "{0}.{1}({2})";
     private static final String STR_END_EXECUTE_TIME = "[{}] [{}] // Return({}) : {} // FINISH : {} ms";
     private static final String STR_END = "[{}] [{}] // Return({}) : {}";
@@ -35,9 +36,9 @@ public class LoggingConfig {
             retVal = pjp.proceed();
             stopWatch.stop();
 
-            log.info(STR_END_EXECUTE_TIME, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"), stopWatch.getTotalTimeMillis());
+            log.info(STR_END_EXECUTE_TIME, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(toJson(retVal), "null"), stopWatch.getTotalTimeMillis());
         }catch (Throwable e){
-            log.warn(STR_END, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(GSON.toJson(retVal), "null"));
+            log.warn(STR_END, formatClassMethod, methodArgs, ((MethodSignature)pjp.getSignature()).getReturnType().getSimpleName(), StringUtils.defaultString(toJson(retVal), "null"));
             throw e;
         }
 
@@ -61,5 +62,13 @@ public class LoggingConfig {
             argsStringBuilder.append(arg).append(", ");
         }
         return argsStringBuilder.length() > 0 ? argsStringBuilder.substring(0, argsStringBuilder.length() - 2) : "";
+    }
+    
+    private String toJson(Object obj) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            return obj != null ? obj.toString() : "null";
+        }
     }
 }
