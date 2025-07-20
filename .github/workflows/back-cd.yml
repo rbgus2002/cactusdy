@@ -37,6 +37,10 @@ jobs:
           
           # FCM 키 파일 생성
           echo "${{ secrets.FCM_KEY_BASE64 }}" | base64 -d > ./src/main/resources/studygroup-fcm.json
+          
+          # Debug: YAML 파일 형식 확인
+          echo "=== application-prod.yml 라인 60-70 확인 ==="
+          sed -n '60,70p' ./src/main/resources/application-prod.yml | cat -n
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
