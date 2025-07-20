@@ -5,8 +5,8 @@ WORKDIR /app
 # 빌드된 JAR 파일 복사 (CI/CD에서 전달)
 COPY build/libs/*.jar app.jar
 
-# FCM 키 파일 복사 (CI/CD에서 전달)
-COPY studygroup-fcm.json /app/studygroup-fcm.json
+# FCM 키 파일 복사 (CI/CD에서 전달) - src/main/resources 경로에서 복사
+COPY src/main/resources/studygroup-fcm.json /app/studygroup-fcm.json
 
 # 환경변수 설정
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/studygroup-fcm.json
