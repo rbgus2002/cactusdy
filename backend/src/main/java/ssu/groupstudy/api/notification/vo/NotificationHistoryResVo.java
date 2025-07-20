@@ -23,7 +23,7 @@ public class NotificationHistoryResVo {
     private Long id;
     private String title;
     private String message;
-    private Map<String, Object> eventData;
+    private Map<String, Object> data;
     private LocalDateTime createDate;
     
     public static NotificationHistoryResVo of(NotificationHistoryEntity entity) {
