@@ -1,29 +1,12 @@
-# 빌드 스테이지
-FROM openjdk:11-jdk-slim AS builder
-WORKDIR /app
-
-# 빌드 인자 추가 (캐시 무효화용)
-ARG BUILD_DATE
-ARG VERSION
-
-# Gradle 의존성 캐싱
-COPY build.gradle gradlew ./
-COPY gradle gradle
-RUN ./gradlew dependencies
-
-# 소스코드 복사 및 빌드
-COPY src src
-RUN ./gradlew build -x test
-
-# 실행 스테이지
+# 실행 스테이지 (멀티스테이지 빌드 사용하지 않음 - JAR 파일을 직접 복사)
 FROM openjdk:11-jre-slim
 WORKDIR /app
 
-# 빌드된 JAR 파일 복사
-COPY --from=builder /app/build/libs/*.jar app.jar
+# 빌드된 JAR 파일 복사 (CI/CD에서 전달)
+COPY build/libs/*.jar app.jar
 
-# FCM 키 파일 복사
-COPY --from=builder /app/src/main/resources/studygroup-fcm.json /app/studygroup-fcm.json
+# FCM 키 파일 복사 (CI/CD에서 전달)
+COPY studygroup-fcm.json /app/studygroup-fcm.json
 
 # 환경변수 설정
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/studygroup-fcm.json

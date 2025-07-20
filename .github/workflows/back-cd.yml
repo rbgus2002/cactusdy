@@ -78,9 +78,9 @@ jobs:
             echo "🗑️ 기존 이미지 제거..."
             docker rmi group-study-api:latest || true
             
-            # 3. 기존 JAR 파일 제거 (중복 방지)
+            # 3. 기존 파일 정리 (build 디렉토리 생성)
             echo "🧹 기존 파일 정리..."
-            rm -rf build/libs/*.jar
+            mkdir -p build/libs
             
             # 4. 새로운 이미지 빌드 (--no-cache 옵션 추가)
             echo "🔨 Docker 이미지 빌드 시작..."
