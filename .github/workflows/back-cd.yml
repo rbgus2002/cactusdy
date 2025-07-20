@@ -68,21 +68,41 @@ jobs:
           script: |
             export PATH=/opt/homebrew/bin:$PATH
             
-            docker stop group-study || true
-            docker rm group-study || true
+            cd ~/Desktop/guegue/group-study/backend
             
-            cd ~/Desktop/guegue/group-study/backend  # backend 추가
+            # 1. 기존 컨테이너 중지 및 제거
+            echo "🛑 기존 컨테이너 중지..."
+            docker compose down
             
-            # Docker 빌드 전
+            # 2. 기존 이미지 제거 (캐시 문제 해결)
+            echo "🗑️ 기존 이미지 제거..."
+            docker rmi group-study-api:latest || true
+            
+            # 3. 기존 JAR 파일 제거 (중복 방지)
+            echo "🧹 기존 파일 정리..."
+            rm -rf build/libs/*.jar
+            
+            # 4. 새로운 이미지 빌드 (--no-cache 옵션 추가)
             echo "🔨 Docker 이미지 빌드 시작..."
-            docker build -t group-study-api:latest .
+            docker build --no-cache -t group-study-api:latest .
             
+            # 5. 컨테이너 시작
             echo "🚀 컨테이너 시작..."
-            docker compose up -d            
+            docker compose up -d
             
+            # 6. 헬스체크
             sleep 15
             if docker ps | grep -q group-study; then
               echo "✅ 배포 성공"
+            
+              # 배포 완료 후 확인
+              echo "📋 실행 중인 컨테이너 정보:"
+              docker ps | grep group-study
+            
+              echo "🏷️ 이미지 정보:"
+              docker images | grep group-study-api
+            
+              # 정리 작업
               rm -f build/libs/*.jar
               rm -f src/main/resources/studygroup-fcm.json
               docker image prune -f

@@ -2,6 +2,10 @@
 FROM openjdk:11-jdk-slim AS builder
 WORKDIR /app
 
+# 빌드 인자 추가 (캐시 무효화용)
+ARG BUILD_DATE
+ARG VERSION
+
 # Gradle 의존성 캐싱
 COPY build.gradle gradlew ./
 COPY gradle gradle

@@ -45,6 +45,7 @@ services:
   group-study:
     image: group-study-api:latest
     container_name: group-study
+    pull_policy: always  # 추가
     networks:
       - traefik-net
     ports:
