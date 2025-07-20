@@ -14,9 +14,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-@Table(name = "notification_history", indexes = {
-        @Index(name = "idx_user_id_create_date", columnList = "user_id, createDate DESC")
-})
+@Table(name = "notification_history")
 public class NotificationHistoryEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
