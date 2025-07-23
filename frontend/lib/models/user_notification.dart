@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:groupstudy/models/notice.dart';
 import 'package:groupstudy/models/round.dart';
@@ -6,8 +8,11 @@ import 'package:groupstudy/routes/notices/notice_detail_route.dart';
 import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
+import 'package:groupstudy/services/database_service.dart';
 import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/utilities/pageable.dart';
 import 'package:groupstudy/utilities/util.dart';
+import 'package:http/http.dart' as http;
 
 class UserNotification {
   static Logger logger = Logger('UserNotification');
@@ -37,6 +42,33 @@ class UserNotification {
       isRead: json['isRead'],
       createDate: DateTime.parse(json["createDate"]),
     );
+  }
+
+  static Future<PageInfo<UserNotification>> getNotifications(
+      int userId, int page, int pageSize) async {
+    final response = await http.get(
+      Uri.parse(
+          '${DatabaseService.serverUrl}api/notifications/users/$userId/notifications?page=$page&size=$pageSize'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog(
+        'get notification list (userId: $userId, page: $page, pageSize: $pageSize)',
+        responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      var notificationHistory = responseJson['data']['histories'];
+
+      PageInfo<UserNotification> pageInfo = PageInfo.fromJson(
+        notificationHistory,
+        (json) => UserNotification.fromJson(json),
+      );
+
+      return pageInfo;
+    }
   }
 
   static void handleNotification(Map<String, dynamic> data) {
