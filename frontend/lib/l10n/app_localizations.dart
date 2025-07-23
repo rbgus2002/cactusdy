@@ -1010,6 +1010,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'기타'**
   String get etc;
+
+  /// No description provided for @notificationCenter.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 센터'**
+  String get notificationCenter;
+
+  /// No description provided for @notificationReadAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 읽기'**
+  String get notificationReadAll;
+
+  /// No description provided for @dummyForInsertion.
+  ///
+  /// In ko, this message translates to:
+  /// **''**
+  String get dummyForInsertion;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
