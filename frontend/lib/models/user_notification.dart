@@ -71,6 +71,29 @@ class UserNotification {
     }
   }
 
+  static Future<bool> markAsRead(int userId, List<UserNotification> notifications, [bool readAll = false]) async {
+    final List<int> notificationIds = notifications.map((n) => n.id).toList();
+    final Map<String, dynamic> data = {
+      'readAll': readAll,
+      'notificationIds': notificationIds,
+    };
+
+    final response = await http.patch(
+      Uri.parse('${DatabaseService.serverUrl}/api/notifications/users/$userId/notifications'),
+      headers: await DatabaseService.getAuthHeader(),
+      body: json.encode(data),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLog('read notifications (userId: $userId, notificationIds: $notificationIds)', responseJson);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      return responseJson['success'];
+    }
+  }
+
   static void handleNotification(Map<String, dynamic> data) {
     switch (data['type']) {
       case 'study':
