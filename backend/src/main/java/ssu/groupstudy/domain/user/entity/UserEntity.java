@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import ssu.groupstudy.domain.auth.entity.AuthorityEntity;
 import ssu.groupstudy.domain.common.entity.BaseWithSoftDeleteEntity;
 import ssu.groupstudy.domain.notification.entity.FcmTokenEntity;
+import ssu.groupstudy.global.util.ProfileImageUrlResolver;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -105,6 +106,14 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         this.picture = picture;
     }
 
+    public String getPicture() {
+        return ProfileImageUrlResolver.toUrl(this.picture);
+    }
+
+    public String getPictureKey() {
+        return this.picture;
+    }
+
     public void updateProfile(String nickname, String statusMessage) {
         this.nickname = nickname;
         this.statusMessage = statusMessage;
@@ -129,4 +138,3 @@ public class UserEntity extends BaseWithSoftDeleteEntity {
         super.delete();
     }
 }
-

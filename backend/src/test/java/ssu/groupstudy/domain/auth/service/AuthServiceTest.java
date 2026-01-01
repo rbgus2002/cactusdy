@@ -21,7 +21,6 @@ import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.global.util.ImageManager;
 import ssu.groupstudy.global.util.MessageUtils;
-import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -51,8 +50,6 @@ class AuthServiceTest extends ServiceTest {
     private MessageUtils messageUtils;
     @Mock
     private ImageManager imageManager;
-    @Mock
-    private S3Utils s3Utils;
     @Mock
     private ApplicationEventPublisher eventPublisher;
 

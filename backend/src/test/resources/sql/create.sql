@@ -197,13 +197,13 @@ create table if not exists notification_history
     id            bigint auto_increment
     primary key,
     user_id       bigint           not null,
-    alarm_type    varchar(50)      not null comment '알림 타입',
-    title         varchar(255)     not null comment '알림 제목',
-    message       text             not null comment '알림 내용 (ex. 규규가 3번이나 콕 찔렀어요)',
-    event_data    json             not null comment '이벤트 관련 ID 정보 (study_id, notice_id, round_id 등)',
-    is_read       char default 'N' not null comment '읽음 여부 (Y/N)',
-    create_date   datetime(6)      not null comment '생성일시',
-    modified_date datetime(6)      not null comment '수정일시',
+    alarm_type    varchar(50)      not null,
+    title         varchar(255)     not null,
+    message       text             not null,
+    event_data    varchar(4000)    not null,
+    is_read       char default 'N' not null,
+    create_date   datetime(6)      not null,
+    modified_date datetime(6)      not null,
     constraint fk_notification_history_user
-    foreign key (user_id) references user (user_id)
+    foreign key (user_id) references `user` (user_id)
 );

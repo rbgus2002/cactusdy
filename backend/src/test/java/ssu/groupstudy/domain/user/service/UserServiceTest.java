@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
+import ssu.groupstudy.domain.study.service.ParticipantsService;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
 
@@ -27,6 +28,8 @@ class UserServiceTest extends ServiceTest {
     private UserEntityRepository userEntityRepository;
     @Mock
     private ImageManager imageManager;
+    @Mock
+    private ParticipantsService participantsService;
 
     @Nested
     class RemoveUser{

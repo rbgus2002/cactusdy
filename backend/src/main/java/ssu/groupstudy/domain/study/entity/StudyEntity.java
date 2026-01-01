@@ -10,6 +10,7 @@ import ssu.groupstudy.domain.study.exception.CanNotLeaveStudyException;
 import ssu.groupstudy.domain.study.exception.InviteAlreadyExistsException;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
+import ssu.groupstudy.global.util.ProfileImageUrlResolver;
 
 import javax.persistence.*;
 import java.util.List;
@@ -99,6 +100,14 @@ public class StudyEntity extends BaseWithSoftDeleteEntity {
 
     public void updatePicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getPicture() {
+        return ProfileImageUrlResolver.toUrl(this.picture);
+    }
+
+    public String getPictureKey() {
+        return this.picture;
     }
 
     public UserEntity getHostUser() {
