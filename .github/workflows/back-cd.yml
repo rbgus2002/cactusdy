@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/src/main/resources/studygroup-fcm.json"
+          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/nginx/default.conf,backend/src/main/resources/studygroup-fcm.json"
           target: "~/Desktop/guegue/group-study"
 
       - name: Build and Deploy on Server
@@ -75,7 +75,7 @@ jobs:
             
             # Docker 빌드 전
             echo "🔨 Docker 이미지 빌드 시작..."
-            docker build -t group-study-api:latest .
+            docker build --no-cache -t group-study-api:latest .
             
             echo "🚀 컨테이너 시작..."
             docker compose up -d            
@@ -83,7 +83,7 @@ jobs:
             sleep 15
             if docker ps | grep -q group-study; then
               echo "✅ 배포 성공"
-              rm -f build/libs/*.jar
+              # rm -f build/libs/*.jar
               rm -f src/main/resources/studygroup-fcm.json
               docker image prune -f
             else
