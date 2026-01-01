@@ -91,7 +91,7 @@ services:
       - "traefik.http.services.nginx-static.loadbalancer.server.port=80"
     volumes:
       - /Users/choegyuhyeon/Desktop/guegue/data/uploads:/data/uploads:ro
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /Users/choegyuhyeon/Desktop/guegue/intellij/cactusdy/backend/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     restart: always
 
 volumes:
