@@ -9,16 +9,18 @@
     <!--local-->
     <springProfile name="local">
         <include resource="console-appender.xml"/>
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
     <!--dev-->
     <springProfile name="dev | prod">
+        <include resource="console-appender.xml"/>
         <include resource="file-info-appender.xml"/>
         <root level="INFO">
             <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
