@@ -51,7 +51,7 @@ services:
       - "8080:8080"  # 로컬 접근을 위한 포트 매핑 추가
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`)"
+      - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`) && PathPrefix(`/api`)"
       - "traefik.http.routers.group-study.entrypoints=websecure"
       - "traefik.http.routers.group-study.tls.certresolver=le"
       - "traefik.http.services.group-study.loadbalancer.server.port=8080"
@@ -75,6 +75,24 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+    volumes:
+      - /Users/choegyuhyeon/Desktop/guegue/data/uploads:/data/uploads:rw
+
+  nginx-static:
+    image: nginx:1.25-alpine
+    container_name: nginx-static
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx-static.rule=Host(`cactusdy.guegue.dev`) && PathPrefix(`/images`)"
+      - "traefik.http.routers.nginx-static.entrypoints=websecure"
+      - "traefik.http.routers.nginx-static.tls.certresolver=le"
+      - "traefik.http.services.nginx-static.loadbalancer.server.port=80"
+    volumes:
+      - /Users/choegyuhyeon/Desktop/guegue/data/uploads:/data/uploads:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: always
 
 volumes:
   mysql-data:
