@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/src/main/resources/studygroup-fcm.json"
+          source: "backend/build/libs/*.jar,backend/Dockerfile,backend/docker-compose.yml,backend/nginx/default.conf,backend/src/main/resources/studygroup-fcm.json"
           target: "~/Desktop/guegue/group-study"
 
       - name: Build and Deploy on Server
