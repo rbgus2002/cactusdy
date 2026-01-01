@@ -39,7 +39,6 @@ public class ExampleStudyCreateService {
         StudyEntity studyEntity = studyEntityRepository.save(
                 StudyEntity.init("2주 완성 토익 스터디 (예시)", "토익", ColorCode.DEFAULT.getHex(), user, inviteCode)
         );
-        studyEntity.updatePicture("https://groupstudy-profile-image.s3.ap-northeast-2.amazonaws.com/profile/study/120/313c5127-307a-4ffb-8894-822f2e5505f8");
 
         createExampleNotice(user, studyEntity);
         createExampleRules(studyEntity);

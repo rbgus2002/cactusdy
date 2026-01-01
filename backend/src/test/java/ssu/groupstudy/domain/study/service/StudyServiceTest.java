@@ -21,7 +21,6 @@ import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 import ssu.groupstudy.global.util.ImageManager;
-import ssu.groupstudy.global.util.S3Utils;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -50,8 +49,6 @@ class StudyServiceTest extends ServiceTest {
     private ApplicationEventPublisher eventPublisher;
     @Mock
     private ImageManager imageManager;
-    @Mock
-    private S3Utils s3Utils;
 
     @Nested
     class 스터디생성 {

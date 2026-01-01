@@ -75,8 +75,8 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // aws
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    // ulid
+    implementation 'com.github.f4b6a3:ulid-creator:5.2.3'
 
     // firebase
     implementation 'com.google.firebase:firebase-admin:9.2.0'

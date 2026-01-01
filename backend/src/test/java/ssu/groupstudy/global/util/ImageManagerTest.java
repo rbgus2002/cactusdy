@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ssu.groupstudy.domain.common.ServiceTest;
-import ssu.groupstudy.domain.common.enums.S3TypeCode;
+import ssu.groupstudy.domain.common.enums.ProfileImageType;
 
 import java.io.IOException;
 
@@ -17,13 +17,13 @@ class ImageManagerTest extends ServiceTest {
     private ImageManager imageManager;
 
     @Mock
-    private S3Utils s3Utils;
+    private ProfileImageStorage profileImageStorage;
 
     @Test
     @DisplayName("이미지가 null인 경우 이미지를 업데이트하지 않는다.")
     void updateNullImage() throws IOException {
         // given
-        doReturn(null).when(s3Utils).uploadProfileImage(any(), any(S3TypeCode.class), any(Long.class));
+        doReturn(null).when(profileImageStorage).saveProfileImage(any(ProfileImageType.class), any(Long.class), any());
 
         // when
         최규현.updatePicture("image");

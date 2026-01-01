@@ -12,7 +12,6 @@
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
-        <logger name="com.amazonaws.util.EC2MetadataUtils" level="error"/>
     </springProfile>
 
     <!--dev-->
