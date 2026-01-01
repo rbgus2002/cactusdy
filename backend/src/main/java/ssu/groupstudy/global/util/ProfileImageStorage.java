@@ -43,7 +43,8 @@ public class ProfileImageStorage {
 
         String extension = resolveExtension(image.getContentType());
         if (extension == null) {
-            throw new IllegalArgumentException("Unsupported content type.");
+            extension = "jpg";
+//            throw new IllegalArgumentException("Unsupported content type.");
         }
 
         String fileName = UlidCreator.getUlid().toString() + "." + extension;
