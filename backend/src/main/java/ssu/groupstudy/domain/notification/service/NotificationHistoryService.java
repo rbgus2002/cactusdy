@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.api.notification.vo.NotificationHistoryPageResVo;
 import ssu.groupstudy.domain.common.enums.NotificationDataType;
 import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.common.exception.BusinessException;
 import ssu.groupstudy.domain.notification.entity.NotificationHistoryEntity;
+import ssu.groupstudy.domain.notification.exception.NotificationHistoryNotFoundException;
 import ssu.groupstudy.domain.notification.repository.NotificationHistoryEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
@@ -45,6 +47,7 @@ public class NotificationHistoryService {
                 .title(title)
                 .message(message)
                 .eventData(eventDataJson)
+                .isRead(false)
                 .build();
         
         notificationHistoryEntityRepository.save(notificationHistory);
@@ -58,5 +61,19 @@ public class NotificationHistoryService {
         Page<NotificationHistoryEntity> notificationHistoryPage = notificationHistoryEntityRepository.findByUserOrderByCreateDateDesc(user, pageable);
 
         return NotificationHistoryPageResVo.of(notificationHistoryPage);
+    }
+
+    public void readNotification(Long userId, Long notificationId, UserEntity requester) {
+        if (!requester.getUserId().equals(userId)) {
+            throw new BusinessException(ResultCode.FORBIDDEN);
+        }
+
+        UserEntity user = userEntityRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
+
+        NotificationHistoryEntity notificationHistory = notificationHistoryEntityRepository.findByIdAndUser(notificationId, user)
+                .orElseThrow(() -> new NotificationHistoryNotFoundException(ResultCode.NOTIFICATION_HISTORY_NOT_FOUND));
+
+        notificationHistory.markRead();
     }
 }

@@ -4,6 +4,7 @@ import lombok.*;
 import ssu.groupstudy.domain.common.entity.BaseEntity;
 import ssu.groupstudy.domain.common.enums.NotificationDataType;
 import ssu.groupstudy.domain.user.entity.UserEntity;
+import ssu.groupstudy.global.config.converter.YNBooleanConverter;
 
 import javax.persistence.*;
 
@@ -37,13 +38,22 @@ public class NotificationHistoryEntity extends BaseEntity {
     @Column(nullable = false, columnDefinition = "JSON")
     private String eventData;
 
+    @Convert(converter = YNBooleanConverter.class)
+    @Column(nullable = false, length = 1, name = "is_read")
+    private Boolean isRead;
+
     @Builder
-    public NotificationHistoryEntity(UserEntity user, NotificationDataType notificationDataType, 
-                                   String title, String message, String eventData) {
+    public NotificationHistoryEntity(UserEntity user, NotificationDataType notificationDataType,
+                                   String title, String message, String eventData, Boolean isRead) {
         this.user = user;
         this.notificationDataType = notificationDataType;
         this.title = title;
         this.message = message;
         this.eventData = eventData;
+        this.isRead = isRead != null && isRead;
+    }
+
+    public void markRead() {
+        this.isRead = true;
     }
 }

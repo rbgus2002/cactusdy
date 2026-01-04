@@ -24,6 +24,7 @@ public class NotificationHistoryResVo {
     private String title;
     private String message;
     private Map<String, Object> data;
+    private Boolean isRead;
     private LocalDateTime createDate;
     
     public static NotificationHistoryResVo of(NotificationHistoryEntity entity) {
@@ -41,6 +42,7 @@ public class NotificationHistoryResVo {
             entity.getTitle(),
             entity.getMessage(),
             eventDataMap,
+            entity.getIsRead(),
             entity.getCreateDate()
         );
     }

@@ -49,6 +49,7 @@ public enum ResultCode {
     PARTICIPANT_NOT_FOUND(404, "존재하지 않는 멤버에요"),
     PHONE_NUMBER_NOT_FOUND(404, "존재하지 않는 휴대폰번호에요"),
     RULE_NOT_FOUND(404, "존재하지 않는 규칙이에요"),
+    NOTIFICATION_HISTORY_NOT_FOUND(404, "존재하지 않는 알림이에요"),
 
 
     // 405
