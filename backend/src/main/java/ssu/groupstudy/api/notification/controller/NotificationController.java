@@ -61,4 +61,13 @@ public class NotificationController {
         NotificationHistoryPageResVo response = notificationHistoryService.getNotificationHistories(userId, PageRequest.of(page, size));
         return DataResVo.of("histories", response);
     }
+
+    @Operation(summary = "알림 읽기 처리", description = "알림을 읽음 처리한다")
+    @PatchMapping("/users/{userId}/notifications/{notificationId}")
+    public ResVo readNotification(@PathVariable Long userId,
+                                  @PathVariable Long notificationId,
+                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        notificationHistoryService.readNotification(userId, notificationId, userDetails.getUser());
+        return ResVo.success();
+    }
 }
