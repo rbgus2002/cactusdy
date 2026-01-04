@@ -9,7 +9,7 @@
     <!--local-->
     <springProfile name="local">
         <include resource="console-appender.xml"/>
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>

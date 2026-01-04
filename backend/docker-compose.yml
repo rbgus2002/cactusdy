@@ -51,7 +51,7 @@ services:
       - "8080:8080"  # 로컬 접근을 위한 포트 매핑 추가
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.group-study.rule=Host(`cactusdy.guegue.dev`) && (PathPrefix(`/api`) || PathPrefix(`/auth`))"
       - "traefik.http.routers.group-study.entrypoints=websecure"
       - "traefik.http.routers.group-study.tls.certresolver=le"
       - "traefik.http.services.group-study.loadbalancer.server.port=8080"
