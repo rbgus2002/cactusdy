@@ -8,12 +8,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.api.common.vo.DataResVo;
 import ssu.groupstudy.api.notification.vo.NotificationHistoryPageResVo;
+import ssu.groupstudy.api.notification.vo.NotificationReadReqVo;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.notification.service.NotificationHistoryService;
 import ssu.groupstudy.domain.notification.service.NotificationParticipantService;
 import ssu.groupstudy.api.common.vo.ResVo;
 
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -62,12 +64,12 @@ public class NotificationController {
         return DataResVo.of("histories", response);
     }
 
-    @Operation(summary = "알림 읽기 처리", description = "알림을 읽음 처리한다")
-    @PatchMapping("/users/{userId}/notifications/{notificationId}")
-    public ResVo readNotification(@PathVariable Long userId,
-                                  @PathVariable Long notificationId,
-                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
-        notificationHistoryService.readNotification(userId, notificationId, userDetails.getUser());
+    @Operation(summary = "알림 읽기 처리", description = "readAll=true면 전체 읽음, false면 notificationIds 기준으로 읽음 처리한다")
+    @PatchMapping("/users/{userId}/notifications")
+    public ResVo readNotifications(@PathVariable Long userId,
+                                   @Valid @RequestBody NotificationReadReqVo request,
+                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
+        notificationHistoryService.readNotifications(userId, request, userDetails.getUser());
         return ResVo.success();
     }
 }
