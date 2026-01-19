@@ -74,4 +74,9 @@ class Design {
           child: CircularProgressIndicator()
       )
   );
+
+  static const EdgeInsets listItemPadding = EdgeInsets.symmetric(
+    vertical: 16,
+    horizontal: 20,
+  );
 }

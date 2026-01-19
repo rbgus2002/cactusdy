@@ -185,5 +185,10 @@
     "bug": "버그 제보",
     "feat": "신규 기능",
     "enhance": "기능 개선",
-    "etc": "기타"
+    "etc": "기타",
+
+    "notificationCenter": "알림 센터",
+    "notificationReadAll": "전체 읽기",
+
+    "dummyForInsertion": ""
 }
