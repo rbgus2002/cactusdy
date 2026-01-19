@@ -498,4 +498,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get etc => '기타';
+
+  @override
+  String get notificationCenter => '알림 센터';
+
+  @override
+  String get notificationReadAll => '전체 읽기';
+
+  @override
+  String get dummyForInsertion => '';
 }

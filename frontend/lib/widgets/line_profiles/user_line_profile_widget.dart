@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/user.dart';
 import 'package:groupstudy/routes/feedback_route.dart';
+import 'package:groupstudy/routes/notification_center_route.dart';
 import 'package:groupstudy/routes/profiles/profile_edit_route.dart';
 import 'package:groupstudy/routes/setting_route.dart';
 import 'package:groupstudy/themes/custom_icons.dart';
@@ -63,6 +64,36 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
                           context.extraColors.grey400,),
                     overflow: TextOverflow.ellipsis,),
               ],),
+          ),
+
+          // Popup button to edit profile and setting
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topRight,
+            children: [
+              Positioned(
+                child: CircleAvatar(
+                  backgroundColor: context.extraColors.primaryButtonColor,
+                  radius: 4,),
+                ),
+
+              SizedBox(
+                height: _iconSize,
+                width: _iconSize,
+
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    CustomIcons.notification,
+                    color: context.extraColors.grey500,
+                    fill: 1.0,
+                    size: _iconSize * 0.8,),
+                  splashRadius: 16,
+                  onPressed: () => Util.pushRoute(context, (context) =>
+                    NotificationCenterRoute()),
+                ),
+              )
+            ],
           ),
 
           // Popup button to edit profile and setting
