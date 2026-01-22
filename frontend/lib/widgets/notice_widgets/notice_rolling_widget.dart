@@ -6,6 +6,7 @@ import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/themes/text_styles.dart';
 import 'package:groupstudy/utilities/extensions.dart';
+import 'package:groupstudy/utilities/pageable.dart';
 import 'package:groupstudy/utilities/util.dart';
 import 'package:groupstudy/widgets/notice_widgets/auto_scrolling_banner.dart';
 
@@ -54,16 +55,24 @@ class _NoticeRollingWidgetState extends State<NoticeRollingWidget> {
 
             Expanded(
               child: FutureBuilder(
-                future: NoticeSummary.getNoticeSummaryList(widget.studyId, 0, _showingCount),
-                builder: (context, snapshot) =>
-                  (snapshot.hasData) ?
-                    AutoScrollingBanner(
-                      hintText: context.local.tryToWriteNoti,
-                      contents: (snapshot.data!).map((n) => n.notice.title).toList(),) :
-                    const SizedBox(),
-              )),
+                future: NoticeSummary.getNoticeSummaryList(
+                    widget.studyId, 0, _showingCount),
+                builder: (context, snapshot) {
+                  return (snapshot.hasData)
+                      ? AutoScrollingBanner(
+                          hintText: context.local.tryToWriteNoti,
+                          contents: _getTitles(snapshot.data!),
+                        )
+                      : const SizedBox();
+                },
+              ),
+            ),
           ],),
       ),
     );
+  }
+
+  static List<String> _getTitles(PageInfo<NoticeSummary> noticeList) {
+    return noticeList.contents.map((n) => n.notice.title).toList();
   }
 }
