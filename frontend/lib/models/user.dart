@@ -103,7 +103,9 @@ class User{
     request.headers.addAll(await DatabaseService.getAuthHeader());
 
     if (profileImage != null) {
-      request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
+      request.files.add(await http.MultipartFile.fromPath(
+          'profileImage', profileImage.path,
+          contentType: MediaType("image", "webp")));
     }
 
     final response = await request.send();
