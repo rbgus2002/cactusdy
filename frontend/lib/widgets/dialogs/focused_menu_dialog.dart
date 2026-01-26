@@ -45,7 +45,7 @@ class FocusedMenuDialog {
             right: position.right,
             top: position.top,
             child: Material(
-              color: context.extraColors.grey50!.withAlpha(242),
+              color: context.extraColors.grey50!.withAlpha(230),
               borderRadius: Design.borderRadiusBig,
               clipBehavior: Clip.hardEdge,
               child: SizedBox(
