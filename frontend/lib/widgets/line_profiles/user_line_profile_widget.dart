@@ -114,24 +114,26 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
       ItemEntry(
         text: context.local.editProfile,
         icon: const Icon(CustomIcons.writing_outline),
-        onTap: () => Util.pushRoute(context, (context) =>
-            ProfileEditRoute(user: widget.user)).then((value) =>
-                Util.delay(() => setState(() { }),),
-        ),),
+        onTap: () => Util.pushRoute(
+                context, (context) => ProfileEditRoute(user: widget.user))
+            .then((value) => Util.delay(() => setState(() {}))),
+      ),
 
       // feedback
       ItemEntry(
         text: context.local.feedback,
-        icon: const Icon(CustomIcons.comment,),
-        onTap: () => Util.pushRouteWithSlideUp(context, (context, animation, secondaryAnimation) =>
-            const FeedbackRoute())),
+        icon: const Icon(CustomIcons.comment),
+        onTap: () => Util.pushRouteWithSlideUp(context,
+            (context, animation, secondaryAnimation) => const FeedbackRoute()),
+      ),
 
       // setting
       ItemEntry(
         text: context.local.setting,
-        icon: const Icon(CustomIcons.setting_outline,),
-        onTap: () => Util.pushRoute(context, (context) =>
-            SettingRoute(user: widget.user))),
+        icon: const Icon(CustomIcons.setting_outline),
+        onTap: () => Util.pushRoute(
+            context, (context) => SettingRoute(user: widget.user)),
+      ),
     ];
   }
 }
