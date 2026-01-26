@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/utilities/extensions.dart';
@@ -18,27 +16,27 @@ class FocusedMenuDialog {
     late Offset offset = Offset(0.0, button.size.height);
 
     final RelativeRect position = RelativeRect.fromRect(
-        Rect.fromPoints(
+      Rect.fromPoints(
           button.localToGlobal(offset, ancestor: overlay),
-          button.localToGlobal(button.size.bottomRight(Offset.zero) + offset, ancestor: overlay),),
-        Offset.zero & overlay.size,);
+          button.localToGlobal(button.size.bottomRight(Offset.zero) + offset,
+              ancestor: overlay)),
+      Offset.zero & overlay.size,
+    );
 
     return showGeneralDialog(
         context: context,
-        barrierColor: context.extraColors.barrierColor!.withOpacity(0.2),
+        barrierColor: context.extraColors.barrierColor!.withAlpha(51),
         barrierDismissible: true,
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder: (context, animation, secondaryAnimation) =>
-            _buildItemList(
-              context: context,
-              position: position,
-              items: items));
+            _buildItemList(context: context, position: position, items: items));
   }
 
   static Widget _buildItemList({
-      required BuildContext context,
-      required RelativeRect position,
-      required List<PopupMenuEntry> items}) {
+    required BuildContext context,
+    required RelativeRect position,
+    required List<PopupMenuEntry> items,
+  }) {
     return BackdropFilter(
       filter: Design.basicBlur,
       child: Stack(
@@ -47,28 +45,25 @@ class FocusedMenuDialog {
             right: position.right,
             top: position.top,
             child: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                alignment: Alignment.center,
+              color: context.extraColors.grey50!.withAlpha(242),
+              borderRadius: Design.borderRadiusBig,
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
                 width: Design.popupWidth,
                 height: itemHeight * items.length,
-                decoration: BoxDecoration(
-                  color: context.extraColors.grey50!.withOpacity(0.95),
-                  borderRadius: Design.borderRadiusBig,),
                 child: ListView.separated(
                   padding: EdgeInsets.zero,
-                  itemCount: items.length,
-                  shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) => items[index],
                   separatorBuilder: (context, index) =>
-                    Container(
-                      height: 0.1,
-                      color: context.extraColors.grey800,),
-                  itemBuilder: (context, index) =>
-                    items[index],),
-              ),),
+                      Divider(height: 1, color: context.extraColors.grey200),
+                ),
+              ),
+            ),
           ),
-        ]),
+        ],
+      ),
     );
   }
 }
