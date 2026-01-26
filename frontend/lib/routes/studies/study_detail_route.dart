@@ -175,16 +175,18 @@ class _StudyDetailRouteState extends State<StudyDetailRoute> {
       // edit profile
       ItemEntry(
         text: context.local.editStudy,
-        icon: Icon(CustomIcons.writing_outline, color: context.extraColors.grey900,),
-        onTap: () => Util.pushRoute(context, (context) =>
-            StudyEditRoute(study: _study,)).then((value) =>
-            _refresh(),),),
+        icon: const Icon(CustomIcons.writing_outline),
+        onTap: () =>
+            Util.pushRoute(context, (context) => StudyEditRoute(study: _study))
+                .then((value) => _refresh()),
+      ),
 
       // setting
       ItemEntry(
         text: context.local.leaveStudy,
-        icon: Icon(CustomIcons.exit_outline, color: context.extraColors.grey900,),
-        onTap: _showLeaveStudyDialog,),
+        icon: const Icon(CustomIcons.exit_outline),
+        onTap: _showLeaveStudyDialog,
+      ),
     ];
   }
 
