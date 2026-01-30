@@ -91,7 +91,9 @@ class Study {
       'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (studyImage != null) {
-      request.files.add(await http.MultipartFile.fromPath('profileImage', studyImage.path));
+      request.files.add(await http.MultipartFile.fromPath(
+          'profileImage', studyImage.path,
+          contentType: MediaType("image", "webp")));
     }
 
     final response = await request.send();
@@ -104,7 +106,7 @@ class Study {
       int newStudyId = responseJson['data']['study']['studyId'];
       String invitingCode = responseJson['data']['study']['inviteCode'];
       logger.infoLog('created study\'s studyId: $newStudyId');
-      
+
       onCreate(newStudyId, invitingCode);
       return responseJson['success'];
     }
@@ -160,7 +162,9 @@ class Study {
         'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (studyImage != null) {
-      request.files.add(await http.MultipartFile.fromPath('profileImage', studyImage.path));
+      request.files.add(await http.MultipartFile.fromPath(
+          'profileImage', studyImage.path,
+          contentType: MediaType("image", "webp")));
     }
 
     final response = await request.send();

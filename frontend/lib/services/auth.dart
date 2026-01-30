@@ -50,7 +50,9 @@ class Auth {
       'dto', jsonEncode(data), contentType: MediaType("application","json"),));
 
     if (profileImage != null) {
-      request.files.add(await http.MultipartFile.fromPath('profileImage', profileImage.path));
+      request.files.add(await http.MultipartFile.fromPath(
+          'profileImage', profileImage.path,
+          contentType: MediaType("image", "webp")));
     }
 
     final response = await request.send();
