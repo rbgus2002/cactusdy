@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ssu.groupstudy.api.common.vo.DataResVo;
 import ssu.groupstudy.api.notification.vo.NotificationHistoryPageResVo;
 import ssu.groupstudy.api.notification.vo.NotificationReadReqVo;
+import ssu.groupstudy.api.notification.vo.NotificationUnreadResVo;
 import ssu.groupstudy.domain.auth.security.CustomUserDetails;
 import ssu.groupstudy.domain.notification.service.FcmTokenService;
 import ssu.groupstudy.domain.notification.service.NotificationHistoryService;
@@ -71,5 +72,13 @@ public class NotificationController {
                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
         notificationHistoryService.readNotifications(userId, request, userDetails.getUser());
         return ResVo.success();
+    }
+
+    @Operation(summary = "읽지 않은 알림 여부 확인", description = "홈 화면에서 읽지 않은 알림이 있는지 확인한다")
+    @GetMapping("/users/{userId}/notifications/unread")
+    public NotificationUnreadResVo hasUnreadNotifications(@PathVariable Long userId,
+                                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
+        boolean hasUnread = notificationHistoryService.hasUnreadNotifications(userDetails.getUser());
+        return NotificationUnreadResVo.from(hasUnread);
     }
 }
