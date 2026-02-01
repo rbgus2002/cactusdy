@@ -115,6 +115,8 @@ public class TaskService {
                             .taskId(task.getId())
                             .build()
             );
+        } else {
+            notificationService.deleteTaskDoneHistory(study.getStudyId(), task.getId());
         }
         return doneYn;
     }

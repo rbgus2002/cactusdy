@@ -39,6 +39,13 @@ public class NotificationService {
         fcmUtils.unsubscribeTopicFor(fcmTokens, topicCode, id);
     }
 
+    public void deleteTaskDoneHistory(Long studyId, Long taskId) {
+        List<ParticipantEntity> participants = participantEntityRepository.findAllActiveByStudyId(studyId);
+        participants.forEach(participant ->
+                notificationHistoryService.deleteTaskDoneHistory(participant.getUser(), taskId)
+        );
+    }
+
     private void saveNotificationHistory(NotificationParam param) {
         Long studyId = param.getStudyId();
         if (studyId == null) {
