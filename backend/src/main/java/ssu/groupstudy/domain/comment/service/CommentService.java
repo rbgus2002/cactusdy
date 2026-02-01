@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.api.comment.vo.ChildCommentInfoResVo;
@@ -17,10 +16,8 @@ import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
-import ssu.groupstudy.domain.notification.event.push.CommentCreationEvent;
-import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
 import ssu.groupstudy.domain.notification.param.NotificationCommentParam;
-import ssu.groupstudy.domain.notification.service.NotificationCommentService;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotParticipatedException;
@@ -38,9 +35,7 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 public class CommentService {
     private final CommentEntityRepository commentEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
-    private final ApplicationEventPublisher eventPublisher;
-    private final NotificationCommentService notificationService;
-
+    private final NotificationService notificationService;
 
     @Deprecated
     @Transactional
@@ -54,20 +49,15 @@ public class CommentService {
 
         CommentEntity comment = handleCommentCreationWithParent(dto, writer, notice);
 
-        eventPublisher.publishEvent(
-                CommentCreationEvent.builder()
+        notificationService.push(
+                NotificationCommentParam.builder()
                         .noticeId(notice.getNoticeId())
                         .studyId(notice.getStudy().getStudyId())
                         .commentWriterNickname(writer.getNickname())
                         .commentContents(comment.getContents())
                         .build()
         );
-        eventPublisher.publishEvent(
-                NoticeTopicSubscribeEvent.builder()
-                        .fcmTokens(writer.getFcmTokens())
-                        .noticeId(notice.getNoticeId())
-                        .build()
-        );
+        notificationService.subscribeToFcm(writer.getFcmTokens(), TopicCode.NOTICE, notice.getNoticeId());
 
         return commentEntityRepository.save(comment).getCommentId();
     }

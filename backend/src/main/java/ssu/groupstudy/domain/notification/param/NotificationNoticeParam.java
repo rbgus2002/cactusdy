@@ -14,20 +14,20 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class NotificationCommentParam implements NotificationParam {
-    private final Long noticeId;
+public class NotificationNoticeParam implements NotificationParam {
     private final Long studyId;
-    private final String commentWriterNickname;
-    private final String commentContents;
+    private final Long noticeId;
+    private final String noticeWriterNickname;
+    private final String noticeTitle;
 
     @Override
     public String getTitle() {
-        return buildMessage(COMMENT, commentWriterNickname);
+        return buildMessage(NOTICE, noticeWriterNickname);
     }
 
     @Override
     public String getBody() {
-        return buildMessage(DOUBLE_QUOTE, commentContents, DOUBLE_QUOTE);
+        return buildMessage(DOUBLE_QUOTE, noticeTitle, DOUBLE_QUOTE);
     }
 
     @Override
@@ -41,12 +41,12 @@ public class NotificationCommentParam implements NotificationParam {
 
     @Override
     public TopicCode getTopicCode() {
-        return TopicCode.NOTICE;
+        return TopicCode.STUDY;
     }
 
     @Override
     public Long getTopicId() {
-        return noticeId;
+        return studyId;
     }
 
     @Override

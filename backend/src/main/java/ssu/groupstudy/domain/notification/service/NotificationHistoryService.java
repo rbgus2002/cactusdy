@@ -2,6 +2,7 @@ package ssu.groupstudy.domain.notification.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -90,5 +91,37 @@ public class NotificationHistoryService {
         }
 
         notificationHistories.forEach(NotificationHistoryEntity::markRead);
+    }
+
+    public void deleteTaskDoneHistory(UserEntity user, Long taskId) {
+        List<NotificationHistoryEntity> histories = notificationHistoryEntityRepository.findByUserAndNotificationDataType(user, NotificationDataType.ROUND);
+        if (histories.isEmpty()) {
+            return;
+        }
+
+        List<NotificationHistoryEntity> toDelete = new ArrayList<>();
+        for (NotificationHistoryEntity history : histories) {
+            if (hasTaskId(history.getEventData(), taskId)) {
+                toDelete.add(history);
+            }
+        }
+
+        if (!toDelete.isEmpty()) {
+            notificationHistoryEntityRepository.deleteAllInBatch(toDelete);
+        }
+    }
+
+    private boolean hasTaskId(String eventData, Long taskId) {
+        try {
+            Map<String, Object> eventDataMap = objectMapper.readValue(eventData, new TypeReference<Map<String, Object>>() {});
+            Object storedTaskId = eventDataMap.get("taskId");
+            if (storedTaskId == null) {
+                return false;
+            }
+            return Long.valueOf(storedTaskId.toString()).equals(taskId);
+        } catch (Exception e) {
+            log.warn("Failed to parse eventData JSON for taskId: {}", eventData, e);
+            return false;
+        }
     }
 }

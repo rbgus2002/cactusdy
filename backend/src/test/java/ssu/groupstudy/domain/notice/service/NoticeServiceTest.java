@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +18,7 @@ import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.param.NoticeSummaries;
 import ssu.groupstudy.domain.notice.param.NoticeSummary;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
@@ -50,7 +50,7 @@ class NoticeServiceTest extends ServiceTest {
     @Mock
     private CommentEntityRepository commentEntityRepository;
     @Mock
-    private ApplicationEventPublisher eventPublisher;
+    private NotificationService notificationService;
 
     @Nested
     class createNotice {

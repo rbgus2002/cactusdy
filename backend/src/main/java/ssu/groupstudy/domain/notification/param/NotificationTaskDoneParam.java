@@ -14,44 +14,46 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class NotificationCommentParam implements NotificationParam {
-    private final Long noticeId;
+public class NotificationTaskDoneParam implements NotificationParam {
+    private final String nickname;
+    private final String taskDetail;
     private final Long studyId;
-    private final String commentWriterNickname;
-    private final String commentContents;
+    private final Long roundId;
+    private final Long taskId;
 
     @Override
     public String getTitle() {
-        return buildMessage(COMMENT, commentWriterNickname);
+        return buildMessage(TASK_DONE, nickname);
     }
 
     @Override
     public String getBody() {
-        return buildMessage(DOUBLE_QUOTE, commentContents, DOUBLE_QUOTE);
+        return buildMessage(DOUBLE_QUOTE, taskDetail, DOUBLE_QUOTE);
     }
 
     @Override
     public Map<String, String> getData() {
         return Map.of(
-                DATA_TYPE, NotificationDataType.NOTICE.getValue(),
-                NOTICE_ID, noticeId.toString(),
-                STUDY_ID, studyId.toString()
+                DATA_TYPE, NotificationDataType.ROUND.getValue(),
+                STUDY_ID, studyId.toString(),
+                ROUND_ID, roundId.toString(),
+                TASK_ID, taskId.toString()
         );
     }
 
     @Override
     public TopicCode getTopicCode() {
-        return TopicCode.NOTICE;
+        return TopicCode.STUDY;
     }
 
     @Override
     public Long getTopicId() {
-        return noticeId;
+        return studyId;
     }
 
     @Override
     public NotificationDataType getNotificationDataType() {
-        return NotificationDataType.NOTICE;
+        return NotificationDataType.ROUND;
     }
 
     @Override

@@ -37,6 +37,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void sendNotificationByTokens(List<String> tokens, String title, String body, Map<String, String> data) {
         log.info("## sendNotificationByTokens : title = {}, body = {}", title, body);
         MulticastMessage message = MulticastMessage.builder()
@@ -70,6 +71,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void subscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
         String topic = topicCode.formatTopic(id);
         try {
@@ -80,6 +82,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void unsubscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
         String topic = topicCode.formatTopic(id);
         try {
