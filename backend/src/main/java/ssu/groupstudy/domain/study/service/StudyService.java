@@ -2,11 +2,11 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.api.round.vo.AppointmentReqVo;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
@@ -51,7 +51,7 @@ public class StudyService {
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
     private final RuleEntityRepository ruleEntityRepository;
     private final ImageManager imageManager;
-    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationService notificationService;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
 
     @Transactional
@@ -65,12 +65,7 @@ public class StudyService {
         createDefaultOthers(study);
 
         imageManager.updateImage(study, image);
-        eventPublisher.publishEvent(
-                StudyTopicSubscribeEvent.builder()
-                        .fcmTokens(user.getFcmTokens())
-                        .studyId(study.getStudyId())
-                        .build()
-        );
+        notificationService.subscribeToFcm(user.getFcmTokens(), TopicCode.STUDY, study.getStudyId());
         return StudyCreateResVo.of(study.getStudyId(), study.getInviteCode());
     }
 
