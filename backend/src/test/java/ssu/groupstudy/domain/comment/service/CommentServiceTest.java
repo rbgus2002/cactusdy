@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.api.comment.vo.CommentInfoResVo;
 import ssu.groupstudy.domain.comment.entity.CommentEntity;
 import ssu.groupstudy.domain.comment.exception.CommentNotFoundException;
@@ -14,6 +13,7 @@ import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ class CommentServiceTest extends ServiceTest {
     @Mock
     private CommentEntityRepository commentEntityRepository;
     @Mock
-    private ApplicationEventPublisher eventPublisher;
+    private NotificationService notificationService;
 
 
     @Nested

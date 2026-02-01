@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.context.ApplicationEventPublisher;
 import ssu.groupstudy.domain.common.ServiceTest;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
@@ -41,7 +41,7 @@ class StudyInviteServiceTest extends ServiceTest {
     @Mock
     private ParticipantEntityRepository participantEntityRepository;
     @Mock
-    private ApplicationEventPublisher eventPublisher;
+    private NotificationService notificationService;
     @Mock
     private NoticeEntityRepository noticeEntityRepository;
 
