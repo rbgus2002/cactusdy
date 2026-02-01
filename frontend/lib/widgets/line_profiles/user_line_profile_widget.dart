@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupstudy/models/user.dart';
+import 'package:groupstudy/models/user_notification.dart';
 import 'package:groupstudy/routes/feedback_route.dart';
 import 'package:groupstudy/routes/notification_center_route.dart';
 import 'package:groupstudy/routes/profiles/profile_edit_route.dart';
@@ -66,34 +67,9 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
               ],),
           ),
 
-          // Popup button to edit profile and setting
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topRight,
-            children: [
-              Positioned(
-                child: CircleAvatar(
-                  backgroundColor: context.extraColors.primaryButtonColor,
-                  radius: 4,),
-                ),
-
-              SizedBox(
-                height: _iconSize,
-                width: _iconSize,
-
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(
-                    CustomIcons.notification,
-                    color: context.extraColors.grey500,
-                    fill: 1.0,
-                    size: _iconSize * 0.8,),
-                  splashRadius: 16,
-                  onPressed: () => Util.pushRoute(context, (context) =>
-                    NotificationCenterRoute()),
-                ),
-              )
-            ],
+          NotificationCenterButton(
+            iconSize: _iconSize,
+            userId: widget.user.userId,
           ),
 
           // Popup button to edit profile and setting
@@ -135,5 +111,58 @@ class _UserLineProfileWidgetState extends State<UserLineProfileWidget> {
             context, (context) => SettingRoute(user: widget.user)),
       ),
     ];
+  }
+}
+
+class NotificationCenterButton extends StatefulWidget {
+  final int userId;
+  final double iconSize;
+
+  const NotificationCenterButton({
+    super.key,
+    required this.userId,
+    required this.iconSize,
+  });
+
+  @override
+  State<NotificationCenterButton> createState() => _NotificationCenterButtonState();
+}
+
+class _NotificationCenterButtonState extends State<NotificationCenterButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.topRight,
+      children: [
+        Positioned(
+          child: FutureBuilder(
+            future: UserNotification.hasUnread(widget.userId),
+            builder: (context, snapshot) => (snapshot.hasData && snapshot.data!)
+                ? CircleAvatar(
+                    backgroundColor: context.extraColors.primaryButtonColor,
+                    radius: widget.iconSize * 0.125)
+                : const SizedBox.shrink(),
+          ),
+        ),
+        SizedBox(
+          height: widget.iconSize,
+          width: widget.iconSize,
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              CustomIcons.notification,
+              color: context.extraColors.grey500,
+              fill: 1.0,
+              size: widget.iconSize * 0.8,
+            ),
+            splashRadius: widget.iconSize * 0.5,
+            onPressed: () =>
+                Util.pushRoute(context, (context) => NotificationCenterRoute())
+                    .then((value) => setState(() {})),
+          ),
+        ),
+      ],
+    );
   }
 }

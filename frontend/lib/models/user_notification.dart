@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 
 class UserNotification {
   static Logger logger = Logger('UserNotification');
+  static String notificationUrl = '${DatabaseService.serverUrl}api/notifications/';
 
   final int id;
   final String title;
@@ -47,7 +48,7 @@ class UserNotification {
       int userId, int page, int pageSize) async {
     final response = await http.get(
       Uri.parse(
-          '${DatabaseService.serverUrl}api/notifications/users/$userId/notifications?page=$page&size=$pageSize'),
+          '${notificationUrl}users/$userId/notifications?page=$page&size=$pageSize'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
@@ -67,6 +68,24 @@ class UserNotification {
       );
 
       return pageInfo;
+    }
+  }
+
+  static Future<bool> hasUnread(int userId) async {
+    final response = await http.get(
+      Uri.parse('${notificationUrl}users/$userId/notifications/unread'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLogV2('check unread notification (userId: $userId)', response);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool hasUnread = responseJson['hasUnread'];
+
+      return hasUnread;
     }
   }
 
