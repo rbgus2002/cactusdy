@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ssu.groupstudy.domain.common.enums.TopicCode;
 
@@ -36,6 +37,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void sendNotificationByTokens(List<String> tokens, String title, String body, Map<String, String> data) {
         log.info("## sendNotificationByTokens : title = {}, body = {}", title, body);
         MulticastMessage message = MulticastMessage.builder()
@@ -49,6 +51,7 @@ public class FcmUtils {
         FirebaseMessaging.getInstance().sendEachForMulticastAsync(message);
     }
 
+    @Async
     public void sendNotificationToTopic(String title, String body, TopicCode topicCode, Long id, Map<String, String> data) {
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
         String topic = topicCode.formatTopic(id);
@@ -68,6 +71,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void subscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
         String topic = topicCode.formatTopic(id);
         try {
@@ -78,6 +82,7 @@ public class FcmUtils {
         }
     }
 
+    @Async
     public void unsubscribeTopicFor(List<String> tokens, TopicCode topicCode, Long id) {
         String topic = topicCode.formatTopic(id);
         try {
