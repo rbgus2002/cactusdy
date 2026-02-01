@@ -43,5 +43,11 @@ public interface ParticipantEntityRepository extends JpaRepository<ParticipantEn
             "AND p.study.deleteYn = false ")
     int countParticipationStudy(UserEntity user);
 
+    @Query("SELECT p " +
+            "FROM ParticipantEntity p " +
+            "WHERE p.study.studyId = :studyId " +
+            "AND p.study.deleteYn = false " +
+            "AND p.user.deleteYn = false")
+    List<ParticipantEntity> findAllActiveByStudyId(Long studyId);
 
 }

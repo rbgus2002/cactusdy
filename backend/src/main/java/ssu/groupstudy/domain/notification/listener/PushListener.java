@@ -46,7 +46,7 @@ public class PushListener {
         
         // 알림 히스토리 저장 - 공지사항 주제를 구독한 사용자들에게 저장
         // 현재는 스터디 참가자 모두에게 저장 (추후 실제 구독자 필터링 필요)
-        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+        List<ParticipantEntity> participants = participantEntityRepository.findAllActiveByStudyId(event.getStudyId());
                 
         participants.forEach(participant ->
             notificationHistoryService.saveNotificationHistory(
@@ -73,7 +73,7 @@ public class PushListener {
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
         
         // 알림 히스토리 저장 - 스터디 주제를 구독한 사용자들에게 저장
-        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+        List<ParticipantEntity> participants = participantEntityRepository.findAllActiveByStudyId(event.getStudyId());
                 
         participants.forEach(participant ->
             notificationHistoryService.saveNotificationHistory(
@@ -101,7 +101,7 @@ public class PushListener {
         fcmUtils.sendNotificationToTopic(title, body, TopicCode.STUDY, event.getStudyId(), data);
         
         // 알림 히스토리 저장 - 스터디 주제를 구독한 사용자들에게 저장
-        List<ParticipantEntity> participants = getStudyParticipants(event.getStudyId());
+        List<ParticipantEntity> participants = participantEntityRepository.findAllActiveByStudyId(event.getStudyId());
                 
         participants.forEach(participant ->
             notificationHistoryService.saveNotificationHistory(
@@ -112,13 +112,5 @@ public class PushListener {
                 data
             )
         );
-    }
-    
-    private List<ParticipantEntity> getStudyParticipants(Long studyId) {
-        return participantEntityRepository.findAll().stream()
-                .filter(p -> p.getStudy().getStudyId().equals(studyId))
-                .filter(p -> !p.getStudy().isDeleted())
-                .filter(p -> !p.getUser().isDeleted())
-                .collect(java.util.stream.Collectors.toList());
     }
 }
