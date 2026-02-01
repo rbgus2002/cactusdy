@@ -93,6 +93,11 @@ public class NotificationHistoryService {
         notificationHistories.forEach(NotificationHistoryEntity::markRead);
     }
 
+    @Transactional(readOnly = true)
+    public boolean hasUnreadNotifications(UserEntity user) {
+        return notificationHistoryEntityRepository.existsByUserAndIsReadFalse(user);
+    }
+
     public void deleteTaskDoneHistory(UserEntity user, Long taskId) {
         List<NotificationHistoryEntity> histories = notificationHistoryEntityRepository.findByUserAndNotificationDataType(user, NotificationDataType.ROUND);
         if (histories.isEmpty()) {

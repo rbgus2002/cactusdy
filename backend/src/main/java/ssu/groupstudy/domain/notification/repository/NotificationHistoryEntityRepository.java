@@ -21,5 +21,7 @@ public interface NotificationHistoryEntityRepository extends JpaRepository<Notif
 
     List<NotificationHistoryEntity> findByUserAndIsReadFalse(UserEntity user);
 
+    boolean existsByUserAndIsReadFalse(UserEntity user);
+
     List<NotificationHistoryEntity> findByUserAndNotificationDataType(UserEntity user, NotificationDataType notificationDataType);
 }
