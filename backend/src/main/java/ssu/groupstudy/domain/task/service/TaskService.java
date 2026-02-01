@@ -1,7 +1,6 @@
 package ssu.groupstudy.domain.task.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.api.task.vo.CreateGroupTaskReqVo;
@@ -9,7 +8,8 @@ import ssu.groupstudy.api.task.vo.CreatePersonalTaskReqVo;
 import ssu.groupstudy.api.task.vo.GroupTaskInfoResVo;
 import ssu.groupstudy.api.task.vo.UpdateTaskReqVo;
 import ssu.groupstudy.domain.common.enums.TaskType;
-import ssu.groupstudy.domain.notification.event.push.TaskDoneEvent;
+import ssu.groupstudy.domain.notification.param.NotificationTaskDoneParam;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
@@ -35,10 +35,9 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.*;
 @Transactional(readOnly = true)
 public class TaskService {
     private final TaskEntityRepository taskEntityRepository;
-    private final UserEntityRepository userEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final RoundParticipantEntityRepository roundParticipantEntityRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationService notificationService;
 
     public List<RoundTaskParam> getTasks(Long roundId, UserEntity me) {
         RoundEntity round = roundEntityRepository.findById(roundId)
@@ -107,7 +106,8 @@ public class TaskService {
 
         char doneYn = task.switchDoneYn();
         if (task.isDone()) {
-            eventPublisher.publishEvent(TaskDoneEvent.builder()
+            notificationService.push(
+                    NotificationTaskDoneParam.builder()
                             .nickname(user.getNickname())
                             .taskDetail(task.getDetail())
                             .studyId(study.getStudyId())
