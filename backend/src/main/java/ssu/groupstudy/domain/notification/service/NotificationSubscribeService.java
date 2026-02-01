@@ -2,11 +2,9 @@ package ssu.groupstudy.domain.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssu.groupstudy.domain.notification.event.subscribe.AllUserTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.study.entity.ParticipantEntity;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
@@ -20,11 +18,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationSubscribeService {
-    private final ApplicationEventPublisher eventPublisher;
     private final ParticipantEntityRepository participantEntityRepository;
+    private final NotificationService notificationService;
 
     public void subscribeAllUserTopic(UserEntity user) {
-        eventPublisher.publishEvent(new AllUserTopicSubscribeEvent(user.getFcmTokens()));
+        notificationService.subscribeToFcm(user.getFcmTokens(), TopicCode.ALL_USERS, null);
     }
 
     public void subscribeParticipatingStudiesTopic(UserEntity user) {
@@ -32,12 +30,8 @@ public class NotificationSubscribeService {
                 .map(ParticipantEntity::getStudy)
                 .collect(Collectors.toList());
 
-        participatingStudies.forEach(study -> eventPublisher.publishEvent(
-                        StudyTopicSubscribeEvent.builder()
-                                .fcmTokens(user.getFcmTokens())
-                                .studyId(study.getStudyId())
-                                .build()
-                )
+        participatingStudies.forEach(study ->
+                notificationService.subscribeToFcm(user.getFcmTokens(), TopicCode.STUDY, study.getStudyId())
         );
     }
 }
