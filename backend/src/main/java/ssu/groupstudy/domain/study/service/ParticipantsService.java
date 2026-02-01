@@ -2,7 +2,6 @@ package ssu.groupstudy.domain.study.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
@@ -18,8 +17,8 @@ import ssu.groupstudy.domain.study.param.ParticipantInfo;
 import ssu.groupstudy.domain.study.param.StatusTagInfo;
 import ssu.groupstudy.api.study.vo.ParticipantResVo;
 import ssu.groupstudy.api.study.vo.ParticipantSummaryResVo;
-import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.study.exception.CanNotKickParticipantException;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.ParticipantEntityRepository;
@@ -45,7 +44,7 @@ public class ParticipantsService {
     private final ParticipantEntityRepository participantEntityRepository;
     private final RoundEntityRepository roundEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationService notificationService;
 
     public List<ParticipantSummaryResVo> getParticipantsProfileImageList(long studyId) {
         StudyEntity study = studyEntityRepository.findById(studyId)
@@ -97,15 +96,12 @@ public class ParticipantsService {
         assertUserIsHostOrThrow(host, study);
 
         removeUserToFutureRounds(study, targetUser);
-        eventPublisher.publishEvent(StudyTopicUnsubscribeEvent.builder()
-                .fcmTokens(targetUser.getFcmTokens())
-                .studyId(study.getStudyId())
-                .build()
-        );
-        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
-                .fcmTokens(targetUser.getFcmTokens())
-                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
-                .build());
+        notificationService.unsubscribeToFcm(targetUser.getFcmTokens(), TopicCode.STUDY, study.getStudyId());
+        notices.stream()
+                .map(NoticeEntity::getNoticeId)
+                .forEach(noticeId ->
+                        notificationService.unsubscribeToFcm(targetUser.getFcmTokens(), TopicCode.NOTICE, noticeId)
+                );
         study.kickParticipant(targetUser);
     }
 
