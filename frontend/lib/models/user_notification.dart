@@ -129,7 +129,7 @@ class UserNotification {
     try {
       final int studyId = int.parse(data['studyId']);
       final int roundId = int.parse(data['roundId']);
-      final int roundSeq = int.parse(data['roundSeq']);
+      final int roundSeq = int.tryParse(data['roundSeq']) ?? 1;
       final Study study = await Study.getStudySummary(studyId);
       final Round round = await Round.getDetail(roundId);
 
