@@ -21,6 +21,7 @@ public class NotificationService {
     private final NotificationHistoryService notificationHistoryService;
     private final ParticipantEntityRepository participantEntityRepository;
 
+    @Async
     public void push(NotificationParam param) {
         fcmUtils.sendNotificationToTopic(
                 param.getTitle(),

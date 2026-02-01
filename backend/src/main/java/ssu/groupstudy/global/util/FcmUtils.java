@@ -5,7 +5,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ssu.groupstudy.domain.common.enums.TopicCode;
 
@@ -50,7 +49,6 @@ public class FcmUtils {
         FirebaseMessaging.getInstance().sendEachForMulticastAsync(message);
     }
 
-    @Async
     public void sendNotificationToTopic(String title, String body, TopicCode topicCode, Long id, Map<String, String> data) {
         log.info("## sendNotificationToTopic : title = {}, body = {}", title, body);
         String topic = topicCode.formatTopic(id);
