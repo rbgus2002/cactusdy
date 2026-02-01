@@ -3,15 +3,13 @@ package ssu.groupstudy.domain.study.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
-import ssu.groupstudy.domain.notification.event.subscribe.StudyTopicSubscribeEvent;
-import ssu.groupstudy.domain.notification.event.unsubscribe.NoticeTopicUnsubscribeEvent;
-import ssu.groupstudy.domain.notification.event.unsubscribe.StudyTopicUnsubscribeEvent;
+import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
 import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
@@ -26,7 +24,6 @@ import ssu.groupstudy.domain.user.repository.UserEntityRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ public class StudyInviteService {
     private final ParticipantEntityRepository participantEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationService notificationService;
     private final int PARTICIPATION_STUDY_LIMIT = 5;
     private final int INVITE_CODE_LENGTH = 6;
 
@@ -55,12 +52,7 @@ public class StudyInviteService {
 
         addUserToFutureRounds(study, user);
 
-        eventPublisher.publishEvent(
-                StudyTopicSubscribeEvent.builder()
-                        .fcmTokens(user.getFcmTokens())
-                        .studyId(study.getStudyId())
-                        .build()
-        );
+        notificationService.subscribeToFcm(user.getFcmTokens(), TopicCode.STUDY, study.getStudyId());
 
         return study.getStudyId();
     }
@@ -85,15 +77,12 @@ public class StudyInviteService {
         List<NoticeEntity> notices = noticeEntityRepository.findNoticesByStudy(study);
 
         removeUserToFutureRounds(study, user);
-        eventPublisher.publishEvent(StudyTopicUnsubscribeEvent.builder()
-                .fcmTokens(user.getFcmTokens())
-                .studyId(study.getStudyId())
-                .build());
-        eventPublisher.publishEvent(NoticeTopicUnsubscribeEvent.builder()
-                .fcmTokens(user.getFcmTokens())
-                .noticeIds(notices.stream().map(NoticeEntity::getNoticeId).collect(Collectors.toList()))
-                .build()
-        );
+        notificationService.unsubscribeToFcm(user.getFcmTokens(), TopicCode.STUDY, study.getStudyId());
+        notices.stream()
+                .map(NoticeEntity::getNoticeId)
+                .forEach(noticeId ->
+                        notificationService.unsubscribeToFcm(user.getFcmTokens(), TopicCode.NOTICE, noticeId)
+                );
         study.leave(user);
     }
 
