@@ -112,6 +112,7 @@ public class TaskService {
                             .taskDetail(task.getDetail())
                             .studyId(study.getStudyId())
                             .roundId(round.getRoundId())
+                            .taskId(task.getId())
                             .build()
             );
         }

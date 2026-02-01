@@ -10,5 +10,5 @@ public class NotificationConstants {
     public static final String NOTICE_ID = "noticeId";
     public static final String STUDY_ID = "studyId";
     public static final String ROUND_ID = "roundId";
-    public static final String ROUND_SEQ = "roundSeq";
+    public static final String TASK_ID = "taskId";
 }
