@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:groupstudy/models/notice.dart';
 import 'package:groupstudy/models/round.dart';
 import 'package:groupstudy/models/study.dart';
 import 'package:groupstudy/routes/notices/notice_detail_route.dart';
-import 'package:groupstudy/routes/notices/notice_list_route.dart';
 import 'package:groupstudy/routes/round_detail_route.dart';
 import 'package:groupstudy/routes/studies/study_detail_route.dart';
 import 'package:groupstudy/services/database_service.dart';
@@ -16,6 +15,7 @@ import 'package:http/http.dart' as http;
 
 class UserNotification {
   static Logger logger = Logger('UserNotification');
+  static String notificationUrl = '${DatabaseService.serverUrl}api/notifications/';
 
   final int id;
   final String title;
@@ -48,7 +48,7 @@ class UserNotification {
       int userId, int page, int pageSize) async {
     final response = await http.get(
       Uri.parse(
-          '${DatabaseService.serverUrl}api/notifications/users/$userId/notifications?page=$page&size=$pageSize'),
+          '${notificationUrl}users/$userId/notifications?page=$page&size=$pageSize'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
@@ -68,6 +68,24 @@ class UserNotification {
       );
 
       return pageInfo;
+    }
+  }
+
+  static Future<bool> hasUnread(int userId) async {
+    final response = await http.get(
+      Uri.parse('${notificationUrl}users/$userId/notifications/unread'),
+      headers: await DatabaseService.getAuthHeader(),
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    logger.resultLogV2('check unread notification (userId: $userId)', response);
+
+    if (response.statusCode != DatabaseService.successCode) {
+      throw Exception(responseJson['message']);
+    } else {
+      bool hasUnread = responseJson['hasUnread'];
+
+      return hasUnread;
     }
   }
 
@@ -116,72 +134,55 @@ class UserNotification {
     }
   }
 
-  static Future<Study?> _viewStudy(Map<String, dynamic> data) async {
+  static Future<void> _viewStudy(Map<String, dynamic> data) async {
     try {
-      int studyId = int.parse(data['studyId']);
+      final int studyId = int.parse(data['studyId']);
+      final Study study = await Study.getStudySummary(studyId);
 
-      Study study = await Study.getStudySummary(studyId);
-
-      // View Study Detail
       Util.pushRouteByKey((context) => StudyDetailRoute(study: study));
-
-      return study;
     } on Exception catch (e) {
       debugPrint(Util.getExceptionMessage(e));
     }
-
-    return null;
   }
 
   static void _viewRound(Map<String, dynamic> data) async {
-    // Visit Study Detail Route
-    _viewStudy(data).then((study) async {
-      if (study != null) {
-        try {
-          int roundId = int.parse(data['roundId']);
-          int roundSeq = int.parse(data['roundSeq']);
+    try {
+      final int studyId = int.parse(data['studyId']);
+      final int roundId = int.parse(data['roundId']);
+      final int roundSeq = int.tryParse(data['roundSeq']) ?? 1;
+      final Study study = await Study.getStudySummary(studyId);
+      final Round round = await Round.getDetail(roundId);
 
-          Round round = await Round.getDetail(roundId);
-
-          // View Round Detail
-          Util.pushRouteByKey(
-            (context) => RoundDetailRoute(
-              roundSeq: roundSeq,
-              studyRound: StudyRound(round: round, study: study),
-            ),
-          );
-        } on Exception catch (e) {
-          debugPrint(Util.getExceptionMessage(e));
-        }
-      }
-    });
+      // View Round Detail
+      Util.pushRouteByKey(
+        (context) => RoundDetailRoute(
+          roundSeq: roundSeq,
+          studyRound: StudyRound(round: round, study: study),
+        ),
+      );
+    } on Exception catch (e) {
+      debugPrint(Util.getExceptionMessage(e));
+    }
   }
 
   static void _viewNotice(Map<String, dynamic> data) async {
-    // Visit Study Detail Route
-    _viewStudy(data).then((study) async {
-      if (study != null) {
-        try {
-          int studyId = int.parse(data['studyId']);
-          int noticeId = int.parse(data['noticeId']);
+    try {
+      final int studyId = int.parse(data['studyId']);
+      final int noticeId = int.parse(data['noticeId']);
+      final Notice notice = await Notice.getNotice(noticeId);
 
-          NoticeSummary noticeSummary = NoticeSummary(
-              notice: await Notice.getNotice(noticeId),
-              commentCount: 0,
-              pinYn: false);
+      NoticeSummary noticeSummary = NoticeSummary(
+          notice: notice,
+          commentCount: 0,
+          pinYn: false);
 
-          // Visit Notice List Route
-          Util.pushRouteByKey((context) => NoticeListRoute(studyId: studyId));
-
-          // View Notice Detail
-          Util.pushRouteByKey((context) => NoticeDetailRoute(
-              noticeSummary: noticeSummary,
-              studyId: studyId,
-              onDelete: Util.doNothing));
-        } on Exception catch (e) {
-          debugPrint(Util.getExceptionMessage(e));
-        }
-      }
-    });
+      // View Notice Detail
+      Util.pushRouteByKey((context) => NoticeDetailRoute(
+          noticeSummary: noticeSummary,
+          studyId: studyId,
+          onDelete: Util.doNothing));
+    } on Exception catch (e) {
+      debugPrint(Util.getExceptionMessage(e));
+    }
   }
 }
