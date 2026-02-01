@@ -9,6 +9,7 @@ import ssu.groupstudy.domain.common.enums.ResultCode;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
 import ssu.groupstudy.domain.common.enums.TopicCode;
+import ssu.groupstudy.domain.notification.param.NotificationStudyInviteParam;
 import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.round.entity.RoundEntity;
 import ssu.groupstudy.domain.round.entity.RoundParticipantEntity;
@@ -52,7 +53,15 @@ public class StudyInviteService {
 
         addUserToFutureRounds(study, user);
 
+
         notificationService.subscribeToFcm(user.getFcmTokens(), TopicCode.STUDY, study.getStudyId());
+        notificationService.push(
+                NotificationStudyInviteParam.builder()
+                        .studyId(study.getStudyId())
+                        .studyName(study.getStudyName())
+                        .userName(user.getNickname())
+                        .build()
+        );
 
         return study.getStudyId();
     }
