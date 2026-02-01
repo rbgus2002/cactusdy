@@ -3,7 +3,6 @@ package ssu.groupstudy.domain.notice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,14 +11,15 @@ import ssu.groupstudy.api.notice.vo.CreateNoticeReqVo;
 import ssu.groupstudy.api.notice.vo.EditNoticeReqVo;
 import ssu.groupstudy.api.notice.vo.NoticeInfoResVo;
 import ssu.groupstudy.domain.comment.repository.CommentEntityRepository;
+import ssu.groupstudy.domain.common.enums.TopicCode;
 import ssu.groupstudy.domain.notice.entity.CheckNoticeEntity;
 import ssu.groupstudy.domain.notice.entity.NoticeEntity;
 import ssu.groupstudy.domain.notice.exception.NoticeNotFoundException;
 import ssu.groupstudy.domain.notice.param.NoticeSummaries;
 import ssu.groupstudy.domain.notice.param.NoticeSummary;
 import ssu.groupstudy.domain.notice.repository.NoticeEntityRepository;
-import ssu.groupstudy.domain.notification.event.push.NoticeCreationEvent;
-import ssu.groupstudy.domain.notification.event.subscribe.NoticeTopicSubscribeEvent;
+import ssu.groupstudy.domain.notification.param.NotificationNoticeParam;
+import ssu.groupstudy.domain.notification.service.NotificationService;
 import ssu.groupstudy.domain.study.entity.StudyEntity;
 import ssu.groupstudy.domain.study.exception.StudyNotFoundException;
 import ssu.groupstudy.domain.study.repository.StudyEntityRepository;
@@ -38,11 +38,10 @@ import static ssu.groupstudy.domain.common.enums.ResultCode.STUDY_NOT_FOUND;
 @Transactional(readOnly = true)
 @Slf4j
 public class NoticeService {
-    private final UserEntityRepository userEntityRepository;
     private final StudyEntityRepository studyEntityRepository;
     private final NoticeEntityRepository noticeEntityRepository;
     private final CommentEntityRepository commentEntityRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationService notificationService;
 
     @Transactional
     public NoticeInfoResVo createNotice(CreateNoticeReqVo dto, UserEntity writer) {
@@ -50,20 +49,15 @@ public class NoticeService {
                 .orElseThrow(() -> new StudyNotFoundException(STUDY_NOT_FOUND));
         NoticeEntity notice = noticeEntityRepository.save(dto.toEntity(writer, study));
 
-        eventPublisher.publishEvent(
-                NoticeCreationEvent.builder()
+        notificationService.push(
+                NotificationNoticeParam.builder()
                         .studyId(study.getStudyId())
                         .noticeId(notice.getNoticeId())
                         .noticeTitle(notice.getTitle())
                         .noticeWriterNickname(writer.getNickname())
                         .build()
         );
-        eventPublisher.publishEvent(
-                NoticeTopicSubscribeEvent.builder()
-                        .fcmTokens(writer.getFcmTokens())
-                        .noticeId(notice.getNoticeId())
-                        .build()
-        );
+        notificationService.subscribeToFcm(writer.getFcmTokens(), TopicCode.NOTICE, notice.getNoticeId());
 
         return NoticeInfoResVo.of(notice, writer);
     }
