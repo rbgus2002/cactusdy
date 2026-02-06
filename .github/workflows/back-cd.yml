@@ -66,19 +66,18 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            export PATH=/opt/homebrew/bin:$PATH
+            DOCKER=/Applications/Docker.app/Contents/Resources/bin/docker
             
-            docker stop group-study || true
-            docker rm group-study || true
+            $DOCKER stop group-study || true
+            $DOCKER rm group-study || true
             
-            cd ~/Desktop/guegue/group-study/backend  # backend 추가
+            cd ~/Desktop/guegue/group-study/backend
             
-            # Docker 빌드 전
             echo "🔨 Docker 이미지 빌드 시작..."
-            docker build --no-cache -t group-study-api:latest .
+            $DOCKER build --no-cache -t group-study-api:latest .
             
             echo "🚀 컨테이너 시작..."
-            docker compose up -d            
+            $DOCKER compose up -d     
             
             sleep 15
             if docker ps | grep -q group-study; then
