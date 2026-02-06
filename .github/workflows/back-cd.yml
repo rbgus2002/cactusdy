@@ -34,8 +34,6 @@ jobs:
           mkdir -p ./src/main/resources
           echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./src/main/resources/application-prod.yml
-          
-          # FCM 키 파일 생성
           echo "${{ secrets.FCM_KEY_BASE64 }}" | base64 -d > ./src/main/resources/studygroup-fcm.json
 
       - name: Setup Gradle
@@ -46,7 +44,6 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build -x test
-
 
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.5
@@ -66,27 +63,29 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            DOCKER=/Applications/Docker.app/Contents/Resources/bin/docker
-            
+            DOCKER_BIN=/Applications/Docker.app/Contents/Resources/bin
+            export PATH="$DOCKER_BIN:$PATH"
+            DOCKER=$DOCKER_BIN/docker
+
+            cd ~/Desktop/guegue/group-study/backend
+
             $DOCKER stop group-study || true
             $DOCKER rm group-study || true
-            
-            cd ~/Desktop/guegue/group-study/backend
-            
+
             echo "🔨 Docker 이미지 빌드 시작..."
             $DOCKER build --no-cache -t group-study-api:latest .
-            
+
             echo "🚀 컨테이너 시작..."
-            $DOCKER compose up -d     
-            
+            $DOCKER compose up -d
+
             sleep 15
-            if docker ps | grep -q group-study; then
+
+            if $DOCKER ps | grep -q group-study; then
               echo "✅ 배포 성공"
-              # rm -f build/libs/*.jar
               rm -f src/main/resources/studygroup-fcm.json
-              docker image prune -f
+              $DOCKER image prune -f
             else
               echo "❌ 배포 실패"
-              docker compose logs
+              $DOCKER compose logs
               exit 1
             fi
