@@ -111,12 +111,12 @@ jobs:
             if "$DOCKER" compose version >/dev/null 2>&1; then
               COMPOSE=("$DOCKER" "compose")
               echo "🔧 using docker compose"
-            elif command -v docker-compose >/dev/null 2>&1; then
-              COMPOSE=(docker-compose)
-              echo "🔧 using docker-compose"
             else
-              echo "❌ docker compose 또는 docker-compose를 찾을 수 없습니다."
-              ls -l "$HOME/.docker/cli-plugins/docker-compose" /Applications/Docker.app/Contents/Resources/cli-plugins/docker-compose 2>/dev/null || true
+              echo "❌ docker compose plugin을 찾을 수 없습니다."
+              echo "DOCKER=$DOCKER"
+              echo "PATH=$PATH"
+              ls -l "$HOME/.docker/cli-plugins/docker-compose" /Applications/Docker.app/Contents/Resources/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose 2>/dev/null || true
+              "$DOCKER" info || true
               exit 1
             fi
 
