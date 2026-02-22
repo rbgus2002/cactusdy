@@ -65,14 +65,7 @@ jobs:
           script: |
             set -euo pipefail
 
-            DOCKER_BIN=/Applications/Docker.app/Contents/Resources/bin
-            export PATH="$DOCKER_BIN:$PATH"
-
-            if [ -x "$DOCKER_BIN/docker" ]; then
-              DOCKER=$DOCKER_BIN/docker
-            else
-              DOCKER=$(command -v docker || true)
-            fi
+            DOCKER="$(command -v docker || true)"
 
             if [ -z "${DOCKER:-}" ]; then
               echo "❌ docker command not found."
@@ -87,72 +80,28 @@ jobs:
             }
             DOCKERCONF
 
-            COMPOSE_VERSION=2.27.1
-            COMPOSE_FALLBACK_IMAGE=docker/compose:$COMPOSE_VERSION
-            COMPOSE_DOWNLOAD_BINARY=/tmp/docker-compose
             APP_DIR=~/Desktop/guegue/group-study/backend
             mkdir -p "$APP_DIR"
             cd "$APP_DIR"
 
+            if ! "$DOCKER" compose version >/dev/null 2>&1; then
+              if [ -x /Applications/Docker.app/Contents/Resources/cli-plugins/docker-compose ]; then
+                mkdir -p "$HOME/.docker/cli-plugins"
+                ln -sf /Applications/Docker.app/Contents/Resources/cli-plugins/docker-compose "$HOME/.docker/cli-plugins/docker-compose"
+              fi
+            fi
+
             if "$DOCKER" compose version >/dev/null 2>&1; then
               COMPOSE=("$DOCKER" "compose")
-              echo "🔧 using plugin: docker compose"
-            elif [ -x "$DOCKER_BIN/docker-compose" ]; then
-              COMPOSE=("$DOCKER_BIN/docker-compose")
-              echo "🔧 using docker-compose at: $DOCKER_BIN/docker-compose"
+              echo "🔧 using docker compose"
             elif command -v docker-compose >/dev/null 2>&1; then
               COMPOSE=(docker-compose)
-              echo "🔧 using docker-compose from PATH"
-            elif "$DOCKER" run --rm \
-              -v /var/run/docker.sock:/var/run/docker.sock \
-              -v "$APP_DIR:$APP_DIR" \
-              -w "$APP_DIR" \
-              "$COMPOSE_FALLBACK_IMAGE" version >/dev/null 2>&1; then
-              COMPOSE=("$DOCKER" run --rm \
-                -v /var/run/docker.sock:/var/run/docker.sock \
-                -v "$APP_DIR:$APP_DIR" \
-                -w "$APP_DIR" \
-                "$COMPOSE_FALLBACK_IMAGE")
-              echo "⚠️ using docker/compose 컨테이너 fallback"
-            elif command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1; then
-              echo "⚠️ local docker-compose가 없어 정적 바이너리로 설치합니다."
-              OS_NAME=$(uname -s | tr '[:upper:]' '[:lower:]')
-              ARCH_NAME=$(uname -m)
-              case "$ARCH_NAME" in
-                x86_64|amd64)
-                  COMPOSE_ARCH=x86_64
-                  ;;
-                aarch64|arm64)
-                  COMPOSE_ARCH=aarch64
-                  ;;
-                *)
-                  echo "❌ unsupported architecture: $ARCH_NAME"
-                  exit 1
-                  ;;
-              esac
-
-              if [ "$OS_NAME" = "darwin" ]; then
-                COMPOSE_OS=darwin
-              else
-                COMPOSE_OS=linux
-              fi
-
-              COMPOSE_DOWNLOAD_URL="https://github.com/docker/compose/releases/download/v$COMPOSE_VERSION/docker-compose-$COMPOSE_OS-$COMPOSE_ARCH"
-              if command -v curl >/dev/null 2>&1; then
-                curl -fsSL "$COMPOSE_DOWNLOAD_URL" -o "$COMPOSE_DOWNLOAD_BINARY"
-              else
-                wget -qO "$COMPOSE_DOWNLOAD_BINARY" "$COMPOSE_DOWNLOAD_URL"
-              fi
-
-              if [ ! -x "$COMPOSE_DOWNLOAD_BINARY" ]; then
-                chmod +x "$COMPOSE_DOWNLOAD_BINARY"
-              fi
-              COMPOSE=("$COMPOSE_DOWNLOAD_BINARY")
-              echo "🔧 using downloaded compose binary: $COMPOSE_DOWNLOAD_BINARY"
+              echo "🔧 using docker-compose"
             else
               echo "❌ docker compose 또는 docker-compose를 찾을 수 없습니다."
               exit 1
             fi
+
             echo "🔧 using compose command: ${COMPOSE[*]}"
             IMAGE_NAME=group-study-api:latest
 
