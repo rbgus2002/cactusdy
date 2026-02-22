@@ -87,10 +87,15 @@ jobs:
             }
             DOCKERCONF
 
+            COMPOSE_FALLBACK_IMAGE=docker/compose:2.27.1
+
             if "$DOCKER" compose version >/dev/null 2>&1; then
               COMPOSE=("$DOCKER" "compose")
             elif command -v docker-compose >/dev/null 2>&1; then
               COMPOSE=(docker-compose)
+            elif "$DOCKER" run --rm "$COMPOSE_FALLBACK_IMAGE" version >/dev/null 2>&1; then
+              COMPOSE=("$DOCKER" run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD:$PWD" -w "$PWD" "$COMPOSE_FALLBACK_IMAGE")
+              echo "⚠️ docker compose가 없어 docker/compose 컨테이너로 fallback 합니다."
             else
               echo "❌ docker compose 또는 docker-compose를 찾을 수 없습니다."
               exit 1
