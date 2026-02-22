@@ -98,12 +98,17 @@ jobs:
             mkdir -p "$DOCKER_CONFIG"
             cat > "$DOCKER_CONFIG/config.json" <<'DOCKERCONF'
             {
-              "auths": {},
-              "credsStore": "",
+              "auths": {
+                "https://index.docker.io/v1/": {}
+              },
               "credHelpers": {}
             }
             DOCKERCONF
-            export DOCKER_AUTH_CONFIG='{"auths":{}}'
+            unset DOCKER_AUTH_CONFIG || true
+
+            echo "----- DOCKER CONFIG -----"
+            cat "$DOCKER_CONFIG/config.json"
+            echo "-------------------------"
 
             DOCKER_CMD=("$DOCKER" "--config" "$DOCKER_CONFIG")
             echo "✅ docker: ${DOCKER_CMD[*]}"
