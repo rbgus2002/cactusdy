@@ -67,7 +67,17 @@ jobs:
 
             DOCKER_BIN=/Applications/Docker.app/Contents/Resources/bin
             export PATH="$DOCKER_BIN:$PATH"
-            DOCKER=$DOCKER_BIN/docker
+
+            if [ -x "$DOCKER_BIN/docker" ]; then
+              DOCKER=$DOCKER_BIN/docker
+            else
+              DOCKER=$(command -v docker || true)
+            fi
+
+            if [ -z "${DOCKER:-}" ]; then
+              echo "❌ docker command not found."
+              exit 1
+            fi
 
             export DOCKER_CONFIG=/tmp/docker-ci-config
             mkdir -p "$DOCKER_CONFIG"
@@ -77,15 +87,15 @@ jobs:
             }
             DOCKERCONF
 
-            if docker compose version >/dev/null 2>&1; then
-              COMPOSE="docker compose"
+            if "$DOCKER" compose version >/dev/null 2>&1; then
+              COMPOSE=("$DOCKER" "compose")
             elif command -v docker-compose >/dev/null 2>&1; then
-              COMPOSE="docker-compose"
+              COMPOSE=(docker-compose)
             else
               echo "❌ docker compose 또는 docker-compose를 찾을 수 없습니다."
               exit 1
             fi
-            echo "🔧 using compose command: $COMPOSE"
+            echo "🔧 using compose command: ${COMPOSE[*]}"
 
             IMAGE_NAME=group-study-api:latest
 
@@ -93,13 +103,13 @@ jobs:
 
             $DOCKER stop group-study || true
             $DOCKER rm group-study || true
-            $COMPOSE down || true
+            "${COMPOSE[@]}" down || true
 
             echo "🔨 Docker 이미지 빌드 시작..."
             $DOCKER build --no-cache -t "$IMAGE_NAME" .
 
             echo "🚀 컨테이너 시작..."
-            $COMPOSE up -d
+            "${COMPOSE[@]}" up -d
 
             sleep 15
 
@@ -109,6 +119,6 @@ jobs:
               $DOCKER image prune -f
             else
               echo "❌ 배포 실패"
-              $COMPOSE logs
+              "${COMPOSE[@]}" logs
               exit 1
             fi
