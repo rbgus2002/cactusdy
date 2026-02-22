@@ -65,11 +65,32 @@ jobs:
           script: |
             set -euo pipefail
 
-            DOCKER="$(command -v docker || true)"
+            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+            DOCKER_CANDIDATES=(
+              "$(command -v docker || true)"
+              /usr/local/bin/docker
+              /opt/homebrew/bin/docker
+              /usr/bin/docker
+              /bin/docker
+              /Applications/Docker.app/Contents/Resources/bin/docker
+            )
+            DOCKER=""
 
-            if [ -z "${DOCKER:-}" ] || [ ! -x "$DOCKER" ]; then
+            for candidate in "${DOCKER_CANDIDATES[@]}"; do
+              if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+                DOCKER="$candidate"
+                break
+              fi
+            done
+
+            if [ -z "$DOCKER" ]; then
               echo "❌ docker command not found."
-              command -v docker || true
+              echo "PATH=$PATH"
+              which -a docker || true
+              for candidate in "${DOCKER_CANDIDATES[@]}"; do
+                [ -n "$candidate" ] && echo "checked: $candidate"
+                [ -x "$candidate" ] && echo "  -> executable"
+              done
               exit 1
             fi
 
