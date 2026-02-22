@@ -63,24 +63,37 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            set -euo pipefail
+
             DOCKER_BIN=/Applications/Docker.app/Contents/Resources/bin
             export PATH="$DOCKER_BIN:$PATH"
             DOCKER=$DOCKER_BIN/docker
+
+            export DOCKER_CONFIG=/tmp/docker-ci-config
+            mkdir -p "$DOCKER_CONFIG"
+            cat > "$DOCKER_CONFIG/config.json" <<'DOCKERCONF'
+            {
+              "auths": {}
+            }
+            DOCKERCONF
+
+            IMAGE_NAME=group-study-api:latest
 
             cd ~/Desktop/guegue/group-study/backend
 
             $DOCKER stop group-study || true
             $DOCKER rm group-study || true
+            $DOCKER compose down || true
 
             echo "🔨 Docker 이미지 빌드 시작..."
-            $DOCKER build --no-cache -t group-study-api:latest .
+            $DOCKER build --no-cache -t "$IMAGE_NAME" .
 
             echo "🚀 컨테이너 시작..."
             $DOCKER compose up -d
 
             sleep 15
 
-            if $DOCKER ps | grep -q group-study; then
+            if $DOCKER ps --filter "name=^/group-study$" --format '{{.Names}}' | grep -q '^group-study$'; then
               echo "✅ 배포 성공"
               rm -f src/main/resources/studygroup-fcm.json
               $DOCKER image prune -f
