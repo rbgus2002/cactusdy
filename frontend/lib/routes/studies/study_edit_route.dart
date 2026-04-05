@@ -57,7 +57,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
       body: SingleChildScrollView(
           padding: Design.edgePadding,
           child: (_isHost) ?
-            _adminView() :
+            _hostView() :
             _userView(),),
       bottomNavigationBar: _doneModifyButton(),
     );
@@ -73,7 +73,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
     );
   }
 
-  Widget _adminView() {
+  Widget _hostView() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,16 +131,16 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
         _studyColorWidget(),
         Design.padding32,
 
-        // Study Admin
+        // Study Host
         _TitleAndHintWidget(
-            title: context.local.chooseAdmin,
-            hint: context.local.chooseAdminHint),
+            title: context.local.hostDelegation,
+            hint: context.local.hostDelegationHint),
         Design.padding16,
 
         MemberProfileListWidget(
           study: _studyCopy,
           border: true,
-          onTap: _changeAdmin,),
+          onTap: _delegateHost,),
         Design.padding(20),
       ],);
   }
@@ -188,14 +188,14 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
     );
   }
 
-  void _changeAdmin(UserProfileSummary newAdmin) {
+  void _delegateHost(UserProfileSummary newHost) {
     TwoButtonDialog.showDialog(
         context: context,
-        text: context.local.ensureToGiveAdminTo(newAdmin.nickname),
+        text: context.local.ensureToDelegateHostTo(newHost.nickname),
         maxLines: 4,
 
         buttonText1: context.local.confirm,
-        onPressed1: () => setState(() => _studyCopy.hostId = newAdmin.userId),
+        onPressed1: () => setState(() => _studyCopy.hostId = newHost.userId),
 
         buttonText2: context.local.cancel,
         onPressed2: () {}// << Assert to do nothing

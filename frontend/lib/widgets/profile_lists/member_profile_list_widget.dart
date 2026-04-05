@@ -97,10 +97,10 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
               }
             },),
         ),
-          
+
         Visibility(
           visible: host,
-          child: _adminBadge(context)),
+          child: _hostBadge(context)),
       ],
     );
   }
@@ -140,7 +140,7 @@ class _MemberProfileListWidgetState extends State<MemberProfileListWidget> {
     );
   }
 
-  Widget _adminBadge(BuildContext context) {
+  Widget _hostBadge(BuildContext context) {
     return Positioned(
       top: 24,
       child: CircleAvatar(
