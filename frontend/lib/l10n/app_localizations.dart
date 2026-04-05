@@ -681,29 +681,29 @@ abstract class AppLocalizations {
   /// **'초대코드 6자리를 전부 입력해주세요'**
   String get shortInvitingCode;
 
-  /// No description provided for @admin.
+  /// No description provided for @host.
   ///
   /// In ko, this message translates to:
   /// **'방장'**
-  String get admin;
+  String get host;
 
-  /// No description provided for @chooseAdmin.
+  /// No description provided for @hostDelegation.
   ///
   /// In ko, this message translates to:
-  /// **'방장 선택'**
-  String get chooseAdmin;
+  /// **'방장 위임'**
+  String get hostDelegation;
 
-  /// No description provided for @chooseAdminHint.
+  /// No description provided for @hostDelegationHint.
   ///
   /// In ko, this message translates to:
   /// **'다른 팀원에게 방장을 위임할 수 있어요'**
-  String get chooseAdminHint;
+  String get hostDelegationHint;
 
-  /// No description provided for @ensureToGiveAdminTo.
+  /// No description provided for @ensureToDelegateHostTo.
   ///
   /// In ko, this message translates to:
   /// **'{nickname}에게\n방장을 위임할까요?'**
-  String ensureToGiveAdminTo(Object nickname);
+  String ensureToDelegateHostTo(Object nickname);
 
   /// No description provided for @member.
   ///

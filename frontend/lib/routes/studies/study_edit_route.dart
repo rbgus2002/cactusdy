@@ -133,8 +133,8 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
 
         // Study Admin
         _TitleAndHintWidget(
-            title: context.local.chooseAdmin,
-            hint: context.local.chooseAdminHint),
+            title: context.local.hostDelegation,
+            hint: context.local.hostDelegationHint),
         Design.padding16,
 
         MemberProfileListWidget(
@@ -191,7 +191,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
   void _changeAdmin(UserProfileSummary newAdmin) {
     TwoButtonDialog.showDialog(
         context: context,
-        text: context.local.ensureToGiveAdminTo(newAdmin.nickname),
+        text: context.local.ensureToDelegateHostTo(newAdmin.nickname),
         maxLines: 4,
 
         buttonText1: context.local.confirm,

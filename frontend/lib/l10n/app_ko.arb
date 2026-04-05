@@ -120,10 +120,10 @@
     "invitingCodeHint": "코드 6자리",
     "shortInvitingCode": "초대코드 6자리를 전부 입력해주세요",
 
-    "admin": "방장",
-    "chooseAdmin": "방장 선택",
-    "chooseAdminHint": "다른 팀원에게 방장을 위임할 수 있어요",
-    "ensureToGiveAdminTo": "{nickname}에게\n방장을 위임할까요?",
+    "host": "방장",
+    "hostDelegation": "방장 위임",
+    "hostDelegationHint": "다른 팀원에게 방장을 위임할 수 있어요",
+    "ensureToDelegateHostTo": "{nickname}에게\n방장을 위임할까요?",
 
     "member": "멤버",
     "kick": "내보내기",
