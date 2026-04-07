@@ -99,7 +99,8 @@ class _NotificationCenterRouteState extends State<NotificationCenterRoute> {
         text: context.local.notificationReadAll,
         icon: const Icon(CustomIcons.check2),
         onTap: () =>
-            UserNotification.markAsRead(Auth.signInfo!.userId, [], true),
+            UserNotification.markAsRead(Auth.signInfo!.userId, [], true)
+                .then((_) => _refresh()),
       ),
     ];
   }
