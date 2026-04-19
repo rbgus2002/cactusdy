@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:groupstudy/services/database_service.dart';
 import 'package:groupstudy/services/logger.dart';
+import 'package:groupstudy/utilities/pageable.dart';
 import 'package:http/http.dart' as http;
 
 class Notice {
@@ -189,24 +190,34 @@ class NoticeSummary {
     );
   }
 
-  static Future<List<NoticeSummary>> getNoticeSummaryList(int studyId, int offset, int pageSize) async {
+  static Future<PageInfo<NoticeSummary>> getNoticeSummaryList(
+      int studyId, int offset, int pageSize) async {
     final response = await http.get(
-      Uri.parse('${DatabaseService.serverUrl}api/notices/list?studyId=$studyId&offset=$offset&pageSize=$pageSize'),
+      Uri.parse(
+          '${DatabaseService.serverUrl}api/notices/list?studyId=$studyId&offset=$offset&pageSize=$pageSize'),
       headers: await DatabaseService.getAuthHeader(),
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    Notice.logger.resultLog('get notice summary list [$offset:${offset + pageSize}]', responseJson);
+    Notice.logger.resultLog(
+        'get notice summary list (offset: $offset, pageSize: $pageSize)',
+        responseJson);
 
     if (response.statusCode != DatabaseService.successCode) {
       throw Exception(responseJson['message']);
     } else {
-      var noticeListJson = responseJson['data']['notices']['noticeList'];
+      var noticeListJson = responseJson['data']['notices'];
 
-      List<NoticeSummary> noticeList = (noticeListJson as List).map((p)
-          => NoticeSummary.fromJson(p)).toList();
+      PageInfo<NoticeSummary> pageInfo = PageInfo(
+        contents: (noticeListJson['noticeList'] as List)
+            .map((item) => NoticeSummary.fromJson(item))
+            .toList(),
+        page: offset,
+        totalElements: noticeListJson['totalElements'],
+        totalPages: noticeListJson['totalPages'],
+      );
 
-      return noticeList;
+      return pageInfo;
     }
   }
 
