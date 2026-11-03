@@ -112,7 +112,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
       width: 46,
       height: 56,
       decoration: BoxDecoration(
-        color: widget.studyRound.study.color.withOpacity(0.2),
+        color: widget.studyRound.study.color.withValues(alpha: 0.2),
         borderRadius: Design.borderRadiusSmall,),
       child: InkWell(
         onTap: _editStudyTime,
@@ -174,7 +174,7 @@ class _RoundDetailRouteState extends State<RoundDetailRoute> {
                         context.local.inputHint1(context.local.time),
                       style: (widget.studyRound.round.studyTime != null) ?
                         TextStyles.body2.copyWith(color: context.extraColors.grey800) :
-                        TextStyles.body2.copyWith(color: context.extraColors.grey800!.withOpacity(0.5)),),
+                        TextStyles.body2.copyWith(color: context.extraColors.grey800!.withValues(alpha: 0.5)),),
                   ),
                   Design.padding4,
 

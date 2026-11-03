@@ -84,7 +84,7 @@ class Study {
     Map<String, dynamic> data = {
       'studyName': studyName,
       'detail': studyDetail,
-      'color': '0x${studyColor.value.toRadixString(16).toUpperCase()}',
+      'color': '0x${studyColor.toARGB32().toRadixString(16).toUpperCase()}',
     };
 
     request.files.add(http.MultipartFile.fromString(
@@ -154,7 +154,7 @@ class Study {
     Map<String, dynamic> data = {
       'studyName': updatedStudy.studyName,
       'detail': updatedStudy.detail,
-      'color': '0x${updatedStudy.color.value.toRadixString(16).toUpperCase()}',
+      'color': '0x${updatedStudy.color.toARGB32().toRadixString(16).toUpperCase()}',
       'hostUserId': updatedStudy.hostId,
     };
 

@@ -135,7 +135,7 @@ class _RuleListWidgetState extends State<RuleListWidget> {
               0.95,
             ],
             colors: [
-              Theme.of(context).scaffoldBackgroundColor.withOpacity(0),
+              Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0),
               Theme.of(context).scaffoldBackgroundColor,
             ],),),
         child: AnimatedRotation(

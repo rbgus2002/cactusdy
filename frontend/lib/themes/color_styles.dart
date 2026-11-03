@@ -107,8 +107,6 @@ class ColorStyles {
       onSecondary: Colors.white,
       error: errorColor,
       onError: Colors.white,
-      background: Colors.red, //< FIXME : idk it used in
-      onBackground: _black800,
       surface: _black000,
       onSurface: _black800,
   );
@@ -121,15 +119,13 @@ class ColorStyles {
       onSecondary: Colors.white,
       error: errorColor,
       onError: Colors.white,
-      background: Colors.red, //< FIXME : idk it used in
-      onBackground: _white800,
       surface: _white50,
       onSurface: _white800,
   );
 
   static final AppBarTheme appBarTheme = AppBarTheme(
     elevation: 0,
-    color: backgroundColor,
+    backgroundColor: backgroundColor,
     titleTextStyle: TextStyles.head4.copyWith(color: _black800),
     foregroundColor: _black900,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -138,7 +134,7 @@ class ColorStyles {
 
   static final AppBarTheme appBarDarkTheme = AppBarTheme(
     elevation: 0,
-    color: backgroundColorDark,
+    backgroundColor: backgroundColorDark,
     titleTextStyle: TextStyles.head4.copyWith(color: _white800),
     foregroundColor: _white800,
     systemOverlayStyle: SystemUiOverlayStyle.light,

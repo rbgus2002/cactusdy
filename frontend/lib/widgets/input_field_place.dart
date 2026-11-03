@@ -40,7 +40,7 @@ class _InputFieldPlaceState extends State<InputFieldPlace> {
 
         hintText: context.local.inputHint2(context.local.place),
         hintStyle: TextStyles.body2.copyWith(
-            color: context.extraColors.grey800!.withOpacity(0.5)),
+            color: context.extraColors.grey800!.withValues(alpha: 0.5)),
 
         border: InputBorder.none,
         focusedBorder: UnderlineInputBorder(

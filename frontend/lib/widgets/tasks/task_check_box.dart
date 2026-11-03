@@ -6,7 +6,6 @@ import 'package:groupstudy/themes/custom_icons.dart';
 import 'package:groupstudy/utilities/animation_setting.dart';
 import 'package:groupstudy/utilities/color_util.dart';
 import 'package:groupstudy/utilities/extensions.dart';
-import 'package:groupstudy/utilities/lazy_update_controller.dart';
 
 class TaskCheckBox extends StatefulWidget {
   final Task task;

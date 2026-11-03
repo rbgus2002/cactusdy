@@ -44,7 +44,7 @@ class CommentWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-              color: (isSelected)?ColorStyles.mainColor.withOpacity(0.05):null,
+              color: (isSelected)?ColorStyles.mainColor.withValues(alpha: 0.05):null,
               borderRadius: Design.borderRadius),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
