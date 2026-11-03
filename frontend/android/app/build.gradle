@@ -81,6 +81,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     flavorDimensions "build-type"
 
     productFlavors {
