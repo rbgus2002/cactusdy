@@ -25,6 +25,9 @@ plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "9.4.0" apply false
 
+    // Flutter 3.47.9 requires KGP ^2.2.20 > 2.2.10 (built-in version from AGP 9+), so explicitly set to higher version.
+    id "org.jetbrains.kotlin.android" version "2.4.21" apply false
+
     id "com.google.gms.google-services" version "4.3.14" apply false
 }
 
