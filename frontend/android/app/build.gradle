@@ -83,18 +83,19 @@ android {
 
     buildFeatures {
         buildConfig = true
+        resValues = true
     }
 
     flavorDimensions "build-type"
 
     productFlavors {
-        dev {
+        create("dev") {
             dimension "build-type"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "뜨끔 개발"
         }
 
-        prod {
+        create("prod") {
             dimension "build-type"
             resValue "string", "app_name", "뜨끔"
         }
