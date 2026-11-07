@@ -323,16 +323,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get shortInvitingCode => '초대코드 6자리를 전부 입력해주세요';
 
   @override
-  String get admin => '방장';
+  String get host => '방장';
 
   @override
-  String get chooseAdmin => '방장 선택';
+  String get hostDelegation => '방장 위임';
 
   @override
-  String get chooseAdminHint => '다른 팀원에게 방장을 위임할 수 있어요';
+  String get hostDelegationHint => '다른 팀원에게 방장을 위임할 수 있어요';
 
   @override
-  String ensureToGiveAdminTo(Object nickname) {
+  String ensureToDelegateHostTo(Object nickname) {
     return '$nickname에게\n방장을 위임할까요?';
   }
 

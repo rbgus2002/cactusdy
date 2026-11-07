@@ -47,7 +47,7 @@ class _StudyCreatePage2State extends State<StudyCreatePage2> {
         Container(
           alignment: Alignment.center,
           child: ImagePickerWidget(
-            backgroundColor: _studyColor.withOpacity(0.4),
+            backgroundColor: _studyColor.withValues(alpha: 0.4),
             shape: RoundedRectangleBorder(
               borderRadius: Design.borderRadius,
               side: BorderSide(color: context.extraColors.grey200!, width: 2),),

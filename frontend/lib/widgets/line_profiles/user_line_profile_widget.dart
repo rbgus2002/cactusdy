@@ -157,9 +157,13 @@ class _NotificationCenterButtonState extends State<NotificationCenterButton> {
               size: widget.iconSize * 0.8,
             ),
             splashRadius: widget.iconSize * 0.5,
-            onPressed: () =>
-                Util.pushRoute(context, (context) => NotificationCenterRoute())
-                    .then((value) => setState(() {})),
+            onPressed: () async {
+              await Util.pushRoute(
+                context,
+                (context) => NotificationCenterRoute(userId: widget.userId),
+              );
+              setState(() {});
+            },
           ),
         ),
       ],

@@ -96,7 +96,7 @@ class StudyProfileWidget extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: context.extraColors.grey700,),),
-        color: studyInfo.study.color.withOpacity(0.3),
+        color: studyInfo.study.color.withValues(alpha: 0.3),
         onTap: () => Util.pushRoute(context, (context) =>
             RoundDetailRoute(
               roundSeq: studyInfo.roundSeq,

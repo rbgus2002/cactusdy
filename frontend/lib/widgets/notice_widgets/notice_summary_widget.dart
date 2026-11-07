@@ -35,11 +35,12 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
         border: Border(
           bottom: BorderSide(color: context.extraColors.grey200!),),),
       child: InkWell(
-        child:
-          Column(
+        child: Padding(
+          padding: Design.listItemPadding,
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Design.padding24,
+              Design.padding8,
               // Title and Pin icon
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,9 +110,10 @@ class _NoticeSummaryWidgetState extends State<NoticeSummaryWidget> {
                     ],),
                 ]
               ),
-              Design.padding20,
+              Design.padding4,
             ],
           ),
+        ),
         onTap: () {
             Util.pushRoute(context, (context) =>
                 NoticeDetailRoute(
