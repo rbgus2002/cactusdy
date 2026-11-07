@@ -197,8 +197,8 @@ class _RoundSummaryWidgetState extends State<RoundSummaryWidget> {
               context.local.inputHint1(context.local.time),
             maxLines: 1,
             style: TextStyles.body2.copyWith(
-                color: context.extraColors.grey800!.withOpacity(
-                    (widget.round.studyTime != null)? 1 : 0.5),),),
+                color: context.extraColors.grey800!.withValues(
+                    alpha: (widget.round.studyTime != null)? 1 : 0.5),),),
         ),
       ],
     );

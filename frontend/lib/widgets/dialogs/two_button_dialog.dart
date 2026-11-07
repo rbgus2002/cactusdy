@@ -28,7 +28,7 @@ class TwoButtonDialog {
         context: context,
         barrierDismissible: true,
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: context.extraColors.barrierColor!.withOpacity(0.2),
+        barrierColor: context.extraColors.barrierColor!.withValues(alpha: 0.2),
         pageBuilder: (context, animation, secondaryAnimation) {
           return BackdropFilter(
             filter: Design.basicBlur,
@@ -36,7 +36,7 @@ class TwoButtonDialog {
               shape: const RoundedRectangleBorder(
                 borderRadius: Design.borderRadiusBig,),
               insetPadding: _padding,
-              backgroundColor: context.extraColors.grey50!.withOpacity(0.95),
+              backgroundColor: context.extraColors.grey50!.withValues(alpha: 0.95),
               shadowColor: Colors.transparent,
               content: SizedBox(
                 width: _innerWidth,

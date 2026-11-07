@@ -84,7 +84,7 @@ class _StudyEditRouteState extends State<StudyEditRoute> {
           alignment: Alignment.center,
           child: ImagePickerWidget(
             url: widget.study.picture,
-            backgroundColor: widget.study.color.withOpacity(0.4),
+            backgroundColor: widget.study.color.withValues(alpha: 0.4),
             shape: RoundedRectangleBorder(
               borderRadius: Design.borderRadius,
               side: BorderSide(color: context.extraColors.grey200!, width: 2),),

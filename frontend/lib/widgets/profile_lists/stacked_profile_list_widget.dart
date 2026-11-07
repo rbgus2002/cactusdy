@@ -50,7 +50,7 @@ class StackedProfileListWidget extends StatelessWidget {
                   border: Border.all(
                     color: context.extraColors.grey000!,
                     width: 1.5),
-                  color: Colors.black.withOpacity(0.3),),
+                  color: Colors.black.withValues(alpha: 0.3),),
                 child: Text(
                   '+${profileImages.length - showingCount}',
                   style: TextStyles.caption2.copyWith(color: Colors.white),),),

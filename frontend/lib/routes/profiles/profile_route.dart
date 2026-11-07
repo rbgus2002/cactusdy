@@ -412,7 +412,7 @@ class _GraphBarWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: color.withOpacity(0.2),),
+                color: color.withValues(alpha: 0.2),),
               child: Text(
                 headTag,
                 style: TextStyles.head5.copyWith(
