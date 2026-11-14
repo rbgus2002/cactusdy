@@ -19,6 +19,7 @@ public class NotificationTaskDoneParam implements NotificationParam {
     private final String taskDetail;
     private final Long studyId;
     private final Long roundId;
+    private final Long roundSeq;
     private final Long taskId;
 
     @Override
@@ -37,6 +38,7 @@ public class NotificationTaskDoneParam implements NotificationParam {
                 DATA_TYPE, NotificationDataType.ROUND.getValue(),
                 STUDY_ID, studyId.toString(),
                 ROUND_ID, roundId.toString(),
+                ROUND_SEQ, roundSeq.toString(),
                 TASK_ID, taskId.toString()
         );
     }
