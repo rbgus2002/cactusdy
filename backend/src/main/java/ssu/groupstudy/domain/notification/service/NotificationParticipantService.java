@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssu.groupstudy.domain.common.enums.NotificationDataType;
 import ssu.groupstudy.domain.common.enums.ResultCode;
+import ssu.groupstudy.domain.round.entity.RoundEntity;
+import ssu.groupstudy.domain.round.exception.RoundNotFoundException;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.task.entity.TaskEntity;
 import ssu.groupstudy.domain.task.exception.TaskNotFoundException;
 import ssu.groupstudy.domain.task.repository.TaskEntityRepository;
@@ -24,6 +27,7 @@ import static ssu.groupstudy.global.util.StringUtils.buildMessage;
 public class NotificationParticipantService {
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
+    private final RoundEntityRepository roundEntityRepository;
     private final FcmUtils fcmUtils;
     private final NotificationHistoryService notificationHistoryService;
 
@@ -59,11 +63,13 @@ public class NotificationParticipantService {
                 .orElseThrow(() -> new UserNotFoundException(ResultCode.USER_NOT_FOUND));
         TaskEntity task = taskEntityRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(ResultCode.TASK_NOT_FOUND));
+        RoundEntity round = roundEntityRepository.findById(roundId)
+                .orElseThrow(() -> new RoundNotFoundException(ResultCode.ROUND_NOT_FOUND));
 
         String title = buildMessage("과제 콕찌르기 | ", me.getNickname());
         String body = buildMessage("\"", task.getDetail(), "\"", " : ", buildNotificationMessage(count));
 
-        Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", "-");
+        Map<String, String> data = Map.of("type", "round", "studyId", studyId.toString(), "roundId", roundId.toString(), "roundSeq", String.valueOf(roundEntityRepository.calculateRoundSeq(round)));
         fcmUtils.sendNotificationByTokens(target.getFcmTokens(), title, body, data);
         
         // 알림 히스토리 저장

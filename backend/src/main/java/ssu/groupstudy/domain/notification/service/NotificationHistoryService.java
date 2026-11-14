@@ -18,6 +18,7 @@ import ssu.groupstudy.domain.common.exception.BusinessException;
 import ssu.groupstudy.domain.notification.entity.NotificationHistoryEntity;
 import ssu.groupstudy.domain.notification.exception.NotificationHistoryNotFoundException;
 import ssu.groupstudy.domain.notification.repository.NotificationHistoryEntityRepository;
+import ssu.groupstudy.domain.round.repository.RoundEntityRepository;
 import ssu.groupstudy.domain.user.entity.UserEntity;
 import ssu.groupstudy.domain.user.exception.UserNotFoundException;
 import ssu.groupstudy.domain.user.repository.UserEntityRepository;
@@ -31,6 +32,7 @@ import java.util.*;
 public class NotificationHistoryService {
     private final NotificationHistoryEntityRepository notificationHistoryEntityRepository;
     private final UserEntityRepository userEntityRepository;
+    private final RoundEntityRepository roundEntityRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void saveNotificationHistory(UserEntity user, NotificationDataType notificationDataType,
@@ -63,7 +65,31 @@ public class NotificationHistoryService {
 
         Page<NotificationHistoryEntity> notificationHistoryPage = notificationHistoryEntityRepository.findByUserOrderByCreateDateDesc(user, pageable);
 
-        return NotificationHistoryPageResVo.of(notificationHistoryPage);
+        NotificationHistoryPageResVo response = NotificationHistoryPageResVo.of(notificationHistoryPage);
+        Map<Long, String> roundSeqCache = new HashMap<>();
+        response.getContents().forEach(history -> fillRoundSeq(history.getData(), roundSeqCache));
+        return response;
+    }
+
+    /**
+     * 저장된 roundSeq("-" 또는 누락)가 아닌, 조회 시점의 회차 순번으로 채운다. (회차 삭제 반영)
+     * 회차를 찾지 못하면 저장된 값을 유지한다.
+     */
+    private void fillRoundSeq(Map<String, Object> data, Map<Long, String> roundSeqCache) {
+        if (!NotificationDataType.ROUND.getValue().equals(data.get("type")) || data.get("roundId") == null) {
+            return;
+        }
+        try {
+            Long roundId = Long.valueOf(data.get("roundId").toString());
+            String roundSeq = roundSeqCache.computeIfAbsent(roundId, id -> roundEntityRepository.findById(id)
+                    .map(round -> String.valueOf(roundEntityRepository.calculateRoundSeq(round)))
+                    .orElse(null));
+            if (roundSeq != null) {
+                data.put("roundSeq", roundSeq);
+            }
+        } catch (RuntimeException e) {
+            log.warn("Failed to fill roundSeq: {}", data, e);
+        }
     }
 
     public void readNotifications(Long userId, NotificationReadReqVo request, UserEntity requester) {

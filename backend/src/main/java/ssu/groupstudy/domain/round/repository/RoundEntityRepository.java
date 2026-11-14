@@ -61,6 +61,26 @@ public interface RoundEntityRepository extends JpaRepository<RoundEntity, Long> 
     @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false AND r.appointment.studyTime IS NOT NULL")
     Long countByStudyTimeIsNotNull(StudyEntity study);
 
+    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false " +
+            "AND r.appointment.studyTime IS NOT NULL " +
+            "AND (r.appointment.studyTime < :studyTime OR (r.appointment.studyTime = :studyTime AND r.roundId <= :roundId))")
+    Long countTimedRoundsUpTo(StudyEntity study, LocalDateTime studyTime, Long roundId);
+
+    @Query("SELECT COUNT(r) FROM RoundEntity r WHERE r.study = :study AND r.deleteYn = false " +
+            "AND r.appointment.studyTime IS NULL AND r.roundId <= :roundId")
+    Long countUntimedRoundsUpTo(StudyEntity study, Long roundId);
+
+    /**
+     * 회차 목록(findRoundsByStudyOrderByStudyTime)에서 아래부터 센 순번 (FE: length - index)
+     */
+    default long calculateRoundSeq(RoundEntity round) {
+        StudyEntity study = round.getStudy();
+        if (round.isStudyTimeNull()) {
+            return countByStudyTimeIsNotNull(study) + countUntimedRoundsUpTo(study, round.getRoundId());
+        }
+        return countTimedRoundsUpTo(study, round.getStudyTime(), round.getRoundId());
+    }
+
     /**
      * 시각 기준으로 남은 회차들 가져오기
      * StudyTime이 null인 회차 + StudyTime이 현재 시각보다 큰 회차

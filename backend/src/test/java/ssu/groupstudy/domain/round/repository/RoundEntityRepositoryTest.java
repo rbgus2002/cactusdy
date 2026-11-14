@@ -163,4 +163,27 @@ class RoundEntityRepositoryTest {
         // then
         softly.assertThat(futureRounds.size()).isGreaterThanOrEqualTo(1);
     }
+
+    @Test
+    @DisplayName("roundSeq는 회차 목록(FE)에서 아래부터 센 순번(length - index)과 같다 (미정 회차 여러 개, 같은 시간, 삭제 회차 포함)")
+    void calculateRoundSeqMatchesRoundListPosition() {
+        // given : 회차1,5(시간 미정) / 회차3,4(시간 지정) / 회차2(삭제) + 회차3과 같은 시간 회차 추가
+        StudyEntity 스터디 = studyEntityRepository.findById(1L).get();
+        roundEntityRepository.save(RoundEntity.builder()
+                .study(스터디)
+                .studyTime(LocalDateTime.of(2023, 9, 29, 12, 2))
+                .build());
+
+        // when
+        List<RoundEntity> rounds = roundEntityRepository.findRoundsByStudyOrderByStudyTime(스터디);
+
+        // then
+        softly.assertThat(rounds).hasSize(5);
+        for (int index = 0; index < rounds.size(); index++) {
+            RoundEntity round = rounds.get(index);
+            softly.assertThat(roundEntityRepository.calculateRoundSeq(round))
+                    .as("roundId=%d", round.getRoundId())
+                    .isEqualTo(rounds.size() - index);
+        }
+    }
 }
