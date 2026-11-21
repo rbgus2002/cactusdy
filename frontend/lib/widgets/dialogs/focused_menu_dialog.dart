@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:groupstudy/themes/design.dart';
 import 'package:groupstudy/utilities/extensions.dart';
 
@@ -12,7 +13,8 @@ class FocusedMenuDialog {
     required List<PopupMenuEntry> items,
   }) {
     final RenderBox button = context.findRenderObject()! as RenderBox;
-    final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
+    final RenderBox overlay =
+        Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
     late Offset offset = Offset(0.0, button.size.height);
 
     final RelativeRect position = RelativeRect.fromRect(
@@ -27,7 +29,8 @@ class FocusedMenuDialog {
         context: context,
         barrierColor: context.extraColors.barrierColor!.withAlpha(51),
         barrierDismissible: true,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pageBuilder: (context, animation, secondaryAnimation) =>
             _buildItemList(context: context, position: position, items: items));
   }
@@ -48,16 +51,23 @@ class FocusedMenuDialog {
               color: context.extraColors.grey50!.withAlpha(230),
               borderRadius: Design.borderRadiusBig,
               clipBehavior: Clip.hardEdge,
-              child: SizedBox(
-                width: Design.popupWidth,
-                height: itemHeight * items.length,
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) => items[index],
-                  separatorBuilder: (context, index) =>
-                      Divider(height: 1, color: context.extraColors.grey200),
+              child: Semantics(
+                role: SemanticsRole.menu,
+                explicitChildNodes: true,
+                scopesRoute: true,
+                namesRoute: true,
+                label: MaterialLocalizations.of(context).popupMenuLabel,
+                child: SizedBox(
+                  width: Design.popupWidth,
+                  height: itemHeight * items.length,
+                  child: ListView.separated(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) => items[index],
+                    separatorBuilder: (context, index) =>
+                        Divider(height: 1, color: context.extraColors.grey200),
+                  ),
                 ),
               ),
             ),
